@@ -4,14 +4,33 @@ namespace StudentInfo\Models;
 
 class Student
 {
+    /**
+     * @var int
+     */
     private $id;
+
+    /**
+     * @var string
+     */
     private $firstName;
+
+    /**
+     * @var string
+     */
     private $lastName;
+
+    /**
+     * @var string
+     */
     private $indexNumber;
+
+    /**
+     * @var string
+     */
     private $email;
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -19,7 +38,7 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFirstName()
     {
@@ -27,7 +46,7 @@ class Student
     }
 
     /**
-     * @param mixed $firstName
+     * @param string $firstName
      */
     public function setFirstName($firstName)
     {
@@ -35,7 +54,7 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastName()
     {
@@ -43,7 +62,7 @@ class Student
     }
 
     /**
-     * @param mixed $lastName
+     * @param string $lastName
      */
     public function setLastName($lastName)
     {
@@ -51,7 +70,7 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getIndexNumber()
     {
@@ -59,7 +78,7 @@ class Student
     }
 
     /**
-     * @param mixed $indexNumber
+     * @param string $indexNumber
      */
     public function setIndexNumber($indexNumber)
     {
@@ -67,7 +86,7 @@ class Student
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -75,7 +94,7 @@ class Student
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      */
     public function setEmail($email)
     {
