@@ -7,28 +7,28 @@ The intallation instruction can be found at: http://laravel.com/docs/homestead.
 
 ## Setting up the project for the first time
 1. Clone this repository locally:
-```bash
+``` bash
 git clone git@codebasehq.com:pmedia/student-info/student-info-api.git
 ```
 2. Add the folder containing the cloned repository to your 'Homestead.yaml' file.
 3. Add the site you your 'Homestead.yaml' file:
-```yaml
+``` yaml
 sites:
     - map: api.studentinfo.dev
       to: /home/vagrant/Code/api-studentinfo/public
 ```
 4. Add a new database to your 'Homestead.yaml' file:
-```yaml
+``` yaml
 databases:
     - api_studentinfo
 ```
 5. In your `Homestead` directory run:
-```bash
+``` bash
 vagrant reload --provision
 ```
 6. Rename the file `.env.example` to `.env`.
 7. Install the composer packages by running:
-```bash
+``` bash
 composer install
 ```
 8. Migrate the database
