@@ -141,6 +141,7 @@ return [
          * Package Service Provides...
          */
         LaravelDoctrine\ORM\DoctrineServiceProvider::class,
+	LaravelDoctrine\Migrations\MigrationsServiceProvider::class,
 
         /*
          * Application Service Providers...
