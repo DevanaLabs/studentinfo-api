@@ -18,7 +18,7 @@ git clone git@codebasehq.com:pmedia/student-info/student-info-api.git
 ``` yaml
 sites:
     - map: api.studentinfo.dev
-      to: /home/vagrant/Code/api-studentinfo/public
+      to: /home/vagrant/Code/student-info-api/public
 ```
 
 5. Add a new database to your 'Homestead.yaml' file:
@@ -34,8 +34,8 @@ databases:
 vagrant reload --provision
 ```
 
-7. Change your working directory to your api-studentinfo folder.
-8. Rename the file `.env.example` to `.env`.
+7. Change your working directory to your student-info-api folder.
+8. Copy the file `.env.example` to `.env`.
 9. Install the composer packages by running:
 
 ``` bash
@@ -50,11 +50,11 @@ composer install
 ## Setup XDebug
 - Go to: `Languages & Frameworks > PHP > Servers > New`
 - Configure new Server:
-    - Name: `project-name`
-    - Host: `project-name.dev`
+    - Name: `StudentInfo`
+    - Host: `api.studentinfo.dev`
     - Port: 80
     - `Check` Use path mappings:
-	    - `local-path` -> /home/vagrant/Code/api-studentinfo
+	    - `local-path` -> /home/vagrant/Code/student-info-api
 
 ## Database conventions
 - All tables are named in plural.

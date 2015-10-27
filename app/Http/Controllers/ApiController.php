@@ -10,7 +10,7 @@ class ApiController extends BaseController
 {
     use DispatchesJobs;
 
-    public function sendError($statusCode, $errorCode)
+    public function returnError($statusCode, $errorCode)
     {
         return new Response([
             'error' => [
@@ -20,19 +20,18 @@ class ApiController extends BaseController
         ], $statusCode);
     }
 
-    public function sendSuccess($data)
+    public function returnSuccess($data)
     {
         return new Response([
             'success' => [
-                'data'    => $data,
-                'message' => config("successMessages.{$data}"),
+                'data' => $data
             ],
         ], 200);
     }
 
-    public function sendForbidden($errorCode)
+    public function returnForbidden($errorCode)
     {
-        return $this->sendError(403, $errorCode);
+        return $this->returnError(403, $errorCode);
     }
 
 
