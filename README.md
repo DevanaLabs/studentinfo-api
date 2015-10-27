@@ -50,11 +50,11 @@ composer install
 ## Setup XDebug
 - Go to: `Languages & Frameworks > PHP > Servers > New`
 - Configure new Server:
-    - Name: [project-name]
-    - Host: [project-name].dev
+    - Name: `project-name`
+    - Host: `project-name.dev`
     - Port: 80
     - `Check` Use path mappings:
-	    - [local-path] -> /home/vagrant/Code/api-studentinfo
+	    - `local-path` -> /home/vagrant/Code/api-studentinfo
 
 ## Database conventions
 - All tables are named in plural.
