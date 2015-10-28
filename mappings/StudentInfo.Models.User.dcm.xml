@@ -15,7 +15,7 @@
 
         <field name="lastName" column="last_name" type="string"/>
 
-        <field name="password" column="password" type="string" length="40"/>
+        <field name="password" column="password" type="string" length="60"/>
 
         <field name="email" column="email" type="string" unique="true"/>
 

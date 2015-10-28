@@ -2,6 +2,8 @@
 
 namespace StudentInfo\Models;
 
+use StudentInfo\ValueObjects\Password;
+
 class User
 {
     /**
@@ -70,17 +72,9 @@ class User
     }
 
     /**
-     * @return string
+     * @param Password $password
      */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setPassword($password)
+    public function setPassword(Password $password)
     {
         $this->password = $password;
     }
