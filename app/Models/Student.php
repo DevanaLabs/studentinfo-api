@@ -2,71 +2,32 @@
 
 namespace StudentInfo\Models;
 
-class Student
+class Student extends User
 {
-    /**
-     * @var int
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $firstName;
-
-    /**
-     * @var string
-     */
-    private $lastName;
 
     /**
      * @var string
      */
     private $indexNumber;
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
-     * @var string
+     * @return User
      */
-    private $email;
-
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getUser()
     {
-        return $this->id;
+        return $this->user;
     }
 
     /**
-     * @return string
+     * @param User $user
      */
-    public function getFirstName()
+    public function setUser(User $user)
     {
-        return $this->firstName;
-    }
-
-    /**
-     * @param string $firstName
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @param string $lastName
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
+        $this->user = $user;
     }
 
     /**
@@ -83,22 +44,6 @@ class Student
     public function setIndexNumber($indexNumber)
     {
         $this->indexNumber = $indexNumber;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
     }
 
 }
