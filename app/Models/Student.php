@@ -4,7 +4,6 @@ namespace StudentInfo\Models;
 
 class Student extends User
 {
-
     /**
      * @var string
      */
@@ -45,5 +44,4 @@ class Student extends User
     {
         $this->indexNumber = $indexNumber;
     }
-
 }

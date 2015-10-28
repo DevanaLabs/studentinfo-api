@@ -1,14 +1,9 @@
 <?php
+
 namespace StudentInfo\ValueObjects;
 
 use Illuminate\Support\Facades\Hash;
 
-/**
- * Created by PhpStorm.
- * User: Nebojsa
- * Date: 10/28/2015
- * Time: 4:59 PM
- */
 class Password
 {
     /**
@@ -22,15 +17,23 @@ class Password
      */
     public function __construct($password)
     {
-        $this->hashedPassword = $this->HashPassword($password);
+        $this->hashedPassword = $this->hashPassword($password);
     }
 
     /**
-     * @param $password
+     * @param $password password to hash
      * @return string
      */
-    public function HashPassword($password)
+    protected function hashPassword($password)
     {
         return Hash::make($password);
+    }
+
+    /**
+     * @return string
+     */
+    public function getHashedPassword()
+    {
+        return $this->hashedPassword;
     }
 }
