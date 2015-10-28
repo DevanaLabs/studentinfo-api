@@ -4,9 +4,9 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="StudentInfo\Models\Student" table="students">
+    <entity name="StudentInfo\Models\User" table="users">
 
-        <id name="id" type="integer" column="student_id">
+        <id name="id" type="integer" column="user_id">
             <generator strategy="AUTO"/>
             <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1"/>
         </id>
@@ -15,7 +15,7 @@
 
         <field name="lastName" column="last_name" type="string"/>
 
-        <field name="indexNumber" column="index_number" type="string" unique="true" />
+        <field name="password" column="password" type="string" length="40" />
 
         <field name="email" column="email" type="string" unique="true" />
 
