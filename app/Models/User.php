@@ -2,41 +2,36 @@
 
 namespace StudentInfo\Models;
 
-use StudentInfo\ValueObjects\Password;
 use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
+use StudentInfo\ValueObjects\Password;
 
 
 abstract class User implements HasRolesContract
 {
     /**
+     * @var array
+     */
+    protected $roles;
+    /**
      * @var int
      */
     private $id;
-
     /**
      * @var string
      */
     private $firstName;
-
     /**
      * @var string
      */
     private $lastName;
-
     /**
-     * @var string
+     * @var Password
      */
     private $password;
-
     /**
      * @var string
      */
     private $email;
-
-    /**
-     * @var array
-     */
-    protected $roles;
 
     /**
      * @return int
@@ -83,7 +78,7 @@ abstract class User implements HasRolesContract
      */
     public function setPassword(Password $password)
     {
-        $this->password = $password;
+        $this->password = $password->getHashedPassword();
     }
 
     /**

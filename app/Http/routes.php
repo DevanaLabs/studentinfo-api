@@ -11,6 +11,20 @@
 |
 */
 
+use StudentInfo\Models\Student;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/testmodels', function () {
+    $student = new Student();
+    $student->setFirstName("Nikola");
+    $student->setLastName("Ninkovic");
+    $student->setIndexNumber("0110/14");
+    $student->setEmail("nn140110d@student.etf.rs");
+    $student->setPassword(new \StudentInfo\ValueObjects\Password("nikola"));
+
+    EntityManager::persist($student);
+    EntityManager::flush();
 });

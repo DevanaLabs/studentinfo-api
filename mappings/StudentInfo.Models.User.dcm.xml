@@ -25,17 +25,6 @@
 
         <field name="email" column="email" type="string" unique="true"/>
 
-        <many-to-many target-entity="Role" field="roles">
-            <join-table name="roles_users">
-                <join-columns>
-                    <join-column name="user_id" referenced-column-name="id"/>
-                </join-columns>
-                <inverse-join-columns>
-                    <join-column name="role_id" referenced-column-name="id"/>
-                </inverse-join-columns>
-            </join-table>
-        </many-to-many>
-
     </entity>
 
 
