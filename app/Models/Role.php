@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: User
- * Date: 10/29/2015
- * Time: 12:42 PM
- */
 
 namespace StudentInfo\Models;
 
@@ -18,13 +12,42 @@ class Role implements RoleContract
 {
 
     /**
-     * @param string $permission
-     *
-     * @return bool
+     * @var int
      */
-    public function hasPermissionTo($permission)
+    protected $id;
+
+    /**
+     * @var string
+     */
+    protected $roleName;
+    /**
+     * @var string[]
+     */
+    protected $permissions = [];
+
+    /**
+     * Role constructor.
+     * @param int       $id
+     * @param string    $roleName
+     * @param \string[] $permissions
+     */
+    public function __construct($id, $roleName, array $permissions)
     {
-        // TODO: Implement hasPermissionTo() method.
+        $this->id          = $id;
+        $this->roleName    = $roleName;
+        $this->permissions = $permissions;
+    }
+
+    /**
+     * Adds permission.
+     * @param string $permission
+     * @return $this
+     */
+    public function addPermission($permission)
+    {
+        if (!in_array($permission, $this->getPermissions()))
+            $this->permissions[] = $permission;
+        return $this;
     }
 
     /**
@@ -32,7 +55,17 @@ class Role implements RoleContract
      */
     public function getPermissions()
     {
-        // TODO: Implement getPermissions() method.
+        return $this->permissions;
+    }
+
+    /**
+     * @param string $permission
+     *
+     * @return bool
+     */
+    public function hasPermissionTo($permission)
+    {
+        return in_array($permission, $this->getPermissions());
     }
 
     /**
@@ -40,6 +73,6 @@ class Role implements RoleContract
      */
     public function getName()
     {
-        // TODO: Implement getName() method.
+        return $this->roleName;
     }
 }
