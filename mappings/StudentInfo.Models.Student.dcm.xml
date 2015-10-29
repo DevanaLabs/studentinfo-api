@@ -8,10 +8,6 @@
 
         <field name="indexNumber" column="indexNumber" type="string" unique="true"/>
 
-        <one-to-one field="user" target-entity="User">
-            <join-column name="user_id" referenced-column-name="user_id"/>
-        </one-to-one>
-
     </entity>
 
 </doctrine-mapping>

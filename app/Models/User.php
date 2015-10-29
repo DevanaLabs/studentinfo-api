@@ -3,8 +3,10 @@
 namespace StudentInfo\Models;
 
 use StudentInfo\ValueObjects\Password;
+use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
 
-class User
+
+abstract class User implements HasRolesContract
 {
     /**
      * @var int
@@ -30,6 +32,11 @@ class User
      * @var string
      */
     private $email;
+
+    /**
+     * @var array
+     */
+    protected $roles;
 
     /**
      * @return int
@@ -96,4 +103,11 @@ class User
         $this->email = $email;
     }
 
+    /**
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
 }

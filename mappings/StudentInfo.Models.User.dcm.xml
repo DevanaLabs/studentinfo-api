@@ -4,9 +4,15 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="StudentInfo\Models\User" table="users">
+    <entity name="StudentInfo\Models\User" table="users" inheritance-type="JOINED">
 
-        <id name="id" type="integer" column="user_id">
+        <discriminator-column name="disc" type="string"/>
+
+        <discriminator-map>
+            <discriminator-mapping value="student" class="StudentInfo\Models\Student"/>
+        </discriminator-map>
+
+        <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
             <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1"/>
         </id>
@@ -18,6 +24,17 @@
         <field name="password" column="password" type="string" length="60"/>
 
         <field name="email" column="email" type="string" unique="true"/>
+
+        <many-to-many target-entity="Role" field="roles">
+            <join-table name="roles_users">
+                <join-columns>
+                    <join-column name="user_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="role_id" referenced-column-name="id"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
 
     </entity>
 

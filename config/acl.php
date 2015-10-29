@@ -22,7 +22,11 @@ return [
     'permissions'   => [
         'driver' => 'config',
         'entity' => LaravelDoctrine\ACL\Permissions\Permission::class,
-        'list'   => [],
+        'list'   => [
+            'user.register',
+            'user.delete',
+            'user.edit'
+        ],
     ],
     /*
     |--------------------------------------------------------------------------
