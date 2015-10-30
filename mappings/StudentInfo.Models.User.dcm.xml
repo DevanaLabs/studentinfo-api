@@ -10,6 +10,7 @@
 
         <discriminator-map>
             <discriminator-mapping value="student" class="StudentInfo\Models\Student"/>
+            <discriminator-mapping value="admin" class="StudentInfo\Models\Admin"/>
         </discriminator-map>
 
         <id name="id" type="integer" column="id">
