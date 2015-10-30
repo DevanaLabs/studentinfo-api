@@ -20,19 +20,19 @@ abstract class User implements HasRolesContract
     /**
      * @var int
      */
-    private $id;
+    protected $id;
     /**
      * @var string
      */
-    private $firstName;
+    protected $firstName;
     /**
      * @var string
      */
-    private $lastName;
+    protected $lastName;
     /**
      * @var string
      */
-    private $email;
+    protected $email;
 
     /**
      * @return int
