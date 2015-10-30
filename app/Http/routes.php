@@ -11,23 +11,12 @@
 |
 */
 
-use StudentInfo\Models\Student;
-use StudentInfo\Models\User;
-use StudentInfo\ValueObjects\Password;
+use StudentInfo\Repositories\DoctrineUserRepository;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/testmodels', function () {
-    $student = new Student();
-    $student->setFirstName("Nikola");
-    $student->setLastName("Ninkovic");
-    $student->setIndexNumber("0110/14");
-    $student->setEmail("nn140110d@student.etf.rs");
-    $student->setPassword(new Password("nikola"));
-
-    EntityManager::persist($student);
-    EntityManager::flush();
+Route::get('/testmodels', function (DoctrineUserRepository $repository) {
+    echo var_dump($repository->findByEmail('nn140110d@student.etf.rs'));
 });
-
