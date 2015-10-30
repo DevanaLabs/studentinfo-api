@@ -1075,16 +1075,16 @@
         },
         {
             "name": "laravel-doctrine/orm",
-            "version": "1.0.6",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-doctrine/orm.git",
-                "reference": "bee9e75ada2961cf0d16de5bb46a966fd651c9d9"
+                "reference": "21b9ccb2ae37c2f75931bce46011adbbb7bb0a3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-doctrine/orm/zipball/bee9e75ada2961cf0d16de5bb46a966fd651c9d9",
-                "reference": "bee9e75ada2961cf0d16de5bb46a966fd651c9d9",
+                "url": "https://api.github.com/repos/laravel-doctrine/orm/zipball/21b9ccb2ae37c2f75931bce46011adbbb7bb0a3a",
+                "reference": "21b9ccb2ae37c2f75931bce46011adbbb7bb0a3a",
                 "shasum": ""
             },
             "require": {
@@ -1093,7 +1093,6 @@
                 "illuminate/console": "~5.1",
                 "illuminate/container": "~5.1",
                 "illuminate/contracts": "~5.1",
-                "illuminate/database": "~5.1",
                 "illuminate/pagination": "~5.1",
                 "illuminate/support": "~5.1",
                 "illuminate/validation": "~5.1",
@@ -1109,6 +1108,7 @@
                 "phpunit/phpunit": "~4.0"
             },
             "suggest": {
+                "fzaninotto/faker": "Required to use the entity factory builder (~1.4).",
                 "laravel-doctrine/acl": "to integrate Doctrine roles & permissions with Laravel's Authorization system (~1.0)",
                 "laravel-doctrine/extensions": "to add Behavioral and Query/Type Extensions for Laravel Doctrine (~1.0)",
                 "laravel-doctrine/migrations": "to add support for migrations in Laravel Doctrine (~1.0)",
@@ -1118,7 +1118,10 @@
             "autoload": {
                 "psr-4": {
                     "LaravelDoctrine\\ORM\\": "src/"
-                }
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1138,20 +1141,20 @@
                 "laravel",
                 "orm"
             ],
-            "time": "2015-10-20 16:55:23"
+            "time": "2015-10-28 22:11:16"
         },
         {
             "name": "laravel/framework",
-            "version": "v5.1.20",
+            "version": "v5.1.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "435af155ed15a6b1d03a0d0a46ae4c347d96b0d7"
+                "reference": "11d9627c7cd4d12b6e884b87daa7a2f898cf54cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/435af155ed15a6b1d03a0d0a46ae4c347d96b0d7",
-                "reference": "435af155ed15a6b1d03a0d0a46ae4c347d96b0d7",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/11d9627c7cd4d12b6e884b87daa7a2f898cf54cb",
+                "reference": "11d9627c7cd4d12b6e884b87daa7a2f898cf54cb",
                 "shasum": ""
             },
             "require": {
@@ -1165,7 +1168,7 @@
                 "monolog/monolog": "~1.11",
                 "mtdowling/cron-expression": "~1.0",
                 "nesbot/carbon": "~1.19",
-                "paragonie/random_compat": "^1.0.4",
+                "paragonie/random_compat": "^1.0.6",
                 "php": ">=5.5.9",
                 "psy/psysh": "~0.5.1",
                 "swiftmailer/swiftmailer": "~5.1",
@@ -1267,7 +1270,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2015-10-14 15:49:40"
+            "time": "2015-10-28 21:58:18"
         },
         {
             "name": "league/flysystem",

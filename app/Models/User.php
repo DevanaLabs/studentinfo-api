@@ -78,7 +78,7 @@ abstract class User implements HasRolesContract
      */
     public function setPassword(Password $password)
     {
-        $this->password = $password->getHashedPassword();
+        $this->password = $password;
     }
 
     /**
