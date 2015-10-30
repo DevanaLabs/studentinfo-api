@@ -24,6 +24,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
 
     public function findByEmail($email)
     {
-        return $this->findOneBy(array('email' => $email));
+        return $this->createQueryBuilder('email')->select('SELECT * FROM users');
+        return $this->findOneBy(['email' => $email]);
     }
 }
