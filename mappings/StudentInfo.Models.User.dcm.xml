@@ -22,11 +22,10 @@
 
         <field name="lastName" column="last_name" type="string"/>
 
-        <field name="password" column="password" type="string" length="60"/>
-
         <field name="email" column="email" type="string" unique="true"/>
 
-    </entity>
+        <embedded name="password" class="StudentInfo\ValueObjects\Password" use-column-prefix="false"/>
 
+    </entity>
 
 </doctrine-mapping>

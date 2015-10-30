@@ -6,12 +6,16 @@ use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
 use StudentInfo\ValueObjects\Password;
 
 
- class User implements HasRolesContract
+abstract class User implements HasRolesContract
 {
     /**
      * @var array
      */
     protected $roles;
+    /**
+     * @var Password
+     */
+    protected $password;
     /**
      * @var int
      */
@@ -24,10 +28,6 @@ use StudentInfo\ValueObjects\Password;
      * @var string
      */
     private $lastName;
-    /**
-     * @var Password
-     */
-    private $password;
     /**
      * @var string
      */
