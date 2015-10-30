@@ -12,6 +12,8 @@
 */
 
 use StudentInfo\Models\Student;
+use StudentInfo\Models\User;
+use StudentInfo\ValueObjects\Password;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,8 +25,9 @@ Route::get('/testmodels', function () {
     $student->setLastName("Ninkovic");
     $student->setIndexNumber("0110/14");
     $student->setEmail("nn140110d@student.etf.rs");
-    $student->setPassword(new \StudentInfo\ValueObjects\Password("nikola"));
+    $student->setPassword(new Password("nikola"));
 
     EntityManager::persist($student);
     EntityManager::flush();
 });
+

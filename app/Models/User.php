@@ -6,7 +6,7 @@ use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
 use StudentInfo\ValueObjects\Password;
 
 
-abstract class User implements HasRolesContract
+ class User implements HasRolesContract
 {
     /**
      * @var array
