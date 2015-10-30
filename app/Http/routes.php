@@ -14,3 +14,13 @@
 Route::get('/', function () {
     return view('welcome');
 });
+use StudentInfo\Repositories\DoctrineUserRepository;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/testmodels', function (DoctrineUserRepository $repository) {
+    echo var_dump($repository->findByEmail('nn140110d@student.etf.rs'));
+});
+

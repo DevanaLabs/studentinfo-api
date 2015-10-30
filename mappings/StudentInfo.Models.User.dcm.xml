@@ -22,7 +22,7 @@
 
         <field name="lastName" column="last_name" type="string"/>
 
-        <field name="email" column="email" type="string" unique="true"/>
+        <embedded name="email" class="StudentInfo\ValueObjects\Email" use-column-prefix="false"/>
 
         <embedded name="password" class="StudentInfo\ValueObjects\Password" use-column-prefix="false"/>
 

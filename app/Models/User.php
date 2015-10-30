@@ -3,6 +3,7 @@
 namespace StudentInfo\Models;
 
 use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
+use StudentInfo\ValueObjects\Email;
 use StudentInfo\ValueObjects\Password;
 
 
@@ -91,9 +92,9 @@ abstract class User implements HasRolesContract
     }
 
     /**
-     * @param string $email
+     * @param Email $email
      */
-    public function setEmail($email)
+    public function setEmail(Email $email)
     {
         $this->email = $email;
     }
