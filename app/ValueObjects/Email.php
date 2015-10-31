@@ -14,6 +14,7 @@ class Email
 
     /**
      * @param string $email
+     *
      * @throws InvalidEmailException
      */
     public function __construct($email)
@@ -39,12 +40,14 @@ class Email
     }
 
     /**
-     * @return string
+     * Parses the input string to Email.
+     *
+     * @param string $email
+     *
+     * @return Email
      */
-    function __toString()
+    public static function parse($email)
     {
-        return $this->email;
+        return new self($email);
     }
-
-
 }

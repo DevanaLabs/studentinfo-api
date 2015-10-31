@@ -9,7 +9,7 @@ class Password
     /**
      * @var string
      */
-    private $hashedPassword;
+    private $password;
 
     /**
      * Password constructor.
@@ -17,7 +17,7 @@ class Password
      */
     public function __construct($password)
     {
-        $this->hashedPassword = $this->hashPassword($password);
+        $this->password = $this->hashPassword($password);
     }
 
     /**
@@ -35,15 +35,15 @@ class Password
      */
     public function checkAgainst($another_password)
     {
-        return Hash::check($another_password, $this->getHashedPassword());
+        return Hash::check($another_password, $this->getPassword());
     }
 
     /**
      * @return string
      */
-    public function getHashedPassword()
+    public function getPassword()
     {
-        return $this->hashedPassword;
+        return $this->password;
     }
 
 }

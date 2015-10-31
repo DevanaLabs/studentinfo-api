@@ -3,13 +3,14 @@
 namespace StudentInfo\Repositories;
 
 use Doctrine\ORM\EntityRepository;
+use StudentInfo\ValueObjects\Email;
 
 class DoctrineUserRepository extends EntityRepository implements UserRepositoryInterface
 {
     public function create($object)
     {
         $this->_em->persist($object);
-        $this->_em->flush();
+        $this->_em->flush($object);
     }
 
     public function all()
@@ -22,9 +23,10 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
         // TODO
     }
 
-    public function findByEmail($email)
+    public function findByEmail(Email $email)
     {
-        return $this->createQueryBuilder('email')->select('SELECT * FROM users');
-        return $this->findOneBy(['email' => $email]);
+        $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u WHERE u.email.email = :email');
+        $query->setParameter('email', $email->getEmail());
+        return $query->getSingleResult();
     }
 }
