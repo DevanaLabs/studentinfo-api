@@ -34,7 +34,7 @@ class AuthController extends ApiController
             'password'    => $input['password'],
         ])
         ) {
-            return $this->returnError();
+            return $this->returnError(403,'Wrong');
         }
         return 'Moze';
     }

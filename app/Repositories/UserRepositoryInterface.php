@@ -7,4 +7,5 @@ use StudentInfo\ValueObjects\Email;
 interface UserRepositoryInterface extends RepositoryInterface
 {
     public function findByEmail(Email $email);
+    public function isAdmin($id);
 }

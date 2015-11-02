@@ -29,4 +29,11 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
         $query->setParameter('email', $email->getEmail());
         return $query->getOneOrNullResult();
     }
+
+    public function isAdmin($id)
+    {
+        $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\Admin u WHERE u.id = :id');
+        $query->setParameter('id', $id);
+        return $query->getOneOrNullResult() != null;
+    }
 }
