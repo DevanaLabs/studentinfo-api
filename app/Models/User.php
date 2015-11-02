@@ -3,11 +3,12 @@
 namespace StudentInfo\Models;
 
 use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
+use LaravelDoctrine\ORM\Contracts\Auth\Authenticatable;
 use StudentInfo\ValueObjects\Email;
 use StudentInfo\ValueObjects\Password;
 
 
-abstract class User implements HasRolesContract
+abstract class User implements HasRolesContract, Authenticatable
 {
     /**
      * @var array
@@ -33,6 +34,11 @@ abstract class User implements HasRolesContract
      * @var string
      */
     protected $email;
+
+    /**
+     * @var string
+     */
+    protected $rememberToken;
 
     /**
      * @return int
@@ -83,7 +89,7 @@ abstract class User implements HasRolesContract
     }
 
     /**
-     * @return string
+     * @return Email
      */
 
     public function getEmail()
@@ -106,4 +112,36 @@ abstract class User implements HasRolesContract
     {
         return $this->roles;
     }
+
+    public function getAuthIdentifier()
+    {
+        return $this->id;
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password->getPassword();
+    }
+
+    public function getAuthIdentifierName()
+    {
+        return 'id';
+    }
+
+    public function getRememberToken()
+    {
+        return $this->rememberToken;
+    }
+
+    public function setRememberToken($value)
+    {
+        $this->rememberToken = $value;
+    }
+
+    public function getRememberTokenName()
+    {
+        return 'remember_token';
+    }
+
+
 }

@@ -2,34 +2,48 @@
 
 namespace StudentInfo\Http\Controllers;
 
-use Illuminate\Http\Request;
 
-use StudentInfo\Http\Requests;
+use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Http\Controllers\Controller;
-use StudentInfo\Repositories\DoctrineUserRepository;
+use StudentInfo\Http\Requests\UserLoginPostRequest;
 use StudentInfo\Repositories\UserRepositoryInterface;
-use StudentInfo\ValueObjects\Email;
 
 class AuthController extends ApiController
 {
     /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
+     * @var UserRepositoryInterface
      */
-    public function rules()
+    private $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
     {
-        return [
-            'email.required' => 'email required',
-            'password.required'  => 'password required',
-        ];
+        $this->userRepository = $userRepository;
     }
 
     /**
-     * @param UserRepositoryInterface $repository
+     * @param UserLoginPostRequest $request
+     * @param Guard                $guard
+     * @return \Illuminate\Http\Response
      */
-    public function authorize (UserRepositoryInterface $repository)
+    public function login(UserLoginPostRequest $request, Guard $guard)
     {
-        $repository->findByEmail(new Email('nebojsa@gmail.com'));
+        $input = $request->only(['email', 'password']);
+
+        if (!$guard->attempt([
+            'email.email' => $input['email'],
+            'password'    => $input['password'],
+        ])
+        ) {
+            return $this->returnError();
+        }
+        return 'Moze';
+    }
+
+    /**
+     * @param Guard $guard
+     */
+    public  function logout(Guard $guard)
+    {
+        $guard->logout();
     }
 }

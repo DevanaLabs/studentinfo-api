@@ -22,6 +22,8 @@
 
         <field name="lastName" column="last_name" type="string"/>
 
+        <field name="rememberToken" column="remember_token" type="string" length="100" nullable="true"/>
+
         <embedded name="email" class="StudentInfo\ValueObjects\Email" use-column-prefix="false"/>
 
         <embedded name="password" class="StudentInfo\ValueObjects\Password" use-column-prefix="false"/>

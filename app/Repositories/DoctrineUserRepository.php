@@ -27,6 +27,6 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
     {
         $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u WHERE u.email.email = :email');
         $query->setParameter('email', $email->getEmail());
-        return $query->getSingleResult();
+        return $query->getOneOrNullResult();
     }
 }
