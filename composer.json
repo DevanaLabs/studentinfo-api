@@ -12,7 +12,8 @@
     "laravel/framework": "5.1.*",
     "laravel-doctrine/orm": "^1.0",
     "laravel-doctrine/migrations": "^1.0",
-    "laravel-doctrine/acl": "^1.0"
+    "laravel-doctrine/acl": "^1.0",
+    "filp/whoops": "~1.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

@@ -36,7 +36,7 @@ class AuthController extends ApiController
         ) {
             return $this->returnError(403,'Wrong');
         }
-        return 'Moze';
+        return 'You\'re logged in as '.$input['email'];
     }
 
     /**

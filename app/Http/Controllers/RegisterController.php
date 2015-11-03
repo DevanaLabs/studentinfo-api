@@ -4,55 +4,62 @@
 namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
-use Illuminate\Http\Request;
 use Illuminate\Mail\Mailer;
+use StudentInfo\Http\Requests\IssueTokenPostRequest;
 use StudentInfo\Repositories\UserRepositoryInterface;
 
 class RegisterController extends ApiController
 {
-    /*
+    /**
+     * @var Guard
+     */
+    protected $guard;
+    /**
+     * @var Mailer
+     */
+    protected $mailer;
+    /**
      * @var array string
      */
-    protected $failedToSend=[];
-
+    protected $failedToSend = [];
     /**
-     * @param UserRepositoryInterface $repository
-     * @param Guard                   $guard
-     * @param Mailer                  $mailer
-     * @param Request                 $request
-     * @return string
-     * @internal param array $emails
+     * @var UserRepositoryInterface
      */
-    public function issueRegisterTokens(UserRepositoryInterface $repository, Guard $guard, Mailer $mailer, Request $request)
+    private $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository, Guard $guard, Mailer $mailer)
     {
-        if ($repository->isAdmin($guard->user())==null)
-            return 'You\'re not admin';
-        if (($repository->isAdmin($guard->user())!=null)  && (!$repository->isAdmin($guard->user()->getId())))
-            return 'You\'re not admin';
-        //$message = "Please click the following link to register:/n";
-        $input = $request->input();
-        $emails = $input['emails'];
+        $this->userRepository = $userRepository;
+        $this->guard          = $guard;
+        $this->mailer         = $mailer;
+    }
+
+    public function issueRegisterTokens(IssueTokenPostRequest $request)
+    {
+        $emails = $request->get('emails');
+
         foreach ($emails as $email) {
-            $mailer->send('welcome', ['email' => $email], function ($message) use ($email) {
+            $this->mailer->send('welcome', ['email' => $email], function ($message) use ($email) {
                 $message->from('us@example.com', 'Laravel');
                 $message->to($email);
             });
-            if(count($mailer->failures())>0)
-            {
-                $this->failedToSend[]=$email;
-            }
-        }
-        if (empty($this->getFailedToSend()))
-            dd('All emails were sent successfully');
-        else {
-            dd('Emails were not sent to:<br>');
-            foreach($this->getFailedToSend() as $failedEmail)
-            {
-                dd($failedEmail.'<br>');
+            if (count($this->mailer->failures()) > 0) {
+                $this->failedToSend[] = $email;
             }
         }
 
+        if (empty($this->getFailedToSend())) {
+            return 'All emails were sent successfully';
+        }
+
+        $this->returnSuccess([
+            'successful'   => $emails,
+            'unsuccessful' => $this->failedToSend
+        ]);
+
+        return $this->getFailedToSend();
     }
+
 
     /**
      * @return array
@@ -61,5 +68,4 @@ class RegisterController extends ApiController
     {
         return $this->failedToSend;
     }
-
 }

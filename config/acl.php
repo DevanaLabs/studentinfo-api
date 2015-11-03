@@ -22,9 +22,9 @@ return [
     'permissions'   => [
         'driver' => 'config',
         'list'   => [
-            'user.register',
+            'user.create',
             'user.delete',
-            'user.edit',
+            'user.edit'
         ],
     ],
     /*
