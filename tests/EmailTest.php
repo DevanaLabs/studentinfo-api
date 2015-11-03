@@ -11,7 +11,7 @@ class EmailTest extends TestCase
      */
     public function testParseWithValidData()
     {
-        $emailString = "some_email@some_domain.com";
+        $emailString = "someemail@somedomain.com";
         try {
             $email = \StudentInfo\ValueObjects\Email::parse($emailString);
             $this->assertEquals($email->getEmail(), $emailString);
@@ -34,7 +34,7 @@ class EmailTest extends TestCase
             "wrong",
         );
         foreach ($emailsArray as $emailString) {
-            $this->setExpectedException("StudentInfo\\ValueObjects\\Exceptions\\InvalidEmailException");
+            $this->setExpectedException(InvalidEmailException::class);
             $email = \StudentInfo\ValueObjects\Email::parse($emailString);
         }
     }
