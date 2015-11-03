@@ -24,6 +24,30 @@ class AuthController extends ApiController
      * @param UserLoginPostRequest $request
      * @param Guard                $guard
      * @return \Illuminate\Http\Response
+     *
+     * @api {get} /user/:email, password Request User information
+     *
+     * @apiName Login
+     * @apiGroup User
+     *
+     * @apiParam {String} email Email of the User.
+     * @apiParam {String} password  Password of the User.
+     *
+     * @apiSuccess {String} email Email of the User.
+     *
+     * @apiSuccessLogin Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       {"success":{"data":["You're logger in as 'Email'"]}}
+     *     }
+     *
+     * @apiError EmailOrPasswordIncorrect The email or password is incorrect.
+     *
+     * @apiErrorLogin Error-Response:
+     *     HTTP/1.1 403 Forbidden
+     *     {
+     *       {"error":{"errorCode":"Access denied","message":"The email or password is incorrect"}}
+     *     }
      */
     public function login(UserLoginPostRequest $request, Guard $guard)
     {
@@ -34,9 +58,9 @@ class AuthController extends ApiController
             'password'    => $input['password'],
         ])
         ) {
-            return $this->returnError(403,'Wrong');
+            return $this->returnError(403,'Access denied');
         }
-        return 'You\'re logged in as '.$input['email'];
+        return $this->returnSuccess(["You're logger in as ".$input['email']]);
     }
 
     /**

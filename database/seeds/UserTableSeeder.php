@@ -12,16 +12,22 @@ class UserTableSeeder extends Seeder
      * @var \Faker\Generator
      */
     protected $faker;
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $_em;
 
     /**
      * UserTableSeeder constructor.
      * @param \StudentInfo\Repositories\UserRepositoryInterface $repository
      * @param \Faker\Generator                                  $faker
+     * @param \Doctrine\ORM\EntityManager                       $_em
      */
-    public function __construct(\StudentInfo\Repositories\UserRepositoryInterface $repository, Faker\Generator $faker)
+    public function __construct(\StudentInfo\Repositories\UserRepositoryInterface $repository, Faker\Generator $faker, \Doctrine\ORM\EntityManager $_em)
     {
         $this->repository = $repository;
-        $this->faker=$faker;
+        $this->faker = $faker;
+        $this->_em = $_em;
     }
 
     /**
@@ -30,8 +36,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-
-        for($i=0;$i<100;$i++)
+        for($i=0;$i<1000;$i++)
         {
             $student = new \StudentInfo\Models\Student();
             $student->setFirstName($this->faker->name);
@@ -41,14 +46,9 @@ class UserTableSeeder extends Seeder
             $student->setPassword(new \StudentInfo\ValueObjects\Password(str_random(10)));
             $student->setRememberToken(str_random(10));
 
-            $this->repository->create($student);
+            $this->_em->persist($student);
         }
-
-    }
-
-    public function generateStudent()
-    {
-
+        $this->_em->flush();
 
     }
 }
