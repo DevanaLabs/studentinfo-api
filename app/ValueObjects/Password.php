@@ -30,12 +30,12 @@ class Password
     }
 
     /**
-     * @param $another_password
+     * @param $anotherPassword
      * @return boolean
      */
-    public function checkAgainst($another_password)
+    public function checkAgainst($anotherPassword)
     {
-        return Hash::check($another_password, $this->getPassword());
+        return Hash::check($anotherPassword, $this->getPassword());
     }
 
     /**
