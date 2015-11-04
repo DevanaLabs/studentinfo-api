@@ -15,7 +15,7 @@ class Admin extends User
     public function getRoles()
     {
         return [
-            new AdminRole
+            new AdminRole,
         ];
     }
 }

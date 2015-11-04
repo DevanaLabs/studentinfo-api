@@ -11,7 +11,7 @@ class UserLoginTest extends TestCase
         $this->testEmail    = 'test_email' . str_random(10) . '@test.test';
         $this->testPassword = "test_password";
 
-        $testUser     = factory(StudentInfo\Models\Student::class)->make([
+        $testUser     = factory(StudentInfo\Models\Student::class)->create([
             'email'    => new \StudentInfo\ValueObjects\Email($this->testEmail),
             'password' => new \StudentInfo\ValueObjects\Password($this->testPassword),
         ]);

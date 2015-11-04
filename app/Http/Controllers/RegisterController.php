@@ -3,13 +3,14 @@
 
 namespace StudentInfo\Http\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Auth\Guard;
 use Illuminate\Mail\Mailer;
-use LaravelDoctrine\ORM\Facades\EntityManager;
+use Illuminate\Support\Facades\Mail;
 use StudentInfo\Http\Requests\CreatePasswordPostRequest;
 use StudentInfo\Http\Requests\IssueTokenPostRequest;
+use StudentInfo\Models\User;
 use StudentInfo\Repositories\UserRepositoryInterface;
+use StudentInfo\ValueObjects\Email;
 use StudentInfo\ValueObjects\Password;
 
 class RegisterController extends ApiController
@@ -62,17 +63,22 @@ class RegisterController extends ApiController
         $emails = $request->get('emails');
 
         foreach ($emails as $email) {
-            $this->mailer->send('welcome', ['email' => $email], function ($message) use ($email) {
+
+            /** @var User $user */
+            $user = $this->userRepository->findByEmail(new Email($email));
+
+            Mail::queue('emails.register_mail_template', ['email' => $email, 'token' => $user->getRegisterToken()], function ($message) use ($email) {
                 $message->from('us@example.com', 'Laravel');
                 $message->to($email);
+                $message->subject('Registration');
             });
-            if (count($this->mailer->failures()) > 0) {
-                $this->failedToSend[] = $email;
-            }
+
+            // TODO : Check for failed emails
+
         }
         return $this->returnSuccess([
             'successful'   => $emails,
-            'unsuccessful' => $this->failedToSend
+            'unsuccessful' => $this->failedToSend,
         ]);
 
     }
@@ -83,12 +89,13 @@ class RegisterController extends ApiController
      */
     public function registerStudent($registerToken)
     {
+        /** @var User $user */
         $user = $this->userRepository->findByRegisterToken($registerToken);
         if ($user == null) {
-            return $this->returnError(403,'InvalidTokenException');
+            return $this->returnError(403, 'InvalidTokenException');
         }
         if ($user->isExpired($user->getRegisterTokenCreatedAt())) {
-            return $this->returnError(403,'TokenHasExpired');
+            return $this->returnError(403, 'TokenHasExpired');
         }
         return $this->returnSuccess(['Change you password']);
     }
@@ -100,12 +107,13 @@ class RegisterController extends ApiController
      */
     public function createPassword(CreatePasswordPostRequest $request, $registerToken)
     {
-        $user= $this->userRepository->findByRegisterToken($registerToken) ;
+        /** @var User $user */
+        $user = $this->userRepository->findByRegisterToken($registerToken);
         if ($user == null) {
-            return $this->returnError(403,'InvalidTokenException');
+            return $this->returnError(403, 'InvalidTokenException');
         }
         if ($user->isExpired($user->getRegisterTokenCreatedAt())) {
-            return $this->returnError(403,'TokenHasExpired');
+            return $this->returnError(403, 'TokenHasExpired');
         }
         $user->setPassword(new Password($request->get('password')));
         $this->userRepository->updatePassword($user);

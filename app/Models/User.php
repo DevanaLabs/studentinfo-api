@@ -182,9 +182,10 @@ abstract class User implements HasRolesContract, Authenticatable
      */
     public function isExpired($time)
     {
-        $format = 'Y-m-d H:i:s';
+        // TODO : Shitty code, repair it
+        $format         = 'Y-m-d H:i:s';
         $token_datetime = \DateTime::createFromFormat($format, $time);
-        $now = new \DateTime();
+        $now            = new \DateTime();
         if ($now->diff($token_datetime)->d > 1) {
             return true;
         }

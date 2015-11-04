@@ -17,7 +17,7 @@ class IssueTokenPostRequest extends Request
     {
         /** @var User $user */
         $user = $guard->user();
-        if ($user == null){
+        if ($user == null) {
             return false;
         }
         return $user->hasPermissionTo('user.create');

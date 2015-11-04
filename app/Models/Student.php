@@ -35,7 +35,7 @@ class Student extends User
     public function getRoles()
     {
         return [
-            new StudentRole
+            new StudentRole,
         ];
     }
 }

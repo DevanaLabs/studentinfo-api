@@ -1,10 +1,11 @@
 <?php
 
-
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/addAdmin', function(\StudentInfo\Repositories\UserRepositoryInterface $repository){
+
+/* Test Routes */
+Route::get('/addAdmin', function (\StudentInfo\Repositories\UserRepositoryInterface $repository) {
     $admin = new \StudentInfo\Models\Admin();
     $admin->setFirstName("Nebojsa");
     $admin->setLastName("Urosevic");
@@ -16,7 +17,8 @@ Route::get('/addAdmin', function(\StudentInfo\Repositories\UserRepositoryInterfa
 
     $repository->create($admin);
 });
-Route::get('/addStudent', function(\StudentInfo\Repositories\UserRepositoryInterface $repository) {
+
+Route::get('/addStudent', function (\StudentInfo\Repositories\UserRepositoryInterface $repository) {
     $student = new \StudentInfo\Models\Student();
     $student->setFirstName('Milan');
     $student->setLastName('Vucic');
@@ -29,8 +31,13 @@ Route::get('/addStudent', function(\StudentInfo\Repositories\UserRepositoryInter
 
     $repository->create($student);
 });
+
 Route::post('auth', 'AuthController@login');
+
 Route::delete('auth', 'AuthController@logout');
+
 Route::post('register', 'RegisterController@issueRegisterTokens');
+
 Route::get('register/{rememberToken}', 'RegisterController@registerStudent');
+
 Route::post('register/{rememberToken}', 'RegisterController@createPassword');
