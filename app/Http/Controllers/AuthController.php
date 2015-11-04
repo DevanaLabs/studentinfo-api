@@ -25,7 +25,7 @@ class AuthController extends ApiController
      * @param Guard                $guard
      * @return \Illuminate\Http\Response
      *
-     * @api {get} /user/:email, password Request User information
+     * @api {post} /user/:email, password Request User information
      *
      * @apiName Login
      * @apiGroup User
@@ -60,11 +60,16 @@ class AuthController extends ApiController
         ) {
             return $this->returnError(403,'Access denied');
         }
-        return $this->returnSuccess(["You're logger in as ".$input['email']]);
+        return $this->returnSuccess([json_encode($input['email'])]);
     }
 
     /**
      * @param Guard $guard
+     *
+     * @api {delete}
+     *
+     * @apiName Logout
+     * @apiGroup User
      */
     public  function logout(Guard $guard)
     {

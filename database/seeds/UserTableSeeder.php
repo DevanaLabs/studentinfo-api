@@ -39,7 +39,7 @@ class UserTableSeeder extends Seeder
         for($i=0;$i<1000;$i++)
         {
             $student = new \StudentInfo\Models\Student();
-            $student->setFirstName($this->faker->name);
+            $student->setFirstName($this->faker->firstName);
             $student->setLastName($this->faker->lastName);
             $student->setEmail(new \StudentInfo\ValueObjects\Email($this->faker->email));
             $student->setIndexNumber(str_random(5));

@@ -3,6 +3,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Auth\Guard;
 use Illuminate\Mail\Mailer;
 use LaravelDoctrine\ORM\Facades\EntityManager;
@@ -37,12 +38,31 @@ class RegisterController extends ApiController
         $this->mailer         = $mailer;
     }
 
+    /**
+     * @param IssueTokenPostRequest $request
+     * @return array|string
+     *
+     * @api {post} /emails/:emails
+     *
+     * @apiName Login
+     * @apiGroup User
+     *
+     * @apiParam {Array} emails Emails of the User.
+     *
+     * @apiSuccess {String} emails Emails of the User.
+     *
+     * @apiSuccessLogin Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       {"success":{"data":["All emails were sent successfully"]}}
+     *     }
+     */
     public function issueRegisterTokens(IssueTokenPostRequest $request)
     {
         $emails = $request->get('emails');
 
         foreach ($emails as $email) {
-            $this->mailer->send($this->guard->user()->getRememberToken(), ['email' => $email], function ($message) use ($email) {
+            $this->mailer->send('welcome', ['email' => $email], function ($message) use ($email) {
                 $message->from('us@example.com', 'Laravel');
                 $message->to($email);
             });
@@ -50,44 +70,45 @@ class RegisterController extends ApiController
                 $this->failedToSend[] = $email;
             }
         }
-
-        if (empty($this->getFailedToSend())) {
-            return 'All emails were sent successfully';
-        }
-
-        $this->returnSuccess([
+        return $this->returnSuccess([
             'successful'   => $emails,
             'unsuccessful' => $this->failedToSend
         ]);
 
-        return $this->getFailedToSend();
     }
-
 
     /**
-     * @return array
+     * @param $registerToken
+     * @return \Illuminate\Http\Response
      */
-    public function getFailedToSend()
+    public function registerStudent($registerToken)
     {
-        return $this->failedToSend;
-    }
-
-    public function registerStudent($rememberToken)
-    {
-        if ($this->userRepository->findByRememberToken($rememberToken) == null){
+        $user = $this->userRepository->findByRegisterToken($registerToken);
+        if ($user == null) {
             return $this->returnError(403,'InvalidTokenException');
+        }
+        if ($user->isExpired($user->getRegisterTokenCreatedAt())) {
+            return $this->returnError(403,'TokenHasExpired');
         }
         return $this->returnSuccess(['Change you password']);
     }
 
-    public function createPassword(CreatePasswordPostRequest $request, $rememberToken)
+    /**
+     * @param CreatePasswordPostRequest $request
+     * @param                           $registerToken
+     * @return \Illuminate\Http\Response
+     */
+    public function createPassword(CreatePasswordPostRequest $request, $registerToken)
     {
-        if ($this->userRepository->findByRememberToken($rememberToken) == null){
+        $user= $this->userRepository->findByRegisterToken($registerToken) ;
+        if ($user == null) {
             return $this->returnError(403,'InvalidTokenException');
         }
-        $password = $request->get('password');
-        $this->userRepository->findByRememberToken($rememberToken)->setPassword(new Password($password));
-        $this->userRepository->updatePassword($this->userRepository->findByRememberToken($rememberToken));
+        if ($user->isExpired($user->getRegisterTokenCreatedAt())) {
+            return $this->returnError(403,'TokenHasExpired');
+        }
+        $user->setPassword(new Password($request->get('password')));
+        $this->userRepository->updatePassword($user);
         return $this->returnSuccess(['Password is changed!']);
     }
 }

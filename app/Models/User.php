@@ -2,6 +2,7 @@
 
 namespace StudentInfo\Models;
 
+use Carbon\Carbon;
 use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
 use LaravelDoctrine\ACL\Permissions\HasPermissions;
 use LaravelDoctrine\ORM\Contracts\Auth\Authenticatable;
@@ -39,6 +40,46 @@ abstract class User implements HasRolesContract, Authenticatable
      * @var string
      */
     protected $rememberToken;
+
+    /**
+     * @var string
+     */
+    protected $registerToken;
+
+    /**
+     * @var datetime
+     */
+    protected $registerTokenCreatedAt;
+
+    /**
+     * @return string
+     */
+    public function getRegisterTokenCreatedAt()
+    {
+        return $this->registerTokenCreatedAt;
+    }
+
+    /**
+     */
+    public function setRegisterTokenCreatedAt()
+    {
+        $this->registerTokenCreatedAt = Carbon::now();
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegisterToken()
+    {
+        return $this->registerToken;
+    }
+
+    /**
+     */
+    public function setRegisterToken()
+    {
+        $this->registerToken = md5($this->email->getEmail() . time());
+    }
 
     /**
      * @return int
@@ -127,7 +168,7 @@ abstract class User implements HasRolesContract, Authenticatable
 
     public function setRememberToken($value)
     {
-        $this->rememberToken = md5($this->email->getEmail() . time());
+        $this->rememberToken = $value;
     }
 
     public function getRememberTokenName()
@@ -135,5 +176,19 @@ abstract class User implements HasRolesContract, Authenticatable
         return 'remember_token';
     }
 
+    /**
+     * @param $time
+     * @return \DateTime
+     */
+    public function isExpired($time)
+    {
+        $format = 'Y-m-d H:i:s';
+        $token_datetime = \DateTime::createFromFormat($format, $time);
+        $now = new \DateTime();
+        if ($now->diff($token_datetime)->d > 1) {
+            return true;
+        }
+        return false;
+    }
 
 }

@@ -10,6 +10,6 @@ interface UserRepositoryInterface extends RepositoryInterface
 
     public function isAdmin($id);
 
-    public function findByRememberToken($rememberToken);
+    public function findByRegisterToken($registerToken);
 
 }

@@ -9,6 +9,7 @@ class UserLoginPostRequest extends Request
     /**
      * Determine if the user is authorized to make this request.
      *
+     * @param Guard $guard
      * @return bool
      */
     public function authorize(Guard $guard)
