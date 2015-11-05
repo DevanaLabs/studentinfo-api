@@ -20,7 +20,7 @@ class ApiController extends BaseController
         ], $statusCode);
     }
 
-    public function returnSuccess(array $data)
+    public function returnSuccess(array $data = [])
     {
         return new Response([
             'success' => [

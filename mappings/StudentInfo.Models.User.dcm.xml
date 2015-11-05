@@ -18,19 +18,23 @@
             <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1"/>
         </id>
 
-        <field name="firstName" column="first_name" type="string"/>
+        <field name="firstName" column="first_name" type="string" nullable="true"/>
 
-        <field name="lastName" column="last_name" type="string"/>
+        <field name="lastName" column="last_name" type="string" nullable="true"/>
 
         <field name="rememberToken" column="remember_token" type="string" length="100" nullable="true"/>
 
         <field name="registerToken" column="register_token" type="string" length="32"/>
 
-        <field name="registerTokenCreatedAt" column="register_token_created_at" type="string"/>
+        <field name="registerTokenCreatedAt" column="register_token_created_at" type="datetime"/>
 
         <embedded name="email" class="StudentInfo\ValueObjects\Email" use-column-prefix="false"/>
 
         <embedded name="password" class="StudentInfo\ValueObjects\Password" use-column-prefix="false"/>
+
+        <many-to-one field="organisation" target-entity="StudentInfo\Models\Faculty">
+            <join-column name="organisation_id" referenced-column-name="id" />
+        </many-to-one>
 
     </entity>
 

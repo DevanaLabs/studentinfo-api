@@ -38,4 +38,5 @@ class Student extends User
             new StudentRole,
         ];
     }
+
 }

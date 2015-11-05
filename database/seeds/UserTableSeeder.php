@@ -44,7 +44,7 @@ class UserTableSeeder extends Seeder
             $student->setIndexNumber(str_random(5));
             $student->setPassword(new \StudentInfo\ValueObjects\Password(str_random(10)));
             $student->setRememberToken(str_random(10));
-            $student->setRegisterToken();
+            $student->generateRegisterToken();
             $student->setRegisterTokenCreatedAt();
 
             $this->_em->persist($student);

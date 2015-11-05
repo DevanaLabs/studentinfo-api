@@ -3,16 +3,21 @@
 namespace StudentInfo\Models;
 
 use Carbon\Carbon;
+use Doctrine\ORM\Mapping as ORM;
+use LaravelDoctrine\ACL\Contracts\BelongsToOrganisation as BelongsToOrganisationContract;
 use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
+use LaravelDoctrine\ACL\Mappings as ACL;
+use LaravelDoctrine\ACL\Organisations\BelongsToOrganisation;
 use LaravelDoctrine\ACL\Permissions\HasPermissions;
 use LaravelDoctrine\ORM\Contracts\Auth\Authenticatable;
 use StudentInfo\ValueObjects\Email;
 use StudentInfo\ValueObjects\Password;
 
 
-abstract class User implements HasRolesContract, Authenticatable
+abstract class User implements HasRolesContract, Authenticatable, BelongsToOrganisationContract
 {
     use HasPermissions;
+    use BelongsToOrganisation;
 
     /**
      * @var Password
@@ -47,23 +52,46 @@ abstract class User implements HasRolesContract, Authenticatable
     protected $registerToken;
 
     /**
-     * @var datetime
+     * @var \DateTime
      */
     protected $registerTokenCreatedAt;
 
     /**
+     * @ACL\BelongsToOrganisation
+     * @var Faculty
+     */
+    protected $organisation;
+
+    /**
+     * @return bool
+     */
+    public function registerTokenIsExpired()
+    {
+        return Carbon::instance($this->getRegisterTokenCreatedAt())->diffInHours(Carbon::now()) > 24;
+    }
+
+    /**
      * @return string
+     */
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    /**
+     * @param Faculty
+     */
+    public function setOrganisation(Faculty $organisation)
+    {
+        $this->organisation = $organisation;
+    }
+
+    /**
+     * @return \DateTime
      */
     public function getRegisterTokenCreatedAt()
     {
         return $this->registerTokenCreatedAt;
-    }
-
-    /**
-     */
-    public function setRegisterTokenCreatedAt()
-    {
-        $this->registerTokenCreatedAt = Carbon::now();
     }
 
     /**
@@ -75,10 +103,12 @@ abstract class User implements HasRolesContract, Authenticatable
     }
 
     /**
+     * @return string
      */
-    public function setRegisterToken()
+    public function generateRegisterToken()
     {
-        $this->registerToken = md5($this->email->getEmail() . time());
+        $this->registerTokenCreatedAt = Carbon::now();
+        return $this->registerToken = md5($this->email->getEmail() . time());
     }
 
     /**
@@ -146,50 +176,52 @@ abstract class User implements HasRolesContract, Authenticatable
         $this->email = $email;
     }
 
+    /**
+     * @return int
+     */
     public function getAuthIdentifier()
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getAuthPassword()
     {
         return $this->password->getPassword();
     }
 
+    /**
+     * @return string
+     */
     public function getAuthIdentifierName()
     {
         return 'id';
     }
 
+    /**
+     * @return string
+     */
     public function getRememberToken()
     {
         return $this->rememberToken;
     }
 
+    /**
+     * @param string $value
+     */
     public function setRememberToken($value)
     {
         $this->rememberToken = $value;
     }
 
+    /**
+     * @return string
+     */
     public function getRememberTokenName()
     {
         return 'remember_token';
-    }
-
-    /**
-     * @param $time
-     * @return \DateTime
-     */
-    public function isExpired($time)
-    {
-        // TODO : Shitty code, repair it
-        $format         = 'Y-m-d H:i:s';
-        $token_datetime = \DateTime::createFromFormat($format, $time);
-        $now            = new \DateTime();
-        if ($now->diff($token_datetime)->d > 1) {
-            return true;
-        }
-        return false;
     }
 
 }

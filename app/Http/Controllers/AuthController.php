@@ -4,6 +4,7 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Controllers\Controller;
 use StudentInfo\Http\Requests\UserLoginPostRequest;
 use StudentInfo\Repositories\UserRepositoryInterface;
@@ -25,7 +26,7 @@ class AuthController extends ApiController
      * @param Guard                $guard
      * @return \Illuminate\Http\Response
      *
-     * @api {post} /user/:email, password Request User information
+     * @api {post} /auth Authenticate the User
      *
      * @apiName Login
      * @apiGroup User
@@ -33,12 +34,12 @@ class AuthController extends ApiController
      * @apiParam {String} email Email of the User.
      * @apiParam {String} password  Password of the User.
      *
-     * @apiSuccess {String} email Email of the User.
+     * @apiSuccess {String} User The logged in User.
      *
      * @apiSuccessLogin Success-Response:
      *     HTTP/1.1 200 OK
      *     {
-     *       {"success":{"data":["You're logger in as 'Email'"]}}
+     *       {"success":{"data":["user":{"user"}]}}
      *     }
      *
      * @apiError EmailOrPasswordIncorrect The email or password is incorrect.
@@ -52,15 +53,15 @@ class AuthController extends ApiController
     public function login(UserLoginPostRequest $request, Guard $guard)
     {
         $input = $request->only(['email', 'password']);
-
         if (!$guard->attempt([
             'email.email' => $input['email'],
-            'password'    => $input['password'],
-        ])
-        ) {
-            return $this->returnError(403,'Access denied');
+            'password'    => $input['password']
+        ])) {
+            return $this->returnForbidden(UserErrorCodes::ACCESS_DENIED);
         }
-        return $this->returnSuccess([json_encode($input['email'])]);
+        return $this->returnSuccess([
+            'user' => $guard->user()
+        ]);
     }
 
     /**
@@ -71,7 +72,7 @@ class AuthController extends ApiController
      * @apiName Logout
      * @apiGroup User
      */
-    public  function logout(Guard $guard)
+    public function logout(Guard $guard)
     {
         $guard->logout();
     }

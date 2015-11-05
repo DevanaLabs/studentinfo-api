@@ -12,8 +12,8 @@ Route::get('/addAdmin', function (\StudentInfo\Repositories\UserRepositoryInterf
     $admin->setEmail(new \StudentInfo\ValueObjects\Email("nu@gmail.com"));
     $admin->setPassword(new \StudentInfo\ValueObjects\Password("blabla"));
     $admin->setRememberToken("bla");
-    $admin->setRegisterToken();
-    $admin->setRegisterTokenCreatedAt();
+    $admin->generateRegisterToken();
+    $admin->setOrganisation($repository->findFacultyByName('Racunarski fakultet'));
 
     $repository->create($admin);
 });
@@ -26,10 +26,18 @@ Route::get('/addStudent', function (\StudentInfo\Repositories\UserRepositoryInte
     $student->setPassword(new \StudentInfo\ValueObjects\Password('blabla'));
     $student->setIndexNumber('124421');
     $student->setRememberToken('bla');
-    $student->setRegisterToken();
-    $student->setRegisterTokenCreatedAt();
+    $student->generateRegisterToken();
+    $student->setOrganisation($repository->findFacultyByName('Racunarski fakultet'));
 
     $repository->create($student);
+});
+
+Route::get('/addFaculty', function (\StudentInfo\Repositories\UserRepositoryInterface $repository) {
+    $faculty = new \StudentInfo\Models\Faculty();
+    $faculty->setId(1);
+    $faculty->setName('Racunarski fakultet');
+
+    $repository->create($faculty);
 });
 
 Route::post('auth', 'AuthController@login');

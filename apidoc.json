@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "description": "API Documentation for the StudentInfo project.",
   "title": "Student Info API",
-  "url": "http://api.studentinfo.dev/v1",
+  "url": "http://api.studentinfo.dev",
   "sampleUrl": "http://api.studentinfo.dev"
 }

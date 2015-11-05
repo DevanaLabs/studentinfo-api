@@ -12,6 +12,6 @@ interface RepositoryInterface
 
     public function destroy($object);
 
-    public function updatePassword($object);
+    public function update($object);
 
 }

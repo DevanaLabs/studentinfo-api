@@ -18,7 +18,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
         return $this->findAll();
     }
 
-    public function destroy($ids)
+    public function destroy($object)
     {
         // TODO
     }
@@ -44,8 +44,15 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
         return $query->getOneOrNullResult();
     }
 
-    public function updatePassword($object)
+    public function update($object)
     {
         $this->_em->flush($object);
+    }
+
+    public function findFacultyByName($name)
+    {
+        $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\Faculty u WHERE u.name = :name');
+        $query->setParameter('name', $name);
+        return $query->getOneOrNullResult();
     }
 }

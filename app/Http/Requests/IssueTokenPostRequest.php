@@ -20,7 +20,7 @@ class IssueTokenPostRequest extends Request
         if ($user == null) {
             return false;
         }
-        return $user->hasPermissionTo('user.create');
+        return ($user->hasPermissionTo('user.create') && ($user->belongsToOrganisation('Racunarski fakultet')));
     }
 
     /**
