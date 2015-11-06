@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+
+    <entity name="StudentInfo\Models\Classroom" table="classrooms">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1"/>
+        </id>
+
+        <field name="name" column="name" type="string" nullable="false"/>
+
+        <field name="directions" column="directions" type="string" nullable="false"/>
+
+        <one-to-many target-entity="StudentInfo\Models\Lecture" mapped-by="classroom" field="lectures"/>
+
+    </entity>
+
+</doctrine-mapping>

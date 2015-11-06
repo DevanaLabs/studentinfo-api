@@ -14,6 +14,69 @@ class Student extends User
     protected $indexNumber;
 
     /**
+     * @var int
+     */
+    protected $year;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $courses;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $lectures;
+
+    /**
+     * @return int
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param int $year
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getLectures()
+    {
+        return $this->lectures;
+    }
+
+    /**
+     * @param ArrayCollection $lectures
+     */
+    public function setLectures($lectures)
+    {
+        $this->lectures = $lectures;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCourses()
+    {
+        return $this->courses;
+    }
+
+    /**
+     * @param ArrayCollection $courses
+     */
+    public function setCourses($courses)
+    {
+        $this->courses = $courses;
+    }
+
+    /**
      * @return string
      */
     public function getIndexNumber()
