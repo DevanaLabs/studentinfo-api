@@ -31,7 +31,7 @@ class IssueTokenPostRequest extends Request
     public function rules()
     {
         return [
-            'students' => 'required|array',
+            'emails' => 'required|array',
         ];
     }
 }

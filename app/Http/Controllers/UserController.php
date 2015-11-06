@@ -50,8 +50,7 @@ class UserController extends  ApiController
         if ($this->guard->user()->getId() != $id) {
             return $this->returnForbidden(UserErrorCodes::WRONG_ID);
         }
-
-        dd($user->getOrganisation());
+        echo var_dump($user);
     }
 
     public function updateProfile(editUserPutRequest $request, $id)
