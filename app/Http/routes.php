@@ -12,8 +12,7 @@ Route::get('/addAdmin', function (\StudentInfo\Repositories\UserRepositoryInterf
     $admin->setEmail(new \StudentInfo\ValueObjects\Email("nu@gmail.com"));
     $admin->setPassword(new \StudentInfo\ValueObjects\Password("blabla"));
     $admin->setRememberToken("bla");
-    $admin->setRegisterToken();
-    $admin->setRegisterTokenCreatedAt();
+    $admin->generateRegisterToken();
 
     $repository->create($admin);
 });
@@ -26,13 +25,12 @@ Route::get('/addStudent', function (\StudentInfo\Repositories\UserRepositoryInte
     $student->setPassword(new \StudentInfo\ValueObjects\Password('blabla'));
     $student->setIndexNumber('124421');
     $student->setRememberToken('bla');
-    $student->setRegisterToken();
-    $student->setRegisterTokenCreatedAt();
+    $student->generateRegisterToken();
 
     $repository->create($student);
 });
 
-Route::post('addStudents', 'RegisterController@addStudentsToDatabase');
+Route::post('addStudents', 'RegisterController@addStudents');
 
 Route::post('auth', 'AuthController@login');
 

@@ -6,6 +6,8 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Auth\Guard;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\Mail;
+use StudentInfo\ErrorCodes\UserErrorCodes;
+use StudentInfo\Http\Requests\AddStudentsRequest;
 use StudentInfo\Http\Requests\CreatePasswordPostRequest;
 use StudentInfo\Http\Requests\IssueTokenPostRequest;
 use StudentInfo\Http\Requests\Request;
@@ -114,7 +116,7 @@ class RegisterController extends ApiController
         if ($user == null) {
             return $this->returnError(403, 'InvalidTokenException');
         }
-        if ($user->isExpired($user->getRegisterTokenCreatedAt())) {
+        if ($user->registerTokenIsExpired($user->getRegisterTokenCreatedAt())) {
             return $this->returnError(403, 'TokenHasExpired');
         }
         $user->setPassword(new Password($request->get('password')));
@@ -122,22 +124,22 @@ class RegisterController extends ApiController
         return $this->returnSuccess(['Password is changed!']);
     }
 
-    public function addStudentsToDatabase(Request $request)
+    public function addStudents(AddStudentsRequest $request)
     {
-        //$jsonStudents = $request->get('students');
-        return 'asdf';
-        //$students=json_decode($jsonStudents);
-        //dd($students);
-        /*
+        $students = $request->get('students');
         for($count=0; $count < count($students); $count++)
         {
             $student = new Student();
             $student->setFirstName($students[$count]['firstName']);
             $student->setLastName($students[$count]['lastName']);
-            $student->setEmail($students[$count]['email']);
+            $student->setEmail(new Email($students[$count]['email']));
             $student->setIndexNumber($students[$count]['indexNumber']);
-
-            $this->userRepository->create($student);
-        }*/
+            $student->setPassword(new Password('password'));
+            $student->generateRegisterToken();
+            if (!$this->userRepository->findByEmail(new Email($students[$count]['email'])))
+            {
+                $this->userRepository->create($student);
+            }
+        }
     }
 }
