@@ -41,7 +41,7 @@ class UserController extends  ApiController
     public function editProfile($id)
     {
         /** @var User $user */
-        $user = $this->repository->findById($id);
+        $user = $this->repository->find($id);
 
         if ($user === null) {
             return $this->returnForbidden(UserErrorCodes::USER_DOES_NOT_EXIST);
@@ -56,7 +56,7 @@ class UserController extends  ApiController
     public function updateProfile(editUserPutRequest $request, $id)
     {
         /** @var User $user */
-        $user = $this->repository->findById($id);
+        $user = $this->repository->find($id);
 
         if ($user === null) {
             return $this->returnForbidden(UserErrorCodes::USER_DOES_NOT_EXIST);

@@ -12,12 +12,6 @@ interface UserRepositoryInterface extends RepositoryInterface
 
     public function findByRegisterToken($registerToken);
 
-    public function getAllStudents();
-
     // TODO refactor
     public function findFacultyByName($name);
-
-    public function findById($id);
-
-
 }
