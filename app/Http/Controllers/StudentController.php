@@ -9,6 +9,7 @@
 namespace StudentInfo\Http\Controllers;
 
 
+use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Http\Requests\AddStudentsRequest;
 use StudentInfo\Models\Student;
 use StudentInfo\Repositories\UserRepositoryInterface;
@@ -22,14 +23,20 @@ class StudentController extends ApiController
      */
     protected $repository;
 
+    /**
+     * @var Guard
+     */
+    protected $guard;
 
     /**
      * StudentController constructor.
      * @param UserRepositoryInterface $repository
+     * @param Guard                   $guard
      */
-    public function __construct(UserRepositoryInterface $repository)
+    public function __construct(UserRepositoryInterface $repository, Guard $guard)
     {
         $this->repository = $repository;
+        $this->guard = $guard;
     }
 
     public function addStudents(AddStudentsRequest $request)
@@ -44,6 +51,7 @@ class StudentController extends ApiController
             $student->setIndexNumber($students[$count]['indexNumber']);
             $student->setPassword(new Password('password'));
             $student->generateRegisterToken();
+            $student->setOrganisation($this->guard->user()->getOrganisation());
             if (!$this->repository->findByEmail(new Email($students[$count]['email'])))
             {
                 $this->repository->create($student);

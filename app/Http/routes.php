@@ -38,7 +38,7 @@ Route::get('/addFaculty', function (\StudentInfo\Repositories\UserRepositoryInte
 
     $repository->create($faculty);
 });
-Route::get('addStudents', 'StudentController@addStudents');
+Route::post('addStudents', 'StudentController@addStudents');
 
 Route::get('user/{id}', 'UserController@editProfile');
 
