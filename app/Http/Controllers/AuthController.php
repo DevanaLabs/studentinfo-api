@@ -71,9 +71,13 @@ class AuthController extends ApiController
      *
      * @apiName Logout
      * @apiGroup User
+     *
+     * @return \Illuminate\Http\Response
      */
     public function logout(Guard $guard)
     {
         $guard->logout();
+
+        return $this->returnSuccess();
     }
 }

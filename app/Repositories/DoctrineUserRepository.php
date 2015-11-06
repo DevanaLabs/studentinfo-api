@@ -4,6 +4,7 @@ namespace StudentInfo\Repositories;
 
 use Doctrine\ORM\EntityRepository;
 use StudentInfo\ValueObjects\Email;
+use StudentInfo\ValueObjects\Password;
 
 class DoctrineUserRepository extends EntityRepository implements UserRepositoryInterface
 {
@@ -51,8 +52,20 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
 
     public function findFacultyByName($name)
     {
-        $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\Faculty u WHERE u.name = :name');
+        $query = $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f WHERE f.name = :name');
         $query->setParameter('name', $name);
         return $query->getOneOrNullResult();
     }
+
+    public function getAllStudents()
+    {
+        $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s ');
+        return $query->getArrayResult();
+    }
+
+    public function findById($id)
+    {
+        return $this->findOneBy(array('id' => $id));
+    }
+
 }

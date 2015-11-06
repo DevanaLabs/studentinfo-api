@@ -19,22 +19,6 @@ class Faculty implements Organisation
     protected $name;
 
     /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
      * @return int
      */
     public function getId()
@@ -47,6 +31,14 @@ class Faculty implements Organisation
      */
     public function getName()
     {
-        return 'Racunarski fakultet';
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 }

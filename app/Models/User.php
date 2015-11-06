@@ -57,7 +57,6 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
     protected $registerTokenCreatedAt;
 
     /**
-     * @ACL\BelongsToOrganisation
      * @var Faculty
      */
     protected $organisation;
@@ -65,13 +64,13 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
     /**
      * @return bool
      */
-    public function registerTokenIsExpired()
+    public function isRegisterTokenExpired()
     {
         return Carbon::instance($this->getRegisterTokenCreatedAt())->diffInHours(Carbon::now()) > 24;
     }
 
     /**
-     * @return string
+     * @return Faculty
      */
     public function getOrganisation()
     {

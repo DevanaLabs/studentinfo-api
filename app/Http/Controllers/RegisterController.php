@@ -4,14 +4,11 @@
 namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
-use Illuminate\Mail\Mailer;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Contracts\Mail\MailQueue;
+use Illuminate\Mail\Message;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddStudentsRequest;
 use StudentInfo\Http\Requests\CreatePasswordPostRequest;
 use StudentInfo\Http\Requests\IssueTokenPostRequest;
-use StudentInfo\Http\Requests\Request;
-use StudentInfo\Models\Student;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\UserRepositoryInterface;
 use StudentInfo\ValueObjects\Email;
@@ -24,7 +21,7 @@ class RegisterController extends ApiController
      */
     protected $guard;
     /**
-     * @var Mailer
+     * @var MailQueue
      */
     protected $mailer;
     /**
@@ -36,7 +33,7 @@ class RegisterController extends ApiController
      */
     private $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository, Guard $guard, Mailer $mailer)
+    public function __construct(UserRepositoryInterface $userRepository, Guard $guard, MailQueue $mailer)
     {
         $this->userRepository = $userRepository;
         $this->guard          = $guard;
@@ -52,7 +49,7 @@ class RegisterController extends ApiController
      * @apiName Login
      * @apiGroup User
      *
-     * @apiParam {Array} emails Emails of the User.
+     * @apiParam {Array} emails Emails of the Users.
      *
      * @apiSuccess {String} emails Emails of the User.
      *
@@ -71,7 +68,10 @@ class RegisterController extends ApiController
             /** @var User $user */
             $user = $this->userRepository->findByEmail(new Email($email));
 
-            Mail::queue('emails.register_mail_template', ['email' => $email, 'token' => $user->getRegisterToken()], function ($message) use ($email) {
+            $this->mailer->queue('emails.register_mail_template', [
+                'email' => $email,
+                'token' => $user->getRegisterToken(),
+            ], function (Message $message) use ($email) {
                 $message->from('us@example.com', 'Laravel');
                 $message->to($email);
                 $message->subject('Registration');
@@ -95,13 +95,14 @@ class RegisterController extends ApiController
     {
         /** @var User $user */
         $user = $this->userRepository->findByRegisterToken($registerToken);
-        if ($user == null) {
-            return $this->returnError(403, 'InvalidTokenException');
+        if ($user === null) {
+            return $this->returnForbidden(UserErrorCodes::INVALID_REGISTER_TOKEN);
         }
-        if ($user->isExpired($user->getRegisterTokenCreatedAt())) {
-            return $this->returnError(403, 'TokenHasExpired');
+
+        if ($user->isRegisterTokenExpired()) {
+            return $this->returnForbidden(UserErrorCodes::EXPIRED_REGISTER_TOKEN);
         }
-        return $this->returnSuccess(['Change you password']);
+        return $this->returnSuccess();
     }
 
     /**
@@ -113,33 +114,22 @@ class RegisterController extends ApiController
     {
         /** @var User $user */
         $user = $this->userRepository->findByRegisterToken($registerToken);
-        if ($user == null) {
-            return $this->returnError(403, 'InvalidTokenException');
+
+        if ($user === null) {
+            return $this->returnForbidden(UserErrorCodes::INVALID_REGISTER_TOKEN);
         }
-        if ($user->registerTokenIsExpired($user->getRegisterTokenCreatedAt())) {
-            return $this->returnError(403, 'TokenHasExpired');
+
+        if ($user->registerTokenIsExpired()) {
+            return $this->returnForbidden(UserErrorCodes::EXPIRED_REGISTER_TOKEN);
         }
+
         $user->setPassword(new Password($request->get('password')));
-        $this->userRepository->updatePassword($user);
-        return $this->returnSuccess(['Password is changed!']);
+
+        $this->userRepository->update($user);
+
+        return $this->returnSuccess([
+            'user' => $user
+        ]);
     }
 
-    public function addStudents(AddStudentsRequest $request)
-    {
-        $students = $request->get('students');
-        for($count=0; $count < count($students); $count++)
-        {
-            $student = new Student();
-            $student->setFirstName($students[$count]['firstName']);
-            $student->setLastName($students[$count]['lastName']);
-            $student->setEmail(new Email($students[$count]['email']));
-            $student->setIndexNumber($students[$count]['indexNumber']);
-            $student->setPassword(new Password('password'));
-            $student->generateRegisterToken();
-            if (!$this->userRepository->findByEmail(new Email($students[$count]['email'])))
-            {
-                $this->userRepository->create($student);
-            }
-        }
-    }
 }

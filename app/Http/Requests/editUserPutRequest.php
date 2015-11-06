@@ -5,7 +5,7 @@ namespace StudentInfo\Http\Requests;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Models\User;
 
-class IssueTokenPostRequest extends Request
+class editUserPutRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,7 +20,7 @@ class IssueTokenPostRequest extends Request
         if ($user === null) {
             return false;
         }
-        return $user->hasPermissionTo('user.create');
+        return true;
     }
 
     /**
@@ -31,7 +31,7 @@ class IssueTokenPostRequest extends Request
     public function rules()
     {
         return [
-            'students' => 'required|array',
+            'password' => 'required|confirmed',
         ];
     }
 }
