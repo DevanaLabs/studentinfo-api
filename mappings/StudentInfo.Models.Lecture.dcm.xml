@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+
+    <entity name="StudentInfo\Models\Lecture" table="lectures">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1"/>
+        </id>
+
+        <many-to-one field="course" target-entity="StudentInfo\Models\Course" inversed-by="lectures">
+            <join-column name="course_id" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-one field="professor" target-entity="StudentInfo\Models\Professor" inversed-by="lectures">
+            <join-column name="professor_id" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-one target-entity="StudentInfo\Models\Classroom" field="classroom" inversed-by="lectures">
+            <join-column name="classroom_id" referenced-column-name="id"/>
+        </many-to-one>
+
+        <many-to-many field="students" mapped-by="lectures" target-entity="StudentInfo\Models\Student"/>
+    </entity>
+
+</doctrine-mapping>
