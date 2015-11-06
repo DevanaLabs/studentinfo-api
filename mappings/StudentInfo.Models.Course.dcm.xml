@@ -15,8 +15,6 @@
 
         <field name="semester" column="semester" type="integer"/>
 
-        <field name="esp" column="esp" type="integer"/>
-
         <one-to-many target-entity="StudentInfo\Models\Lecture" mapped-by="course" field="lectures"/>
 
         <many-to-many field="students" mapped-by="courses" target-entity="StudentInfo\Models\Student"/>

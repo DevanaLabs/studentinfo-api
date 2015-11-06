@@ -19,14 +19,23 @@ class Student extends User
     protected $year;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Course[]
      */
     protected $courses;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Lecture[]
      */
     protected $lectures;
+
+    /**
+     * Student constructor.
+     */
+    public function __construct()
+    {
+        $this->courses = new ArrayCollection();
+        $this->lectures = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -45,7 +54,7 @@ class Student extends User
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|Lecture[]
      */
     public function getLectures()
     {
@@ -53,7 +62,7 @@ class Student extends User
     }
 
     /**
-     * @param ArrayCollection $lectures
+     * @param ArrayCollection|Lecture[] $lectures
      */
     public function setLectures($lectures)
     {
@@ -61,7 +70,7 @@ class Student extends User
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|Course[]
      */
     public function getCourses()
     {
@@ -69,7 +78,7 @@ class Student extends User
     }
 
     /**
-     * @param ArrayCollection $courses
+     * @param ArrayCollection|Course[] $courses
      */
     public function setCourses($courses)
     {

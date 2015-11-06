@@ -22,21 +22,26 @@ class Course
     protected $semester;
 
     /**
-     * @var int
-     */
-    protected $esp;
-
-    /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Lecture[]
      */
     protected $lectures;
+
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Student[]
      */
     protected $students;
 
     /**
-     * @return ArrayCollection
+     * Course constructor.
+     */
+    public function __construct()
+    {
+        $this->lectures = new ArrayCollection();
+        $this->students = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection|Lecture[]
      */
     public function getLectures()
     {
@@ -44,7 +49,7 @@ class Course
     }
 
     /**
-     * @param ArrayCollection $lectures
+     * @param ArrayCollection|Lecture[] $lectures
      */
     public function setLectures($lectures)
     {
@@ -92,23 +97,7 @@ class Course
     }
 
     /**
-     * @return int
-     */
-    public function getEsp()
-    {
-        return $this->esp;
-    }
-
-    /**
-     * @param int $esp
-     */
-    public function setEsp($esp)
-    {
-        $this->esp = $esp;
-    }
-
-    /**
-     * @return ArrayCollection
+     * @return ArrayCollection|Student[]
      */
     public function getStudents()
     {
@@ -116,7 +105,7 @@ class Course
     }
 
     /**
-     * @param ArrayCollection $students
+     * @param ArrayCollection|Student[] $students
      */
     public function setStudents($students)
     {

@@ -11,22 +11,37 @@ abstract class Professor
      * @var int
      */
     protected $id;
+
     /**
      * @var string
      */
     protected $firstName;
+
     /**
      * @var string
      */
     protected $lastName;
 
     /**
-     * @var ArrayCollection
+     * @var string
+     */
+    protected $title;
+
+    /**
+     * @var ArrayCollection|Lecture[]
      */
     protected $lectures;
 
     /**
-     * @return ArrayCollection
+     * Professor constructor.
+     */
+    public function __construct()
+    {
+        $this->lectures = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection|Lecture[]
      */
     public function getLectures()
     {
@@ -34,7 +49,7 @@ abstract class Professor
     }
 
     /**
-     * @param ArrayCollection $lectures
+     * @param ArrayCollection|Lecture[] $lectures
      */
     public function setLectures($lectures)
     {

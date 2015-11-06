@@ -22,12 +22,20 @@ class Classroom
     private $directions;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Lecture[]
      */
     private $lectures;
 
     /**
-     * @return ArrayCollection
+     * Classroom constructor.
+     */
+    public function __construct()
+    {
+        $this->lectures = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection|Lecture[]
      */
     public function getLectures()
     {
@@ -35,7 +43,7 @@ class Classroom
     }
 
     /**
-     * @param ArrayCollection $lectures
+     * @param ArrayCollection|Lecture[] $lectures
      */
     public function setLectures($lectures)
     {

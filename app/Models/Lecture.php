@@ -27,9 +27,17 @@ class Lecture
     private $classroom;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Student[]
      */
     private $students;
+
+    /**
+     * Lecture constructor.
+     */
+    public function __construct()
+    {
+        $this->students = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -88,7 +96,7 @@ class Lecture
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|Student[]
      */
     public function getStudents()
     {
@@ -96,7 +104,7 @@ class Lecture
     }
 
     /**
-     * @param ArrayCollection $students
+     * @param ArrayCollection|Student[] $students
      */
     public function setStudents($students)
     {
