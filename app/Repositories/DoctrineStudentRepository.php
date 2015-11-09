@@ -2,11 +2,8 @@
 
 namespace StudentInfo\Repositories;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use StudentInfo\Models\Faculty;
-use StudentInfo\ValueObjects\Email;
-use StudentInfo\ValueObjects\Password;
 
 class DoctrineStudentRepository extends EntityRepository implements StudentRepositoryInterface
 {
@@ -37,7 +34,8 @@ class DoctrineStudentRepository extends EntityRepository implements StudentRepos
      */
     public function getAllStudentsForFaculty($faculty)
     {
-        // TODO : Exctract real data
-        return new ArrayCollection();
+        $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s WHERE s.organisation_id = :faculty_id');
+        $query->setParameter('faculty_id', $faculty->getId());
+        return $query->getArrayResult();
     }
 }
