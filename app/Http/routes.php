@@ -44,9 +44,7 @@ Route::get('/addFaculty', function (UserRepositoryInterface $repository) {
 });
 Route::post('addStudents', 'StudentController@addStudents');
 
-Route::get('user/{id}', 'UserController@editProfile');
-
-Route::put('user/{id}', 'UserController@updateProfile');
+Route::put('user/{user_id}', 'UserController@updateProfile');
 
 Route::get('students', 'StudentController@getStudents');
 

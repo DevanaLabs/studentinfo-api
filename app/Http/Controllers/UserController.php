@@ -2,68 +2,49 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\editUserPutRequest;
+use StudentInfo\Http\Requests\EditUserPutRequest;
+use StudentInfo\Models\User;
 use StudentInfo\Repositories\UserRepositoryInterface;
 use StudentInfo\ValueObjects\Password;
-use StudentInfo\Models\User;
 
-class UserController extends  ApiController
+class UserController extends ApiController
 {
     /**
      * @var UserRepositoryInterface
      */
-    protected $repository;
+    protected $userRepo;
 
     /**
-    * @var Guard
-    */
+     * @var Guard
+     */
     protected $guard;
 
-    /**
-     * StudentController constructor.
-     * @param UserRepositoryInterface $repository
-     */
-    public function __construct(UserRepositoryInterface $repository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepo, Guard $guard)
     {
-        $this->repository = $repository;
-        $this->guard = $guard;
+        $this->userRepo = $userRepo;
+        $this->guard    = $guard;
     }
 
-    public function editProfile($id)
+    public function updateProfile(EditUserPutRequest $request, $userId)
     {
         /** @var User $user */
-        $user = $this->repository->find($id);
+        $user = $this->userRepo->findById($userId);
 
         if ($user === null) {
             return $this->returnForbidden(UserErrorCodes::USER_DOES_NOT_EXIST);
-        }
-
-        if ($this->guard->user()->getId() != $id) {
-            return $this->returnForbidden(UserErrorCodes::WRONG_ID);
-        }
-        echo var_dump($user);
-    }
-
-    public function updateProfile(editUserPutRequest $request, $id)
-    {
-        /** @var User $user */
-        $user = $this->repository->find($id);
-
-        if ($user === null) {
-            return $this->returnForbidden(UserErrorCodes::USER_DOES_NOT_EXIST);
-        }
-
-        if ($this->guard->user()->getId() != $id) {
-            return $this->returnForbidden(UserErrorCodes::WRONG_ID);
         }
 
         $password = $request->get('password');
-        if ($password != null);
-            $user->setPassword(new Password($password));
-        $this->repository->update($user);
+
+        $user->setPassword(new Password($password));
+
+        $this->userRepo->update($user);
+
+        return $this->returnSuccess([
+            'user' => $user,
+        ]);
     }
 
 }

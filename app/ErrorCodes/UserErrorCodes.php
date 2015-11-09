@@ -10,7 +10,5 @@ class UserErrorCodes
 
     const EXPIRED_REGISTER_TOKEN = 102;
 
-    const WRONG_ID = 103;
-
     const USER_DOES_NOT_EXIST = 104;
 }
