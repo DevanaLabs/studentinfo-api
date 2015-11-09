@@ -12,6 +12,7 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Http\Requests\AddStudentsRequest;
 use StudentInfo\Models\Student;
+use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\StudentRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
 use StudentInfo\ValueObjects\Email;
@@ -30,18 +31,26 @@ class StudentController extends ApiController
     protected $studentRepository;
 
     /**
+     * @var FacultyRepositoryInterface
+     */
+    protected $facultyRepository;
+
+    /**
      * @var Guard
      */
     protected $guard;
 
     /**
      * StudentController constructor.
-     * @param UserRepositoryInterface $repository
-     * @param Guard                   $guard
+     * @param UserRepositoryInterface    $userRepository
+     * @param StudentRepositoryInterface $studentRepository
+     * @param Guard                      $guard
      */
-    public function __construct(UserRepositoryInterface $userRepository, StudentRepositoryInterface $studentRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, StudentRepositoryInterface $studentRepository, Guard $guard, FacultyRepositoryInterface $facultyRepository)
     {
         $this->userRepository = $userRepository;
+        $this->studentRepository = $studentRepository;
+        $this->facultyRepository = $facultyRepository;
         $this->guard          = $guard;
     }
 
@@ -54,9 +63,10 @@ class StudentController extends ApiController
             $student->setLastName($students[$count]['lastName']);
             $student->setEmail(new Email($students[$count]['email']));
             $student->setIndexNumber($students[$count]['indexNumber']);
+            $student->setYear($students[$count]['year']);
             $student->setPassword(new Password('password'));
             $student->generateRegisterToken();
-            $student->setOrganisation($this->guard->user()->getOrganisation());
+            $student->setOrganisation($this->facultyRepository->find(3));
             if (!$this->userRepository->findByEmail(new Email($students[$count]['email']))) {
                 $this->userRepository->create($student);
             }
@@ -65,10 +75,12 @@ class StudentController extends ApiController
 
     public function getStudents()
     {
-        // TODO : Switch to studentRepo
-        $students = $this->userRepository->getAllStudents();
+
+        $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->find($this->guard->user()->getOrganisation()->getId()));
         foreach ($students as $student) {
-            print_r($student);
+            dd($student);
+           print_r($student);
         }
+
     }
 }

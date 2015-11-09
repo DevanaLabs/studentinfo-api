@@ -31,10 +31,11 @@ class DoctrineStudentRepository extends EntityRepository implements StudentRepos
 
     /**
      * @param $faculty Faculty
+     * @return array
      */
-    public function getAllStudentsForFaculty($faculty)
+    public function getAllStudentsForFaculty(Faculty $faculty)
     {
-        $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s WHERE s.organisation_id = :faculty_id');
+        $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s WHERE s.organisation = :faculty_id');
         $query->setParameter('faculty_id', $faculty->getId());
         return $query->getArrayResult();
     }

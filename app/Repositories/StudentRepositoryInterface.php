@@ -9,5 +9,5 @@ interface StudentRepositoryInterface extends RepositoryInterface
     /**
      * @param $faculty Faculty
      */
-    public function getAllStudentsForFaculty($faculty);
+    public function getAllStudentsForFaculty(Faculty $faculty);
 }

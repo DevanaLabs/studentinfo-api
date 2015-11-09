@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Nebojsa
- * Date: 11/6/2015
- * Time: 10:52 AM
- */
 
 namespace StudentInfo\Http\Controllers;
 

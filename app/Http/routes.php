@@ -1,11 +1,14 @@
 <?php
 
+use StudentInfo\Repositories\FacultyRepositoryInterface;
+use StudentInfo\Repositories\UserRepositoryInterface;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 /* Test Routes */
-Route::get('/addAdmin', function (\StudentInfo\Repositories\UserRepositoryInterface $repository) {
+Route::get('/addAdmin', function (FacultyRepositoryInterface $facultyRepository, UserRepositoryInterface $userRepository) {
     $admin = new \StudentInfo\Models\Admin();
     $admin->setFirstName("Nebojsa");
     $admin->setLastName("Urosevic");
@@ -13,12 +16,12 @@ Route::get('/addAdmin', function (\StudentInfo\Repositories\UserRepositoryInterf
     $admin->setPassword(new \StudentInfo\ValueObjects\Password("blabla"));
     $admin->setRememberToken("bla");
     $admin->generateRegisterToken();
-    $admin->setOrganisation($repository->findFacultyByName('Racunarski fakultet'));
+    $admin->setOrganisation($facultyRepository->find(2));
 
-    $repository->create($admin);
+    $userRepository->create($admin);
 });
 
-Route::get('/addStudent', function (\StudentInfo\Repositories\UserRepositoryInterface $repository) {
+Route::get('/addStudent', function (FacultyRepositoryInterface $facultyRepository, UserRepositoryInterface $userRepository) {
     $student = new \StudentInfo\Models\Student();
     $student->setFirstName('Milan');
     $student->setLastName('Vucic');
@@ -27,12 +30,13 @@ Route::get('/addStudent', function (\StudentInfo\Repositories\UserRepositoryInte
     $student->setIndexNumber('1244221');
     $student->setRememberToken('bla');
     $student->generateRegisterToken();
-    $student->setOrganisation($repository->findFacultyByName('Racunarski fakultet'));
+    $student->setYear(3);
+    $student->setOrganisation($facultyRepository->findFacultyByName('Racunarski fakultet'));
 
-    $repository->create($student);
+    $userRepository->create($student);
 });
 
-Route::get('/addFaculty', function (\StudentInfo\Repositories\UserRepositoryInterface $repository) {
+Route::get('/addFaculty', function (UserRepositoryInterface $repository) {
     $faculty = new \StudentInfo\Models\Faculty();
     $faculty->setName('Racunarski fakultet');
 
@@ -55,3 +59,11 @@ Route::post('register', 'RegisterController@issueRegisterTokens');
 Route::get('register/{rememberToken}', 'RegisterController@registerStudent');
 
 Route::post('register/{rememberToken}', 'RegisterController@createPassword');
+
+Route::post('addClassrooms', 'ClassroomController@addClassrooms');
+
+Route::get('getClassrooms', 'ClassroomController@getClassrooms');
+
+Route::post('addProfessors', 'ProfessorController@addProfessors');
+
+Route::get('getProfessors', 'ProfessorController@getProfessors');

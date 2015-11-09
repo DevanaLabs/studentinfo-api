@@ -220,16 +220,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.5.0",
+            "version": "v1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "eb8a73619af4f1c8711e2ce482f5de3643258a1f"
+                "reference": "2b9cec5a5e722010cbebc91713d4c11eaa064d5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/eb8a73619af4f1c8711e2ce482f5de3643258a1f",
-                "reference": "eb8a73619af4f1c8711e2ce482f5de3643258a1f",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/2b9cec5a5e722010cbebc91713d4c11eaa064d5e",
+                "reference": "2b9cec5a5e722010cbebc91713d4c11eaa064d5e",
                 "shasum": ""
             },
             "require": {
@@ -286,7 +286,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-10-28 11:27:45"
+            "time": "2015-11-02 18:35:48"
         },
         {
             "name": "doctrine/collections",
@@ -500,16 +500,16 @@
         },
         {
             "name": "doctrine/inflector",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "0bcb2e79d8571787f18b7eb036ed3d004908e604"
+                "reference": "90b2128806bfde671b6952ab8bea493942c1fdae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/inflector/zipball/0bcb2e79d8571787f18b7eb036ed3d004908e604",
-                "reference": "0bcb2e79d8571787f18b7eb036ed3d004908e604",
+                "url": "https://api.github.com/repos/doctrine/inflector/zipball/90b2128806bfde671b6952ab8bea493942c1fdae",
+                "reference": "90b2128806bfde671b6952ab8bea493942c1fdae",
                 "shasum": ""
             },
             "require": {
@@ -521,7 +521,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -563,7 +563,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2014-12-20 21:24:13"
+            "time": "2015-11-06 14:35:42"
         },
         {
             "name": "doctrine/instantiator",
@@ -1133,16 +1133,16 @@
         },
         {
             "name": "laravel-doctrine/orm",
-            "version": "1.0.7",
+            "version": "1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel-doctrine/orm.git",
-                "reference": "21b9ccb2ae37c2f75931bce46011adbbb7bb0a3a"
+                "reference": "8804fa92902800d39463399271c7a50009d768f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel-doctrine/orm/zipball/21b9ccb2ae37c2f75931bce46011adbbb7bb0a3a",
-                "reference": "21b9ccb2ae37c2f75931bce46011adbbb7bb0a3a",
+                "url": "https://api.github.com/repos/laravel-doctrine/orm/zipball/8804fa92902800d39463399271c7a50009d768f5",
+                "reference": "8804fa92902800d39463399271c7a50009d768f5",
                 "shasum": ""
             },
             "require": {
@@ -1199,20 +1199,20 @@
                 "laravel",
                 "orm"
             ],
-            "time": "2015-10-28 22:11:16"
+            "time": "2015-11-04 20:37:30"
         },
         {
             "name": "laravel/framework",
-            "version": "v5.1.22",
+            "version": "v5.1.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "11d9627c7cd4d12b6e884b87daa7a2f898cf54cb"
+                "reference": "a4ea877d2bb6a68796b244a741594968796c1c4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/11d9627c7cd4d12b6e884b87daa7a2f898cf54cb",
-                "reference": "11d9627c7cd4d12b6e884b87daa7a2f898cf54cb",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/a4ea877d2bb6a68796b244a741594968796c1c4e",
+                "reference": "a4ea877d2bb6a68796b244a741594968796c1c4e",
                 "shasum": ""
             },
             "require": {
@@ -1328,7 +1328,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2015-10-28 21:58:18"
+            "time": "2015-11-03 16:32:33"
         },
         {
             "name": "league/flysystem",
@@ -1537,16 +1537,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.20.0",
+            "version": "1.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "bfd3eaba109c9a2405c92174c8e17f20c2b9caf3"
+                "reference": "7b08ec6f75791e130012f206e3f7b0e76e18e3d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/bfd3eaba109c9a2405c92174c8e17f20c2b9caf3",
-                "reference": "bfd3eaba109c9a2405c92174c8e17f20c2b9caf3",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/7b08ec6f75791e130012f206e3f7b0e76e18e3d7",
+                "reference": "7b08ec6f75791e130012f206e3f7b0e76e18e3d7",
                 "shasum": ""
             },
             "require": {
@@ -1554,12 +1554,12 @@
                 "symfony/translation": "~2.6|~3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "~4.0|~5.0"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Carbon": "src"
+                "psr-4": {
+                    "Carbon\\": "src/Carbon/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1580,7 +1580,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2015-06-25 04:19:39"
+            "time": "2015-11-04 20:07:17"
         },
         {
             "name": "nikic/php-parser",
