@@ -33,4 +33,11 @@ class DoctrineClassroomRepository extends EntityRepository implements ClassroomR
     {
         return $this->findOneBy(array('name' => $name));
     }
+
+    public function find($id)
+    {
+        $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Classroom c WHERE c.id = :id');
+        $query->setParameter('id', $id);
+        return $query->getOneOrNullResult();
+    }
 }

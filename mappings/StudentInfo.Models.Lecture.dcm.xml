@@ -12,14 +12,23 @@
         </id>
 
         <many-to-one field="course" target-entity="StudentInfo\Models\Course" inversed-by="lectures">
+            <cascade>
+                <cascade-all/>
+            </cascade>
             <join-column name="course_id" referenced-column-name="id"/>
         </many-to-one>
 
         <many-to-one field="professor" target-entity="StudentInfo\Models\Professor" inversed-by="lectures">
+            <cascade>
+                <cascade-all/>
+            </cascade>
             <join-column name="professor_id" referenced-column-name="id"/>
         </many-to-one>
 
         <many-to-one target-entity="StudentInfo\Models\Classroom" field="classroom" inversed-by="lectures">
+            <cascade>
+                <cascade-all/>
+            </cascade>
             <join-column name="classroom_id" referenced-column-name="id"/>
         </many-to-one>
 

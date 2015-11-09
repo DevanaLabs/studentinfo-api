@@ -7,7 +7,9 @@ use Illuminate\Support\ServiceProvider;
 use StudentInfo\Models\Student;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\DoctrineClassroomRepository;
+use StudentInfo\Repositories\DoctrineCourseRepository;
 use StudentInfo\Repositories\DoctrineFacultyRepository;
+use StudentInfo\Repositories\DoctrineLectureRepository;
 use StudentInfo\Repositories\DoctrineProfessorRepository;
 use StudentInfo\Repositories\DoctrineStudentRepository;
 use StudentInfo\Repositories\DoctrineUserRepository;
@@ -61,6 +63,18 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind('StudentInfo\Repositories\FacultyRepositoryInterface', function ($app) {
             return new DoctrineFacultyRepository(
+                $app['em'],
+                new ClassMetaData(Student::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\CourseRepositoryInterface', function ($app) {
+            return new DoctrineCourseRepository(
+                $app['em'],
+                new ClassMetaData(Student::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\LectureRepositoryInterface', function ($app) {
+            return new DoctrineLectureRepository(
                 $app['em'],
                 new ClassMetaData(Student::class)
             );

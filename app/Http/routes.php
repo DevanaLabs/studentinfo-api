@@ -16,7 +16,7 @@ Route::get('/addAdmin', function (FacultyRepositoryInterface $facultyRepository,
     $admin->setPassword(new \StudentInfo\ValueObjects\Password("blabla"));
     $admin->setRememberToken("bla");
     $admin->generateRegisterToken();
-    $admin->setOrganisation($facultyRepository->find(2));
+    $admin->setOrganisation($facultyRepository->findFacultyByName('Racunarski fakultet'));
 
     $userRepository->create($admin);
 });
@@ -65,3 +65,9 @@ Route::get('getClassrooms', 'ClassroomController@getClassrooms');
 Route::post('addProfessors', 'ProfessorController@addProfessors');
 
 Route::get('getProfessors', 'ProfessorController@getProfessors');
+
+Route::post('addLecture', 'LectureController@addLecture');
+
+Route::post('addCourse', 'CourseController@addCourse');
+
+
