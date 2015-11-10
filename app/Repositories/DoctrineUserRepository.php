@@ -16,12 +16,19 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
 
     public function all()
     {
-        return $this->findAll();
+        $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u');
+        return $query->getArrayResult();
     }
 
     public function destroy($object)
     {
-        // TODO
+        $this->_em->remove($object);
+        $this->_em->flush($object);
+    }
+
+    public function update($object)
+    {
+        $this->_em->flush($object);
     }
 
     public function findByEmail(Email $email)
@@ -43,11 +50,6 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
         $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u WHERE u.registerToken = :registerToken');
         $query->setParameter('registerToken', $registerToken);
         return $query->getOneOrNullResult();
-    }
-
-    public function update($object)
-    {
-        $this->_em->flush($object);
     }
 
 }

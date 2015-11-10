@@ -18,13 +18,12 @@ class AddCourseRequest extends Request
     public function authorize(Guard $guard)
     {
         /** @var User $user */
-//        $user = $guard->user();
-//        if ($user === null) {
-//            return false;
-//        }
-        return true;
-        //return ($user->hasPermissionTo('course.create'));
-        // TODO: Make course.create permission
+        $user = $guard->user();
+        if ($user === null) {
+           return false;
+        }
+        return ($user->hasPermissionTo('course.create'));
+
     }
 
     /**

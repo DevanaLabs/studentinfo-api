@@ -44,10 +44,9 @@ class DoctrineCourseRepository extends EntityRepository implements CourseReposit
     {
         $this->_em->flush($object);
     }
+
     public function find($id)
     {
-        $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c WHERE c.id = :id');
-        $query->setParameter('id', $id);
-        return $query->getOneOrNullResult();
+        return $this->_em->find('StudentInfo\Models\Course', $id);
     }
 }

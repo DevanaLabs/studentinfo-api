@@ -31,8 +31,6 @@ class DoctrineProfessorRepository extends EntityRepository implements ProfessorR
 
     public function find($id)
     {
-        $query = $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p WHERE p.id = :id');
-        $query->setParameter('id', $id);
-        return $query->getOneOrNullResult();
+        return $this->_em->find('StudentInfo\Models\Professor', $id);
     }
 }

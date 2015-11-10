@@ -19,13 +19,11 @@ class AddLectureRequest extends Request
     public function authorize(Guard $guard)
     {
         /** @var User $user */
-//        $user = $guard->user();
-//        if ($user === null) {
-//            return false;
-//        }
-//        return ($user->hasPermissionTo('lecture.create'));
-//         TODO: Make lecture.create permission
-        return true;
+        $user = $guard->user();
+        if ($user === null) {
+            return false;
+        }
+        return ($user->hasPermissionTo('lecture.create'));
     }
 
     /**

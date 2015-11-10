@@ -75,10 +75,8 @@ class StudentController extends ApiController
 
     public function getStudents()
     {
-
-        $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->find($this->guard->user()->getOrganisation()->getId()));
+        $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
         foreach ($students as $student) {
-            dd($student);
            print_r($student);
         }
 

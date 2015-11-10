@@ -19,9 +19,7 @@ class DoctrineFacultyRepository extends EntityRepository implements FacultyRepos
 
     public function find($id)
     {
-        $query = $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f WHERE f.id = :id');
-        $query->setParameter('id', $id);
-        return $query->getOneOrNullResult();
+        return $this->_em->find('StudentInfo\Models\Faculty', $id);
     }
 
     public function destroy($object)
