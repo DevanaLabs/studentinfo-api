@@ -38,8 +38,8 @@ class CourseController extends ApiController
     public function addCourse(AddCourseRequest $request)
     {
         $course = new Course();
-        $course->setCode($request->get('CourseCode'));
-        $course->setSemester($request->get('CourseSemester'));
+        $course->setCode($request->get('courseCode'));
+        $course->setSemester($request->get('courseSemester'));
 
         /*
         $lecture   = new Lecture();
@@ -56,6 +56,9 @@ class CourseController extends ApiController
         $course->setLectures([$lecture]);
         */
         $this->courseRepository->create($course);
+        return $this->returnSuccess([
+            'course' => $course
+        ]);
     }
 
 }

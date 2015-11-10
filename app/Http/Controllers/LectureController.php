@@ -5,6 +5,7 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddLectureRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Models\Course;
@@ -42,11 +43,11 @@ class LectureController extends ApiController
 
     /**
      * LectureController constructor.
-     * @param LectureRepositoryInterface                              $lectureRepository
-     * @param Guard                                                   $guard
+     * @param LectureRepositoryInterface   $lectureRepository
+     * @param Guard                        $guard
      * @param ProfessorRepositoryInterface $professorRepository
-     * @param CourseRepositoryInterface                               $courseRepository
-     * @param ClassroomRepositoryInterface                            $classroomRepository
+     * @param CourseRepositoryInterface    $courseRepository
+     * @param ClassroomRepositoryInterface $classroomRepository
      */
     public function __construct(LectureRepositoryInterface $lectureRepository, Guard $guard, ProfessorRepositoryInterface $professorRepository, CourseRepositoryInterface $courseRepository, ClassroomRepositoryInterface $classroomRepository)
     {
@@ -62,8 +63,7 @@ class LectureController extends ApiController
     {
         $professorId = $request->get('professorId');
         $courseId    = $request->get('courseId');
-        $classroomId    = $request->get('classroomId');
-
+        $classroomId = $request->get('classroomId');
 
         /** @var Professor $professor */
         $professor = $this->professorRepository->find($professorId);
@@ -75,20 +75,28 @@ class LectureController extends ApiController
         $classroom = $this->classroomRepository->find($classroomId);
 
         $lecture = new Lecture();
-        if ($professor != null) {
-            $professor->setLectures([$lecture]);
-            $lecture->setProfessor($professor);
+        
+        if ($professor == null) {
+            return $this->returnError(104, UserErrorCodes::PROFESSOR_NOT_IN_DB);
         }
-        if ($course != null) {
-            $course->setLectures([$lecture]);
-            $lecture->setCourse($course);
+        if ($course == null) {
+            return $this->returnError(105, UserErrorCodes::COURSE_NOT_IN_DB);
         }
 
         if ($classroom != null) {
-            $lecture->setClassroom($classroom);
+            return $this->returnError(106, UserErrorCodes::CLASSROOM_NOT_IN_DB);
         }
+        $professor->setLectures([$lecture]);
+        $lecture->setProfessor($professor);
+        $course->setLectures([$lecture]);
+        $lecture->setCourse($course);
+        $lecture->setClassroom($classroom);
+        dd($lecture);
 
         $this->lectureRepository->create($lecture);
+        return $this->returnSuccess([
+            'lecture' => $lecture
+        ]);
 
     }
 }

@@ -10,5 +10,13 @@ class UserErrorCodes
 
     const EXPIRED_REGISTER_TOKEN = 102;
 
-    const USER_DOES_NOT_EXIST = 104;
+    const USER_DOES_NOT_EXIST = 103;
+
+    const PROFESSOR_NOT_IN_DB = 104;
+
+    const COURSE_NOT_IN_DB = 105;
+
+    const CLASSROOM_NOT_IN_DB = 106;
+
+
 }

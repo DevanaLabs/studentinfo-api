@@ -28,18 +28,24 @@ class ClassroomController extends ApiController
     public function __construct(ClassroomRepositoryInterface $classroomRepository, Guard $guard)
     {
         $this->classroomRepository = $classroomRepository;
-        $this->guard          = $guard;
+        $this->guard               = $guard;
     }
 
     public function addClassrooms(AddClassroomRequest $request)
     {
         $classrooms = $request->get('classrooms');
+        $added_classrooms = [];
         for ($count = 0; $count < count($classrooms); $count++) {
             $classroom = new Classroom();
             $classroom->setName($classrooms[$count]['name']);
             $classroom->setDirections($classrooms[$count]['directions']);
             $this->classroomRepository->create($classroom);
+            $added_classrooms[]=$classroom;
         }
+        return $this->returnSuccess([
+            'classrooms' => $added_classrooms
+        ]);
+
     }
 
     public function getClassrooms()
