@@ -30,4 +30,8 @@ class DoctrineLectureRepository extends EntityRepository implements LectureRepos
         $this->_em->flush($object);
     }
 
+    public function find($id)
+    {
+        return $this->_em->find('StudentInfo\Models\Lecture', $id);
+    }
 }

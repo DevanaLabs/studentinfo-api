@@ -70,4 +70,8 @@ Route::post('addLecture', 'LectureController@addLecture');
 
 Route::post('addCourse', 'CourseController@addCourse');
 
+Route::post('chooseLectures' , 'StudentController@chooseLectures');
+
+Route::get('showMyLectures' , 'StudentController@showMyLectures');
+
 

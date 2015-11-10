@@ -1,13 +1,12 @@
 <?php
 
-
 namespace StudentInfo\Http\Requests;
 
 
-use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Auth\Guard;
 use StudentInfo\Models\User;
 
-class AddLectureRequest extends Request
+class SetGetLecturesRequest extends Request
 {
 
     /**
@@ -23,7 +22,7 @@ class AddLectureRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('lecture.create'));
+        return ($user->hasPermissionTo('course.add'));
     }
 
     /**
@@ -34,9 +33,7 @@ class AddLectureRequest extends Request
     public function rules()
     {
         return [
-            'professorId' => 'required | integer',
-            'courseId'    => 'required | integer',
-            'classroomId' => 'required | integer',
+            'ids' => 'array',
         ];
     }
 }

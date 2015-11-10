@@ -8,5 +8,7 @@ return [
 
     \StudentInfo\ErrorCodes\UserErrorCodes::EXPIRED_REGISTER_TOKEN => 'Your register token has expired. Please contact your administrator',
 
-    \StudentInfo\ErrorCodes\UserErrorCodes::USER_DOES_NOT_EXIST    => 'User does not exist in database'
+    \StudentInfo\ErrorCodes\UserErrorCodes::USER_DOES_NOT_EXIST    => 'User does not exist in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::YOU_ARE_NOT_A_STUDENT  => 'You are not a student',
 ];

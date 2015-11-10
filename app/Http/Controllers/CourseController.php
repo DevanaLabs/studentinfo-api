@@ -34,6 +34,7 @@ class CourseController extends ApiController
 
     /**
      * @param AddCourseRequest $request
+     * @return \Illuminate\Http\Response
      */
     public function addCourse(AddCourseRequest $request)
     {
