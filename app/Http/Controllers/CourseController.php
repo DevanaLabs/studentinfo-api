@@ -46,9 +46,10 @@ class CourseController extends ApiController
             $course = new Course();
             $course->setCode($courses[$i]['courseCode']);
             $course->setSemester($courses[$i]['courseSemester']);
-            $this->courseRepository->create($i);
+            $this->courseRepository->create($course);
             $added_courses[] = $course;
         }
+
         return $this->returnSuccess([
             'courses' => $added_courses,
         ]);

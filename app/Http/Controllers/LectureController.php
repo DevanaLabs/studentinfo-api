@@ -71,21 +71,21 @@ class LectureController extends ApiController
         /** @var Course $course */
         $course = $this->courseRepository->find($courseId);
 
-        /** @var Classroom $course */
+        /** @var Classroom $classroom */
         $classroom = $this->classroomRepository->find($classroomId);
 
         $lecture = new Lecture();
-        
+
         if ($professor == null) {
-            return $this->returnError(104, UserErrorCodes::PROFESSOR_NOT_IN_DB);
+            return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
         }
         if ($course == null) {
-            return $this->returnError(105, UserErrorCodes::COURSE_NOT_IN_DB);
+            return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
+        }
+        if ($classroom == null) {
+            return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
         }
 
-        if ($classroom != null) {
-            return $this->returnError(106, UserErrorCodes::CLASSROOM_NOT_IN_DB);
-        }
         $professor->setLectures([$lecture]);
         $lecture->setProfessor($professor);
         $course->setLectures([$lecture]);
@@ -94,7 +94,7 @@ class LectureController extends ApiController
 
         $this->lectureRepository->create($lecture);
         return $this->returnSuccess([
-            'lecture' => $lecture
+            'lecture' => $lecture,
         ]);
 
     }
