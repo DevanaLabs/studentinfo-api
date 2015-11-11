@@ -14,7 +14,7 @@ class DoctrineFacultyRepository extends EntityRepository implements FacultyRepos
 
     public function all()
     {
-        return $this->findAll();
+        return $query = $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f')->getArrayResult();
     }
 
     public function find($id)

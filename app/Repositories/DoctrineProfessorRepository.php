@@ -14,8 +14,7 @@ class DoctrineProfessorRepository extends EntityRepository implements ProfessorR
 
     public function all()
     {
-        $query = $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p');
-        return $query->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p')->getArrayResult();
     }
 
     public function destroy($object)

@@ -38,13 +38,15 @@ class CourseController extends ApiController
      */
     public function addCourses(AddCourseRequest $request)
     {
-        $courses       = $request->get('courses');
         $added_courses = [];
-        for ($count = 0; $count < count($courses); $count++) {
+
+        $courses = $request->get('courses');
+
+        for ($i = 0; $i < count($courses); $i++) {
             $course = new Course();
-            $course->setCode($courses[$count]('courseCode'));
-            $course->setSemester($courses[$count]('courseSemester'));
-            $this->courseRepository->create($course);
+            $course->setCode($courses[$i]['courseCode']);
+            $course->setSemester($courses[$i]['courseSemester']);
+            $this->courseRepository->create($i);
             $added_courses[] = $course;
         }
         return $this->returnSuccess([
@@ -65,6 +67,15 @@ class CourseController extends ApiController
         $lecture->setCourse($course);
         $course->setLectures([$lecture]);
         */
+    }
+
+    public function getCourses()
+    {
+        $courses = $this->courseRepository->all();
+
+        foreach ($courses as $course) {
+            print_r($course);
+        }
     }
 
 }

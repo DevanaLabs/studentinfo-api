@@ -31,7 +31,7 @@ class DoctrineCourseRepository extends EntityRepository implements CourseReposit
 
     public function all()
     {
-        return $this->findAll();
+        return $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Courses c')->getArrayResult();
     }
 
     public function destroy($object)

@@ -16,8 +16,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
 
     public function all()
     {
-        $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u');
-        return $query->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u')->getArrayResult();
     }
 
     public function destroy($object)

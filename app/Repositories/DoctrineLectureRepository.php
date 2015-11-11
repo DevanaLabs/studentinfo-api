@@ -16,7 +16,7 @@ class DoctrineLectureRepository extends EntityRepository implements LectureRepos
 
     public function all()
     {
-        return $this->findAll();
+        return $query = $this->_em->createQuery('SELECT lFROM StudentInfo\Models\Lecture l')->getArrayResult();
     }
 
     public function destroy($object)

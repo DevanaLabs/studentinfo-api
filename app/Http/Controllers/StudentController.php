@@ -103,6 +103,7 @@ class StudentController extends ApiController
         $ids = $request->get('ids');
 
         $addedLectures = [];
+
         $failedToAddLectures = [];
 
         foreach ($ids as $id) {
@@ -120,10 +121,6 @@ class StudentController extends ApiController
 
         $this->studentRepository->update($student);
 
-        $student = $this->studentRepository->find($this->guard->user()->getId());
-
-        dd($student->getLectures());
-
         return $this->returnSuccess([
             'successful'   => $addedLectures,
             'unsuccessful' => $failedToAddLectures,
@@ -135,6 +132,9 @@ class StudentController extends ApiController
         /** @var Student $student */
         $student = $this->studentRepository->find($this->guard->user()->getId());
 
-        dd($student->getLectures());
+        for($i = 0; $i < count($student->getLectures()); $i++){
+            var_dump($student->getLectures()[$i]);
+        }
+
     }
 }

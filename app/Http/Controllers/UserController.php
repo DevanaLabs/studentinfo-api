@@ -14,23 +14,23 @@ class UserController extends ApiController
     /**
      * @var UserRepositoryInterface
      */
-    protected $userRepo;
+    protected $userRepository;
 
     /**
      * @var Guard
      */
     protected $guard;
 
-    public function __construct(UserRepositoryInterface $userRepo, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, Guard $guard)
     {
-        $this->userRepo = $userRepo;
+        $this->userRepository = $userRepository;
         $this->guard    = $guard;
     }
 
     public function updateProfile(EditUserPutRequest $request, $userId)
     {
         /** @var User $user */
-        $user = $this->userRepo->findById($userId);
+        $user = $this->userRepository->find($userId);
 
         if ($user === null) {
             return $this->returnForbidden(UserErrorCodes::USER_DOES_NOT_EXIST);
@@ -40,7 +40,7 @@ class UserController extends ApiController
 
         $user->setPassword(new Password($password));
 
-        $this->userRepo->update($user);
+        $this->userRepository->update($user);
 
         return $this->returnSuccess([
             'user' => $user,

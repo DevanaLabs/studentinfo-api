@@ -15,8 +15,7 @@ class DoctrineStudentRepository extends EntityRepository implements StudentRepos
 
     public function all()
     {
-        $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s');
-        return $query->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s')->getArrayResult();
     }
 
     public function destroy($object)
