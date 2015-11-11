@@ -36,11 +36,20 @@ class CourseController extends ApiController
      * @param AddCourseRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function addCourse(AddCourseRequest $request)
+    public function addCourses(AddCourseRequest $request)
     {
-        $course = new Course();
-        $course->setCode($request->get('courseCode'));
-        $course->setSemester($request->get('courseSemester'));
+        $courses       = $request->get('courses');
+        $added_courses = [];
+        for ($count = 0; $count < count($courses); $count++) {
+            $course = new Course();
+            $course->setCode($courses[$count]('courseCode'));
+            $course->setSemester($courses[$count]('courseSemester'));
+            $this->courseRepository->create($course);
+            $added_courses[] = $course;
+        }
+        return $this->returnSuccess([
+            'courses' => $added_courses,
+        ]);
 
         /*
         $lecture   = new Lecture();
@@ -56,10 +65,6 @@ class CourseController extends ApiController
         $lecture->setCourse($course);
         $course->setLectures([$lecture]);
         */
-        $this->courseRepository->create($course);
-        return $this->returnSuccess([
-            'course' => $course
-        ]);
     }
 
 }

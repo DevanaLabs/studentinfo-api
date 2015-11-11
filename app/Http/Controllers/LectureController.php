@@ -91,7 +91,6 @@ class LectureController extends ApiController
         $course->setLectures([$lecture]);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
-        dd($lecture);
 
         $this->lectureRepository->create($lecture);
         return $this->returnSuccess([

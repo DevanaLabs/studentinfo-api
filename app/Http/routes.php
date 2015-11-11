@@ -68,7 +68,7 @@ Route::get('getProfessors', 'ProfessorController@getProfessors');
 
 Route::post('addLecture', 'LectureController@addLecture');
 
-Route::post('addCourse', 'CourseController@addCourse');
+Route::post('addCourses', 'CourseController@addCourses');
 
 Route::post('chooseLectures' , 'StudentController@chooseLectures');
 
