@@ -6,6 +6,7 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Http\Requests\AddCourseRequest;
+use StudentInfo\Http\Requests\DeleteCourseRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 
@@ -79,4 +80,16 @@ class CourseController extends ApiController
         }
     }
 
+    public function deleteCourses(DeleteCourseRequest $request)
+    {
+        $ids = $request->get('ids');
+        foreach ($ids as $id) {
+            $course = $this->courseRepository->find($id);
+            if ($course === null) {
+                continue;
+            }
+            $this->courseRepository->destroy($course);
+        }
+        return $this->returnSuccess();
+    }
 }

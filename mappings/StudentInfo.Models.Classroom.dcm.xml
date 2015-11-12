@@ -15,8 +15,12 @@
 
         <field name="directions" column="directions" type="string" nullable="false"/>
 
-        <one-to-many target-entity="StudentInfo\Models\Lecture" mapped-by="classroom" field="lectures"/>
-
+        <one-to-many field="lectures" target-entity="StudentInfo\Models\Lecture" mapped-by="classroom">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
     </entity>
 
 </doctrine-mapping>

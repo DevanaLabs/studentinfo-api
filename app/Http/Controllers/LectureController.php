@@ -7,6 +7,7 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddLectureRequest;
+use StudentInfo\Http\Requests\DeleteLectureRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\Lecture;
@@ -97,5 +98,18 @@ class LectureController extends ApiController
             'lecture' => $lecture,
         ]);
 
+    }
+
+    public function deleteLectures(DeleteLectureRequest $request)
+    {
+        $ids = $request->get('ids');
+        foreach ($ids as $id) {
+            $lecture = $this->lectureRepository->find($id);
+            if ($lecture === null) {
+                continue;
+            }
+            $this->lectureRepository->destroy($lecture);
+        }
+        return $this->returnSuccess();
     }
 }

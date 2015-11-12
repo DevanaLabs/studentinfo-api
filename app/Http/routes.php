@@ -74,4 +74,8 @@ Route::post('chooseLectures' , 'StudentController@chooseLectures');
 
 Route::get('showMyLectures' , 'StudentController@showMyLectures');
 
+Route::delete('deleteLectures' , 'LectureController@deleteLectures');
+
+Route::delete('deleteCourses' , 'CourseController@deleteCourses');
+
 
