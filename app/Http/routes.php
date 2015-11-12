@@ -70,9 +70,25 @@ Route::post('addLecture', 'LectureController@addLecture');
 
 Route::post('addCourses', 'CourseController@addCourses');
 
-Route::post('chooseLectures' , 'StudentController@chooseLectures');
+Route::post('chooseLectures', 'StudentController@chooseLectures');
 
-Route::get('showMyLectures' , 'StudentController@showMyLectures');
+Route::get('showMyLectures', 'StudentController@showMyLectures');
+
+Route::get('editClassroom/{id}', 'ClassroomController@getEditClassroom');
+
+Route::put('editClassroom/{id}', 'ClassroomController@putEditClassroom');
+
+Route::get('editProfessor/{id}', 'ProfessorController@getEditProfessor');
+
+Route::put('editProfessor/{id}', 'ProfessorController@putEditProfessor');
+
+Route::get('editCourse/{id}', 'CourseController@getEditCourse');
+
+Route::put('editCourse/{id}', 'CourseController@putEditCourse');
+
+Route::get('editLecture/{id}', 'LectureController@getEditLecture');
+
+Route::put('editLecture/{id}', 'LectureController@putEditLecture');
 
 Route::delete('deleteLectures' , 'LectureController@deleteLectures');
 

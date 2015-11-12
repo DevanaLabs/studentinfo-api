@@ -3,6 +3,11 @@
 namespace StudentInfo\Models;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use StudentInfo\Http\Requests\EditLectureRequest;
+use StudentInfo\Repositories\ClassroomRepositoryInterface;
+use StudentInfo\Repositories\CourseRepositoryInterface;
+use StudentInfo\Repositories\LectureRepositoryInterface;
+use StudentInfo\Repositories\ProfessorRepositoryInterface;
 
 class Lecture
 {
@@ -39,6 +44,25 @@ class Lecture
         $this->students = new ArrayCollection();
     }
 
+    /**
+     * @param EditLectureRequest         $request
+     * @param LectureRepositoryInterface $lectureRepository
+     * @param                            $id
+     * @return Lecture
+     */
+    public static function editLecture(EditLectureRequest $request, LectureRepositoryInterface $lectureRepository, $id)
+    {
+        /** @var  Lecture $lecture */
+        $lecture = $lectureRepository->find($id);
+
+        $lecture->setProfessor($request->get('professorId'));
+        $lecture->setCourse($request->get('courseId'));
+        $lecture->setClassroom($request->get('classroomId'));
+
+        $lectureRepository->update($lecture);
+
+        return $lecture;
+    }
     /**
      * @return int
      */

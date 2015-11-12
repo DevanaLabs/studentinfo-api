@@ -7,6 +7,7 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Http\Requests\AddCourseRequest;
 use StudentInfo\Http\Requests\DeleteCourseRequest;
+use StudentInfo\Http\Requests\EditCourseRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 
@@ -39,20 +40,10 @@ class CourseController extends ApiController
      */
     public function addCourses(AddCourseRequest $request)
     {
-        $added_courses = [];
-
-        $courses = $request->get('courses');
-
-        for ($i = 0; $i < count($courses); $i++) {
-            $course = new Course();
-            $course->setCode($courses[$i]['courseCode']);
-            $course->setSemester($courses[$i]['courseSemester']);
-            $this->courseRepository->create($course);
-            $added_courses[] = $course;
-        }
+        $addedCourses = Course::addCourse($this->courseRepository, $request->get('courses'));
 
         return $this->returnSuccess([
-            'courses' => $added_courses,
+            'courses' => $addedCourses,
         ]);
 
         /*
@@ -80,6 +71,20 @@ class CourseController extends ApiController
         }
     }
 
+    public function getEditCourse($id)
+    {
+        print_r($this->courseRepository->find($id));
+    }
+
+    public function putEditCourse(EditCourseRequest $request, $id)
+    {
+        $course = Course::editCourse($request, $this->courseRepository, $id);
+
+        return $this->returnSuccess([
+            'course' => $course
+        ]);
+    }
+
     public function deleteCourses(DeleteCourseRequest $request)
     {
         $ids = $request->get('ids');
@@ -92,4 +97,5 @@ class CourseController extends ApiController
         }
         return $this->returnSuccess();
     }
+
 }

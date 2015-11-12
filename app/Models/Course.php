@@ -3,6 +3,8 @@
 namespace StudentInfo\Models;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use StudentInfo\Http\Requests\EditCourseRequest;
+use StudentInfo\Repositories\CourseRepositoryInterface;
 
 class Course
 {
@@ -38,6 +40,45 @@ class Course
     {
         $this->lectures = new ArrayCollection();
         $this->students = new ArrayCollection();
+    }
+
+    /**
+     * @param CourseRepositoryInterface $courseRepository
+     * @param                           $courses
+     * @return array
+     */
+    public static function addCourse(CourseRepositoryInterface $courseRepository, $courses)
+    {
+        $addedCourses = [];
+
+        for ($i = 0; $i < count($courses); $i++) {
+            $course = new Course();
+            $course->setCode($courses[$i]['code']);
+            $course->setSemester($courses[$i]['semester']);
+            $courseRepository->create($course);
+
+            $addedCourses[] = $course;
+        }
+        return $addedCourses;
+    }
+
+    /**
+     * @param EditCourseRequest                      $request
+     * @param CourseRepositoryInterface              $courseRepository
+     * @param                                        $id
+     * @return Course
+     */
+    public static function editCourse(EditCourseRequest $request, CourseRepositoryInterface $courseRepository, $id)
+    {
+        /** @var  Course $course */
+        $course = $courseRepository->find($id);
+
+        $course->setCode($request->get('code'));
+        $course->setSemester($request->get('semester'));
+
+        $courseRepository->update($course);
+
+        return $course;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
 use StudentInfo\Http\Requests\AddProfessorRequest;
+use StudentInfo\Http\Requests\EditProfessorRequest;
 use StudentInfo\Models\Professor;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\ProfessorRepositoryInterface;
@@ -33,20 +34,11 @@ class ProfessorController extends ApiController
 
     public function addProfessors(AddProfessorRequest $request)
     {
-        $addedProfessors = [];
+        $addedProfessors = Professor::addProfessor($this->professorRepository, $request->get('professors'));
 
-        $professors = $request->get('professors');
-
-        for ($count = 0; $count < count($professors); $count++) {
-            $professor = new Professor();
-            $professor->setFirstName($professors[$count]['firstName']);
-            $professor->setLastName($professors[$count]['lastName']);
-            $professor->setTitle($professors[$count]['title']);
-            $this->professorRepository->create($professor);
-
-            $addedProfessors[] = $professor;
-        }
-        $this->returnSuccess($addedProfessors);
+        return $this->returnSuccess([
+            'professors' => $addedProfessors,
+        ]);
     }
 
     public function getProfessors()
@@ -56,5 +48,19 @@ class ProfessorController extends ApiController
         foreach ($professors as $professor) {
             print_r($professor);
         }
+    }
+
+    public function getEditProfessor($id)
+    {
+        print_r($this->professorRepository->find($id));
+    }
+
+    public function putEditProfessor(EditProfessorRequest $request, $id)
+    {
+        $professor = Professor::editProfessor($request, $this->professorRepository, $id);
+
+        return $this->returnSuccess([
+            'professor' => $professor
+        ]);
     }
 }

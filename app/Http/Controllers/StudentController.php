@@ -98,6 +98,7 @@ class StudentController extends ApiController
 
     }
 
+
     public function chooseLectures(SetGetLecturesRequest $request)
     {
         $ids = $request->get('ids');

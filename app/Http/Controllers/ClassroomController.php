@@ -4,14 +4,15 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
 use StudentInfo\Http\Requests\AddClassroomRequest;
+use StudentInfo\Http\Requests\EditClassroomRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
-use StudentInfo\Repositories\DoctrineClassroomRepository;
+use StudentInfo\Repositories\StudentRepositoryInterface;
 
 class ClassroomController extends ApiController
 {
     /**
-     * @var DoctrineClassroomRepository $classroomRepository
+     * @var ClassroomRepositoryInterface $classroomRepository
      */
     protected $classroomRepository;
 
@@ -33,22 +34,11 @@ class ClassroomController extends ApiController
 
     public function addClassrooms(AddClassroomRequest $request)
     {
-        $classrooms = $request->get('classrooms');
+        $addedClassrooms = Classroom::addClassrooms($this->classroomRepository, $request->get('classrooms'));
 
-        $added_classrooms = [];
-
-        for ($count = 0; $count < count($classrooms); $count++) {
-            $classroom = new Classroom();
-            $classroom->setName($classrooms[$count]['name']);
-            $classroom->setDirections($classrooms[$count]['directions']);
-            $this->classroomRepository->create($classroom);
-
-            $added_classrooms[]=$classroom;
-        }
         return $this->returnSuccess([
-            'classrooms' => $added_classrooms
+            'classrooms' => $addedClassrooms
         ]);
-
     }
 
     public function getClassrooms()
@@ -58,5 +48,19 @@ class ClassroomController extends ApiController
         foreach ($classrooms as $classroom) {
             print_r($classroom);
         }
+    }
+
+    public function getEditClassroom($id)
+    {
+        print_r($classroom = $this->classroomRepository->find($id));
+    }
+
+    public function putEditClassroom(EditClassroomRequest $request, $id)
+    {
+        $classroom = Classroom::editClassrooms($request, $this->classroomRepository, $id);
+
+        return $this->returnSuccess([
+            'classroom' => $classroom
+        ]);
     }
 }

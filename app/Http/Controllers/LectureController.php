@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddLectureRequest;
 use StudentInfo\Http\Requests\DeleteLectureRequest;
+use StudentInfo\Http\Requests\EditLectureRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\Lecture;
@@ -62,18 +63,14 @@ class LectureController extends ApiController
 
     public function addLecture(AddLectureRequest $request)
     {
-        $professorId = $request->get('professorId');
-        $courseId    = $request->get('courseId');
-        $classroomId = $request->get('classroomId');
-
         /** @var Professor $professor */
-        $professor = $this->professorRepository->find($professorId);
+        $professor = $this->professorRepository->find($request->get('professorId'));
 
         /** @var Course $course */
-        $course = $this->courseRepository->find($courseId);
+        $course = $this->courseRepository->find($request->get('courseId'));
 
         /** @var Classroom $classroom */
-        $classroom = $this->classroomRepository->find($classroomId);
+        $classroom = $this->classroomRepository->find($request->get('classroomId'));
 
         $lecture = new Lecture();
 
@@ -97,7 +94,47 @@ class LectureController extends ApiController
         return $this->returnSuccess([
             'lecture' => $lecture,
         ]);
+    }
 
+    public function getEditLecture($id)
+    {
+        print_r($this->professorRepository->find($id));
+    }
+
+    public function putEditLecture(EditLectureRequest $request, $id)
+    {
+        /** @var Professor $professor */
+        $professor = $this->professorRepository->find($request->get('professorId'));
+
+        /** @var Course $course */
+        $course = $this->courseRepository->find($request->get('courseId'));
+
+        /** @var Classroom $classroom */
+        $classroom = $this->classroomRepository->find($request->get('classroomId'));
+
+        if ($professor == null) {
+            return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
+        }
+        if ($course == null) {
+            return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
+        }
+        if ($classroom == null) {
+            return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
+        }
+        /** @var Lecture $lecture */
+        $lecture = $this->lectureRepository->find($id);
+
+        $professor->setLectures([$lecture]);
+        $course->setLectures([$lecture]);
+        $lecture->setProfessor($professor);
+        $lecture->setCourse($course);
+        $lecture->setClassroom($classroom);
+
+        $this->lectureRepository->update($lecture);
+
+        return $this->returnSuccess([
+            'lecture' => $lecture
+        ]);
     }
 
     public function deleteLectures(DeleteLectureRequest $request)

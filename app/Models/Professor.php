@@ -4,6 +4,8 @@ namespace StudentInfo\Models;
 
 
 use Doctrine\Common\Collections\ArrayCollection;
+use StudentInfo\Http\Requests\EditProfessorRequest;
+use StudentInfo\Repositories\ProfessorRepositoryInterface;
 
 class Professor
 {
@@ -54,6 +56,41 @@ class Professor
     public function __construct()
     {
         $this->lectures = new ArrayCollection();
+    }
+
+    /**
+     * @param ProfessorRepositoryInterface $professorRepository
+     * @param ArrayCollection|Professor[]  $professors
+     * @return array
+     */
+    public static function addProfessor(ProfessorRepositoryInterface $professorRepository, $professors)
+    {
+        $addedProfessors = [];
+
+        for ($count = 0; $count < count($professors); $count++) {
+            $professor = new Professor();
+            $professor->setFirstName($professors[$count]['firstName']);
+            $professor->setLastName($professors[$count]['lastName']);
+            $professor->setTitle($professors[$count]['title']);
+            $professorRepository->create($professor);
+
+            $addedProfessors[] = $professor;
+        }
+        return $addedProfessors;
+    }
+
+    public static function editProfessor(EditProfessorRequest $request, ProfessorRepositoryInterface $professorRepository, $id)
+    {
+        /** @var  Professor $professor */
+        $professor = $professorRepository->find($id);
+
+        $professor->setFirstName($request->get('firstName'));
+        $professor->setLastName($request->get('lastName'));
+        $professor->setTitle($request->get('title'));
+
+        $professorRepository->update($professor);
+
+        return $professor;
     }
 
     /**

@@ -22,7 +22,11 @@ class AdminRole extends Role
             'course.create',
             'course.delete',
             'lecture.create',
-            'lecture.delete'
+            'lecture.delete',
+            'classroom.edit',
+            'professor.edit',
+            'course.edit',
+            'lecture.edit',
         ];
     }
 
