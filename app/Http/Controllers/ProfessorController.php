@@ -49,6 +49,19 @@ class ProfessorController extends ApiController
             print_r($professor);
         }
     }
+    public function deleteProfessors(DeleteProfessorRequest $request)
+    {
+        $ids = $request->get('ids');
+        foreach($ids as $id)
+        {
+            $professor = $this->professorRepository->find($id);
+            if ($professor === null)
+            {
+                continue;
+            }
+            $this->professorRepository->destroy($professor);
+        }
+    }
 
     public function getEditProfessor($id)
     {

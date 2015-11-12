@@ -94,4 +94,13 @@ Route::delete('deleteLectures' , 'LectureController@deleteLectures');
 
 Route::delete('deleteCourses' , 'CourseController@deleteCourses');
 
+Route::delete('deleteClassrooms' , 'ClassroomController@deleteClassrooms');
+
+Route::delete('deleteCourses' , 'CourseController@deleteCourses');
+
+Route::delete('deleteProfessors' , 'ProfessorController@deleteProfessors');
+
+Route::delete('deleteLectures' , 'LectureController@deleteLectures');
+
+
 

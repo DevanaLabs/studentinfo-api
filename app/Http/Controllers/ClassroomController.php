@@ -4,7 +4,7 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
 use StudentInfo\Http\Requests\AddClassroomRequest;
-use StudentInfo\Http\Requests\EditClassroomRequest;
+use StudentInfo\Http\Requests\DeleteClassroomRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\StudentRepositoryInterface;
@@ -47,6 +47,20 @@ class ClassroomController extends ApiController
 
         foreach ($classrooms as $classroom) {
             print_r($classroom);
+        }
+    }
+
+    public function deleteClassrooms(DeleteClassroomRequest $request)
+    {
+        $ids = $request->get('ids');
+        foreach($ids as $id)
+        {
+            $classroom = $this->classroomRepository->find($id);
+            if ($classroom === null)
+            {
+                continue;
+            }
+            $this->classroomRepository->destroy($classroom);
         }
     }
 
