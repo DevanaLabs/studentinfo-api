@@ -16,9 +16,11 @@
     "filp/whoops": "~1.0"
   },
   "require-dev": {
+    "behat/behat": "~2.5",
+    "guzzlehttp/guzzle": "4.*",
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "0.9.*",
-    "phpunit/phpunit": "~4.0",
+    "phpunit/phpunit": "3.7.*",
     "phpspec/phpspec": "~2.1"
   },
   "autoload": {
