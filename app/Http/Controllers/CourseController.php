@@ -66,14 +66,15 @@ class CourseController extends ApiController
     {
         $courses = $this->courseRepository->all();
 
-        foreach ($courses as $course) {
-            print_r($course);
-        }
+        return $this->returnSuccess($courses);
+//        foreach ($courses as $course) {
+//            print_r($course);
+//        }
     }
 
     public function getEditCourse($id)
     {
-        print_r($this->courseRepository->find($id));
+        return $this->returnSuccess($this->courseRepository->find($id));
     }
 
     public function putEditCourse(EditCourseRequest $request, $id)

@@ -4,6 +4,7 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
 use StudentInfo\Http\Requests\AddProfessorRequest;
+use StudentInfo\Http\Requests\DeleteProfessorRequest;
 use StudentInfo\Http\Requests\EditProfessorRequest;
 use StudentInfo\Models\Professor;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
@@ -45,27 +46,15 @@ class ProfessorController extends ApiController
     {
         $professors = $this->professorRepository->all();
 
-        foreach ($professors as $professor) {
-            print_r($professor);
-        }
-    }
-    public function deleteProfessors(DeleteProfessorRequest $request)
-    {
-        $ids = $request->get('ids');
-        foreach($ids as $id)
-        {
-            $professor = $this->professorRepository->find($id);
-            if ($professor === null)
-            {
-                continue;
-            }
-            $this->professorRepository->destroy($professor);
-        }
+        return $this->returnSuccess($professors);
+//        foreach ($professors as $professor) {
+//            print_r($professor);
+//        }
     }
 
     public function getEditProfessor($id)
     {
-        print_r($this->professorRepository->find($id));
+        return $this->returnSuccess($this->professorRepository->find($id));
     }
 
     public function putEditProfessor(EditProfessorRequest $request, $id)
@@ -74,6 +63,26 @@ class ProfessorController extends ApiController
 
         return $this->returnSuccess([
             'professor' => $professor
+        ]);
+    }
+
+    public function deleteProfessors(DeleteProfessorRequest $request)
+    {
+        $ids = $request->get('ids');
+        $deletedProfessors = [];
+
+        foreach($ids as $id)
+        {
+            $professor = $this->professorRepository->find($id);
+            if ($professor === null)
+            {
+                continue;
+            }
+            $this->professorRepository->destroy($professor);
+            $deletedProfessors[] = $id;
+        }
+        return $this->returnSuccess([
+            'deletedProfessors' => $deletedProfessors
         ]);
     }
 }

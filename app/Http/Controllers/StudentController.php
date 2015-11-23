@@ -5,7 +5,7 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Http\Requests\SetGetLecturesRequest;
-use StudentInfo\Http\Requests\AddStudentsRequest;
+use StudentInfo\Http\Requests\AddGetStudentsRequest;
 use StudentInfo\Models\Student;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
@@ -58,7 +58,7 @@ class StudentController extends ApiController
         $this->guard          = $guard;
     }
 
-    public function addStudents(AddStudentsRequest $request)
+    public function addStudents(AddGetStudentsRequest $request)
     {
         $addedStudents = [];
 
@@ -75,7 +75,7 @@ class StudentController extends ApiController
             $student->setYear($students[$count]['year']);
             $student->setPassword(new Password('password'));
             $student->generateRegisterToken();
-            $student->setOrganisation($this->facultyRepository->find(3));
+            $student->setOrganisation($this->facultyRepository->findFacultyByName('Racunarski fakultet'));
             if ($this->userRepository->findByEmail(new Email($students[$count]['email']))) {
                 $failedToAddStudents[] = $student;
                 continue;
@@ -89,15 +89,16 @@ class StudentController extends ApiController
         ]);
     }
 
-    public function getStudents()
+    public function getStudents(AddGetStudentsRequest $request)
     {
         $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
-        foreach ($students as $student) {
-           print_r($student);
-        }
+
+        return $this->returnSuccess($students);
+//        foreach ($students as $student) {
+//           print_r($student);
+//        }
 
     }
-
 
     public function chooseLectures(SetGetLecturesRequest $request)
     {
@@ -130,12 +131,15 @@ class StudentController extends ApiController
 
     public function showMyLectures(SetGetLecturesRequest $request)
     {
+        $lecture = [];
+
         /** @var Student $student */
         $student = $this->studentRepository->find($this->guard->user()->getId());
 
         for($i = 0; $i < count($student->getLectures()); $i++){
-            var_dump($student->getLectures()[$i]);
+            $lecture[] = $student->getLectures()[$i];
         }
 
+        return $this->returnSuccess($lecture);
     }
 }

@@ -29,6 +29,7 @@ class AdminRole extends Role
             'professor.edit',
             'course.edit',
             'lecture.edit',
+            'view.all.users'
         ];
     }
 

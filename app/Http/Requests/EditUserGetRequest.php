@@ -1,13 +1,11 @@
 <?php
 
-
 namespace StudentInfo\Http\Requests;
-
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Models\User;
 
-class AddStudentsRequest extends Request
+class EditUserGetRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,12 +15,19 @@ class AddStudentsRequest extends Request
      */
     public function authorize(Guard $guard)
     {
+        $userId = $this->route('user_id');
+
         /** @var User $user */
-       $user = $guard->user();
-       if ($user === null) {
+        $user = $guard->user();
+        if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('user.create'));
+
+        if ($user->getId() !== $userId){
+            return true;
+        }
+
+        return true;
     }
 
     /**

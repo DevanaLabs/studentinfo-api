@@ -5,9 +5,9 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Auth\Guard;
 use StudentInfo\Http\Requests\AddClassroomRequest;
 use StudentInfo\Http\Requests\DeleteClassroomRequest;
+use StudentInfo\Http\Requests\EditClassroomRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
-use StudentInfo\Repositories\StudentRepositoryInterface;
 
 class ClassroomController extends ApiController
 {
@@ -45,28 +45,17 @@ class ClassroomController extends ApiController
     {
         $classrooms = $this->classroomRepository->all();
 
-        foreach ($classrooms as $classroom) {
-            print_r($classroom);
-        }
-    }
-
-    public function deleteClassrooms(DeleteClassroomRequest $request)
-    {
-        $ids = $request->get('ids');
-        foreach($ids as $id)
-        {
-            $classroom = $this->classroomRepository->find($id);
-            if ($classroom === null)
-            {
-                continue;
-            }
-            $this->classroomRepository->destroy($classroom);
-        }
+        return $this->returnSuccess($classrooms);
+//        foreach ($classrooms as $classroom) {
+//            print_r($classroom);
+//        }
     }
 
     public function getEditClassroom($id)
     {
-        print_r($classroom = $this->classroomRepository->find($id));
+        return $this->returnSuccess([
+            'classroom' => $classroom = $this->classroomRepository->find($id)
+        ]);
     }
 
     public function putEditClassroom(EditClassroomRequest $request, $id)
@@ -76,5 +65,26 @@ class ClassroomController extends ApiController
         return $this->returnSuccess([
             'classroom' => $classroom
         ]);
+    }
+
+    public function deleteClassrooms(DeleteClassroomRequest $request)
+    {
+        $ids = $request->get('ids');
+        $deletedClassrooms = [];
+
+        foreach($ids as $id)
+        {
+            $classroom = $this->classroomRepository->find($id);
+            if ($classroom === null)
+            {
+                continue;
+            }
+            $this->classroomRepository->destroy($classroom);
+            $deletedClassrooms[] = $id;
+        }
+        return $this->returnSuccess([
+                'deletedClassrooms' => $deletedClassrooms
+            ]
+        );
     }
 }

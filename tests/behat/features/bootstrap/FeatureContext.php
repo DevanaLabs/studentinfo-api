@@ -7,6 +7,7 @@ use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\AbstractMessage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+use Illuminate\Contracts\Auth\Guard;
 //
 // Require 3rd-party libraries here:
 //
@@ -46,6 +47,10 @@ class FeatureContext extends BehatContext
      */
     protected $scope;
     /**
+     * @var Guard
+     */
+    protected $guard;
+    /**
      * Initializes context.
      * Every scenario gets it's own context object.
      *
@@ -56,6 +61,17 @@ class FeatureContext extends BehatContext
         $config = isset($parameters['guzzle']) && is_array($parameters['guzzle']) ? $parameters['guzzle'] : [];
         $config['base_url'] = 'http://api.studentinfo.dev';
         $this->client = new Client($config);
+    }
+
+    /**
+     * @Given /^I am logged in as admin/
+     */
+    public function IAmLoggedInAsAdmin()
+    {
+        $this->guard->attempt([
+            'email.email' => 'nu@gmail.com',
+            'password'    => 'blabla'
+        ]);
     }
     /**
      * @Given /^I have the payload:$/

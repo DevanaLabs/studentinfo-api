@@ -98,7 +98,7 @@ class LectureController extends ApiController
 
     public function getEditLecture($id)
     {
-        print_r($this->professorRepository->find($id));
+        return $this->returnSuccess($this->professorRepository->find($id));
     }
 
     public function putEditLecture(EditLectureRequest $request, $id)
@@ -140,13 +140,18 @@ class LectureController extends ApiController
     public function deleteLectures(DeleteLectureRequest $request)
     {
         $ids = $request->get('ids');
+        $deletedLectures = [];
+
         foreach ($ids as $id) {
             $lecture = $this->lectureRepository->find($id);
             if ($lecture === null) {
                 continue;
             }
             $this->lectureRepository->destroy($lecture);
+            $deletedLectures[] = $id;
         }
-        return $this->returnSuccess();
+        return $this->returnSuccess([
+            'deletedLectures' => $deletedLectures
+        ]);
     }
 }
