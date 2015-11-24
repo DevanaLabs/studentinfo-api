@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Nebojsa
- * Date: 11/23/2015
- * Time: 1:07 PM
- */
 
 namespace StudentInfo\Http\Middleware;
 
