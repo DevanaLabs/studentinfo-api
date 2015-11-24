@@ -3,9 +3,9 @@
 namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
+use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddClassroomRequest;
-use StudentInfo\Http\Requests\DeleteClassroomRequest;
-use StudentInfo\Http\Requests\EditClassroomRequest;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 
@@ -34,10 +34,31 @@ class ClassroomController extends ApiController
 
     public function addClassrooms(AddClassroomRequest $request)
     {
-        $addedClassrooms = Classroom::addClassrooms($this->classroomRepository, $request->get('classrooms'));
+        dd(1);
+        $addedClassrooms = [];
+
+        $failedToAddClassrooms= [];
+
+        $classrooms = $request->get('classrooms');
+
+        for ($count = 0; $count < count($classrooms); $count++) {
+            $classroom = new Classroom();
+            $classroom->setName($classrooms[$count]['name']);
+            $classroom->setDirections($classrooms[$count]['directions']);
+
+            if ($this->classroomRepository->findByName(($classrooms[$count]['name']))) {
+                $failedToAddStudents[] = $classroom;
+                continue;
+            }
+
+            $this->classroomRepository->create($classroom);
+
+            $addedClassrooms[]=$classroom;
+        }
 
         return $this->returnSuccess([
-            'classrooms' => $addedClassrooms
+            'successful'   => $addedClassrooms,
+            'unsuccessful' => $failedToAddClassrooms,
         ]);
     }
 
@@ -46,28 +67,41 @@ class ClassroomController extends ApiController
         $classrooms = $this->classroomRepository->all();
 
         return $this->returnSuccess($classrooms);
-//        foreach ($classrooms as $classroom) {
-//            print_r($classroom);
-//        }
     }
 
     public function getEditClassroom($id)
     {
-        return $this->returnSuccess([
-            'classroom' => $classroom = $this->classroomRepository->find($id)
-        ]);
-    }
+        $classroom = $this->classroomRepository->find($id);
 
-    public function putEditClassroom(EditClassroomRequest $request, $id)
-    {
-        $classroom = Classroom::editClassrooms($request, $this->classroomRepository, $id);
+        if($classroom  === null){
+            return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
+        }
 
         return $this->returnSuccess([
             'classroom' => $classroom
         ]);
     }
 
-    public function deleteClassrooms(DeleteClassroomRequest $request)
+    public function putEditClassroom(StandardRequest $request, $id)
+    {
+        if($this->classroomRepository->find($id)  === null){
+            return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
+        }
+
+        /** @var  Classroom $classroom */
+        $classroom = $this->classroomRepository->find($id);
+
+        $classroom->setName($request->get('name'));
+        $classroom->setDirections($request->get('directions'));
+
+        $this->classroomRepository->update($classroom);
+
+        return $this->returnSuccess([
+            'classroom' => $classroom
+        ]);
+    }
+
+    public function deleteClassrooms(StandardRequest $request)
     {
         $ids = $request->get('ids');
         $deletedClassrooms = [];

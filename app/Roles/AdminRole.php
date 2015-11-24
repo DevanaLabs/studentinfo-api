@@ -14,22 +14,30 @@ class AdminRole extends Role
     public function getPermissions()
     {
         return [
-            'user.edit',
-            'user.create',
-            'user.delete',
+            'student.edit',
+            'student.create',
+            'student.delete',
+            'student.retrieve',
             'classroom.create',
             'classroom.delete',
+            'classroom.edit',
+            'classroom.retrieve',
             'professor.create',
             'professor.delete',
+            'professor.edit',
+            'professor.retrieve',
             'course.create',
             'course.delete',
+            'course.edit',
+            'course.retrieve',
             'lecture.create',
             'lecture.delete',
-            'classroom.edit',
-            'professor.edit',
-            'course.edit',
             'lecture.edit',
-            'view.all.users'
+            'lecture.retrieve',
+            'group.create',
+            'group.edit',
+            'group.retrieve',
+            'group.delete'
         ];
     }
 

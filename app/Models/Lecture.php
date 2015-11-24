@@ -4,6 +4,7 @@ namespace StudentInfo\Models;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\Http\Requests\EditLectureRequest;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
@@ -37,20 +38,26 @@ class Lecture
     private $students;
 
     /**
+     * @var ArrayCollection|Group[]
+     */
+    private $groups;
+
+    /**
      * Lecture constructor.
      */
     public function __construct()
     {
         $this->students = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     /**
-     * @param EditLectureRequest         $request
+     * @param StandardRequest         $request
      * @param LectureRepositoryInterface $lectureRepository
      * @param                            $id
      * @return Lecture
      */
-    public static function editLecture(EditLectureRequest $request, LectureRepositoryInterface $lectureRepository, $id)
+    public static function editLecture(StandardRequest $request, LectureRepositoryInterface $lectureRepository, $id)
     {
         /** @var  Lecture $lecture */
         $lecture = $lectureRepository->find($id);
@@ -134,4 +141,21 @@ class Lecture
     {
         $this->students = $students;
     }
+
+    /**
+     * @return ArrayCollection|Group[]
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @param ArrayCollection|Group[] $groups
+     */
+    public function setGroups($groups)
+    {
+        $this->groups = $groups;
+    }
+
 }

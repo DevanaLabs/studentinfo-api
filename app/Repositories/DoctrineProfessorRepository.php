@@ -32,4 +32,12 @@ class DoctrineProfessorRepository extends EntityRepository implements ProfessorR
     {
         return $this->_em->find('StudentInfo\Models\Professor', $id);
     }
+
+    public function findByName($firstName, $lastName)
+    {
+        $query = $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p WHERE p.firstName = :firstName and p.lastName = :lastName');
+        $query->setParameter('firstName', $firstName);
+        $query->setParameter('lastName', $lastName);
+        return $query->getOneOrNullResult();
+    }
 }

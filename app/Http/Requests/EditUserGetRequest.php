@@ -23,11 +23,11 @@ class EditUserGetRequest extends Request
             return false;
         }
 
-        if ($user->getId() !== $userId){
+        if ($user->getId() == $userId){
             return true;
         }
 
-        return true;
+        return false;
     }
 
     /**

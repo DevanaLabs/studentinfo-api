@@ -4,8 +4,10 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Http\Requests\SetGetLecturesRequest;
-use StudentInfo\Http\Requests\AddGetStudentsRequest;
+use StudentInfo\Http\Requests\AddStudentsRequest;
+use StudentInfo\Http\Requests\GetStudentRequest;
 use StudentInfo\Models\Student;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
@@ -58,7 +60,7 @@ class StudentController extends ApiController
         $this->guard          = $guard;
     }
 
-    public function addStudents(AddGetStudentsRequest $request)
+    public function addStudents(AddStudentsRequest $request)
     {
         $addedStudents = [];
 
@@ -89,14 +91,11 @@ class StudentController extends ApiController
         ]);
     }
 
-    public function getStudents(AddGetStudentsRequest $request)
+    public function getStudents()
     {
         $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
 
         return $this->returnSuccess($students);
-//        foreach ($students as $student) {
-//           print_r($student);
-//        }
 
     }
 

@@ -22,7 +22,7 @@ class SetGetLecturesRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('course.add'));
+        return ($user->hasPermissionTo('lecture.add'));
     }
 
     /**

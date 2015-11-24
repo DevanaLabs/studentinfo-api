@@ -11,4 +11,14 @@ return [
     \StudentInfo\ErrorCodes\UserErrorCodes::USER_DOES_NOT_EXIST    => 'User does not exist in database',
 
     \StudentInfo\ErrorCodes\UserErrorCodes::YOU_ARE_NOT_A_STUDENT  => 'You are not a student',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::CLASSROOM_NOT_IN_DB    => 'Classroom is not in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::PROFESSOR_NOT_IN_DB    => 'Professor is not in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::COURSE_NOT_IN_DB       => 'Course is not in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::LECTURE_NOT_IN_DB      => 'Lecture is not in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::GROUP_NOT_IN_DB        => 'Group is not in database',
 ];

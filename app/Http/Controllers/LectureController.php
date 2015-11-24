@@ -7,8 +7,8 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddLectureRequest;
-use StudentInfo\Http\Requests\DeleteLectureRequest;
-use StudentInfo\Http\Requests\EditLectureRequest;
+use StudentInfo\Http\Requests\Request;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\Lecture;
@@ -96,13 +96,32 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function getEditLecture($id)
+    public function getLectures()
     {
-        return $this->returnSuccess($this->professorRepository->find($id));
+        $lectures = $this->lectureRepository->all();
+
+        return $this->returnSuccess($lectures);
     }
 
-    public function putEditLecture(EditLectureRequest $request, $id)
+    public function getEditLecture($id)
     {
+        $lecture = $this->lectureRepository->find($id);
+
+        if($lecture  === null){
+            return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
+        }
+
+        return $this->returnSuccess([
+            'professor' => $lecture
+        ]);
+    }
+
+    public function putEditLecture(Request $request, $id)
+    {
+        if($this->lectureRepository->find($id)  === null){
+            return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
+        }
+
         /** @var Professor $professor */
         $professor = $this->professorRepository->find($request->get('professorId'));
 
@@ -137,7 +156,7 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function deleteLectures(DeleteLectureRequest $request)
+    public function deleteLectures(Request $request)
     {
         $ids = $request->get('ids');
         $deletedLectures = [];

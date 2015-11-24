@@ -18,6 +18,10 @@ class UserErrorCodes
 
     const CLASSROOM_NOT_IN_DB = 106;
 
-    const YOU_ARE_NOT_A_STUDENT = 107;
+    const LECTURE_NOT_IN_DB = 107;
+
+    const GROUP_NOT_IN_DB = 108;
+
+    const YOU_ARE_NOT_A_STUDENT = 108;
 
 }

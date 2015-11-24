@@ -3,9 +3,12 @@
 namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
+use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddProfessorRequest;
 use StudentInfo\Http\Requests\DeleteProfessorRequest;
 use StudentInfo\Http\Requests\EditProfessorRequest;
+use StudentInfo\Http\Requests\Request;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Professor;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\ProfessorRepositoryInterface;
@@ -35,10 +38,29 @@ class ProfessorController extends ApiController
 
     public function addProfessors(AddProfessorRequest $request)
     {
-        $addedProfessors = Professor::addProfessor($this->professorRepository, $request->get('professors'));
+        $addedProfessors = [];
+
+        $failedToAddProfessors = [];
+
+        $professors = $request->get('professors');
+
+        for ($count = 0; $count < count($professors); $count++) {
+            $professor = new Professor();
+            $professor->setFirstName($professors[$count]['firstName']);
+            $professor->setLastName($professors[$count]['lastName']);
+            $professor->setTitle($professors[$count]['title']);
+            if ($this->professorRepository->findByName($professors[$count]['firstName'],$professors[$count]['lastName'])) {
+                $failedToAddProfessors[] = $professor;
+                continue;
+            }
+            $this->professorRepository->create($professor);
+
+            $addedProfessors[] = $professor;
+        }
 
         return $this->returnSuccess([
-            'professors' => $addedProfessors,
+            'successful'   => $addedProfessors,
+            'unsuccessful' => $failedToAddProfessors,
         ]);
     }
 
@@ -47,26 +69,42 @@ class ProfessorController extends ApiController
         $professors = $this->professorRepository->all();
 
         return $this->returnSuccess($professors);
-//        foreach ($professors as $professor) {
-//            print_r($professor);
-//        }
     }
 
     public function getEditProfessor($id)
     {
-        return $this->returnSuccess($this->professorRepository->find($id));
-    }
+        $professor = $this->professorRepository->find($id);
 
-    public function putEditProfessor(EditProfessorRequest $request, $id)
-    {
-        $professor = Professor::editProfessor($request, $this->professorRepository, $id);
+        if($professor === null){
+            return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
+        }
 
         return $this->returnSuccess([
             'professor' => $professor
         ]);
     }
 
-    public function deleteProfessors(DeleteProfessorRequest $request)
+    public function putEditProfessor(StandardRequest $request, $id)
+    {
+        if($this->professorRepository->find($id) === null){
+            return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
+        }
+
+        /** @var Professor $professor */
+        $professor = $this->professorRepository->find($id);
+
+        $professor->setFirstName($request->get('firstName'));
+        $professor->setLastName($request->get('lastName'));
+        $professor->setTitle($request->get('title'));
+
+        $this->professorRepository->update($professor);
+
+        return $this->returnSuccess([
+            'professor' => $professor
+        ]);
+    }
+
+    public function deleteProfessors(Request $request)
     {
         $ids = $request->get('ids');
         $deletedProfessors = [];

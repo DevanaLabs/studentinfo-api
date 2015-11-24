@@ -11,6 +11,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use StudentInfo\Http\Middleware\Authenticate;
 use StudentInfo\Http\Middleware\EncryptCookies;
 use StudentInfo\Http\Middleware\RedirectIfAuthenticated;
+use StudentInfo\Http\Middleware\RoleMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -33,6 +34,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'role'       => RoleMiddleware::class,
         'auth'       => Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
         'guest'      => RedirectIfAuthenticated::class,

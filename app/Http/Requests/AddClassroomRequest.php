@@ -5,6 +5,7 @@ namespace StudentInfo\Http\Requests;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Input;
 use StudentInfo\Models\User;
 
 class AddClassroomRequest extends Request
@@ -32,6 +33,14 @@ class AddClassroomRequest extends Request
      */
     public function rules()
     {
-        return [];
+        $rules = [
+            'classrooms' => 'required|array',
+        ];
+
+        for($i = 0; $i < count($this->get('classrooms')); $i++){
+            $rules['classrooms.' . $i . '.name'] = 'required';
+            $rules['classrooms.' . $i . '.directions'] = 'required';
+        }
+        return $rules;
     }
 }

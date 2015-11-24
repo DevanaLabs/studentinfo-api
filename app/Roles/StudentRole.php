@@ -15,7 +15,7 @@ class StudentRole extends Role
     {
         return [
             'user.edit',
-            'course.add',
+            'lecture.add',
         ];
     }
 

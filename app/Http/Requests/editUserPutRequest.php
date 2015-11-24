@@ -19,11 +19,15 @@ class EditUserPutRequest extends Request
 
         /** @var User $user */
         $user = $guard->user();
-        if ($user === null || $user->getId() !== $userId) {
+        if ($user === null) {
             return false;
         }
 
-        return true;
+        if ($user->getId() == $userId){
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -7,7 +7,7 @@ namespace StudentInfo\Http\Requests;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Models\User;
 
-class EditClassroomRequest extends Request
+class AddGroupRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class EditClassroomRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('classroom.create'));
+        return ($user->hasPermissionTo('group.create'));
+
     }
 
     /**

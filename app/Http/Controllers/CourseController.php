@@ -5,9 +5,10 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddCourseRequest;
-use StudentInfo\Http\Requests\DeleteCourseRequest;
-use StudentInfo\Http\Requests\EditCourseRequest;
+use StudentInfo\Http\Requests\Request;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 
@@ -40,26 +41,28 @@ class CourseController extends ApiController
      */
     public function addCourses(AddCourseRequest $request)
     {
-        $addedCourses = Course::addCourse($this->courseRepository, $request->get('courses'));
+        $addedCourses = [];
+
+        $failedToAddCourses =[];
+        $courses = $request->get('courses');
+
+        for ($count = 0; $count < count($courses); $count++) {
+            $course = new Course();
+            $course->setCode($courses[$count]['code']);
+            $course->setSemester($courses[$count]['semester']);
+            if ($this->courseRepository->findByCode($courses[$count]['code'])) {
+                $failedToAddCourses[] = $course;
+                continue;
+            }
+            $this->courseRepository->create($course);
+
+            $addedCourses[] = $course;
+        }
 
         return $this->returnSuccess([
-            'courses' => $addedCourses,
+            'successful'   => $addedCourses,
+            'unsuccessful' => $failedToAddCourses,
         ]);
-
-        /*
-        $lecture   = new Lecture();
-        $professor = new Professor();
-        $classroom = new Classroom();
-        $classroom->setName("Gigantski amfiteatar Milan Vucic");
-        $classroom->setDirections("Ne mozes da ga omasis");
-        $professor->setFirstName("Milovan");
-        $professor->setLastName("Mitic");
-        $professor->setLectures([$lecture]);
-        $lecture->setProfessor($professor);
-        $lecture->setClassroom($classroom);
-        $lecture->setCourse($course);
-        $course->setLectures([$lecture]);
-        */
     }
 
     public function getCourses()
@@ -67,26 +70,42 @@ class CourseController extends ApiController
         $courses = $this->courseRepository->all();
 
         return $this->returnSuccess($courses);
-//        foreach ($courses as $course) {
-//            print_r($course);
-//        }
     }
 
     public function getEditCourse($id)
     {
-        return $this->returnSuccess($this->courseRepository->find($id));
-    }
+        $course = $this->courseRepository->find($id);
 
-    public function putEditCourse(EditCourseRequest $request, $id)
-    {
-        $course = Course::editCourse($request, $this->courseRepository, $id);
+        if($course === null){
+            return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
+        }
 
         return $this->returnSuccess([
             'course' => $course
         ]);
     }
 
-    public function deleteCourses(DeleteCourseRequest $request)
+    public function putEditCourse(StandardRequest $request, $id)
+    {
+        if($this->courseRepository->find($id) === null){
+            return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
+        }
+
+        /** @var  Course $course */
+        $course = $this->courseRepository->find($id);
+
+        $course->setCode($request->get('code'));
+        $course->setSemester($request->get('semester'));
+
+        $this->courseRepository->update($course);
+
+
+        return $this->returnSuccess([
+            'course' => $course
+        ]);
+    }
+
+    public function deleteCourses(StandardRequest $request)
     {
         $ids = $request->get('ids');
         foreach ($ids as $id) {
