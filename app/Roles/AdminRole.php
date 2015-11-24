@@ -37,7 +37,11 @@ class AdminRole extends Role
             'group.create',
             'group.edit',
             'group.retrieve',
-            'group.delete'
+            'group.delete',
+            'event.create',
+            'event.edit',
+            'event.retrieve',
+            'event.delete',
         ];
     }
 

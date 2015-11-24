@@ -8,6 +8,7 @@ use StudentInfo\Models\Student;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\DoctrineClassroomRepository;
 use StudentInfo\Repositories\DoctrineCourseRepository;
+use StudentInfo\Repositories\DoctrineEventRepository;
 use StudentInfo\Repositories\DoctrineFacultyRepository;
 use StudentInfo\Repositories\DoctrineGroupRepository;
 use StudentInfo\Repositories\DoctrineLectureRepository;
@@ -82,6 +83,12 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->bind('StudentInfo\Repositories\GroupRepositoryInterface', function ($app) {
             return new DoctrineGroupRepository(
+                $app['em'],
+                new ClassMetaData(User::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\EventRepositoryInterface', function ($app) {
+            return new DoctrineEventRepository(
                 $app['em'],
                 new ClassMetaData(User::class)
             );

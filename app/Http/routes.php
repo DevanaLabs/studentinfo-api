@@ -66,6 +66,8 @@ Route::get('getClassrooms', ['middleware' => 'role:classroom.retrieve', 'uses' =
 
 Route::post('addProfessors', 'ProfessorController@addProfessors');
 
+Route::post('addEvents', 'EventController@addEvents');
+
 Route::get('getProfessors', ['middleware' => 'role:professor.retrieve', 'uses' => 'ProfessorController@getProfessors']);
 
 Route::post('addLecture', 'LectureController@addLecture');
@@ -104,6 +106,10 @@ Route::get('editGroup/{id}', ['middleware' => 'role:group.edit', 'uses' => 'Grou
 
 Route::put('editGroup/{id}', ['middleware' => 'role:group.edit', 'uses' => 'GroupController@putEditGroup']);
 
+Route::get('editEvent/{id}', ['middleware' => 'role:event.edit', 'uses' => 'EventController@getEditEvent']);
+
+Route::put('editEvent/{id}', ['middleware' => 'role:event.edit', 'uses' => 'EventController@putEditEvent']);
+
 Route::delete('deleteClassrooms' , ['middleware' => 'role:classroom.delete', 'uses' => 'ClassroomController@deleteClassrooms']);
 
 Route::delete('deleteCourses' , ['middleware' => 'role:course.delete', 'uses' => 'CourseController@deleteCourses']);
@@ -113,6 +119,8 @@ Route::delete('deleteProfessors' , ['middleware' => 'role:professor.delete', 'us
 Route::delete('deleteLectures' , ['middleware' => 'role:lecture.delete', 'uses' => 'LectureController@deleteLectures']);
 
 Route::delete('deleteGroups' , ['middleware' => 'role:group.delete', 'uses' => 'GroupController@deleteGroup']);
+
+Route::delete('deleteEvents' , ['middleware' => 'role:event.delete', 'uses' => 'EventController@deleteEvents']);
 
 
 

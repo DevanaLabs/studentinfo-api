@@ -26,5 +26,7 @@ class UserErrorCodes
 
     const INCORRECT_TIME = 110;
 
+    const EVENT_NOT_IN_DB = 111;
+
 
 }

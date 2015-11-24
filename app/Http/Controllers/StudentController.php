@@ -4,9 +4,9 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\AddStudentsRequest;
 use StudentInfo\Http\Requests\Request;
 use StudentInfo\Http\Requests\SetGetLecturesRequest;
-use StudentInfo\Http\Requests\AddStudentsRequest;
 use StudentInfo\Http\Requests\GetStudentRequest;
 use StudentInfo\Models\Student;
 use StudentInfo\Repositories\FacultyRepositoryInterface;

@@ -13,9 +13,9 @@ class Event
     protected $id;
 
     /**
-     * @var int
+     * @var Lecture
      */
-    protected $lectureId;
+    protected $lecture;
 
     /**
      * @var String
@@ -46,19 +46,19 @@ class Event
     }
 
     /**
-     * @return int
+     * @return Lecture
      */
-    public function getLectureId()
+    public function getLecture()
     {
-        return $this->lectureId;
+        return $this->lecture;
     }
 
     /**
-     * @param int $lectureId
+     * @param Lecture $lecture
      */
-    public function setLectureId($lectureId)
+    public function setLecture(Lecture $lecture)
     {
-        $this->lectureId = $lectureId;
+        $this->lecture = $lecture;
     }
     /**
      * @return String

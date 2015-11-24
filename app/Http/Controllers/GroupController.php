@@ -39,7 +39,7 @@ class GroupController extends ApiController
         $this->lectureRepository = $lectureRepository;
     }
 
-    public function addGroups(addGroupRequest $request)
+    public function addGroups(AddGroupRequest $request)
     {
         $addedGroups = [];
 

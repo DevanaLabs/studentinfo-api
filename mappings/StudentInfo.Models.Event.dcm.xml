@@ -5,7 +5,7 @@
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
 
-    <entity name="StudentInfo\Models\Event" table="event">
+    <entity name="StudentInfo\Models\Event" table="events">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -20,7 +20,7 @@
 
         <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
 
-        <many-to-one target-entity="StudentInfo\Models\Lecture" field="lectureId" inversed-by="events">
+        <many-to-one target-entity="StudentInfo\Models\Lecture" field="lecture" inversed-by="events">
             <join-column name="lecture_id" referenced-column-name="id"/>
         </many-to-one>
 
