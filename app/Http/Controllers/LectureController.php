@@ -4,6 +4,7 @@
 namespace StudentInfo\Http\Controllers;
 
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddLectureRequest;
@@ -72,8 +73,6 @@ class LectureController extends ApiController
         /** @var Classroom $classroom */
         $classroom = $this->classroomRepository->find($request->get('classroomId'));
 
-        $lecture = new Lecture();
-
         if ($professor == null) {
             return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
         }
@@ -84,11 +83,23 @@ class LectureController extends ApiController
             return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
         }
 
-        $professor->setLectures([$lecture]);
+        $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
+        $endsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
+
+        if($endsAt->lte($startsAt))
+        {
+            return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
+        }
+
+        $lecture = new Lecture();
+
+        $professor->addLecture($lecture);
+        $course->addLecture($lecture);
         $lecture->setProfessor($professor);
-        $course->setLectures([$lecture]);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
+        $lecture->setStartsAt($startsAt);
+        $lecture->setEndsAt($endsAt);
 
         $this->lectureRepository->create($lecture);
         return $this->returnSuccess([
@@ -140,14 +151,24 @@ class LectureController extends ApiController
         if ($classroom == null) {
             return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
         }
+
+        $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
+        $endsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
+
+        if($endsAt->lt($startsAt))
+        {
+            return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
+        }
         /** @var Lecture $lecture */
         $lecture = $this->lectureRepository->find($id);
 
-        $professor->setLectures([$lecture]);
-        $course->setLectures([$lecture]);
+        $professor->addLecture($lecture);
+        $course->addLecture($lecture);
         $lecture->setProfessor($professor);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
+        $lecture->setStartsAt($startsAt);
+        $lecture->setEndsAt($endsAt);
 
         $this->lectureRepository->update($lecture);
 
@@ -173,4 +194,6 @@ class LectureController extends ApiController
             'deletedLectures' => $deletedLectures
         ]);
     }
+
+
 }

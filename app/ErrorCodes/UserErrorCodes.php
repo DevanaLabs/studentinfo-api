@@ -22,6 +22,9 @@ class UserErrorCodes
 
     const GROUP_NOT_IN_DB = 108;
 
-    const YOU_ARE_NOT_A_STUDENT = 108;
+    const YOU_ARE_NOT_A_STUDENT = 109;
+
+    const INCORRECT_TIME = 110;
+
 
 }

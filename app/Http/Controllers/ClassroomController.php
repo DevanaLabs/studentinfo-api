@@ -34,7 +34,6 @@ class ClassroomController extends ApiController
 
     public function addClassrooms(AddClassroomRequest $request)
     {
-        dd(1);
         $addedClassrooms = [];
 
         $failedToAddClassrooms= [];

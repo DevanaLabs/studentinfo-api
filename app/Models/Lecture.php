@@ -2,6 +2,7 @@
 
 namespace StudentInfo\Models;
 
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\Http\Requests\EditLectureRequest;
 use StudentInfo\Http\Requests\StandardRequest;
@@ -41,6 +42,16 @@ class Lecture
      * @var ArrayCollection|Group[]
      */
     private $groups;
+
+    /**
+     * @var Carbon
+     */
+    private $startsAt;
+
+    /**
+     * @var Carbon
+     */
+    private $endsAt;
 
     /**
      * Lecture constructor.
@@ -158,4 +169,35 @@ class Lecture
         $this->groups = $groups;
     }
 
+    /**
+     * @return Carbon
+     */
+    public function getStartsAt()
+    {
+        return $this->startsAt;
+    }
+
+    /**
+     * @param Carbon $startsAt
+     */
+    public function setStartsAt($startsAt)
+    {
+        $this->startsAt = $startsAt;
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function getEndsAt()
+    {
+        return $this->endsAt;
+    }
+
+    /**
+     * @param Carbon $endsAt
+     */
+    public function setEndsAt($endsAt)
+    {
+        $this->endsAt = $endsAt;
+    }
 }

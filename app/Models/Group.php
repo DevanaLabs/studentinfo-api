@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Nebojsa
- * Date: 11/23/2015
- * Time: 3:31 PM
- */
 
 namespace StudentInfo\Models;
 
@@ -19,7 +13,7 @@ class Group
     protected $id;
 
     /**
-     * @var String
+     * @var Stringl
      */
     protected $name;
 

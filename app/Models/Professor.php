@@ -114,4 +114,12 @@ class Professor
         $this->lastName = $lastName;
     }
 
+    /**
+     * @param Lecture $lecture
+     * @return Lecture
+     */
+    public function addLecture(Lecture $lecture)
+    {
+        return $this->lectures[]=$lecture;
+    }
 }

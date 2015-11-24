@@ -21,4 +21,6 @@ return [
     \StudentInfo\ErrorCodes\UserErrorCodes::LECTURE_NOT_IN_DB      => 'Lecture is not in database',
 
     \StudentInfo\ErrorCodes\UserErrorCodes::GROUP_NOT_IN_DB        => 'Group is not in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::INCORRECT_TIME        => 'Lecture start or end time is incorrect',
 ];

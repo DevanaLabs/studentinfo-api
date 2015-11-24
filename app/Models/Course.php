@@ -114,4 +114,12 @@ class Course
         $this->students = $students;
     }
 
+    /**
+     * @param Lecture $lecture
+     * @return Lecture
+     */
+    public function addLecture(Lecture $lecture)
+    {
+        return $this->lectures[]=$lecture;
+    }
 }
