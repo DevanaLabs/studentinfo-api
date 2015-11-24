@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+
+
+    <entity name="StudentInfo\Models\Event" table="event">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+            <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1"/>
+        </id>
+
+        <field name="type" column="type" type="string" nullable="false"/>
+
+        <field name="description" column="description" type="string" nullable="true"/>
+
+        <field name="startsAt" column="starts_at" type="datetime" nullable="false"/>
+
+        <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
+
+        <many-to-one target-entity="StudentInfo\Models\Lecture" field="lectureId" inversed-by="events">
+            <join-column name="lecture_id" referenced-column-name="id"/>
+        </many-to-one>
+
+    </entity>
+
+</doctrine-mapping>

@@ -17,6 +17,8 @@
   },
   "require-dev": {
     "behat/behat": "~2.5",
+    "behat/mink": "~1.5",
+    "behat/mink-goutte-driver": "~1.0",
     "guzzlehttp/guzzle": "4.*",
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "0.9.*",

@@ -61,6 +61,9 @@ class FeatureContext extends BehatContext
         $config = isset($parameters['guzzle']) && is_array($parameters['guzzle']) ? $parameters['guzzle'] : [];
         $config['base_url'] = 'http://api.studentinfo.dev';
         $this->client = new Client($config);
+        $driver = new \Behat\Mink\Driver\GoutteDriver();
+        $session = new \Behat\Mink\Session($driver);
+        $session->start();
     }
 
     /**
@@ -68,6 +71,7 @@ class FeatureContext extends BehatContext
      */
     public function IAmLoggedInAsAdmin()
     {
+
         $this->guard->attempt([
             'email.email' => 'nu@gmail.com',
             'password'    => 'blabla'
