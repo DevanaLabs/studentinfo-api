@@ -36,31 +36,16 @@ class ProfessorController extends ApiController
         $this->guard          = $guard;
     }
 
-    public function addProfessors(AddProfessorRequest $request)
+    public function addProfessor(AddProfessorRequest $request)
     {
-        $addedProfessors = [];
-
-        $failedToAddProfessors = [];
-
-        $professors = $request->get('professors');
-
-        for ($count = 0; $count < count($professors); $count++) {
             $professor = new Professor();
-            $professor->setFirstName($professors[$count]['firstName']);
-            $professor->setLastName($professors[$count]['lastName']);
-            $professor->setTitle($professors[$count]['title']);
-            if ($this->professorRepository->findByName($professors[$count]['firstName'],$professors[$count]['lastName'])) {
-                $failedToAddProfessors[] = $professor;
-                continue;
-            }
+            $professor->setFirstName($request->get('firstName'));
+            $professor->setLastName($request->get('lastName'));
+            $professor->setTitle($request->get('title'));
             $this->professorRepository->create($professor);
 
-            $addedProfessors[] = $professor;
-        }
-
         return $this->returnSuccess([
-            'successful'   => $addedProfessors,
-            'unsuccessful' => $failedToAddProfessors,
+            'professor'   => $professor,
         ]);
     }
 

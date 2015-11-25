@@ -28,7 +28,17 @@ class UserErrorCodes
 
     const EVENT_NOT_IN_DB = 111;
 
-    const STUDENT_NOT_IN_DB = 112;
+    const STUDENT_NOT_UNIQUE_EMAIL = 112;
+
+    const STUDENT_NOT_UNIQUE_INDEX = 113;
+
+    const CLASSROOM_ALREADY_EXISTS = 114;
+
+    const COURSE_ALREADY_EXISTS = 115;
+
+    const GROUP_ALREADY_EXISTS = 116;
+
+    const STUDENT_NOT_IN_DB = 117;
 
 
 }

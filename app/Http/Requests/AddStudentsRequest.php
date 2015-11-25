@@ -32,18 +32,13 @@ class AddStudentsRequest extends Request
      */
     public function rules()
     {
-        $rules = [
-            'students' => 'array|required'
-        ];
+       return $rules = [
+            'email' => 'required',
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'indexNumber' => 'required',
+            'year' => 'required'
+            ];
 
-        for($i = 0; $i < count($this->get('students')); $i++){
-            $rules['students.' . $i . '.email'] = 'required';
-            $rules['students.' . $i . '.firstName'] = 'required';
-            $rules['students.' . $i . '.lastName'] = 'required';
-            $rules['students.' . $i . '.indexNumber'] = 'required';
-            $rules['students.' . $i . '.year'] = 'required';
-        }
-
-        return $rules;
     }
 }

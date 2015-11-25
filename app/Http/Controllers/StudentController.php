@@ -61,34 +61,32 @@ class StudentController extends ApiController
         $this->guard          = $guard;
     }
 
-    public function addStudents(AddStudentsRequest $request)
+    public function addStudent(AddStudentsRequest $request)
     {
-        $addedStudents = [];
-
-        $failedToAddStudents = [];
-
-        $students = $request->get('students');
-
-        for ($count = 0; $count < count($students); $count++) {
-            $student = new Student();
-            $student->setFirstName($students[$count]['firstName']);
-            $student->setLastName($students[$count]['lastName']);
-            $student->setEmail(new Email($students[$count]['email']));
-            $student->setIndexNumber($students[$count]['indexNumber']);
-            $student->setYear($students[$count]['year']);
-            $student->setPassword(new Password('password'));
-            $student->generateRegisterToken();
-            $student->setOrganisation($this->facultyRepository->findFacultyByName('Racunarski fakultet'));
-            if ($this->userRepository->findByEmail(new Email($students[$count]['email']))) {
-                $failedToAddStudents[] = $student;
-                continue;
-            }
-            $this->userRepository->create($student);
-            $addedStudents[] = $student;
+        /** @var Email $email */
+        $email = new Email($request->get('email'));
+        if ($this->userRepository->findByEmail($email))
+        {
+            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_EMAIL);
         }
+        $indexNumber = $request->get('indexNumber');
+        if ($this->studentRepository->findByIndexNumber($indexNumber))
+        {
+            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
+        }
+        $student = new Student();
+        $student->setFirstName($request->get('firstName'));
+        $student->setLastName($request->get('lastName'));
+        $student->setEmail($email);
+        $student->setIndexNumber($indexNumber);
+        $student->setYear($request->get('year'));
+        $student->setPassword(new Password('password'));
+        $student->generateRegisterToken();
+        $student->setOrganisation($this->facultyRepository->findFacultyByName('Racunarski fakultet'));
+        $this->userRepository->create($student);
+
         return $this->returnSuccess([
-            'successful'   => $addedStudents,
-            'unsuccessful' => $failedToAddStudents,
+            'student' => $student
         ]);
     }
 

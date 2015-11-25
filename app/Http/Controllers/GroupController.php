@@ -39,37 +39,25 @@ class GroupController extends ApiController
         $this->lectureRepository = $lectureRepository;
     }
 
-    public function addGroups(AddGroupRequest $request)
+    public function addGroup(AddGroupRequest $request)
     {
-        $addedGroups = [];
+        $lecturesEntry = $request->get('lectures');
+        $lectures = [];
+        $group = new Group();
+        $name = $request->get('name');
+        $group->setName($name);
 
-        $failedToAddGroups= [];
-
-        $groups = $request->get('groups');
-
-        for ($count = 0; $count < count($groups); $count++){
-            $lectures = [];
-            $group = new Group();
-            $group->setName($groups[$count]['name']);
-
-            for ($i = 0; $i < count($groups[$count]['lectures']); $i++) {
-                $lectures[] = $this->lectureRepository->find($groups[$count]['lectures'][$i]);
-            }
-
-            $group->setLectures($lectures);
-            if ($this->groupRepository->findByName($groups[$count]['name'])) {
-                $failedToAddGroups[] = $group;
-                continue;
-            }
-
-            $this->groupRepository->create($group);
-
-            $addedGroups[] = $group;
+        for ($i = 0; $i < count($lecturesEntry); $i++) {
+            $lectures[] = $this->lectureRepository->find($lecturesEntry[$i]);
         }
+        $group->setLectures($lectures);
+        if ($this->groupRepository->findByName($name)) {
+            return $this->returnError(500, UserErrorCodes::GROUP_ALREADY_EXISTS);
+        }
+        $this->groupRepository->create($group);
 
         return $this->returnSuccess([
-            'successful'   => $addedGroups,
-            'unsuccessful' => $failedToAddGroups,
+            'successful'   => $group
         ]);
 
     }

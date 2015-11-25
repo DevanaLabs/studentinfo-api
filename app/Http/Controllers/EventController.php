@@ -43,40 +43,28 @@ class EventController extends ApiController
         $this->guard             = $guard;
     }
 
-    public function addEvents(AddEventRequest $request)
+    public function addEvent(AddEventRequest $request)
     {
-        $addedEvents       = [];
-        $failedToAddEvents = [];
-
-        $events = $request->get('events');
-
-        foreach ($events as $eventEntry) {
             $event    = new Event();
-            $startsAt = Carbon::createFromFormat('Y-m-d H:i', $eventEntry['startsAt']);
-            $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $eventEntry['endsAt']);
+            $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
+            $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
             if ($endsAt->lte($startsAt)) {
-                $failedToAddEvents[] = $event;
-                continue;
+                return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
             }
             /** @var Lecture $lecture */
-            $lecture = $this->lectureRepository->find($eventEntry['lectureId']);
+            $lecture = $this->lectureRepository->find($request->get('lectureId'));
             if ($lecture === null) {
-                $failedToAddEvents[] = $event;
-                continue;
+                return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
             }
-            $event->setType($eventEntry['type']);
-            $event->setDescription($eventEntry['description']);
+            $event->setType($request->get('type'));
+            $event->setDescription($request->get('description'));
             $event->setLecture($lecture);
             $event->setStartsAt($startsAt);
             $event->setEndsAt($endsAt);
+
             $this->eventRepository->create($event);
-
-            $addedEvents[] = $event;
-        }
-
         return $this->returnSuccess([
-            'successful'   => $addedEvents,
-            'unsuccessful' => $failedToAddEvents,
+            'successful'   => $event,
         ]);
     }
 

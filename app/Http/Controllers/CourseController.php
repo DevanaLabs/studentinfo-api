@@ -39,29 +39,20 @@ class CourseController extends ApiController
      * @param AddCourseRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function addCourses(AddCourseRequest $request)
+    public function addCourse(AddCourseRequest $request)
     {
-        $addedCourses = [];
-
-        $failedToAddCourses =[];
-        $courses = $request->get('courses');
-
-        for ($count = 0; $count < count($courses); $count++) {
-            $course = new Course();
-            $course->setCode($courses[$count]['code']);
-            $course->setSemester($courses[$count]['semester']);
-            if ($this->courseRepository->findByCode($courses[$count]['code'])) {
-                $failedToAddCourses[] = $course;
-                continue;
-            }
-            $this->courseRepository->create($course);
-
-            $addedCourses[] = $course;
+        $code = $request->get('code');
+        if ($this->courseRepository->findByCode($request->get('code'))) {
+            return $this->returnError(500, UserErrorCodes::COURSE_ALREADY_EXISTS);
         }
+        $course = new Course();
+        $course->setCode($code);
+        $course->setSemester($request->get('semester'));
+
+        $this->courseRepository->create($course);
 
         return $this->returnSuccess([
-            'successful'   => $addedCourses,
-            'unsuccessful' => $failedToAddCourses,
+            'successful'   => $course
         ]);
     }
 

@@ -33,14 +33,8 @@ class AddClassroomRequest extends Request
      */
     public function rules()
     {
-        $rules = [
-            'classrooms' => 'required|array',
+        return $rules = [
+            'name' => 'required'
         ];
-
-        for($i = 0; $i < count($this->get('classrooms')); $i++){
-            $rules['classrooms.' . $i . '.name'] = 'required';
-            $rules['classrooms.' . $i . '.directions'] = 'required';
-        }
-        return $rules;
     }
 }

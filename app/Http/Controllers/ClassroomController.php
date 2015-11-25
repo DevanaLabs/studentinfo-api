@@ -32,32 +32,20 @@ class ClassroomController extends ApiController
         $this->guard               = $guard;
     }
 
-    public function addClassrooms(AddClassroomRequest $request)
+    public function addClassroom(AddClassroomRequest $request)
     {
-        $addedClassrooms = [];
-
-        $failedToAddClassrooms= [];
-
-        $classrooms = $request->get('classrooms');
-
-        for ($count = 0; $count < count($classrooms); $count++) {
-            $classroom = new Classroom();
-            $classroom->setName($classrooms[$count]['name']);
-            $classroom->setDirections($classrooms[$count]['directions']);
-
-            if ($this->classroomRepository->findByName(($classrooms[$count]['name']))) {
-                $failedToAddStudents[] = $classroom;
-                continue;
-            }
-
-            $this->classroomRepository->create($classroom);
-
-            $addedClassrooms[]=$classroom;
+        $name = $request->get('name');
+        if ($this->classroomRepository->findByName($name)) {
+            return $this->returnError(500, UserErrorCodes::CLASSROOM_ALREADY_EXISTS);
         }
+        $classroom = new Classroom();
+        $classroom->setName($request->get('name'));
+        $classroom->setDirections($request->get('directions'));
+
+        $this->classroomRepository->create($classroom);
 
         return $this->returnSuccess([
-            'successful'   => $addedClassrooms,
-            'unsuccessful' => $failedToAddClassrooms,
+            'classroom'   => $classroom
         ]);
     }
 
@@ -65,12 +53,12 @@ class ClassroomController extends ApiController
     {
         $classroom = $this->classroomRepository->find($id);
 
-        if($classroom  === null){
+        if ($classroom === null) {
             return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
-            'classroom' => $classroom
+            'classroom' => $classroom,
         ]);
     }
 
@@ -83,7 +71,7 @@ class ClassroomController extends ApiController
 
     public function putEditClassroom(StandardRequest $request, $id)
     {
-        if($this->classroomRepository->find($id)  === null){
+        if ($this->classroomRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
         }
 
@@ -96,7 +84,7 @@ class ClassroomController extends ApiController
         $this->classroomRepository->update($classroom);
 
         return $this->returnSuccess([
-            'classroom' => $classroom
+            'classroom' => $classroom,
         ]);
     }
 

@@ -61,21 +61,19 @@ Route::post('chooseLectures', 'StudentController@chooseLectures');
 
 Route::get('showMyLectures', 'StudentController@showMyLectures');
 
-Route::post('addStudents', 'StudentController@addStudents');
+Route::post('student', 'StudentController@addStudent');
 
-Route::post('addClassrooms', 'ClassroomController@addClassrooms');
+Route::post('classroom', 'ClassroomController@addClassroom');
 
-Route::post('addEvents', 'EventController@addEvents');
+Route::post('event', 'EventController@addEvent');
 
-Route::post('addProfessors', 'ProfessorController@addProfessors');
+Route::post('professor', 'ProfessorController@addProfessor');
 
-Route::post('addEvents', 'EventController@addEvents');
+Route::post('lecture', 'LectureController@addLecture');
 
-Route::post('addLecture', 'LectureController@addLecture');
+Route::post('course', 'CourseController@addCourse');
 
-Route::post('addCourses', 'CourseController@addCourses');
-
-Route::post('addGroups', 'GroupController@addGroups');
+Route::post('group', 'GroupController@addGroup');
 
 Route::get('student/{id}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@getStudent']);
 
