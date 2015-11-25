@@ -36,6 +36,10 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, $role)
     {
+        if (!$this->auth->check()){
+            return redirect()->guest('/');
+        }
+
         if ($this->auth->check()) {
             if (! $request->user()->hasPermissionTo($role)) {
                 return redirect()->guest('/');

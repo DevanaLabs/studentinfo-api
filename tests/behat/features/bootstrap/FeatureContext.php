@@ -1,9 +1,12 @@
 <?php
 use Behat\Behat\Context\ClosuredContextInterface;
 use Behat\Behat\Context\TranslatedContextInterface;
+use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Session;
+use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Message\AbstractMessage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
@@ -47,9 +50,13 @@ class FeatureContext extends BehatContext
      */
     protected $scope;
     /**
-     * @var Guard
+     * @var Session
      */
-    protected $guard;
+    protected $session;
+    /**
+     * @var CookieJar
+     */
+    protected $jar;
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
@@ -60,23 +67,45 @@ class FeatureContext extends BehatContext
     {
         $config = isset($parameters['guzzle']) && is_array($parameters['guzzle']) ? $parameters['guzzle'] : [];
         $config['base_url'] = 'http://api.studentinfo.dev';
+        $config['cookies'] = true;
+
         $this->client = new Client($config);
-        $driver = new \Behat\Mink\Driver\GoutteDriver();
-        $session = new \Behat\Mink\Session($driver);
-        $session->start();
+        $this->jar = new CookieJar();
+        $this->jar = $this->jar->fromArray(['laravel_session' =>'eyJpdiI6Ikg4ZjQydDQ1ZGlzRVdzc3pUaDlraVE9PSIsInZhbHVlIjoiZlBwUWVLVGh1MFFldzgwcVwveE13VkV6QlFsQWR2ek4yK1wvRENYZGZyeExMbWd1Rm5KcytmSzk0MlZ3XC83K3o0d3c4Y0VuVmYxUUtXN3RDXC95eU1GbWRRPT0iLCJtYWMiOiIxNWM4MGZmYTgwNTNhOGMzNmYxY2MzY2JmOGU1ZmQ3NjhmNDAxNTYyYWE4MTRkNTFlOTAyjZjM2IwNjc5MjU1In0%3D'], 'api.studentinfo.dev');
+        //$this->jar->setCookie(new \GuzzleHttp\Cookie\SetCookie(['Name' => 'laravel_session', 'Value' =>'eyJpdiI6Ikg4ZjQydDQ1ZGlzRVdzc3pUaDlraVE9PSIsInZhbHVlIjoiZlBwUWVLVGh1MFFldzgwcVwveE13VkV6QlFsQWR2ek4yK1wvRENYZGZyeExMbWd1Rm5KcytmSzk0MlZ3XC83K3o0d3c4Y0VuVmYxUUtXN3RDXC95eU1GbWRRPT0iLCJtYWMiOiIxNWM4MGZmYTgwNTNhOGMzNmYxY2MzY2JmOGU1ZmQ3NjhmNDAxNTYyYWE4MTRkNTFlOTAyjZjM2IwNjc5MjU1In0%3D']));
+        //$this->jar->setCookie(new \GuzzleHttp\Cookie\SetCookie([]))
     }
 
     /**
      * @Given /^I am logged in as admin/
      */
-    public function IAmLoggedInAsAdmin()
+    public function iAmLoggedInAsAdmin()
     {
-
-        $this->guard->attempt([
-            'email.email' => 'nu@gmail.com',
-            'password'    => 'blabla'
-        ]);
+        $this->requestPayload = "
+           {
+              \"email\": \"nu@gmail.com\",
+              \"password\": \"blabla\"
+           }
+    ";
+        echo $this->requestPayload;
+        $this->iRequest('POST', '/auth');
     }
+
+    /**
+     * @Given /^I am logged in as student/
+     */
+    public function iAmLoggedInAsStudent()
+    {
+        $this->requestPayload = "
+           {
+              \"email\": \"mv@gmail1.com\",
+              \"password\": \"blabla\"
+           }
+    ";
+        echo $this->requestPayload;
+        $this->iRequest('POST', '/auth');
+    }
+
     /**
      * @Given /^I have the payload:$/
      */
@@ -96,18 +125,18 @@ class FeatureContext extends BehatContext
                 case 'PUT':
                     $this->response = $this
                         ->client
-                        ->$method($resource, null, $this->requestPayload);
+                        ->$method($resource, null, $this->requestPayload, ['cookies' => $this->jar]);
                     break;
                 case 'POST':
                     $post = \GuzzleHttp\json_decode($this->requestPayload, true);
                     $this->response = $this
                         ->client
-                        ->$method($resource, array('body' => $post));
+                        ->$method($resource, array('body' => $post, 'cookies' => $this->jar));
                     break;
                 default:
                     $this->response = $this
                         ->client
-                        ->$method($resource);
+                        ->$method($resource, ['cookies' => $this->jar]);
             }
         } catch (BadResponseException $e) {
             $response = $e->getResponse();

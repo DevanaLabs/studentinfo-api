@@ -25,18 +25,20 @@ Feature: Test
     """
     When I request "POST /auth"
     Then I get a "200" response
+    When I request "GET /students"
+    Then I get a "200" response
 
   Scenario: GetUser
     When I request "GET /user/1"
     Then I get a "403" response
 
-  Scenario: GetStudents
-    When I request "GET /students"
-    Then I get a "403" response
-
-  Scenario: GetStudents
-    Given I request "GET /getClassrooms"
-    Then  I get a "200" response
+#  Scenario: GetStudents
+#    When I request "GET /students"
+#    Then I get a "200" response
+#
+#  Scenario: GetStudents
+#    Given I request "GET /getClassrooms"
+#    Then  I get a "200" response
 
   Scenario: RegisterWrong
     When I request "GET /register/12345"
@@ -83,4 +85,14 @@ Feature: Test
            }
     """
     When I request "POST /addStudents"
+    Then I get a "200" response
+
+  Scenario: Test
+    Given I am logged in as admin
+    When I request "GET /user/1"
+    Then I get a "200" response
+    
+  Scenario: Test
+    Given I am logged in as student
+    When I request "GET /user/1"
     Then I get a "403" response
