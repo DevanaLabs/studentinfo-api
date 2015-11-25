@@ -61,14 +61,7 @@ class ClassroomController extends ApiController
         ]);
     }
 
-    public function getClassrooms()
-    {
-        $classrooms = $this->classroomRepository->all();
-
-        return $this->returnSuccess($classrooms);
-    }
-
-    public function getEditClassroom($id)
+    public function getClassroom($id)
     {
         $classroom = $this->classroomRepository->find($id);
 
@@ -79,6 +72,13 @@ class ClassroomController extends ApiController
         return $this->returnSuccess([
             'classroom' => $classroom
         ]);
+    }
+
+    public function getClassrooms($start, $count)
+    {
+        $classrooms = $this->classroomRepository->all($start, $count);
+
+        return $this->returnSuccess($classrooms);
     }
 
     public function putEditClassroom(StandardRequest $request, $id)
@@ -100,24 +100,14 @@ class ClassroomController extends ApiController
         ]);
     }
 
-    public function deleteClassrooms(StandardRequest $request)
+    public function deleteClassroom($id)
     {
-        $ids = $request->get('ids');
-        $deletedClassrooms = [];
-
-        foreach($ids as $id)
-        {
-            $classroom = $this->classroomRepository->find($id);
-            if ($classroom === null)
-            {
-                continue;
-            }
-            $this->classroomRepository->destroy($classroom);
-            $deletedClassrooms[] = $id;
+        $classroom = $this->classroomRepository->find($id);
+        if ($classroom === null) {
+            return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
         }
-        return $this->returnSuccess([
-                'deletedClassrooms' => $deletedClassrooms
-            ]
-        );
+        $this->classroomRepository->destroy($classroom);
+
+        return $this->returnSuccess();
     }
 }

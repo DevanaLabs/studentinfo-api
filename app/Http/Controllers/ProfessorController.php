@@ -64,14 +64,7 @@ class ProfessorController extends ApiController
         ]);
     }
 
-    public function getProfessors()
-    {
-        $professors = $this->professorRepository->all();
-
-        return $this->returnSuccess($professors);
-    }
-
-    public function getEditProfessor($id)
+    public function getProfessor($id)
     {
         $professor = $this->professorRepository->find($id);
 
@@ -82,6 +75,13 @@ class ProfessorController extends ApiController
         return $this->returnSuccess([
             'professor' => $professor
         ]);
+    }
+
+    public function getProfessors($start, $count)
+    {
+        $professors = $this->professorRepository->all($start, $count);
+
+        return $this->returnSuccess($professors);
     }
 
     public function putEditProfessor(StandardRequest $request, $id)
@@ -104,23 +104,15 @@ class ProfessorController extends ApiController
         ]);
     }
 
-    public function deleteProfessors(Request $request)
+    public function deleteProfessor($id)
     {
-        $ids = $request->get('ids');
-        $deletedProfessors = [];
-
-        foreach($ids as $id)
+        $professor = $this->professorRepository->find($id);
+        if ($professor === null)
         {
-            $professor = $this->professorRepository->find($id);
-            if ($professor === null)
-            {
-                continue;
-            }
-            $this->professorRepository->destroy($professor);
-            $deletedProfessors[] = $id;
+            return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
         }
-        return $this->returnSuccess([
-            'deletedProfessors' => $deletedProfessors
-        ]);
+        $this->professorRepository->destroy($professor);
+
+        return $this->returnSuccess();
     }
 }

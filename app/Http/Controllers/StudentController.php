@@ -4,6 +4,7 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddStudentsRequest;
 use StudentInfo\Http\Requests\Request;
 use StudentInfo\Http\Requests\SetGetLecturesRequest;
@@ -91,9 +92,24 @@ class StudentController extends ApiController
         ]);
     }
 
-    public function getStudents()
+    public function getStudent($id)
     {
-        $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
+        $student = $this->studentRepository->find($id);
+
+        if($student === null){
+            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_IN_DB);
+        }
+
+        return $this->returnSuccess([
+            'student' => $student
+        ]);
+
+    }
+
+    public function getStudents($start, $count)
+    {
+        dd(1);
+        $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()), $start, $count);
 
         return $this->returnSuccess($students);
 

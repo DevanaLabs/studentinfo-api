@@ -74,15 +74,7 @@ class GroupController extends ApiController
 
     }
 
-    public function getGroups()
-    {
-        $groups = $this->groupRepository->all();
-
-        return $this->returnSuccess($groups);
-
-    }
-
-    public function getEditGroup($id)
+    public function getGroup($id)
     {
         $group = $this->groupRepository->find($id);
 
@@ -93,6 +85,15 @@ class GroupController extends ApiController
         return $this->returnSuccess([
             'group' => $group
         ]);
+
+    }
+
+    public function getGroups($start, $count)
+    {
+        $groups = $this->groupRepository->all($start, $count);
+
+        return $this->returnSuccess($groups);
+
     }
 
     public function putEditGroup(StandardRequest $request, $id)
@@ -114,24 +115,14 @@ class GroupController extends ApiController
         ]);
     }
 
-    public function deleteGroup(StandardRequest $request)
+    public function deleteGroup($id)
     {
-        $ids = $request->get('ids');
-        $deletedGroups = [];
-
-        foreach($ids as $id)
-        {
-            $group = $this->groupRepository->find($id);
-            if ($group=== null)
-            {
-                continue;
-            }
-            $this->groupRepository->destroy($group);
-            $deletedGroups[] = $id;
+        $group = $this->groupRepository->find($id);
+        if ($group=== null) {
+            return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
         }
-        return $this->returnSuccess([
-                'deletedClassrooms' => $deletedGroups
-            ]
-        );
+        $this->groupRepository->destroy($group);
+
+        return $this->returnSuccess();
     }
 }

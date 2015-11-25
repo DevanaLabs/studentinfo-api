@@ -13,9 +13,9 @@ class DoctrineStudentRepository extends EntityRepository implements StudentRepos
         $this->_em->flush($object);
     }
 
-    public function all()
+    public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s')->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
     }
 
     public function destroy($object)
@@ -29,10 +29,15 @@ class DoctrineStudentRepository extends EntityRepository implements StudentRepos
         $this->_em->flush($object);
     }
 
-    public function getAllStudentsForFaculty(Faculty $faculty)
+    public function find($id)
+    {
+        return $this->_em->find('StudentInfo\Models\Student', $id);
+    }
+
+    public function getAllStudentsForFaculty(Faculty $faculty, $start = 0, $count = 20)
     {
         $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s WHERE s.organisation = :faculty_id');
         $query->setParameter('faculty_id', $faculty->getId());
-        return $query->getArrayResult();
+        return $query->setFirstResult($start)->setMaxResults($count)->getArrayResult();
     }
 }

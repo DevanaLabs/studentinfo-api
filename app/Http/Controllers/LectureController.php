@@ -107,14 +107,7 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function getLectures()
-    {
-        $lectures = $this->lectureRepository->all();
-
-        return $this->returnSuccess($lectures);
-    }
-
-    public function getEditLecture($id)
+    public function getLecture($id)
     {
         $lecture = $this->lectureRepository->find($id);
 
@@ -123,8 +116,15 @@ class LectureController extends ApiController
         }
 
         return $this->returnSuccess([
-            'professor' => $lecture
+            'lecture' => $lecture
         ]);
+    }
+
+    public function getLectures($start, $count)
+    {
+        $lectures = $this->lectureRepository->all($start, $count);
+
+        return $this->returnSuccess($lectures);
     }
 
     public function putEditLecture(Request $request, $id)
@@ -177,22 +177,15 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function deleteLectures(Request $request)
+    public function deleteLecture($id)
     {
-        $ids = $request->get('ids');
-        $deletedLectures = [];
-
-        foreach ($ids as $id) {
-            $lecture = $this->lectureRepository->find($id);
-            if ($lecture === null) {
-                continue;
-            }
-            $this->lectureRepository->destroy($lecture);
-            $deletedLectures[] = $id;
+        $lecture = $this->lectureRepository->find($id);
+        if ($lecture === null) {
+            return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
         }
-        return $this->returnSuccess([
-            'deletedLectures' => $deletedLectures
-        ]);
+        $this->lectureRepository->destroy($lecture);
+
+        return $this->returnSuccess();
     }
 
 

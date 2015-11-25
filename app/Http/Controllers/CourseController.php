@@ -65,14 +65,7 @@ class CourseController extends ApiController
         ]);
     }
 
-    public function getCourses()
-    {
-        $courses = $this->courseRepository->all();
-
-        return $this->returnSuccess($courses);
-    }
-
-    public function getEditCourse($id)
+    public function getCourse($id)
     {
         $course = $this->courseRepository->find($id);
 
@@ -83,6 +76,13 @@ class CourseController extends ApiController
         return $this->returnSuccess([
             'course' => $course
         ]);
+    }
+
+    public function getCourses($start, $count)
+    {
+        $courses = $this->courseRepository->all($start, $count);
+
+        return $this->returnSuccess($courses);
     }
 
     public function putEditCourse(StandardRequest $request, $id)
@@ -105,16 +105,14 @@ class CourseController extends ApiController
         ]);
     }
 
-    public function deleteCourses(StandardRequest $request)
+    public function deleteCourse($id)
     {
-        $ids = $request->get('ids');
-        foreach ($ids as $id) {
-            $course = $this->courseRepository->find($id);
-            if ($course === null) {
-                continue;
-            }
-            $this->courseRepository->destroy($course);
+        $course = $this->courseRepository->find($id);
+        if ($course === null) {
+            return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
         }
+        $this->courseRepository->destroy($course);
+
         return $this->returnSuccess();
     }
 

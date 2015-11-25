@@ -42,13 +42,10 @@ Route::get('/addFaculty', function (UserRepositoryInterface $repository) {
 
     $repository->create($faculty);
 });
-Route::post('addStudents', 'StudentController@addStudents');
 
 Route::get('user/{user_id}', 'UserController@getProfile');
 
 Route::put('user/{user_id}', 'UserController@updateProfile');
-
-Route::get('students', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@getStudents']);
 
 Route::post('auth', 'AuthController@login');
 
@@ -60,67 +57,77 @@ Route::get('register/{rememberToken}', 'RegisterController@registerStudent');
 
 Route::post('register/{rememberToken}', 'RegisterController@createPassword');
 
+Route::post('chooseLectures', 'StudentController@chooseLectures');
+
+Route::get('showMyLectures', 'StudentController@showMyLectures');
+
+Route::post('addStudents', 'StudentController@addStudents');
+
 Route::post('addClassrooms', 'ClassroomController@addClassrooms');
 
-Route::get('getClassrooms', ['middleware' => 'role:classroom.retrieve', 'uses' => 'ClassroomController@getClassrooms']);
+Route::post('addEvents', 'EventController@addEvents');
 
 Route::post('addProfessors', 'ProfessorController@addProfessors');
 
 Route::post('addEvents', 'EventController@addEvents');
 
-Route::get('getProfessors', ['middleware' => 'role:professor.retrieve', 'uses' => 'ProfessorController@getProfessors']);
-
 Route::post('addLecture', 'LectureController@addLecture');
-
-Route::get('getLectures', ['middleware' => 'role:lecture.retrieve', 'uses' => 'LectureController@getLectures']);
 
 Route::post('addCourses', 'CourseController@addCourses');
 
-Route::get('getCourses', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@getCourses']);
-
 Route::post('addGroups', 'GroupController@addGroups');
 
-Route::get('getGroups', ['middleware' => 'role:group.retrieve', 'uses' => 'GroupController@getGroups']);
+Route::get('student/{id}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@getStudent']);
 
-Route::post('chooseLectures', 'StudentController@chooseLectures');
+Route::get('students/{start}/{count}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@getStudents']);
 
-Route::get('showMyLectures', 'StudentController@showMyLectures');
+Route::get('classroom/{id}', ['middleware' => 'role:classroom.retrieve', 'uses' => 'ClassroomController@getClassroom']);
 
-Route::get('editClassroom/{id}', ['middleware' => 'role:classroom.edit', 'uses' => 'ClassroomController@getEditClassroom']);
+Route::get('classrooms/{start}/{count}', ['middleware' => 'role:classroom.retrieve', 'uses' => 'ClassroomController@getClassrooms']);
 
-Route::put('editClassroom/{id}', ['middleware' => 'role:classroom.edit', 'uses' => 'ClassroomController@putEditClassroom']);
+Route::get('professor/{id}', ['middleware' => 'role:professor.retrieve', 'uses' => 'ProfessorController@getProfessor']);
 
-Route::get('editProfessor/{id}', ['middleware' => 'role:professor.edit', 'uses' => 'ProfessorController@getEditProfessor']);
+Route::get('professors/{start}/{count}', ['middleware' => 'role:professor.retrieve', 'uses' => 'ProfessorController@getProfessors']);
 
-Route::put('editProfessor/{id}', ['middleware' => 'role:professor.edit', 'uses' => 'ProfessorController@putEditProfessor']);
+Route::get('event/{id}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@getEvent']);
 
-Route::get('editCourse/{id}', ['middleware' => 'role:course.edit', 'uses' => 'CourseController@getEditCourse']);
+Route::get('events/{start}/{count}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@getEvents']);
 
-Route::put('editCourse/{id}', ['middleware' => 'role:course.edit', 'uses' => 'CourseController@putEditCourse']);
+Route::get('lecture/{id}', ['middleware' => 'role:lecture.retrieve', 'uses' => 'LectureController@getLecture']);
 
-Route::get('editLecture/{id}', ['middleware' => 'role:lecture.edit', 'uses' => 'LectureController@getEditLecture']);
+Route::get('lectures/{start}/{count}', ['middleware' => 'role:lecture.retrieve', 'uses' => 'LectureController@getLectures']);
 
-Route::put('editLecture/{id}', ['middleware' => 'role:lecture.edit', 'uses' => 'LectureController@putEditLecture']);
+Route::get('course/{id}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@getCourse']);
 
-Route::get('editGroup/{id}', ['middleware' => 'role:group.edit', 'uses' => 'GroupController@getEditGroup']);
+Route::get('courses/{start}/{count}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@getCourses']);
 
-Route::put('editGroup/{id}', ['middleware' => 'role:group.edit', 'uses' => 'GroupController@putEditGroup']);
+Route::get('group/{id}', ['middleware' => 'role:group.retrieve', 'uses' => 'GroupController@getGroup']);
 
-Route::get('editEvent/{id}', ['middleware' => 'role:event.edit', 'uses' => 'EventController@getEditEvent']);
+Route::get('groups/{start}/{count}', ['middleware' => 'role:group.retrieve', 'uses' => 'GroupController@getGroups']);
 
-Route::put('editEvent/{id}', ['middleware' => 'role:event.edit', 'uses' => 'EventController@putEditEvent']);
+Route::put('classroom/{id}', ['middleware' => 'role:classroom.edit', 'uses' => 'ClassroomController@putEditClassroom']);
 
-Route::delete('deleteClassrooms' , ['middleware' => 'role:classroom.delete', 'uses' => 'ClassroomController@deleteClassrooms']);
+Route::put('professor/{id}', ['middleware' => 'role:professor.edit', 'uses' => 'ProfessorController@putEditProfessor']);
 
-Route::delete('deleteCourses' , ['middleware' => 'role:course.delete', 'uses' => 'CourseController@deleteCourses']);
+Route::put('course/{id}', ['middleware' => 'role:course.edit', 'uses' => 'CourseController@putEditCourse']);
 
-Route::delete('deleteProfessors' , ['middleware' => 'role:professor.delete', 'uses' => 'ProfessorController@deleteProfessors']);
+Route::put('lecture/{id}', ['middleware' => 'role:lecture.edit', 'uses' => 'LectureController@putEditLecture']);
 
-Route::delete('deleteLectures' , ['middleware' => 'role:lecture.delete', 'uses' => 'LectureController@deleteLectures']);
+Route::put('group/{id}', ['middleware' => 'role:group.edit', 'uses' => 'GroupController@putEditGroup']);
 
-Route::delete('deleteGroups' , ['middleware' => 'role:group.delete', 'uses' => 'GroupController@deleteGroup']);
+Route::put('event/{id}', ['middleware' => 'role:event.edit', 'uses' => 'EventController@putEditEvent']);
 
-Route::delete('deleteEvents' , ['middleware' => 'role:event.delete', 'uses' => 'EventController@deleteEvents']);
+Route::delete('classroom/{id}' , ['middleware' => 'role:classroom.delete', 'uses' => 'ClassroomController@deleteClassroom']);
+
+Route::delete('course/{id}' , ['middleware' => 'role:course.delete', 'uses' => 'CourseController@deleteCourse']);
+
+Route::delete('professor/{id}' , ['middleware' => 'role:professor.delete', 'uses' => 'ProfessorController@deleteProfessor']);
+
+Route::delete('lecture/{id}' , ['middleware' => 'role:lecture.delete', 'uses' => 'LectureController@deleteLecture']);
+
+Route::delete('group/{id}' , ['middleware' => 'role:group.delete', 'uses' => 'GroupController@deleteGroup']);
+
+Route::delete('event/{id}' , ['middleware' => 'role:event.delete', 'uses' => 'EventController@deleteEvent']);
 
 
 

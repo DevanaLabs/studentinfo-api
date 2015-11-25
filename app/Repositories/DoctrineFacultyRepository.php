@@ -12,9 +12,9 @@ class DoctrineFacultyRepository extends EntityRepository implements FacultyRepos
         $this->_em->flush($object);
     }
 
-    public function all()
+    public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f')->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
     }
 
     public function find($id)

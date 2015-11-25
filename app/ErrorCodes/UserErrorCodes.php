@@ -28,5 +28,7 @@ class UserErrorCodes
 
     const EVENT_NOT_IN_DB = 111;
 
+    const STUDENT_NOT_IN_DB = 112;
+
 
 }

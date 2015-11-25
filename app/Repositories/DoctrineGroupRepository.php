@@ -14,9 +14,9 @@ class DoctrineGroupRepository extends EntityRepository implements GroupRepositor
         $this->_em->flush($object);
     }
 
-    public function all()
+    public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT g FROM StudentInfo\Models\Group g')->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT g FROM StudentInfo\Models\Group g')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
     }
 
     public function destroy($object)

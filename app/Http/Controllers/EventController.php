@@ -80,14 +80,7 @@ class EventController extends ApiController
         ]);
     }
 
-    public function getEvents()
-    {
-        $events = $this->eventRepository->all();
-
-        return $this->returnSuccess($events);
-    }
-
-    public function getEditEvent($id)
+    public function getEvent($id)
     {
         $event = $this->eventRepository->find($id);
 
@@ -98,6 +91,13 @@ class EventController extends ApiController
         return $this->returnSuccess([
             'event' => $event
         ]);
+    }
+
+    public function getEvents($start, $count)
+    {
+        $events = $this->eventRepository->all($start, $count);
+
+        return $this->returnSuccess($events);
     }
 
     public function putEditEvent(StandardRequest $request, $id)
@@ -117,7 +117,7 @@ class EventController extends ApiController
         /** @var Lecture $lecture */
         $lecture = $this->lectureRepository->find($request['lectureId']);
         if ($lecture === null) {
-            return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
+            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
         }
         $event->setType($request['type']);
         $event->setDescription($request['description']);
@@ -133,16 +133,15 @@ class EventController extends ApiController
         ]);
     }
 
-    public function deleteEvents(StandardRequest $request)
+    public function deleteEvent($id)
     {
-        $ids = $request->get('ids');
-        foreach ($ids as $id) {
-            $event = $this->eventRepository->find($id);
-            if ($event === null) {
-                continue;
-            }
-            $this->eventRepository->destroy($event);
+
+        $event = $this->eventRepository->find($id);
+        if ($event === null) {
+            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
         }
+        $this->eventRepository->destroy($event);
+
         return $this->returnSuccess();
     }
 }
