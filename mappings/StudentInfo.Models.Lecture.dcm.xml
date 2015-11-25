@@ -15,7 +15,7 @@
 
         <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
 
-        <one-to-many field="events" target-entity="StudentInfo\Models\Event" mapped-by="lectures">
+        <one-to-many field="events" target-entity="StudentInfo\Models\Event" mapped-by="lecture">
             <cascade>
                 <cascade-persist/>
                 <cascade-remove/>

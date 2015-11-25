@@ -33,7 +33,12 @@ class AddEventRequest extends Request
      */
     public function rules()
     {
-        return [];
+        return [
+            'type' => 'required',
+            'description' => 'required',
+            'startsAt' => 'required',
+            'endsAt' => 'required',
+        ];
     }
 
 }

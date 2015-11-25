@@ -112,6 +112,18 @@ class StudentController extends ApiController
 
     }
 
+    public function deleteStudent($id)
+    {
+
+        $student = $this->studentRepository->find($id);
+        if ($student=== null) {
+            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_IN_DB);
+        }
+        $this->studentRepository->destroy($student);
+
+        return $this->returnSuccess();
+    }
+
     public function chooseLectures(SetGetLecturesRequest $request)
     {
         $ids = $request->get('ids');

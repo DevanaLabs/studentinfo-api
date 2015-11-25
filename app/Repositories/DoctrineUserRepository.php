@@ -30,6 +30,11 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
         $this->_em->flush($object);
     }
 
+    public function find($id)
+    {
+        return $this->_em->find('StudentInfo\Models\User', $id);
+    }
+
     public function findByEmail(Email $email)
     {
         $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u WHERE u.email.email = :email');

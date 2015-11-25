@@ -5,7 +5,7 @@
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
 
-    <entity name="StudentInfo\Models\Group" table="class">
+    <entity name="StudentInfo\Models\Group" table="classes">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>

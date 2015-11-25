@@ -33,6 +33,9 @@ class AddGroupRequest extends Request
      */
     public function rules()
     {
-        return [];
+        return [
+            'name' => 'required',
+            'lectures' => 'required|array'
+        ];
     }
 }

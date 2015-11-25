@@ -34,7 +34,8 @@ class AddClassroomRequest extends Request
     public function rules()
     {
         return $rules = [
-            'name' => 'required'
+            'name' => 'required',
+            'directions' => 'required',
         ];
     }
 }

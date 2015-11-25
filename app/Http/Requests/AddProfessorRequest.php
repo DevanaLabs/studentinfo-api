@@ -32,6 +32,10 @@ class AddProfessorRequest extends Request
      */
     public function rules()
     {
-        return [];
+        return [
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'title' => 'required',
+        ];
     }
 }

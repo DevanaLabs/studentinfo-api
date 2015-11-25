@@ -53,9 +53,9 @@ Route::delete('auth', 'AuthController@logout');
 
 Route::post('register', 'RegisterController@issueRegisterTokens');
 
-Route::get('register/{rememberToken}', 'RegisterController@registerStudent');
+Route::get('register/{registerToken}', 'RegisterController@registerStudent');
 
-Route::post('register/{rememberToken}', 'RegisterController@createPassword');
+Route::post('register/{registerToken}', 'RegisterController@createPassword');
 
 Route::post('chooseLectures', 'StudentController@chooseLectures');
 
@@ -126,6 +126,9 @@ Route::delete('lecture/{id}' , ['middleware' => 'role:lecture.delete', 'uses' =>
 Route::delete('group/{id}' , ['middleware' => 'role:group.delete', 'uses' => 'GroupController@deleteGroup']);
 
 Route::delete('event/{id}' , ['middleware' => 'role:event.delete', 'uses' => 'EventController@deleteEvent']);
+
+Route::delete('student/{id}' , ['middleware' => 'role:student.delete', 'uses' => 'StudentController@deleteStudent']);
+
 
 
 

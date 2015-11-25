@@ -97,9 +97,10 @@ class FeatureContext extends BehatContext
         try {
             switch ($httpMethod) {
                 case 'PUT':
+                    $put           = \GuzzleHttp\json_decode($this->requestPayload, true);
                     $this->response = $this
                         ->client
-                        ->$method($resource, null, $this->requestPayload, ['cookies' => $this->jar]);
+                        ->$method($resource, array('body' => $put, 'cookies' => $this->jar));
                     break;
                 case 'POST':
                     $post           = \GuzzleHttp\json_decode($this->requestPayload, true);

@@ -43,8 +43,8 @@ class DoctrineStudentRepository extends EntityRepository implements StudentRepos
 
     public function findByIndexNumber($indexNumber)
     {
-        $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s WHERE s.indexNumber = :indexNumber');
-        $query->setParameter('indexNumber', $indexNumber);
+        $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s WHERE s.indexNumber = :index_number');
+        $query->setParameter('index_number', $indexNumber);
         return $query->getOneOrNullResult();
     }
 }

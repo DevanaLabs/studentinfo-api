@@ -33,6 +33,9 @@ class AddCourseRequest extends Request
      */
     public function rules()
     {
-        return [];
+        return [
+            'code' => 'required',
+            'semester' => 'required',
+        ];
     }
 }
