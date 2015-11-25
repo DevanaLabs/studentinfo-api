@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="StudentInfo\Models\Professor" exclusion-policy="ALL">
+        <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
+        <property name="id"
+                  serialized-name="id"
+                  expose="true"
+                />
+        <property name="firstName"
+                  serialized-name="firstName"
+                  expose="true"
+                />
+        <property name="lastName"
+                  serialized-name="lastName"
+                  expose="true"
+                />
+        <property name="title"
+                  serialized-name="title"
+                  expose="true"
+                />
+    </class>
+</serializer>

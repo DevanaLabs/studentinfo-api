@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="StudentInfo\Models\Faculty" exclusion-policy="ALL">
+        <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
+        <property name="id"
+                  serialized-name="id"
+                  expose="true"
+                />
+        <property name="name"
+                  serialized-name="name"
+                  expose="true"
+                />
+    </class>
+</serializer>

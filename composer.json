@@ -13,7 +13,8 @@
     "laravel-doctrine/orm": "^1.0",
     "laravel-doctrine/migrations": "^1.0",
     "laravel-doctrine/acl": "^1.0",
-    "filp/whoops": "~1.0"
+    "filp/whoops": "~1.0",
+    "jms/serializer": "^1.1"
   },
   "require-dev": {
     "behat/behat": "~2.5",

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="StudentInfo\Models\Student" exclusion-policy="ALL">
+        <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
+        <property name="indexNumber"
+                  serialized-name="indexNumber"
+                  expose="true"
+                />
+        <property name="year"
+                  serialized-name="year"
+                  expose="true"
+                />
+    </class>
+</serializer>
