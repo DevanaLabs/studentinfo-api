@@ -77,7 +77,7 @@ class ProfessorController extends ApiController
         ]);
     }
 
-    public function getProfessors($start, $count)
+    public function getProfessors($start = 0, $count = 20)
     {
         $professors = $this->professorRepository->all($start, $count);
 

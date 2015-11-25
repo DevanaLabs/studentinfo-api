@@ -78,7 +78,7 @@ class CourseController extends ApiController
         ]);
     }
 
-    public function getCourses($start, $count)
+    public function getCourses($start = 0, $count = 20)
     {
         $courses = $this->courseRepository->all($start, $count);
 

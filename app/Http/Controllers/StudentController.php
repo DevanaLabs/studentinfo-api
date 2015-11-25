@@ -106,9 +106,8 @@ class StudentController extends ApiController
 
     }
 
-    public function getStudents($start, $count)
+    public function getStudents($start = 0, $count = 20)
     {
-        dd(1);
         $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()), $start, $count);
 
         return $this->returnSuccess($students);

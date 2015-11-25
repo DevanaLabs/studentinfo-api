@@ -93,7 +93,7 @@ class EventController extends ApiController
         ]);
     }
 
-    public function getEvents($start, $count)
+    public function getEvents($start = 0, $count = 20)
     {
         $events = $this->eventRepository->all($start, $count);
 

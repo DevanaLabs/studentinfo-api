@@ -120,7 +120,7 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function getLectures($start, $count)
+    public function getLectures($start = 0, $count = 20)
     {
         $lectures = $this->lectureRepository->all($start, $count);
 

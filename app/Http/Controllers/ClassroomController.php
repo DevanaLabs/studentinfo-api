@@ -74,7 +74,7 @@ class ClassroomController extends ApiController
         ]);
     }
 
-    public function getClassrooms($start, $count)
+    public function getClassrooms($start = 0, $count = 20)
     {
         $classrooms = $this->classroomRepository->all($start, $count);
 
