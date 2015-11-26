@@ -6,10 +6,10 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddStudentsRequest;
-use StudentInfo\Http\Requests\Request;
 use StudentInfo\Http\Requests\SetGetLecturesRequest;
-use StudentInfo\Http\Requests\GetStudentRequest;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Student;
+use StudentInfo\Models\User;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
 use StudentInfo\Repositories\StudentRepositoryInterface;
@@ -110,6 +110,46 @@ class StudentController extends ApiController
 
         return $this->returnSuccess($students);
 
+    }
+
+    public function putEditStudent(StandardRequest $request, $id)
+    {
+        if ($this->studentRepository->find($id) === null) {
+            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_IN_DB);
+        }
+
+        /** @var  Student $student*/
+        $student = $this->studentRepository->find($id);
+
+        $email = new Email($request->get('email'));
+
+        /** @var  User $user*/
+        $user = $this->userRepository->findByEmail($email);
+        if ($user) {
+            if ($user->getId() != $id) {
+                return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_EMAIL);
+            }
+        }
+
+        $indexNumber = $request->get('indexNumber');
+
+        if ($this->studentRepository->findByIndexNumber($indexNumber)) {
+            if ($user->getId() != $id) {
+                return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
+            }
+        }
+
+        $student->setFirstName($request->get('firstName'));
+        $student->setLastName($request->get('lastName'));
+        $student->setEmail($email);
+        $student->setIndexNumber($indexNumber);
+        $student->setYear($request->get('year'));
+
+        $this->studentRepository->update($student);
+
+        return $this->returnSuccess([
+            'student' => $student,
+        ]);
     }
 
     public function deleteStudent($id)

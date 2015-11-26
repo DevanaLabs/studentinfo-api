@@ -65,7 +65,7 @@ class RegisterController extends ApiController
 
         foreach ($emails as $email) {
             /** @var User $user */
-            $user = $this->userRepository->findByEmail(new Email($email['email']));
+            $user = $this->userRepository->findByEmail(new Email($email));
 
             $this->mailer->queue('emails.register_mail_template', [
                 'email' => $email,

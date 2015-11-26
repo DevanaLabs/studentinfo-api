@@ -52,7 +52,7 @@ class CourseController extends ApiController
         $this->courseRepository->create($course);
 
         return $this->returnSuccess([
-            'successful'   => $course
+            'course'   => $course
         ]);
     }
 
