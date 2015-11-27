@@ -38,4 +38,5 @@ return [
 
     \StudentInfo\ErrorCodes\UserErrorCodes::GROUP_ALREADY_EXISTS        => 'Group with this name already exists in database',
 
+    \StudentInfo\ErrorCodes\UserErrorCodes::CSV_FILE_NOT_FOUND        => 'Valid CSV file was not found',
 ];

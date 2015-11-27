@@ -8,6 +8,9 @@ Route::get('/', function () {
 });
 
 /* Test Routes */
+
+Route::post('testCSV', 'StudentController@addStudentsFromCSV');
+
 Route::get('/addAdmin', function (FacultyRepositoryInterface $facultyRepository, UserRepositoryInterface $userRepository) {
     $admin = new \StudentInfo\Models\Admin();
     $admin->setFirstName("Nebojsa");
@@ -130,6 +133,8 @@ Route::delete('group/{id}' , ['middleware' => 'role:group.delete', 'uses' => 'Gr
 Route::delete('event/{id}' , ['middleware' => 'role:event.delete', 'uses' => 'EventController@deleteEvent']);
 
 Route::delete('student/{id}' , ['middleware' => 'role:student.delete', 'uses' => 'StudentController@deleteStudent']);
+
+
 
 
 

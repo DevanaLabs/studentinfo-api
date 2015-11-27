@@ -40,5 +40,7 @@ class UserErrorCodes
 
     const STUDENT_NOT_IN_DB = 117;
 
+    const CSV_FILE_NOT_FOUND = 118;
+
 
 }
