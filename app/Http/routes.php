@@ -68,7 +68,9 @@ Route::post('student', 'StudentController@addStudent');
 
 Route::post('classroom', 'ClassroomController@addClassroom');
 
-Route::post('event', 'EventController@addEvent');
+Route::post('courseEvent', 'CourseEventController@addEvent');
+
+Route::post('groupEvent', 'GroupEventController@addEvent');
 
 Route::post('professor', 'ProfessorController@addProfessor');
 
@@ -90,9 +92,13 @@ Route::get('professor/{id}', ['middleware' => 'role:professor.retrieve', 'uses' 
 
 Route::get('professors/{start?}/{count?}', ['middleware' => 'role:professor.retrieve', 'uses' => 'ProfessorController@getProfessors']);
 
-Route::get('event/{id}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@getEvent']);
+Route::get('courseEvent/{id}', ['middleware' => 'role:event.retrieve', 'uses' => 'CourseEventController@getEvent']);
 
-Route::get('events/{start?}/{count?}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@getEvents']);
+Route::get('groupEvents/{start?}/{count?}', ['middleware' => 'role:event.retrieve', 'uses' => 'GroupEventController@getEvents']);
+
+Route::get('courseEvent/{id}', ['middleware' => 'role:event.retrieve', 'uses' => 'CourseEventController@getEvent']);
+
+Route::get('groupEvents/{start?}/{count?}', ['middleware' => 'role:event.retrieve', 'uses' => 'GroupEventController@getEvents']);
 
 Route::get('lecture/{id}', ['middleware' => 'role:lecture.retrieve', 'uses' => 'LectureController@getLecture']);
 
@@ -118,7 +124,9 @@ Route::put('lecture/{id}', ['middleware' => 'role:lecture.edit', 'uses' => 'Lect
 
 Route::put('group/{id}', ['middleware' => 'role:group.edit', 'uses' => 'GroupController@putEditGroup']);
 
-Route::put('event/{id}', ['middleware' => 'role:event.edit', 'uses' => 'EventController@putEditEvent']);
+Route::put('courseEvent/{id}', ['middleware' => 'role:event.edit', 'uses' => 'CourseEventController@putEditEvent']);
+
+Route::put('groupEvent/{id}', ['middleware' => 'role:event.edit', 'uses' => 'GroupEventController@putEditEvent']);
 
 Route::delete('classroom/{id}' , ['middleware' => 'role:classroom.delete', 'uses' => 'ClassroomController@deleteClassroom']);
 
@@ -130,7 +138,9 @@ Route::delete('lecture/{id}' , ['middleware' => 'role:lecture.delete', 'uses' =>
 
 Route::delete('group/{id}' , ['middleware' => 'role:group.delete', 'uses' => 'GroupController@deleteGroup']);
 
-Route::delete('event/{id}' , ['middleware' => 'role:event.delete', 'uses' => 'EventController@deleteEvent']);
+Route::delete('courseEvent/{id}' , ['middleware' => 'role:event.delete', 'uses' => 'CourseEventController@deleteEvent']);
+
+Route::delete('groupEvent/{id}' , ['middleware' => 'role:event.delete', 'uses' => 'GroupEventController@deleteEvent']);
 
 Route::delete('student/{id}' , ['middleware' => 'role:student.delete', 'uses' => 'StudentController@deleteStudent']);
 

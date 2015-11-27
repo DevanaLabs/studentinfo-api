@@ -1,29 +1,28 @@
 <?php
 
-
 namespace StudentInfo\Http\Controllers;
-
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddEventRequest;
 use StudentInfo\Http\Requests\StandardRequest;
-use StudentInfo\Models\Event;
+use StudentInfo\Models\Group;
+use StudentInfo\Models\GroupEvent;
 use StudentInfo\Models\Lecture;
 use StudentInfo\Repositories\EventRepositoryInterface;
-use StudentInfo\Repositories\LectureRepositoryInterface;
+use StudentInfo\Repositories\GroupRepositoryInterface;
 
-class EventController extends ApiController
+class GroupEventController extends ApiController
 {
     /**
      * @var EventRepositoryInterface
      */
     protected $eventRepository;
     /**
-     * @var LectureRepositoryInterface
+     * @var GroupRepositoryInterface
      */
-    protected $lectureRepository;
+    protected $groupRepository;
 
     /**
      * @var Guard
@@ -33,38 +32,40 @@ class EventController extends ApiController
     /**
      * CourseController constructor.
      * @param EventRepositoryInterface   $eventRepository
-     * @param LectureRepositoryInterface $lectureRepository
+     * @param GroupRepositoryInterface   $groupRepository
      * @param Guard                      $guard
      */
-    public function __construct(EventRepositoryInterface $eventRepository, LectureRepositoryInterface $lectureRepository, Guard $guard)
+    public function __construct(EventRepositoryInterface $eventRepository, GroupRepositoryInterface $groupRepository, Guard $guard)
     {
         $this->eventRepository   = $eventRepository;
-        $this->lectureRepository = $lectureRepository;
+        $this->groupRepository   = $groupRepository;
         $this->guard             = $guard;
     }
 
     public function addEvent(AddEventRequest $request)
     {
-            $event    = new Event();
-            $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
-            $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
-            if ($endsAt->lte($startsAt)) {
-                return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
-            }
-            /** @var Lecture $lecture */
-            $lecture = $this->lectureRepository->find($request->get('lectureId'));
-            if ($lecture === null) {
-                return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
-            }
-            $event->setType($request->get('type'));
-            $event->setDescription($request->get('description'));
-            $event->setLecture($lecture);
-            $event->setStartsAt($startsAt);
-            $event->setEndsAt($endsAt);
+        $event    = new GroupEvent();
+        $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
+        $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
+        if ($endsAt->lte($startsAt)) {
+            return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
+        }
 
-            $this->eventRepository->create($event);
+        /** @var Group $group */
+        $group = $this->groupRepository->find($request['groupId']);
+        if ($group === null) {
+            return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
+        }
+
+        $event->setType($request->get('type'));
+        $event->setDescription($request->get('description'));
+        $event->setGroup($group);
+        $event->setStartsAt($startsAt);
+        $event->setEndsAt($endsAt);
+
+        $this->eventRepository->create($event);
         return $this->returnSuccess([
-            'successful'   => $event,
+            'successful' => $event,
         ]);
     }
 
@@ -72,7 +73,7 @@ class EventController extends ApiController
     {
         $event = $this->eventRepository->find($id);
 
-        if($event === null){
+        if ($event === null) {
             return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
         }
 
@@ -90,11 +91,11 @@ class EventController extends ApiController
 
     public function putEditEvent(StandardRequest $request, $id)
     {
-        if($this->eventRepository->find($id) === null){
+        if ($this->eventRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
         }
 
-        /** @var  Event $event */
+        /** @var  GroupEvent $event */
         $event = $this->eventRepository->find($id);
 
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request['startsAt']);
@@ -102,14 +103,16 @@ class EventController extends ApiController
         if ($endsAt->lte($startsAt)) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
-        /** @var Lecture $lecture */
-        $lecture = $this->lectureRepository->find($request['lectureId']);
-        if ($lecture === null) {
-            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
+
+        /** @var Group $group */
+        $group = $this->groupRepository->find($request['groupId']);
+        if ($group === null) {
+            return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
         }
+
         $event->setType($request['type']);
         $event->setDescription($request['description']);
-        $event->setLecture($lecture);
+        $event->setGroup($group);
         $event->setStartsAt($startsAt);
         $event->setEndsAt($endsAt);
 

@@ -35,7 +35,6 @@ class AddGroupRequest extends Request
     {
         return [
             'name' => 'required',
-            'lectures' => 'required|array'
         ];
     }
 }

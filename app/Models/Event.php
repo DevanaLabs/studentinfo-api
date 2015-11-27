@@ -5,17 +5,12 @@ namespace StudentInfo\Models;
 
 use Carbon\Carbon;
 
-class Event
+abstract class Event
 {
     /**
      * @var int
      */
     protected $id;
-
-    /**
-     * @var Lecture
-     */
-    protected $lecture;
 
     /**
      * @var String
@@ -45,21 +40,6 @@ class Event
         return $this->id;
     }
 
-    /**
-     * @return Lecture
-     */
-    public function getLecture()
-    {
-        return $this->lecture;
-    }
-
-    /**
-     * @param Lecture $lecture
-     */
-    public function setLecture(Lecture $lecture)
-    {
-        $this->lecture = $lecture;
-    }
     /**
      * @return String
      */

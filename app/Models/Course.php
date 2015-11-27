@@ -34,12 +34,18 @@ class Course
     protected $students;
 
     /**
+     * @var ArrayCollection|CourseEvent[]
+     */
+    private $events;
+
+    /**
      * Course constructor.
      */
     public function __construct()
     {
         $this->lectures = new ArrayCollection();
         $this->students = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     /**
@@ -121,5 +127,21 @@ class Course
     public function addLecture(Lecture $lecture)
     {
         return $this->lectures[]=$lecture;
+    }
+
+    /**
+     * @return ArrayCollection|CourseEvent[]
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param ArrayCollection|CourseEvent[] $events
+     */
+    public function setEvents($events)
+    {
+        $this->events = $events;
     }
 }

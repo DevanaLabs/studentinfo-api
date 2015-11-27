@@ -13,7 +13,7 @@ class Group
     protected $id;
 
     /**
-     * @var Stringl
+     * @var String
      */
     protected $name;
 
@@ -23,11 +23,17 @@ class Group
     protected $lectures;
 
     /**
+     * @var ArrayCollection|GroupEvent[]
+     */
+    private $events;
+
+    /**
      * Group constructor.
      */
     public function __construct()
     {
         $this->lectures = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getId()
@@ -65,5 +71,21 @@ class Group
     public function setLectures($lectures)
     {
         $this->lectures = $lectures;
+    }
+
+    /**
+     * @return ArrayCollection|GroupEvent[]
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param ArrayCollection|GroupEvent[] $events
+     */
+    public function setEvents($events)
+    {
+        $this->events = $events;
     }
 }

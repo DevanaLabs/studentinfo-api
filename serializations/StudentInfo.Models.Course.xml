@@ -14,5 +14,10 @@
                   serialized-name="semester"
                   expose="true"
                 />
+        <property name="events"
+                  serialized-name="events"
+                  expose="true"
+                  max-depth="2"
+                />
     </class>
 </serializer>

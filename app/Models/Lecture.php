@@ -44,11 +44,6 @@ class Lecture
     private $groups;
 
     /**
-     * @var ArrayCollection|Event[]
-     */
-    private $events;
-
-    /**
      * @var Carbon
      */
     private $startsAt;
@@ -206,21 +201,4 @@ class Lecture
     {
         $this->endsAt = $endsAt;
     }
-
-    /**
-     * @return ArrayCollection|Event[]
-     */
-    public function getEvents()
-    {
-        return $this->events;
-    }
-
-    /**
-     * @param ArrayCollection|Event[] $events
-     */
-    public function setEvents($events)
-    {
-        $this->events = $events;
-    }
-
 }

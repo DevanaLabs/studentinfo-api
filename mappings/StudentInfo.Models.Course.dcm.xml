@@ -15,6 +15,13 @@
 
         <field name="semester" column="semester" type="integer"/>
 
+        <one-to-many field="events" target-entity="StudentInfo\Models\CourseEvent" mapped-by="course">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
+
         <one-to-many field="lectures" target-entity="StudentInfo\Models\Lecture" mapped-by="course">
             <cascade>
                 <cascade-persist/>

@@ -14,6 +14,13 @@
 
         <field name="name" column="name" type="string" unique="true"/>
 
+        <one-to-many field="events" target-entity="StudentInfo\Models\GroupEvent" mapped-by="group">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
+
         <many-to-many target-entity="Lecture" field="lectures" inversed-by="groups">
             <join-table name="classes_lectures">
                 <join-columns>

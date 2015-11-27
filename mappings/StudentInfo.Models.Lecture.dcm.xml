@@ -15,13 +15,6 @@
 
         <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
 
-        <one-to-many field="events" target-entity="StudentInfo\Models\Event" mapped-by="lecture">
-            <cascade>
-                <cascade-persist/>
-                <cascade-remove/>
-            </cascade>
-        </one-to-many>
-
         <many-to-one target-entity="StudentInfo\Models\Course" field="course" inversed-by="lectures">
             <join-column name="course_id" referenced-column-name="id"/>
         </many-to-one>

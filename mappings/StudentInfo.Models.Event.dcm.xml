@@ -5,7 +5,14 @@
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
 
-    <entity name="StudentInfo\Models\Event" table="events">
+    <entity name="StudentInfo\Models\Event" table="events" inheritance-type="JOINED">
+
+        <discriminator-column name="disc" type="string"/>
+
+        <discriminator-map>
+            <discriminator-mapping value="group_event" class="StudentInfo\Models\GroupEvent"/>
+            <discriminator-mapping value="course_event" class="StudentInfo\Models\CourseEvent"/>
+        </discriminator-map>
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -19,10 +26,6 @@
         <field name="startsAt" column="starts_at" type="datetime" nullable="false"/>
 
         <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
-
-        <many-to-one target-entity="StudentInfo\Models\Lecture" field="lecture" inversed-by="events">
-            <join-column name="lecture_id" referenced-column-name="id"/>
-        </many-to-one>
 
     </entity>
 
