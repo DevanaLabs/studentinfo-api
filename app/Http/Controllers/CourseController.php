@@ -106,5 +106,4 @@ class CourseController extends ApiController
 
         return $this->returnSuccess();
     }
-
 }

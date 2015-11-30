@@ -9,7 +9,6 @@ use StudentInfo\Http\Requests\AddEventRequest;
 use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Group;
 use StudentInfo\Models\GroupEvent;
-use StudentInfo\Models\Lecture;
 use StudentInfo\Repositories\EventRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
 

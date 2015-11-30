@@ -10,40 +10,39 @@ use StudentInfo\Http\Requests\AddEventRequest;
 use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\CourseEvent;
-use StudentInfo\Models\Lecture;
 use StudentInfo\Repositories\EventRepositoryInterface;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 
 class CourseEventController extends ApiController
 {
-    /**
-     * @var EventRepositoryInterface
-     */
-    protected $eventRepository;
-    /**
-     * @var CourseRepositoryInterface
-     */
-    protected $courseRepository;
+            /**
+         * @var EventRepositoryInterface
+         */
+        protected $eventRepository;
+        /**
+         * @var CourseRepositoryInterface
+         */
+        protected $courseRepository;
 
-    /**
-     * @var Guard
-     */
-    protected $guard;
+        /**
+         * @var Guard
+         */
+        protected $guard;
 
-    /**
-     * CourseController constructor.
-     * @param EventRepositoryInterface   $eventRepository
-     * @param CourseRepositoryInterface $lectureRepository
-     * @param Guard                      $guard
-     */
-    public function __construct(EventRepositoryInterface $eventRepository, CourseRepositoryInterface $courseRepository, Guard $guard)
+        /**
+         * CourseController constructor.
+         * @param EventRepositoryInterface   $eventRepository
+         * @param CourseRepositoryInterface $courseRepository
+         * @param Guard                      $guard
+         */
+        public function __construct(EventRepositoryInterface $eventRepository, CourseRepositoryInterface $courseRepository, Guard $guard)
     {
         $this->eventRepository   = $eventRepository;
         $this->courseRepository  = $courseRepository;
         $this->guard             = $guard;
     }
 
-    public function addEvent(AddEventRequest $request)
+        public function addEvent(AddEventRequest $request)
     {
         $event    = new CourseEvent();
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
@@ -69,7 +68,7 @@ class CourseEventController extends ApiController
         ]);
     }
 
-    public function getEvent($id)
+        public function getEvent($id)
     {
         $event = $this->eventRepository->find($id);
 
@@ -82,14 +81,14 @@ class CourseEventController extends ApiController
         ]);
     }
 
-    public function getEvents($start = 0, $count = 20)
+        public function getEvents($start = 0, $count = 20)
     {
         $events = $this->eventRepository->all($start, $count);
 
         return $this->returnSuccess($events);
     }
 
-    public function putEditEvent(StandardRequest $request, $id)
+        public function putEditEvent(StandardRequest $request, $id)
     {
         if($this->eventRepository->find($id) === null){
             return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);

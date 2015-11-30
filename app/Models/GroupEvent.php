@@ -3,8 +3,6 @@
 namespace StudentInfo\Models;
 
 
-use StudentInfo\Models\Event;
-
 class GroupEvent extends Event
 {
     /**

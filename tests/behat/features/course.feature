@@ -12,10 +12,8 @@ Feature: Course
     Given I request "POST /course"
     Then I get a "200" response
     And scope into the "success" property
-    And the properties exist:
-               """
-               data
-               """
+    And the "data" property contains 1 items
+
 
   Scenario: AddCourseFail
     Given I have the payload:

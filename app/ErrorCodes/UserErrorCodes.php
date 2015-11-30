@@ -28,7 +28,7 @@ class UserErrorCodes
 
     const EVENT_NOT_IN_DB = 111;
 
-    const STUDENT_NOT_UNIQUE_EMAIL = 112;
+    const NOT_UNIQUE_EMAIL = 112;
 
     const STUDENT_NOT_UNIQUE_INDEX = 113;
 
@@ -42,5 +42,9 @@ class UserErrorCodes
 
     const CSV_FILE_NOT_FOUND = 118;
 
+    const ADMIN_NOT_IN_DB = 119;
 
+    const FACULTY_NOT_IN_DB = 120;
+
+    const FACULTY_ALREADY_EXISTS = 121;
 }

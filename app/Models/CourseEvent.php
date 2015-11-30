@@ -2,9 +2,6 @@
 
 namespace StudentInfo\Models;
 
-
-use StudentInfo\Models\Event;
-
 class CourseEvent extends Event
 {
     /**

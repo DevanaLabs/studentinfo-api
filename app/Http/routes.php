@@ -2,6 +2,7 @@
 
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
+use StudentInfo\Repositories\SuperUserRepositoryInterface;
 
 Route::get('/', function () {
     return view('welcome');
@@ -10,6 +11,17 @@ Route::get('/', function () {
 /* Test Routes */
 
 Route::post('testCSV', 'StudentController@addStudentsFromCSV');
+
+Route::get('/addSuperUser', function (SuperUserRepositoryInterface $superUserRepository) {
+    $superUser = new \StudentInfo\Models\SuperUser();
+    $superUser->setFirstName("Nebojsa");
+    $superUser->setLastName("Urosevic");
+    $superUser->setEmail(new \StudentInfo\ValueObjects\Email("nu1@gmail.com"));
+    $superUser->setPassword(new \StudentInfo\ValueObjects\Password("blabla"));
+    $superUser->setRememberToken("bla");
+
+    $superUserRepository->create($superUser);
+});
 
 Route::get('/addAdmin', function (FacultyRepositoryInterface $facultyRepository, UserRepositoryInterface $userRepository) {
     $admin = new \StudentInfo\Models\Admin();
@@ -80,6 +92,10 @@ Route::post('course', 'CourseController@addCourse');
 
 Route::post('group', 'GroupController@addGroup');
 
+Route::post('admin', 'AdminController@addAdmin');
+
+Route::post('faculty', 'FacultyController@addFaculty');
+
 Route::get('student/{id}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@getStudent']);
 
 Route::get('students/{start?}/{count?}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@getStudents']);
@@ -112,6 +128,14 @@ Route::get('group/{id}', ['middleware' => 'role:group.retrieve', 'uses' => 'Grou
 
 Route::get('groups/{start?}/{count?}', ['middleware' => 'role:group.retrieve', 'uses' => 'GroupController@getGroups']);
 
+Route::get('admin/{id}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@getAdmin']);
+
+Route::get('admins/{start?}/{count?}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@getAdmins']);
+
+Route::get('faculty/{id}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@getFaculty']);
+
+Route::get('faculties/{start?}/{count?}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@getFaculty']);
+
 Route::put('student/{id}', ['middleware' => 'role:student.edit', 'uses' => 'StudentController@putEditStudent']);
 
 Route::put('classroom/{id}', ['middleware' => 'role:classroom.edit', 'uses' => 'ClassroomController@putEditClassroom']);
@@ -127,6 +151,10 @@ Route::put('group/{id}', ['middleware' => 'role:group.edit', 'uses' => 'GroupCon
 Route::put('courseEvent/{id}', ['middleware' => 'role:event.edit', 'uses' => 'CourseEventController@putEditEvent']);
 
 Route::put('groupEvent/{id}', ['middleware' => 'role:event.edit', 'uses' => 'GroupEventController@putEditEvent']);
+
+Route::put('admin/{id}', ['middleware' => 'role:admin.edit', 'uses' => 'AdminController@putEditAdmin']);
+
+Route::put('faculty/{id}', ['middleware' => 'role:faculty.edit', 'uses' => 'FacultyController@putEditFaculty']);
 
 Route::delete('classroom/{id}' , ['middleware' => 'role:classroom.delete', 'uses' => 'ClassroomController@deleteClassroom']);
 
@@ -144,8 +172,6 @@ Route::delete('groupEvent/{id}' , ['middleware' => 'role:event.delete', 'uses' =
 
 Route::delete('student/{id}' , ['middleware' => 'role:student.delete', 'uses' => 'StudentController@deleteStudent']);
 
+Route::delete('admin/{id}' , ['middleware' => 'role:admin.delete', 'uses' => 'AdminController@deleteAdmin']);
 
-
-
-
-
+Route::delete('faculty/{id}' , ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);

@@ -28,7 +28,7 @@ return [
 
     \StudentInfo\ErrorCodes\UserErrorCodes::STUDENT_NOT_IN_DB      => 'Student is not in database',
 
-    \StudentInfo\ErrorCodes\UserErrorCodes::STUDENT_NOT_UNIQUE_EMAIL        => 'Student with this email already exists in database',
+    \StudentInfo\ErrorCodes\UserErrorCodes::NOT_UNIQUE_EMAIL        => 'Student with this email already exists in database',
 
     \StudentInfo\ErrorCodes\UserErrorCodes::STUDENT_NOT_UNIQUE_INDEX        => 'Student with this index number already exists in database',
 
