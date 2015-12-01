@@ -11,6 +11,7 @@
         <discriminator-map>
             <discriminator-mapping value="student" class="StudentInfo\Models\Student"/>
             <discriminator-mapping value="admin" class="StudentInfo\Models\Admin"/>
+            <discriminator-mapping value="superUser" class="StudentInfo\Models\SuperUser"/>
         </discriminator-map>
 
         <id name="id" type="integer" column="id">
@@ -24,9 +25,9 @@
 
         <field name="rememberToken" column="remember_token" type="string" length="100" nullable="true"/>
 
-        <field name="registerToken" column="register_token" type="string" length="32"/>
+        <field name="registerToken" column="register_token" type="string" length="32" nullable="true"/>
 
-        <field name="registerTokenCreatedAt" column="register_token_created_at" type="datetime"/>
+        <field name="registerTokenCreatedAt" column="register_token_created_at" type="datetime" nullable="true"/>
 
         <embedded name="email" class="StudentInfo\ValueObjects\Email" use-column-prefix="false"/>
 

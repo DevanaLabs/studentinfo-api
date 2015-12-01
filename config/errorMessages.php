@@ -28,7 +28,7 @@ return [
 
     \StudentInfo\ErrorCodes\UserErrorCodes::STUDENT_NOT_IN_DB      => 'Student is not in database',
 
-    \StudentInfo\ErrorCodes\UserErrorCodes::NOT_UNIQUE_EMAIL        => 'Student with this email already exists in database',
+    \StudentInfo\ErrorCodes\UserErrorCodes::NOT_UNIQUE_EMAIL        => 'User with this email already exists in database',
 
     \StudentInfo\ErrorCodes\UserErrorCodes::STUDENT_NOT_UNIQUE_INDEX        => 'Student with this index number already exists in database',
 
@@ -39,4 +39,12 @@ return [
     \StudentInfo\ErrorCodes\UserErrorCodes::GROUP_ALREADY_EXISTS        => 'Group with this name already exists in database',
 
     \StudentInfo\ErrorCodes\UserErrorCodes::CSV_FILE_NOT_FOUND        => 'Valid CSV file was not found',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::ADMIN_NOT_IN_DB           => 'Admin is not in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::FACULTY_NOT_IN_DB         => 'Faculty is not in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::FACULTY_ALREADY_EXISTS    => 'Faculty with same name already exist in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::USER_BELONGS_TO_THIS_FACULTY  => 'You can\'t delete this faculty, there are users in it'
 ];

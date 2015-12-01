@@ -3,6 +3,7 @@
 namespace StudentInfo\Http\Controllers;
 
 
+use Exception;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFacultyRequest;
@@ -98,7 +99,11 @@ class FacultyController extends ApiController
         if ($faculty === null) {
             return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);
         }
-        $this->facultyRepository->destroy($faculty);
+        try {
+            $this->facultyRepository->destroy($faculty);
+        } catch (Exception $e) {
+            return $this->returnError(500, UserErrorCodes::USER_BELONGS_TO_THIS_FACULTY);
+        }
 
         return $this->returnSuccess();
     }

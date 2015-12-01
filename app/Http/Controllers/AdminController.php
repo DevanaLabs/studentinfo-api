@@ -108,15 +108,17 @@ class AdminController extends ApiController
                 return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
             }
         }
+        $faculty = $this->facultyRepository->findFacultyByName($request->get('faculty'));
+        if ($faculty === null) {
+            return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);
+        }
 
-        $admin = new Admin();
         $admin->setFirstName($request->get('firstName'));
         $admin->setLastName($request->get('lastName'));
         $admin->setEmail($email);
         $admin->setPassword(new Password('password'));
         $admin->generateRegisterToken();
-        $admin->setOrganisation($request->get('Faculty'));
-
+        $admin->setOrganisation($faculty);
         $this->adminRepository->update($admin);
 
         return $this->returnSuccess([

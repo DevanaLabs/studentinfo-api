@@ -12,12 +12,13 @@ Route::get('/', function () {
 
 Route::post('testCSV', 'StudentController@addStudentsFromCSV');
 
-Route::get('/addSuperUser', function (SuperUserRepositoryInterface $superUserRepository) {
+Route::get('/addSuperUser', function (SuperUserRepositoryInterface $superUserRepository, FacultyRepositoryInterface $facultyRepository) {
     $superUser = new \StudentInfo\Models\SuperUser();
     $superUser->setFirstName("Nebojsa");
     $superUser->setLastName("Urosevic");
     $superUser->setEmail(new \StudentInfo\ValueObjects\Email("nu1@gmail.com"));
     $superUser->setPassword(new \StudentInfo\ValueObjects\Password("blabla"));
+    $superUser->setOrganisation($facultyRepository->findFacultyByName('Racunarski fakultet'));
     $superUser->setRememberToken("bla");
 
     $superUserRepository->create($superUser);
@@ -30,7 +31,6 @@ Route::get('/addAdmin', function (FacultyRepositoryInterface $facultyRepository,
     $admin->setEmail(new \StudentInfo\ValueObjects\Email("nu@gmail.com"));
     $admin->setPassword(new \StudentInfo\ValueObjects\Password("blabla"));
     $admin->setRememberToken("bla");
-    $admin->generateRegisterToken();
     $admin->setOrganisation($facultyRepository->findFacultyByName('Racunarski fakultet'));
 
     $userRepository->create($admin);
@@ -51,7 +51,7 @@ Route::get('/addStudent', function (FacultyRepositoryInterface $facultyRepositor
     $userRepository->create($student);
 });
 
-Route::get('/addFaculty', function (UserRepositoryInterface $repository) {
+Route::get('/addFaculty', function (FacultyRepositoryInterface $repository) {
     $faculty = new \StudentInfo\Models\Faculty();
     $faculty->setName('Racunarski fakultet');
 
@@ -134,7 +134,7 @@ Route::get('admins/{start?}/{count?}', ['middleware' => 'role:admin.retrieve', '
 
 Route::get('faculty/{id}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@getFaculty']);
 
-Route::get('faculties/{start?}/{count?}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@getFaculty']);
+Route::get('faculties/{start?}/{count?}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@getFaculties']);
 
 Route::put('student/{id}', ['middleware' => 'role:student.edit', 'uses' => 'StudentController@putEditStudent']);
 
