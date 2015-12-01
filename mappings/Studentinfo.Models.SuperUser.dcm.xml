@@ -4,23 +4,6 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="StudentInfo\Models\SuperUser" table="superUsers">
-
-        <id name="id" type="integer" column="id">
-            <generator strategy="AUTO"/>
-            <sequence-generator sequence-name="tablename_seq" allocation-size="100" initial-value="1"/>
-        </id>
-
-        <field name="firstName" column="first_name" type="string" nullable="true"/>
-
-        <field name="lastName" column="last_name" type="string" nullable="true"/>
-
-        <field name="rememberToken" column="remember_token" type="string" length="100" nullable="true"/>
-
-        <embedded name="email" class="StudentInfo\ValueObjects\Email" use-column-prefix="false"/>
-
-        <embedded name="password" class="StudentInfo\ValueObjects\Password" use-column-prefix="false"/>
-
-    </entity>
+    <entity name="StudentInfo\Models\SuperUser" table="superUsers"/>
 
 </doctrine-mapping>
