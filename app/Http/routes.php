@@ -185,3 +185,5 @@ Route::delete('admin/{id}' , ['middleware' => 'role:admin.delete', 'uses' => 'Ad
 Route::delete('faculty/{id}' , ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
 
 Route::delete('notification/{id}' , ['middleware' => 'role:notification.delete', 'uses' => 'NotificationController@deleteNotification']);
+
+Route::get('notifications/between/{start}/{end}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotificationsInInterval']);

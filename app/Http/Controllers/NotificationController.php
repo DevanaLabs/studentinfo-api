@@ -136,4 +136,18 @@ class NotificationController extends ApiController
         return $this->returnSuccess();
     }
 
+    public function getNotificationsInInterval($start, $end)
+    {
+        $startParsed = str_replace('_', ' ', $start);
+        $startCarbon = Carbon::createFromFormat('Y-m-d H:i', $startParsed);
+        $endParsed = str_replace('_', ' ', $end);
+        $endCarbon = Carbon::createFromFormat('Y-m-d H:i', $endParsed);
+
+        if ($startCarbon->lte($endCarbon))
+        {
+            return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
+        }
+
+        return $this->returnSuccess($this->notificationRepository->getForInterval($startCarbon,$endCarbon));
+    }
 }

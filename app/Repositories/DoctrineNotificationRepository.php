@@ -37,4 +37,13 @@ class DoctrineNotificationRepository extends EntityRepository implements Notific
     {
         return $this->_em->find('StudentInfo\Models\Notification', $id);
     }
+
+    public function getForInterval(Carbon $start, Carbon $end)
+    {
+        $query = $this->_em->createQuery('SELECT n FROM StudentInfo\Models\Notification n
+                  WHERE n.expiresAt BETWEEN :start AND :end ORDER BY n.expiresAt');
+        $query->setParameter('start', $start);
+        $query->setParameter('end', $end);
+        return $query->getArrayResult();
+    }
 }
