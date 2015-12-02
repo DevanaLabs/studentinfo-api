@@ -42,6 +42,10 @@ class AdminRole extends Role
             'event.edit',
             'event.retrieve',
             'event.delete',
+            'notification.create',
+            'notification.edit',
+            'notification.retrieve',
+            'notification.delete',
         ];
     }
 

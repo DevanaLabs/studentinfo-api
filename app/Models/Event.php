@@ -4,6 +4,7 @@ namespace StudentInfo\Models;
 
 
 use Carbon\Carbon;
+use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Event
 {
@@ -31,6 +32,11 @@ abstract class Event
      * @var Carbon
      */
     protected $endsAt;
+
+    /**
+     * @var ArrayCollection|Notification[]
+     */
+    protected $notifications;
 
     /**
      * @return int
@@ -103,5 +109,23 @@ abstract class Event
     {
         $this->endsAt = $endsAt;
     }
+
+    /**
+     * @return ArrayCollection|Notification[]
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * @param ArrayCollection|Notification[] $notifications
+     */
+    public function setNotifications($notifications)
+    {
+        $this->notifications = $notifications;
+    }
+
+
 
 }

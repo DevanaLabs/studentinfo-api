@@ -59,7 +59,6 @@ class GroupController extends ApiController
         return $this->returnSuccess([
             'successful'   => $group
         ]);
-
     }
 
     public function getGroup($id)
@@ -73,7 +72,6 @@ class GroupController extends ApiController
         return $this->returnSuccess([
             'group' => $group
         ]);
-
     }
 
     public function getGroups($start = 0, $count = 20)
@@ -81,7 +79,6 @@ class GroupController extends ApiController
         $groups = $this->groupRepository->all($start, $count);
 
         return $this->returnSuccess($groups);
-
     }
 
     public function putEditGroup(StandardRequest $request, $id)

@@ -10,7 +10,7 @@ Route::get('/', function () {
 
 /* Test Routes */
 
-Route::post('testCSV', 'StudentController@addStudentsFromCSV');
+Route::post('importCSV', 'StudentController@addStudentsFromCSV');
 
 Route::get('/addSuperUser', function (SuperUserRepositoryInterface $superUserRepository, FacultyRepositoryInterface $facultyRepository) {
     $superUser = new \StudentInfo\Models\SuperUser();
@@ -94,6 +94,8 @@ Route::post('group', 'GroupController@addGroup');
 
 Route::post('admin', 'AdminController@addAdmin');
 
+Route::post('notification', 'NotificationController@addNotification');
+
 Route::post('faculty', 'FacultyController@addFaculty');
 
 Route::get('student/{id}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@getStudent']);
@@ -121,6 +123,10 @@ Route::get('lecture/{id}', ['middleware' => 'role:lecture.retrieve', 'uses' => '
 Route::get('lectures/{start?}/{count?}', ['middleware' => 'role:lecture.retrieve', 'uses' => 'LectureController@getLectures']);
 
 Route::get('course/{id}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@getCourse']);
+
+Route::get('notification/{id}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotification']);
+
+Route::get('notifications/{start?}/{count?}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotifications']);
 
 Route::get('courses/{start?}/{count?}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@getCourses']);
 
@@ -156,6 +162,8 @@ Route::put('admin/{id}', ['middleware' => 'role:admin.edit', 'uses' => 'AdminCon
 
 Route::put('faculty/{id}', ['middleware' => 'role:faculty.edit', 'uses' => 'FacultyController@putEditFaculty']);
 
+Route::put('notification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'NotificationController@putEditNotification']);
+
 Route::delete('classroom/{id}' , ['middleware' => 'role:classroom.delete', 'uses' => 'ClassroomController@deleteClassroom']);
 
 Route::delete('course/{id}' , ['middleware' => 'role:course.delete', 'uses' => 'CourseController@deleteCourse']);
@@ -175,3 +183,5 @@ Route::delete('student/{id}' , ['middleware' => 'role:student.delete', 'uses' =>
 Route::delete('admin/{id}' , ['middleware' => 'role:admin.delete', 'uses' => 'AdminController@deleteAdmin']);
 
 Route::delete('faculty/{id}' , ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
+
+Route::delete('notification/{id}' , ['middleware' => 'role:notification.delete', 'uses' => 'NotificationController@deleteNotification']);

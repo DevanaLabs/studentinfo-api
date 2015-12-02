@@ -15,6 +15,7 @@ use StudentInfo\Repositories\DoctrineEventRepository;
 use StudentInfo\Repositories\DoctrineFacultyRepository;
 use StudentInfo\Repositories\DoctrineGroupRepository;
 use StudentInfo\Repositories\DoctrineLectureRepository;
+use StudentInfo\Repositories\DoctrineNotificationRepository;
 use StudentInfo\Repositories\DoctrineProfessorRepository;
 use StudentInfo\Repositories\DoctrineStudentRepository;
 use StudentInfo\Repositories\DoctrineSuperUserRepository;
@@ -106,6 +107,12 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->bind('StudentInfo\Repositories\SuperUserRepositoryInterface', function ($app) {
             return new DoctrineSuperUserRepository(
+                $app['em'],
+                new ClassMetaData(User::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\NotificationRepositoryInterface', function ($app) {
+            return new DoctrineNotificationRepository(
                 $app['em'],
                 new ClassMetaData(User::class)
             );

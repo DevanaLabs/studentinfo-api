@@ -22,7 +22,7 @@ return [
 
     \StudentInfo\ErrorCodes\UserErrorCodes::GROUP_NOT_IN_DB        => 'Group is not in database',
 
-    \StudentInfo\ErrorCodes\UserErrorCodes::INCORRECT_TIME         => 'Lecture start or end time is incorrect',
+    \StudentInfo\ErrorCodes\UserErrorCodes::INCORRECT_TIME         => 'The time is incorrect',
 
     \StudentInfo\ErrorCodes\UserErrorCodes::EVENT_NOT_IN_DB        => 'Event is not in database',
 
@@ -46,5 +46,7 @@ return [
 
     \StudentInfo\ErrorCodes\UserErrorCodes::FACULTY_ALREADY_EXISTS    => 'Faculty with same name already exist in database',
 
-    \StudentInfo\ErrorCodes\UserErrorCodes::USER_BELONGS_TO_THIS_FACULTY  => 'You can\'t delete this faculty, there are users in it'
+    \StudentInfo\ErrorCodes\UserErrorCodes::USER_BELONGS_TO_THIS_FACULTY  => 'You can\'t delete this faculty, there are users in it',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::NOTIFICATION_NOT_IN_DB  => 'Notification is not in database',
 ];
