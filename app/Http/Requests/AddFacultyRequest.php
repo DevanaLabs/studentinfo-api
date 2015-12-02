@@ -34,6 +34,7 @@ class AddFacultyRequest extends Request
     {
         return [
             'name' => 'required',
+            'university' => 'required',
         ];
     }
 }

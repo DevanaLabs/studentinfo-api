@@ -4,13 +4,6 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="StudentInfo\Models\CourseEvent" table="course_events">
-
-        <many-to-one target-entity="StudentInfo\Models\Course" field="course" inversed-by="events">
-            <join-column name="course_id" referenced-column-name="id"/>
-        </many-to-one>
-
-    </entity>
-
+    <entity name="StudentInfo\Models\GlobalEvent" table="global_events"/>
 
 </doctrine-mapping>

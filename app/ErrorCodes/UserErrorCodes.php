@@ -51,4 +51,8 @@ class UserErrorCodes
     const USER_BELONGS_TO_THIS_FACULTY = 122;
 
     const NOTIFICATION_NOT_IN_DB = 123;
+
+    const CLASSROOM_ALREADY_ADDED_TO_EVENT = 124;
+
+    const CLASSROOM_NOT_ADDED_TO_EVENT = 125;
 }

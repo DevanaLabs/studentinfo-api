@@ -39,6 +39,20 @@ abstract class Event
     protected $notifications;
 
     /**
+     * @var ArrayCollection|Classroom[]
+     */
+    protected $classrooms;
+
+    /**
+     * Event constructor.
+     * @param ArrayCollection|Classroom[] $classrooms
+     */
+    public function __construct(ArrayCollection $classrooms)
+    {
+        $this->classrooms = $classrooms;
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -127,5 +141,19 @@ abstract class Event
     }
 
 
+    /**
+     * @return ArrayCollection|Classroom[]
+     */
+    public function getClassrooms()
+    {
+        return $this->classrooms;
+    }
 
+    /**
+     * @param ArrayCollection|Classroom[] $classrooms
+     */
+    public function setClassrooms($classrooms)
+    {
+        $this->classrooms = $classrooms;
+    }
 }

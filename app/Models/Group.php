@@ -18,6 +18,11 @@ class Group
     protected $name;
 
     /**
+     * @var int
+     */
+    protected $year;
+
+    /**
      * @var ArrayCollection|Lecture[]
      */
     protected $lectures;
@@ -87,5 +92,21 @@ class Group
     public function setEvents($events)
     {
         $this->events = $events;
+    }
+
+    /**
+     * @return int
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param int $year
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
     }
 }

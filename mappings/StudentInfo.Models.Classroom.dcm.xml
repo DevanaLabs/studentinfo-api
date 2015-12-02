@@ -21,6 +21,9 @@
                 <cascade-remove/>
             </cascade>
         </one-to-many>
+
+        <many-to-many field="events" mapped-by="classrooms" target-entity="StudentInfo\Models\Event"/>
+
     </entity>
 
 </doctrine-mapping>

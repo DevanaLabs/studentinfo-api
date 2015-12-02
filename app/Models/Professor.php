@@ -4,8 +4,6 @@ namespace StudentInfo\Models;
 
 
 use Doctrine\Common\Collections\ArrayCollection;
-use StudentInfo\Http\Requests\StandardRequest;
-use StudentInfo\Repositories\ProfessorRepositoryInterface;
 
 class Professor
 {
@@ -28,22 +26,6 @@ class Professor
      * @var string
      */
     protected $title;
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
 
     /**
      * @var ArrayCollection|Lecture[]
@@ -80,6 +62,22 @@ class Professor
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 
     /**

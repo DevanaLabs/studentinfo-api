@@ -4,47 +4,18 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\Guard;
+use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddEventRequest;
 use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\CourseEvent;
-use StudentInfo\Repositories\EventRepositoryInterface;
-use StudentInfo\Repositories\CourseRepositoryInterface;
 
-class CourseEventController extends ApiController
+class CourseEventController extends EventController
 {
-            /**
-         * @var EventRepositoryInterface
-         */
-        protected $eventRepository;
-        /**
-         * @var CourseRepositoryInterface
-         */
-        protected $courseRepository;
-
-        /**
-         * @var Guard
-         */
-        protected $guard;
-
-        /**
-         * CourseController constructor.
-         * @param EventRepositoryInterface   $eventRepository
-         * @param CourseRepositoryInterface $courseRepository
-         * @param Guard                      $guard
-         */
-        public function __construct(EventRepositoryInterface $eventRepository, CourseRepositoryInterface $courseRepository, Guard $guard)
+    public function addEvent(AddEventRequest $request)
     {
-        $this->eventRepository   = $eventRepository;
-        $this->courseRepository  = $courseRepository;
-        $this->guard             = $guard;
-    }
-
-        public function addEvent(AddEventRequest $request)
-    {
-        $event    = new CourseEvent();
+        $event = new CourseEvent(new ArrayCollection());
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
         $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
         if ($endsAt->lte($startsAt)) {
@@ -64,33 +35,13 @@ class CourseEventController extends ApiController
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
-            'successful'   => $event,
+            'successful' => $event,
         ]);
     }
 
-        public function getEvent($id)
+    public function putEditEvent(StandardRequest $request, $id)
     {
-        $event = $this->eventRepository->find($id);
-
-        if($event === null){
-            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
-        }
-
-        return $this->returnSuccess([
-            'event' => $event
-        ]);
-    }
-
-        public function getEvents($start = 0, $count = 20)
-    {
-        $events = $this->eventRepository->all($start, $count);
-
-        return $this->returnSuccess($events);
-    }
-
-        public function putEditEvent(StandardRequest $request, $id)
-    {
-        if($this->eventRepository->find($id) === null){
+        if ($this->eventRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
         }
 
@@ -119,19 +70,7 @@ class CourseEventController extends ApiController
 
 
         return $this->returnSuccess([
-            'event' => $event
+            'event' => $event,
         ]);
-    }
-
-    public function deleteEvent($id)
-    {
-
-        $event = $this->eventRepository->find($id);
-        if ($event === null) {
-            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
-        }
-        $this->eventRepository->destroy($event);
-
-        return $this->returnSuccess();
     }
 }

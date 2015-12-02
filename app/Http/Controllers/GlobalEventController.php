@@ -2,34 +2,27 @@
 
 namespace StudentInfo\Http\Controllers;
 
+
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddEventRequest;
 use StudentInfo\Http\Requests\StandardRequest;
-use StudentInfo\Models\Group;
-use StudentInfo\Models\GroupEvent;
+use StudentInfo\Models\GlobalEvent;
 
-class GroupEventController extends EventController
+class GlobalEventController extends EventController
 {
     public function addEvent(AddEventRequest $request)
     {
-        $event = new GroupEvent(new ArrayCollection());
+        $event    = new GlobalEvent(new ArrayCollection());
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
         $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
         if ($endsAt->lte($startsAt)) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
 
-        /** @var Group $group */
-        $group = $this->groupRepository->find($request['groupId']);
-        if ($group === null) {
-            return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
-        }
-
         $event->setType($request->get('type'));
         $event->setDescription($request->get('description'));
-        $event->setGroup($group);
         $event->setStartsAt($startsAt);
         $event->setEndsAt($endsAt);
 
@@ -45,7 +38,7 @@ class GroupEventController extends EventController
             return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
         }
 
-        /** @var  GroupEvent $event */
+        /** @var  GlobalEvent $event */
         $event = $this->eventRepository->find($id);
 
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request['startsAt']);
@@ -54,15 +47,8 @@ class GroupEventController extends EventController
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
 
-        /** @var Group $group */
-        $group = $this->groupRepository->find($request['groupId']);
-        if ($group === null) {
-            return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
-        }
-
-        $event->setType($request['type']);
-        $event->setDescription($request['description']);
-        $event->setGroup($group);
+        $event->setType($request->get('type'));
+        $event->setDescription($request->get('description'));
         $event->setStartsAt($startsAt);
         $event->setEndsAt($endsAt);
 
@@ -70,7 +56,7 @@ class GroupEventController extends EventController
 
 
         return $this->returnSuccess([
-            'event' => $event
+            'event' => $event,
         ]);
     }
 }

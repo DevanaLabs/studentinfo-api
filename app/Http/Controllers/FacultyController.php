@@ -46,6 +46,7 @@ class FacultyController extends ApiController
         }
         $faculty = new Faculty();
         $faculty->setName($name);
+        $faculty->setUniversity($request->get('university'));
 
         $this->facultyRepository->create($faculty);
 
@@ -84,6 +85,7 @@ class FacultyController extends ApiController
         $faculty = $this->facultyRepository->find($id);
 
         $faculty->setName($request->get('name'));
+        $faculty->setUniversity($request->get('university'));
 
         $this->facultyRepository->update($faculty);
 

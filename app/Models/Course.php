@@ -3,8 +3,6 @@
 namespace StudentInfo\Models;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use StudentInfo\Http\Requests\StandardRequest;
-use StudentInfo\Repositories\CourseRepositoryInterface;
 
 class Course
 {
@@ -36,7 +34,7 @@ class Course
     /**
      * @var ArrayCollection|CourseEvent[]
      */
-    private $events;
+    protected $events;
 
     /**
      * Course constructor.

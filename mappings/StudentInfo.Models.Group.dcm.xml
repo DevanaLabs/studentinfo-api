@@ -14,6 +14,8 @@
 
         <field name="name" column="name" type="string" unique="true"/>
 
+        <field name="year" column="year" type="integer"/>
+
         <one-to-many field="events" target-entity="StudentInfo\Models\GroupEvent" mapped-by="group">
             <cascade>
                 <cascade-persist/>

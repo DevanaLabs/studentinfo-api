@@ -3,30 +3,33 @@
 namespace StudentInfo\Models;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use StudentInfo\Http\Requests\StandardRequest;
-use StudentInfo\Repositories\ClassroomRepositoryInterface;
 
 class Classroom
 {
     /**
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $directions;
+    protected $directions;
 
     /**
      * @var ArrayCollection|Lecture[]
      */
-    private $lectures;
+    protected $lectures;
+
+    /**
+     * @var ArrayCollection|Event[]
+     */
+    protected $events;
 
     /**
      * Classroom constructor.
@@ -34,22 +37,7 @@ class Classroom
     public function __construct()
     {
         $this->lectures = new ArrayCollection();
-    }
-
-    /**
-     * @return ArrayCollection|Lecture[]
-     */
-    public function getLectures()
-    {
-        return $this->lectures;
-    }
-
-    /**
-     * @param ArrayCollection|Lecture[] $lectures
-     */
-    public function setLectures($lectures)
-    {
-        $this->lectures = $lectures;
+        $this->events = new ArrayCollection();
     }
 
     /**
@@ -90,5 +78,37 @@ class Classroom
     public function setDirections($directions)
     {
         $this->directions = $directions;
+    }
+
+    /**
+     * @return ArrayCollection|Lecture[]
+     */
+    public function getLectures()
+    {
+        return $this->lectures;
+    }
+
+    /**
+     * @param ArrayCollection|Lecture[] $lectures
+     */
+    public function setLectures($lectures)
+    {
+        $this->lectures = $lectures;
+    }
+
+    /**
+     * @return ArrayCollection|Event[]
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param ArrayCollection|Event[] $events
+     */
+    public function setEvents($events)
+    {
+        $this->events = $events;
     }
 }

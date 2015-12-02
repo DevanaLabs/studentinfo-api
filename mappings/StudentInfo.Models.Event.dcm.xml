@@ -12,6 +12,7 @@
         <discriminator-map>
             <discriminator-mapping value="group_event" class="StudentInfo\Models\GroupEvent"/>
             <discriminator-mapping value="course_event" class="StudentInfo\Models\CourseEvent"/>
+            <discriminator-mapping value="global_event" class="StudentInfo\Models\GlobalEvent"/>
         </discriminator-map>
 
         <id name="id" type="integer" column="id">
@@ -26,6 +27,17 @@
         <field name="startsAt" column="starts_at" type="datetime" nullable="false"/>
 
         <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
+
+        <many-to-many target-entity="Classroom" field="classrooms" inversed-by="events">
+            <join-table name="classrooms_events">
+                <join-columns>
+                    <join-column name="event_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="classroom_id" referenced-column-name="id"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
 
         <one-to-many field="notifications" target-entity="StudentInfo\Models\Notification" mapped-by="event">
             <cascade>

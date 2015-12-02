@@ -19,6 +19,11 @@ class Faculty implements Organisation
     protected $name;
 
     /**
+     * @var string
+     */
+    protected $university;
+
+    /**
      * @return int
      */
     public function getId()
@@ -40,5 +45,21 @@ class Faculty implements Organisation
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniversity()
+    {
+        return $this->university;
+    }
+
+    /**
+     * @param string $university
+     */
+    public function setUniversity($university)
+    {
+        $this->university = $university;
     }
 }

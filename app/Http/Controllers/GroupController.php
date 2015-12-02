@@ -46,6 +46,7 @@ class GroupController extends ApiController
         $group = new Group();
         $name = $request->get('name');
         $group->setName($name);
+        $group->setYear($request->get('year'));
 
         for ($i = 0; $i < count($lecturesEntry); $i++) {
             $lectures[] = $this->lectureRepository->find($lecturesEntry[$i]);
@@ -91,6 +92,7 @@ class GroupController extends ApiController
         }
 
         $group->setName($request->get('name'));
+        $group->setYear($request->get('year'));
         $group->setLectures($request->get('lectures'));
 
         $this->groupRepository->update($group);
@@ -109,5 +111,15 @@ class GroupController extends ApiController
         $this->groupRepository->destroy($group);
 
         return $this->returnSuccess();
+    }
+
+    public function getAllYears()
+    {
+        return $this->returnSuccess($this->groupRepository->getAllYears());
+    }
+
+    public function getAllGroups($year)
+    {
+        return $this->returnSuccess($this->groupRepository->getAllGroups($year));
     }
 }
