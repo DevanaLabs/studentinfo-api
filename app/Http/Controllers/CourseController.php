@@ -7,7 +7,6 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddCourseRequest;
-use StudentInfo\Http\Requests\Request;
 use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Repositories\CourseRepositoryInterface;
@@ -47,6 +46,7 @@ class CourseController extends ApiController
         }
         $course = new Course();
         $course->setCode($code);
+        $course->setEspb($request->get('espb'));
         $course->setSemester($request->get('semester'));
 
         $this->courseRepository->create($course);
@@ -86,6 +86,7 @@ class CourseController extends ApiController
         $course = $this->courseRepository->find($id);
 
         $course->setCode($request->get('code'));
+        $course->setEspb($request->get('espb'));
         $course->setSemester($request->get('semester'));
 
         $this->courseRepository->update($course);

@@ -4,49 +4,53 @@ namespace StudentInfo\Models;
 
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
-use StudentInfo\Http\Requests\EditLectureRequest;
 
 class Lecture
 {
     /**
      * @var int
      */
-    private $id;
+    protected $id;
+
+    /**
+     * @var string
+     */
+    protected $type;
 
     /**
      * @var Course
      */
-    private $course;
+    protected $course;
 
     /**
      * @var Professor
      */
-    private $professor;
+    protected $professor;
 
     /**
      * @var Classroom
      */
-    private $classroom;
+    protected $classroom;
 
     /**
      * @var ArrayCollection|Student[]
      */
-    private $students;
+    protected $students;
 
     /**
      * @var ArrayCollection|Group[]
      */
-    private $groups;
+    protected $groups;
 
     /**
      * @var Carbon
      */
-    private $startsAt;
+    protected $startsAt;
 
     /**
      * @var Carbon
      */
-    private $endsAt;
+    protected $endsAt;
 
     /**
      * Lecture constructor.
@@ -55,7 +59,6 @@ class Lecture
     {
         $this->students = new ArrayCollection();
         $this->groups = new ArrayCollection();
-        $this->events = new ArrayCollection();
     }
 
     /**
@@ -64,6 +67,22 @@ class Lecture
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**

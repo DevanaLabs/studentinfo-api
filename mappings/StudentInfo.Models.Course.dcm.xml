@@ -13,6 +13,8 @@
 
         <field name="code" column="code" type="string" unique="true"/>
 
+        <field name="espb" column="espb" type="integer"/>
+
         <field name="semester" column="semester" type="integer"/>
 
         <one-to-many field="events" target-entity="StudentInfo\Models\CourseEvent" mapped-by="course">

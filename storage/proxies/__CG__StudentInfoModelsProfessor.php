@@ -276,4 +276,15 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
         return parent::setLastName($lastName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function addLecture(\StudentInfo\Models\Lecture $lecture)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addLecture', array($lecture));
+
+        return parent::addLecture($lecture);
+    }
+
 }

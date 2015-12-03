@@ -12,10 +12,9 @@ Route::get('/', function () {
 
 Route::post('importCSV', 'StudentController@addStudentsFromCSV');
 
-Route::post('importImage', 'SettingsController@addImageForBackground');
-Route::get('/testImage', function () {
-    return view('test');
-});
+Route::post('wallpaper', 'SettingsController@setWallpaper');
+
+Route::post('language', 'SettingsController@setLanguage');
 
 Route::get('/addSuperUser', function (SuperUserRepositoryInterface $superUserRepository, FacultyRepositoryInterface $facultyRepository) {
     $superUser = new \StudentInfo\Models\SuperUser();
@@ -60,6 +59,10 @@ Route::get('/addFaculty', function (FacultyRepositoryInterface $repository) {
     $faculty = new \StudentInfo\Models\Faculty();
     $faculty->setName('Racunarski fakultet');
     $faculty->setUniversity('Union');
+    $settings = new \StudentInfo\ValueObjects\Settings();
+    $settings->setLanguage('english');
+    $settings->setWallpaperPath('/settings/default/wallpaper/wallpaper.png');
+    $faculty->setSettings($settings);
 
     $repository->create($faculty);
 });
@@ -86,7 +89,7 @@ Route::post('addClassroom/{eventId}', 'EventController@AddClassroom');
 
 Route::get('getClassrooms/{eventId}', 'EventController@getClassrooms');
 
-Route::delete('deleteClassroom/{eventId}', 'EventController@DeleteClassroom');
+Route::delete('deleteClassroom/{eventId}', 'EventController@deleteClassroom');
 
 Route::post('student', 'StudentController@addStudent');
 

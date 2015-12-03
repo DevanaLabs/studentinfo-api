@@ -22,6 +22,11 @@ class Course
     protected $semester;
 
     /**
+     * @var int
+     */
+    protected $espb;
+
+    /**
      * @var ArrayCollection|Lecture[]
      */
     protected $lectures;
@@ -84,6 +89,22 @@ class Course
     public function setCode($code)
     {
         $this->code = $code;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEspb()
+    {
+        return $this->espb;
+    }
+
+    /**
+     * @param int $espb
+     */
+    public function setEspb($espb)
+    {
+        $this->espb = $espb;
     }
 
     /**

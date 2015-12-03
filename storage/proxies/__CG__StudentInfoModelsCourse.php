@@ -64,10 +64,10 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'code', 'semester', 'lectures', 'students');
+            return array('__isInitialized__', 'id', 'code', 'semester', 'lectures', 'students', '' . "\0" . 'StudentInfo\\Models\\Course' . "\0" . 'events');
         }
 
-        return array('__isInitialized__', 'id', 'code', 'semester', 'lectures', 'students');
+        return array('__isInitialized__', 'id', 'code', 'semester', 'lectures', 'students', '' . "\0" . 'StudentInfo\\Models\\Course' . "\0" . 'events');
     }
 
     /**
@@ -274,6 +274,39 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStudents', array($students));
 
         return parent::setStudents($students);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addLecture(\StudentInfo\Models\Lecture $lecture)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addLecture', array($lecture));
+
+        return parent::addLecture($lecture);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEvents()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEvents', array());
+
+        return parent::getEvents();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEvents($events)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEvents', array($events));
+
+        return parent::setEvents($events);
     }
 
 }

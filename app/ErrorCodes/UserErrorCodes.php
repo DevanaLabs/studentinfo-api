@@ -55,4 +55,6 @@ class UserErrorCodes
     const CLASSROOM_ALREADY_ADDED_TO_EVENT = 124;
 
     const CLASSROOM_NOT_ADDED_TO_EVENT = 125;
+
+    const STUDENT_NOT_UNIQUE_EMAIL = 126;
 }

@@ -64,10 +64,10 @@ class Lecture extends \StudentInfo\Models\Lecture implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'id', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'course', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'professor', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'classroom', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'students');
+            return array('__isInitialized__', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'id', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'course', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'professor', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'classroom', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'students', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'groups', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'startsAt', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'endsAt');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'id', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'course', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'professor', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'classroom', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'students');
+        return array('__isInitialized__', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'id', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'course', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'professor', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'classroom', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'students', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'groups', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'startsAt', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'endsAt');
     }
 
     /**
@@ -274,6 +274,72 @@ class Lecture extends \StudentInfo\Models\Lecture implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStudents', array($students));
 
         return parent::setStudents($students);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getGroups()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGroups', array());
+
+        return parent::getGroups();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setGroups($groups)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setGroups', array($groups));
+
+        return parent::setGroups($groups);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStartsAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStartsAt', array());
+
+        return parent::getStartsAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setStartsAt($startsAt)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStartsAt', array($startsAt));
+
+        return parent::setStartsAt($startsAt);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEndsAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEndsAt', array());
+
+        return parent::getEndsAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEndsAt($endsAt)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEndsAt', array($endsAt));
+
+        return parent::setEndsAt($endsAt);
     }
 
 }

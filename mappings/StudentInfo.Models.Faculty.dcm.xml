@@ -13,6 +13,9 @@
         <field name="name" column="name" type="string"/>
 
         <field name="university" column="university" type="string"/>
+
+        <embedded name="settings" class="StudentInfo\ValueObjects\Settings" use-column-prefix="false"/>
+
     </entity>
 
 </doctrine-mapping>

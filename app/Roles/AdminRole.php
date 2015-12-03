@@ -46,8 +46,9 @@ class AdminRole extends Role
             'notification.edit',
             'notification.retrieve',
             'notification.delete',
-            'image.add'
+            'image.add',
             'classroom.to.event',
+            'language.set',
         ];
     }
 

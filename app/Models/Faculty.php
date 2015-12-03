@@ -5,6 +5,7 @@ namespace StudentInfo\Models;
 use Doctrine\ORM\Mapping as ORM;
 use LaravelDoctrine\ACL\Contracts\Organisation;
 use LaravelDoctrine\ACL\Mappings as ACL;
+use StudentInfo\ValueObjects\Settings;
 
 class Faculty implements Organisation
 {
@@ -22,6 +23,11 @@ class Faculty implements Organisation
      * @var string
      */
     protected $university;
+
+    /**
+     * @var Settings
+     */
+    protected $settings;
 
     /**
      * @return int
@@ -61,5 +67,21 @@ class Faculty implements Organisation
     public function setUniversity($university)
     {
         $this->university = $university;
+    }
+
+    /**
+     * @return Settings
+     */
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    /**
+     * @param Settings $settings
+     */
+    public function setSettings($settings)
+    {
+        $this->settings = $settings;
     }
 }

@@ -1,15 +1,13 @@
 <?php
 
-
 namespace StudentInfo\Http\Requests;
 
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Models\User;
 
-class AddLectureRequest extends Request
+class SetLanguageRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -23,7 +21,7 @@ class AddLectureRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('lecture.create'));
+        return ($user->hasPermissionTo('language.set'));
     }
 
     /**
@@ -34,12 +32,7 @@ class AddLectureRequest extends Request
     public function rules()
     {
         return [
-            'professorId' => 'required | integer',
-            'courseId'    => 'required | integer',
-            'classroomId' => 'required | integer',
-            'type'        => 'required',
-            'startsAt'    => 'required',
-            'endsAt'      => 'required',
+            'language' => 'required',
         ];
     }
 }

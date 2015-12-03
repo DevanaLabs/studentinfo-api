@@ -30,14 +30,17 @@ class LectureController extends ApiController
      * @var Guard
      */
     protected $guard;
+
     /**
      * @var FacultyRepositoryInterface
      */
     protected $professorRepository;
+
     /**
      * @var CourseRepositoryInterface
      */
     protected $courseRepository;
+
     /**
      * @var ClassroomRepositoryInterface
      */
@@ -59,7 +62,6 @@ class LectureController extends ApiController
         $this->courseRepository    = $courseRepository;
         $this->classroomRepository = $classroomRepository;
     }
-
 
     public function addLecture(AddLectureRequest $request)
     {
@@ -97,6 +99,7 @@ class LectureController extends ApiController
         $lecture->setProfessor($professor);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
+        $lecture->setType($request->get('type'));
         $lecture->setStartsAt($startsAt);
         $lecture->setEndsAt($endsAt);
 
@@ -166,6 +169,7 @@ class LectureController extends ApiController
         $lecture->setProfessor($professor);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
+        $lecture->setType($request->get('type'));
         $lecture->setStartsAt($startsAt);
         $lecture->setEndsAt($endsAt);
 
@@ -186,6 +190,4 @@ class LectureController extends ApiController
 
         return $this->returnSuccess();
     }
-
-
 }

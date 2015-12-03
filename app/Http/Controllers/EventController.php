@@ -122,7 +122,7 @@ class EventController extends ApiController
         ]);
     }
 
-    public function DeleteClassroom(AddDeleteClassroomToEventRequest $request, $eventId)
+    public function deleteClassroom(AddDeleteClassroomToEventRequest $request, $eventId)
     {
         $name = $request->get('name');
 
