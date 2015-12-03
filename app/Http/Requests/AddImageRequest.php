@@ -4,11 +4,10 @@
 namespace StudentInfo\Http\Requests;
 
 
-
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Models\User;
 
-class AddFromCSVRequest extends Request
+class AddImageRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +22,8 @@ class AddFromCSVRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('student.create'));
+        return ($user->hasPermissionTo('image.add'));
+
     }
 
     /**
@@ -33,8 +33,8 @@ class AddFromCSVRequest extends Request
      */
     public function rules()
     {
-        return $rules = [
-            'import' => 'required|mimes:csv',
+        return [
+            'import' => 'required|mimes:jpeg,bmp,png'
         ];
     }
 
@@ -42,8 +42,7 @@ class AddFromCSVRequest extends Request
     {
         return [
             'import.required' => 'You must pick a file to upload.',
-            'import.mimes'    => 'The file type must be .csv.'
+            'import.mimes'    => 'Not a valid file type. Valid types include jpeg, bmp and png.'
         ];
     }
-
 }

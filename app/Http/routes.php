@@ -12,6 +12,11 @@ Route::get('/', function () {
 
 Route::post('importCSV', 'StudentController@addStudentsFromCSV');
 
+Route::post('importImage', 'SettingsController@addImageForBackground');
+Route::get('/testImage', function () {
+    return view('test');
+});
+
 Route::get('/addSuperUser', function (SuperUserRepositoryInterface $superUserRepository, FacultyRepositoryInterface $facultyRepository) {
     $superUser = new \StudentInfo\Models\SuperUser();
     $superUser->setFirstName("Nebojsa");
@@ -192,3 +197,4 @@ Route::delete('faculty/{id}' , ['middleware' => 'role:faculty.delete', 'uses' =>
 Route::delete('notification/{id}' , ['middleware' => 'role:notification.delete', 'uses' => 'NotificationController@deleteNotification']);
 
 Route::get('notifications/between/{start}/{end}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotificationsInInterval']);
+
