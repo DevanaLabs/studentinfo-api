@@ -18,5 +18,10 @@
                   serialized-name="title"
                   expose="true"
                 />
+        <property name="lectures"
+                  serialized-name="lectures"
+                  expose="true"
+                  max-depth="2"
+                />
     </class>
 </serializer>

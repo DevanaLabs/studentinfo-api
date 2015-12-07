@@ -28,7 +28,7 @@
 
         <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
 
-        <one-to-many field="notifications" target-entity="StudentInfo\Models\Notification" mapped-by="event">
+        <one-to-many field="notifications" target-entity="StudentInfo\Models\EventNotification" mapped-by="event">
             <cascade>
                 <cascade-persist/>
                 <cascade-remove/>

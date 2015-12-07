@@ -43,6 +43,11 @@ class Lecture
     protected $groups;
 
     /**
+     * @var ArrayCollection|LectureNotification[]
+     */
+    protected $notifications;
+
+    /**
      * @var Carbon
      */
     protected $startsAt;
@@ -59,6 +64,7 @@ class Lecture
     {
         $this->students = new ArrayCollection();
         $this->groups = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     /**
@@ -163,6 +169,22 @@ class Lecture
     public function setGroups($groups)
     {
         $this->groups = $groups;
+    }
+
+    /**
+     * @return ArrayCollection|LectureNotification
+     */
+    public function getNotification()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * @param ArrayCollection|LectureNotification $notifications
+     */
+    public function setNotification($notifications)
+    {
+        $this->notifications = $notifications;
     }
 
     /**

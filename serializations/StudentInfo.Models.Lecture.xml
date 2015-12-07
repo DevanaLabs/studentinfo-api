@@ -18,5 +18,36 @@
                   serialized-name="classroom"
                   expose="true"
                 />
+        <property name="type"
+                  serialized-name="type"
+                  expose="true"
+                />
+        <property name="startsAt"
+                  serialized-name="startsAt"
+                  expose="true"
+                />
+        <property name="endsAt"
+                  serialized-name="endsAt"
+                  expose="true"
+                />
+        <property name="classroom"
+                  serialized-name="classroom"
+                  expose="true"
+                />
+        <property name="students"
+                  serialized-name="students"
+                  expose="true"
+                  max-depth="2"
+                />
+        <property name="groups"
+                  serialized-name="groups"
+                  expose="true"
+                  max-depth="2"
+                />
+        <property name="notifications"
+                  serialized-name="notifications"
+                  expose="true"
+                  max-depth="2"
+                />
     </class>
 </serializer>

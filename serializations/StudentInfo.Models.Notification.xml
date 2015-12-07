@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <serializer>
-    <class name="StudentInfo\Models\Faculty" exclusion-policy="ALL">
+    <class name="StudentInfo\Models\Notification" exclusion-policy="ALL">
         <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
         <property name="id"
                   serialized-name="id"
                   expose="true"
                 />
-        <property name="name"
-                  serialized-name="name"
+        <property name="description"
+                  serialized-name="description"
                   expose="true"
                 />
-        <property name="university"
-                  serialized-name="university"
-                  expose="true"
-                />
-        <property name="settings"
-                  serialized-name="settings"
+        <property name="expiresAt"
+                  serialized-name="expiresAt"
                   expose="true"
                 />
     </class>

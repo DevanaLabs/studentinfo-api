@@ -34,7 +34,7 @@ abstract class Event
     protected $endsAt;
 
     /**
-     * @var ArrayCollection|Notification[]
+     * @var ArrayCollection|EventNotification[]
      */
     protected $notifications;
 
@@ -45,11 +45,11 @@ abstract class Event
 
     /**
      * Event constructor.
-     * @param ArrayCollection|Classroom[] $classrooms
      */
-    public function __construct(ArrayCollection $classrooms)
+    public function __construct()
     {
-        $this->classrooms = $classrooms;
+        $this->classrooms    = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     /**
@@ -125,7 +125,7 @@ abstract class Event
     }
 
     /**
-     * @return ArrayCollection|Notification[]
+     * @return ArrayCollection|EventNotification[]
      */
     public function getNotifications()
     {
@@ -133,13 +133,12 @@ abstract class Event
     }
 
     /**
-     * @param ArrayCollection|Notification[] $notifications
+     * @param ArrayCollection|EventNotification[] $notifications
      */
     public function setNotifications($notifications)
     {
         $this->notifications = $notifications;
     }
-
 
     /**
      * @return ArrayCollection|Classroom[]

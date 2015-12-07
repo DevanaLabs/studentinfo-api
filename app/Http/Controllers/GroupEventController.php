@@ -39,6 +39,16 @@ class GroupEventController extends EventController
         ]);
     }
 
+    public function getGroupEvents($groupId)
+    {
+        /** @var Group $group */
+        $group = $this->groupRepository->find($groupId);
+
+        return $this->returnSuccess([
+            'events' => $group->getEvents(),
+        ]);
+    }
+
     public function putEditEvent(StandardRequest $request, $id)
     {
         if ($this->eventRepository->find($id) === null) {

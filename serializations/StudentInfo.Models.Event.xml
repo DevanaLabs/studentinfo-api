@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <serializer>
-    <class name="StudentInfo\Models\Course" exclusion-policy="ALL">
+    <class name="StudentInfo\Models\Event" exclusion-policy="ALL">
         <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
         <property name="id"
                   serialized-name="id"
                   expose="true"
                 />
-        <property name="code"
-                  serialized-name="code"
+        <property name="type"
+                  serialized-name="type"
                   expose="true"
                 />
-        <property name="semester"
-                  serialized-name="semester"
+        <property name="description"
+                  serialized-name="description"
                   expose="true"
                 />
-        <property name="espb"
-                  serialized-name="espb"
+        <property name="startsAt"
+                  serialized-name="startsAt"
                   expose="true"
                 />
-        <property name="events"
-                  serialized-name="events"
+        <property name="endsAt"
+                  serialized-name="endsAt"
+                  expose="true"
+                />
+        <property name="notifications"
+                  serialized-name="notifications"
                   expose="true"
                   max-depth="2"
                 />
-        <property name="students"
-                  serialized-name="students"
-                  expose="true"
-                  max-depth="2"
-                />
-        <property name="lectures"
-                  serialized-name="lectures"
+        <property name="classrooms"
+                  serialized-name="classrooms"
                   expose="true"
                   max-depth="2"
                 />

@@ -16,12 +16,14 @@ class ApiController extends BaseController
         $serializer = SerializerBuilder::create()
             ->addMetadataDir(base_path() . '/serializations/')
             ->build();
-        $jsonData   = $serializer->serialize($data, 'json');
-        return new Response([
+        $responseData = [
             'success' => [
-                'data' => $jsonData,
+                'data' => $data,
             ],
-        ], 200);
+        ];
+        $jsonData = $serializer->serialize($responseData, 'json');
+        dd($jsonData);
+        return new Response($jsonData, 200);
     }
 
     public function returnForbidden($errorCode)

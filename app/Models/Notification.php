@@ -6,7 +6,7 @@ namespace StudentInfo\Models;
 
 use Carbon\Carbon;
 
-class Notification
+abstract class Notification
 {
     /**
      * @var
@@ -22,11 +22,6 @@ class Notification
      * @var Carbon
      */
     protected $expiresAt;
-
-    /**
-     * @var Event
-     */
-    protected $event;
 
     /**
      * @return mixed
@@ -66,22 +61,6 @@ class Notification
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return Event
-     */
-    public function getEvent()
-    {
-        return $this->event;
-    }
-
-    /**
-     * @param Event $event
-     */
-    public function setEvent($event)
-    {
-        $this->event = $event;
     }
 
     /**

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="StudentInfo\Models\LectureNotification" exclusion-policy="ALL">
+        <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
+        <property name="lecture"
+                  serialized-name="lecture"
+                  expose="true"
+                />
+    </class>
+</serializer>

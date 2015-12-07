@@ -87,6 +87,8 @@ Route::get('showMyLectures', 'StudentController@showMyLectures');
 
 Route::post('addClassroom/{eventId}', 'EventController@AddClassroom');
 
+Route::get('years', 'GroupController@getAllYears');
+
 Route::get('getClassrooms/{eventId}', 'EventController@getClassrooms');
 
 Route::delete('deleteClassroom/{eventId}', 'EventController@deleteClassroom');
@@ -111,7 +113,9 @@ Route::post('group', 'GroupController@addGroup');
 
 Route::post('admin', 'AdminController@addAdmin');
 
-Route::post('notification', 'NotificationController@addNotification');
+Route::post('lectureNotification', 'LectureNotificationController@addNotification');
+
+Route::post('eventNotification', 'EventNotificationController@addNotification');
 
 Route::post('faculty', 'FacultyController@addFaculty');
 
@@ -119,13 +123,15 @@ Route::get('student/{id}', ['middleware' => 'role:student.retrieve', 'uses' => '
 
 Route::get('students/{start?}/{count?}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@getStudents']);
 
-Route::get('classroom/{id}', ['middleware' => 'role:classroom.retrieve', 'uses' => 'ClassroomController@getClassroom']);
+Route::get('classroom/{id}', 'ClassroomController@getClassroom');
 
-Route::get('classrooms/{start?}/{count?}', ['middleware' => 'role:classroom.retrieve', 'uses' => 'ClassroomController@getClassrooms']);
+Route::get('classrooms/{start?}/{count?}', 'ClassroomController@getClassrooms');
 
-Route::get('professor/{id}', ['middleware' => 'role:professor.retrieve', 'uses' => 'ProfessorController@getProfessor']);
+Route::get('professor/{id}', 'ProfessorController@getProfessor');
 
-Route::get('professors/{start?}/{count?}', ['middleware' => 'role:professor.retrieve', 'uses' => 'ProfessorController@getProfessors']);
+Route::get('professors/{start?}/{count?}', 'ProfessorController@getProfessors');
+
+Route::get('groupEvents/{groupId}', 'GroupEventController@getGroupEvents');
 
 Route::get('event/{id}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@getEvent']);
 
@@ -135,17 +141,25 @@ Route::get('lecture/{id}', ['middleware' => 'role:lecture.retrieve', 'uses' => '
 
 Route::get('lectures/{start?}/{count?}', ['middleware' => 'role:lecture.retrieve', 'uses' => 'LectureController@getLectures']);
 
+Route::get('eventNotifications/{id}', 'EventNotificationController@getNotificationsForEvent');
+
+Route::get('eventNotification/{id}', 'EventNotificationController@getNotification');
+
+Route::get('eventNotifications/{start?}/{count?}', 'EventNotificationController@getNotifications');
+
+Route::get('lectureNotifications/{id}', 'LectureNotificationController@getNotificationsForLecture');
+
+Route::get('lectureNotification/{id}', 'LectureNotificationController@getNotification');
+
+Route::get('lectureNotifications/{start?}/{count?}', 'LectureNotificationController@getNotifications');
+
 Route::get('course/{id}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@getCourse']);
-
-Route::get('notification/{id}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotification']);
-
-Route::get('notifications/{start?}/{count?}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotifications']);
 
 Route::get('courses/{start?}/{count?}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@getCourses']);
 
-Route::get('group/{id}', ['middleware' => 'role:group.retrieve', 'uses' => 'GroupController@getGroup']);
+Route::get('group/{id}', 'GroupController@getGroup');
 
-Route::get('groups/{start?}/{count?}', ['middleware' => 'role:group.retrieve', 'uses' => 'GroupController@getGroups']);
+Route::get('groups/{start?}/{count?}', 'GroupController@getGroups');
 
 Route::get('admin/{id}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@getAdmin']);
 
@@ -177,7 +191,9 @@ Route::put('admin/{id}', ['middleware' => 'role:admin.edit', 'uses' => 'AdminCon
 
 Route::put('faculty/{id}', ['middleware' => 'role:faculty.edit', 'uses' => 'FacultyController@putEditFaculty']);
 
-Route::put('notification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'NotificationController@putEditNotification']);
+Route::put('eventNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'EventNotificationController@putEditNotification']);
+
+Route::put('lectureNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'LectureNotificationController@putEditNotification']);
 
 Route::delete('classroom/{id}' , ['middleware' => 'role:classroom.delete', 'uses' => 'ClassroomController@deleteClassroom']);
 

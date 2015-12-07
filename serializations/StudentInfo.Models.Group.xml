@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <serializer>
-    <class name="StudentInfo\Models\Classroom" exclusion-policy="ALL">
+    <class name="StudentInfo\Models\Group" exclusion-policy="ALL">
         <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
         <property name="id"
                   serialized-name="id"
@@ -10,8 +10,8 @@
                   serialized-name="name"
                   expose="true"
                 />
-        <property name="directions"
-                  serialized-name="directions"
+        <property name="year"
+                  serialized-name="year"
                   expose="true"
                 />
         <property name="lectures"
