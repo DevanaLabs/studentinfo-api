@@ -22,7 +22,6 @@ class ApiController extends BaseController
             ],
         ];
         $jsonData = $serializer->serialize($responseData, 'json');
-        dd($jsonData);
         return new Response($jsonData, 200);
     }
 
