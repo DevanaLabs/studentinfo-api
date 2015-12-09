@@ -41,6 +41,7 @@ class ClassroomController extends ApiController
         $classroom = new Classroom();
         $classroom->setName($request->get('name'));
         $classroom->setDirections($request->get('directions'));
+        $classroom->setFloor($request->get('floor'));
 
         $this->classroomRepository->create($classroom);
 
@@ -80,6 +81,7 @@ class ClassroomController extends ApiController
 
         $classroom->setName($request->get('name'));
         $classroom->setDirections($request->get('directions'));
+        $classroom->setFloor($request->get('floor'));
 
         $this->classroomRepository->update($classroom);
 

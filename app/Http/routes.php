@@ -66,6 +66,7 @@ Route::get('/addFaculty', function (FacultyRepositoryInterface $repository) {
 
     $repository->create($faculty);
 });
+Route::get('data', 'DataController@getData');
 
 Route::get('user/{user_id}', 'UserController@getProfile');
 

@@ -17,6 +17,11 @@ class Course
     protected $code;
 
     /**
+     * @var string
+     */
+    protected $name;
+
+    /**
      * @var int
      */
     protected $semester;
@@ -121,6 +126,22 @@ class Course
     public function setSemester($semester)
     {
         $this->semester = $semester;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     /**

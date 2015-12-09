@@ -77,9 +77,20 @@ class GroupController extends ApiController
 
     public function getGroups($start = 0, $count = 20)
     {
-        $groups = $this->groupRepository->all($start, $count);
+        $groupsAll = $this->groupRepository->all($start, $count);
+        $groups    = [];
 
-        return $this->returnSuccess($groups);
+        foreach ($groupsAll as $group) {
+            $groups[] = $this->groupRepository->find($group['id']);
+        }
+
+//        return $this->returnSuccess([
+//            'group' => $this->groupRepository->find(2)
+//        ]);
+
+        return $this->returnSuccess([
+            'groups' => $groupsAll,
+        ]);
     }
 
     public function putEditGroup(StandardRequest $request, $id)
@@ -91,9 +102,15 @@ class GroupController extends ApiController
             return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
         }
 
+        $lecturesEntry = $request->get('lectures');
+        $lectures      = [];
+
+        for ($i = 0; $i < count($lecturesEntry); $i++) {
+            $lectures[] = $this->lectureRepository->find($lecturesEntry[$i]);
+        }
+        $group->setLectures($lectures);
         $group->setName($request->get('name'));
         $group->setYear($request->get('year'));
-        $group->setLectures($request->get('lectures'));
 
         $this->groupRepository->update($group);
 

@@ -22,6 +22,11 @@ class Classroom
     protected $directions;
 
     /**
+     * @var int
+     */
+    protected $floor;
+
+    /**
      * @var ArrayCollection|Lecture[]
      */
     protected $lectures;
@@ -78,6 +83,22 @@ class Classroom
     public function setDirections($directions)
     {
         $this->directions = $directions;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFloor()
+    {
+        return $this->floor;
+    }
+
+    /**
+     * @param int $floor
+     */
+    public function setFloor($floor)
+    {
+        $this->floor = $floor;
     }
 
     /**

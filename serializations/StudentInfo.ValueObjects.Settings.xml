@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <serializer>
-    <class name="StudentInfo\ValueObjects\Email" exclusion-policy="ALL">
+    <class name="StudentInfo\ValueObjects\Settings" exclusion-policy="ALL">
         <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
-        <property name="email"
-                  serialized-name="email"
+        <property name="wallpaperPath"
+                  serialized-name="wallpaperPath"
+                  expose="true"
+                />
+        <property name="language"
+                  serialized-name="language"
                   expose="true"
                 />
     </class>

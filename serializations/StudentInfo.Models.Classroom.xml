@@ -14,6 +14,10 @@
                   serialized-name="directions"
                   expose="true"
                 />
+        <property name="floor"
+                  serialized-name="floor"
+                  expose="true"
+                />
         <property name="lectures"
                   serialized-name="lectures"
                   expose="true"

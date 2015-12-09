@@ -48,6 +48,7 @@ class CourseController extends ApiController
         $course->setCode($code);
         $course->setEspb($request->get('espb'));
         $course->setSemester($request->get('semester'));
+        $course->setName($request->get('name'));
 
         $this->courseRepository->create($course);
 
@@ -88,6 +89,7 @@ class CourseController extends ApiController
         $course->setCode($request->get('code'));
         $course->setEspb($request->get('espb'));
         $course->setSemester($request->get('semester'));
+        $course->setName($request->get('name'));
 
         $this->courseRepository->update($course);
 

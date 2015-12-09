@@ -10,6 +10,10 @@
                   serialized-name="code"
                   expose="true"
                 />
+        <property name="name"
+                  serialized-name="name"
+                  expose="true"
+                />
         <property name="semester"
                   serialized-name="semester"
                   expose="true"

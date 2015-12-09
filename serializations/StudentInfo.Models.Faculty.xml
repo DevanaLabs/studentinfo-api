@@ -17,6 +17,7 @@
         <property name="settings"
                   serialized-name="settings"
                   expose="true"
+                  max-depth="2"
                 />
     </class>
 </serializer>

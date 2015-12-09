@@ -13,6 +13,8 @@
 
         <field name="code" column="code" type="string" unique="true"/>
 
+        <field name="name" column="name" type="string"/>
+
         <field name="espb" column="espb" type="integer"/>
 
         <field name="semester" column="semester" type="integer"/>
