@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddEventRequest;
-use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\CourseEvent;
 
@@ -15,7 +14,7 @@ class CourseEventController extends EventController
 {
     public function addEvent(AddEventRequest $request)
     {
-        $event = new CourseEvent(new ArrayCollection());
+        $event    = new CourseEvent(new ArrayCollection());
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
         $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
         if ($endsAt->lte($startsAt)) {
@@ -39,7 +38,7 @@ class CourseEventController extends EventController
         ]);
     }
 
-    public function putEditEvent(StandardRequest $request, $id)
+    public function putEditEvent(AddCourseRequest $request, $id)
     {
         if ($this->eventRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);

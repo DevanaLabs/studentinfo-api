@@ -5,7 +5,6 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddClassroomRequest;
-use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 
@@ -46,7 +45,7 @@ class ClassroomController extends ApiController
         $this->classroomRepository->create($classroom);
 
         return $this->returnSuccess([
-            'classroom'   => $classroom
+            'classroom' => $classroom,
         ]);
     }
 
@@ -70,7 +69,7 @@ class ClassroomController extends ApiController
         return $this->returnSuccess($classrooms);
     }
 
-    public function putEditClassroom(StandardRequest $request, $id)
+    public function putEditClassroom(AddClassroomRequest $request, $id)
     {
         if ($this->classroomRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);

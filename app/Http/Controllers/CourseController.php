@@ -7,7 +7,6 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddCourseRequest;
-use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 
@@ -53,7 +52,7 @@ class CourseController extends ApiController
         $this->courseRepository->create($course);
 
         return $this->returnSuccess([
-            'course'   => $course
+            'course' => $course,
         ]);
     }
 
@@ -61,12 +60,12 @@ class CourseController extends ApiController
     {
         $course = $this->courseRepository->find($id);
 
-        if($course === null){
+        if ($course === null) {
             return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
-            'course' => $course
+            'course' => $course,
         ]);
     }
 
@@ -77,9 +76,9 @@ class CourseController extends ApiController
         return $this->returnSuccess($courses);
     }
 
-    public function putEditCourse(StandardRequest $request, $id)
+    public function putEditCourse(AddCourseRequest $request, $id)
     {
-        if($this->courseRepository->find($id) === null){
+        if ($this->courseRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
         }
 
@@ -95,7 +94,7 @@ class CourseController extends ApiController
 
 
         return $this->returnSuccess([
-            'course' => $course
+            'course' => $course,
         ]);
     }
 

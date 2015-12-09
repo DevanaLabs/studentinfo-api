@@ -6,9 +6,9 @@
 
     <entity name="StudentInfo\Models\Student" table="students">
 
-        <field name="indexNumber" column="index_number" type="string" unique="true" nullable="true"/>
+        <field name="indexNumber" column="index_number" type="string" unique="true" nullable="false"/>
 
-        <field name="year" column="year" type="integer"/>
+        <field name="year" column="year" type="integer" nullable="false"/>
 
         <many-to-many target-entity="Lecture" field="lectures" inversed-by="students">
             <join-table name="lectures_students">

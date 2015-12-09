@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddEventRequest;
-use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\GlobalEvent;
 
 class GlobalEventController extends EventController
@@ -32,7 +31,7 @@ class GlobalEventController extends EventController
         ]);
     }
 
-    public function putEditEvent(StandardRequest $request, $id)
+    public function putEditEvent(AddEventRequest $request, $id)
     {
         if ($this->eventRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);

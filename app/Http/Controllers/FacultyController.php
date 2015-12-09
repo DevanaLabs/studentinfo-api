@@ -7,7 +7,6 @@ use Exception;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFacultyRequest;
-use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Faculty;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 
@@ -26,12 +25,12 @@ class FacultyController extends ApiController
     /**
      * FacultyController constructor.
      * @param FacultyRepositoryInterface $facultyRepository
-     * @param Guard                     $guard
+     * @param Guard                      $guard
      */
     public function __construct(FacultyRepositoryInterface $facultyRepository, Guard $guard)
     {
         $this->facultyRepository = $facultyRepository;
-        $this->guard            = $guard;
+        $this->guard             = $guard;
     }
 
     /**
@@ -51,7 +50,7 @@ class FacultyController extends ApiController
         $this->facultyRepository->create($faculty);
 
         return $this->returnSuccess([
-            'faculty'   => $faculty
+            'faculty' => $faculty,
         ]);
     }
 
@@ -59,12 +58,12 @@ class FacultyController extends ApiController
     {
         $faculty = $this->facultyRepository->find($id);
 
-        if($faculty === null){
+        if ($faculty === null) {
             return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
-            'faculty' => $faculty
+            'faculty' => $faculty,
         ]);
     }
 
@@ -75,9 +74,9 @@ class FacultyController extends ApiController
         return $this->returnSuccess($faculty);
     }
 
-    public function putEditFaculty(StandardRequest $request, $id)
+    public function putEditFaculty(AddFacultyRequest $request, $id)
     {
-        if($this->facultyRepository->find($id) === null){
+        if ($this->facultyRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);
         }
 
@@ -91,7 +90,7 @@ class FacultyController extends ApiController
 
 
         return $this->returnSuccess([
-            'faculty' => $faculty
+            'faculty' => $faculty,
         ]);
     }
 

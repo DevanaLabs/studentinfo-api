@@ -22,7 +22,7 @@
 
         <field name="type" column="type" type="string" nullable="false"/>
 
-        <field name="description" column="description" type="string" nullable="true"/>
+        <field name="description" column="description" type="string"/>
 
         <field name="startsAt" column="starts_at" type="datetime" nullable="false"/>
 

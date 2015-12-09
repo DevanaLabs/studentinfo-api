@@ -6,7 +6,6 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddAdminRequest;
-use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Admin;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\AdminRepositoryInterface;
@@ -91,7 +90,7 @@ class AdminController extends ApiController
         return $this->returnSuccess($admins);
     }
 
-    public function putEditAdmin(StandardRequest $request, $id)
+    public function putEditAdmin(AddAdminRequest $request, $id)
     {
         /** @var  Admin $admin */
         $admin = $this->adminRepository->find($id);

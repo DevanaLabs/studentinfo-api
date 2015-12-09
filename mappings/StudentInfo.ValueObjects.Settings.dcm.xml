@@ -6,9 +6,9 @@
 
     <embeddable name="StudentInfo\ValueObjects\Settings">
 
-        <field name="wallpaperPath" type="string"/>
+        <field name="wallpaperPath" type="string" nullable="false"/>
 
-        <field name="language" type="string"/>
+        <field name="language" type="string" nullable="false"/>
 
     </embeddable>
 

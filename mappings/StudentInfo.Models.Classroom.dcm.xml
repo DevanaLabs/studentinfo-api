@@ -13,7 +13,7 @@
 
         <field name="name" column="name" type="string" nullable="false"/>
 
-        <field name="directions" column="directions" type="string" nullable="false"/>
+        <field name="directions" column="directions" type="string"/>
 
         <field name="floor" column="flor" type="integer" nullable="false"/>
 

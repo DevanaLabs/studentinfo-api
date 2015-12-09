@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddLectureRequest;
-use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\Lecture;
@@ -129,7 +128,7 @@ class LectureController extends ApiController
         return $this->returnSuccess($lectures);
     }
 
-    public function putEditLecture(StandardRequest $request, $id)
+    public function putEditLecture(AddLectureRequest $request, $id)
     {
         if($this->lectureRepository->find($id)  === null){
             return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);

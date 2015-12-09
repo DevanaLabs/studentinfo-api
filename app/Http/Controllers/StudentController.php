@@ -8,7 +8,6 @@ use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\AddStudentsRequest;
 use StudentInfo\Http\Requests\SetGetLecturesRequest;
-use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Student;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
@@ -111,7 +110,7 @@ class StudentController extends ApiController
 
     }
 
-    public function putEditStudent(StandardRequest $request, $id)
+    public function putEditStudent(AddStudentsRequest $request, $id)
     {
         if ($this->studentRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::STUDENT_NOT_IN_DB);

@@ -5,10 +5,6 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddProfessorRequest;
-use StudentInfo\Http\Requests\DeleteProfessorRequest;
-use StudentInfo\Http\Requests\EditProfessorRequest;
-use StudentInfo\Http\Requests\Request;
-use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Professor;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\ProfessorRepositoryInterface;
@@ -69,7 +65,7 @@ class ProfessorController extends ApiController
         return $this->returnSuccess($professors);
     }
 
-    public function putEditProfessor(StandardRequest $request, $id)
+    public function putEditProfessor(AddProfessorRequest $request, $id)
     {
         if($this->professorRepository->find($id) === null){
             return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
