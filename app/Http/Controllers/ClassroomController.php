@@ -5,6 +5,7 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddClassroomRequest;
+use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 
@@ -46,6 +47,34 @@ class ClassroomController extends ApiController
 
         return $this->returnSuccess([
             'classroom' => $classroom,
+        ]);
+    }
+
+    public function addClassroomsFromCSV(AddFromCSVRequest $request)
+    {
+        $addedClassrooms = [];
+
+        $handle = $request->file('import');
+
+        $file_path = $handle->getPathname();
+        $resource  = fopen($file_path, "r");
+        while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
+            $name = $data[0];
+            $directions  = $data[1];
+            $floor = $data[2];
+
+            $classroom = new Classroom();
+            $classroom->setName($name);
+            $classroom->setDirections($directions);
+            $classroom->setFloor($floor);
+
+            $this->classroomRepository->create($classroom);
+
+            $addedClassrooms[] = $classroom;
+        }
+
+        return $this->returnSuccess([
+            "successful"   => $addedClassrooms
         ]);
     }
 

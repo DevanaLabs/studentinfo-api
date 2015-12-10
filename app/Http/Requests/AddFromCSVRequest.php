@@ -23,7 +23,10 @@ class AddFromCSVRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('student.create'));
+        return ($user->hasPermissionTo('student.create')
+            or $user->hasPermissionTo('professor.create')
+            or $user->hasPermissionTo('classroom.create')
+            or $user->hasPermissionTo('course.create'));
     }
 
     /**
@@ -34,7 +37,7 @@ class AddFromCSVRequest extends Request
     public function rules()
     {
         return $rules = [
-            'import' => 'required|mimes:csv',
+            'import' => 'required|', //mimes:csv',
         ];
     }
 
