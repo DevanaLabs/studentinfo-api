@@ -11,6 +11,8 @@
         <discriminator-map>
             <discriminator-mapping value="student" class="StudentInfo\Models\Student"/>
             <discriminator-mapping value="admin" class="StudentInfo\Models\Admin"/>
+            <discriminator-mapping value="professor" class="StudentInfo\Models\Professor"/>
+            <discriminator-mapping value="assistant" class="StudentInfo\Models\Assistant"/>
             <discriminator-mapping value="superUser" class="StudentInfo\Models\SuperUser"/>
         </discriminator-map>
 

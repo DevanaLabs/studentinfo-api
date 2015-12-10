@@ -7,7 +7,7 @@ namespace StudentInfo\Http\Requests;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Models\User;
 
-class AddProfessorRequest extends Request
+class AddTeacherRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,10 +33,10 @@ class AddProfessorRequest extends Request
     public function rules()
     {
         return [
-            'email' => 'required',
+            'email'     => 'required',
             'firstName' => 'required',
-            'lastName' => 'required',
-            'title' => 'required',
+            'lastName'  => 'required',
+            'title'     => 'required',
         ];
     }
 }

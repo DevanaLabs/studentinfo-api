@@ -15,7 +15,7 @@
 
         <field name="directions" column="directions" type="string"/>
 
-        <field name="floor" column="flor" type="integer" nullable="false"/>
+        <field name="floor" column="floor" type="integer" nullable="false"/>
 
         <one-to-many field="lectures" target-entity="StudentInfo\Models\Lecture" mapped-by="classroom">
             <cascade>

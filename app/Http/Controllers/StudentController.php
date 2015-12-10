@@ -80,8 +80,9 @@ class StudentController extends ApiController
         $student->setYear($request->get('year'));
         $student->setPassword(new Password('password'));
         $student->generateRegisterToken();
-        $student->setOrganisation($this->facultyRepository->findFacultyByName('Racunarski fakultet'));
-        $this->userRepository->create($student);
+        $student->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
+
+        $this->studentRepository->create($student);
 
         return $this->returnSuccess([
             'student' => $student,
@@ -107,7 +108,6 @@ class StudentController extends ApiController
         $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()), $start, $count);
 
         return $this->returnSuccess($students);
-
     }
 
     public function putEditStudent(AddStudentsRequest $request, $id)

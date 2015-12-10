@@ -9,6 +9,7 @@ use Illuminate\Mail\Message;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\CreatePasswordPostRequest;
 use StudentInfo\Http\Requests\IssueTokenPostRequest;
+use StudentInfo\Http\Requests\UpdateTokenRequest;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\UserRepositoryInterface;
 use StudentInfo\ValueObjects\Email;
@@ -131,6 +132,29 @@ class RegisterController extends ApiController
         return $this->returnSuccess([
             'user' => $user
         ]);
+    }
+
+    /**
+     * @param                    $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateRegisterToken($id)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->find($id);
+
+        if ($user === null) {
+            return $this->returnError(500, UserErrorCodes::USER_DOES_NOT_EXIST);
+        }
+
+        if ($user->getOrganisation()->getId() != $this->guard->user()->getOrganisation()->getId()) {
+            return $this->returnError(500, UserErrorCodes::USER_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
+        $user->generateRegisterToken();
+        $this->userRepository->update($user);
+
+        return $this->returnSuccess();
     }
 
 }

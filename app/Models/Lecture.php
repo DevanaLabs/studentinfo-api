@@ -23,9 +23,9 @@ class Lecture
     protected $course;
 
     /**
-     * @var Professor
+     * @var Teacher
      */
-    protected $professor;
+    protected $teacher;
 
     /**
      * @var Classroom
@@ -108,19 +108,19 @@ class Lecture
     }
 
     /**
-     * @return Professor
+     * @return Teacher
      */
-    public function getProfessor()
+    public function getTeacher()
     {
-        return $this->professor;
+        return $this->teacher;
     }
 
     /**
-     * @param Professor $professor
+     * @param Teacher $teacher
      */
-    public function setProfessor($professor)
+    public function setTeacher($teacher)
     {
-        $this->professor = $professor;
+        $this->teacher = $teacher;
     }
 
     /**

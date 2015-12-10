@@ -11,12 +11,11 @@ use StudentInfo\Http\Requests\AddLectureRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\Lecture;
-use StudentInfo\Models\Professor;
+use StudentInfo\Models\Teacher;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\CourseRepositoryInterface;
-use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
-use StudentInfo\Repositories\ProfessorRepositoryInterface;
+use StudentInfo\Repositories\TeacherRepositoryInterface;
 
 class LectureController extends ApiController
 {
@@ -31,9 +30,9 @@ class LectureController extends ApiController
     protected $guard;
 
     /**
-     * @var FacultyRepositoryInterface
+     * @var TeacherRepositoryInterface
      */
-    protected $professorRepository;
+    protected $teacherRepository;
 
     /**
      * @var CourseRepositoryInterface
@@ -49,23 +48,23 @@ class LectureController extends ApiController
      * LectureController constructor.
      * @param LectureRepositoryInterface   $lectureRepository
      * @param Guard                        $guard
-     * @param ProfessorRepositoryInterface $professorRepository
+     * @param TeacherRepositoryInterface   $teacherRepository
      * @param CourseRepositoryInterface    $courseRepository
      * @param ClassroomRepositoryInterface $classroomRepository
      */
-    public function __construct(LectureRepositoryInterface $lectureRepository, Guard $guard, ProfessorRepositoryInterface $professorRepository, CourseRepositoryInterface $courseRepository, ClassroomRepositoryInterface $classroomRepository)
+    public function __construct(LectureRepositoryInterface $lectureRepository, Guard $guard, TeacherRepositoryInterface $teacherRepository, CourseRepositoryInterface $courseRepository, ClassroomRepositoryInterface $classroomRepository)
     {
         $this->lectureRepository   = $lectureRepository;
         $this->guard               = $guard;
-        $this->professorRepository = $professorRepository;
+        $this->teacherRepository = $teacherRepository;
         $this->courseRepository    = $courseRepository;
         $this->classroomRepository = $classroomRepository;
     }
 
     public function addLecture(AddLectureRequest $request)
     {
-        /** @var Professor $professor */
-        $professor = $this->professorRepository->find($request->get('professorId'));
+        /** @var Teacher $teacher */
+        $teacher = $this->teacherRepository->find($request->get('teacherId'));
 
         /** @var Course $course */
         $course = $this->courseRepository->find($request->get('courseId'));
@@ -73,7 +72,7 @@ class LectureController extends ApiController
         /** @var Classroom $classroom */
         $classroom = $this->classroomRepository->find($request->get('classroomId'));
 
-        if ($professor == null) {
+        if ($teacher == null) {
             return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
         }
         if ($course == null) {
@@ -93,9 +92,9 @@ class LectureController extends ApiController
 
         $lecture = new Lecture();
 
-        $professor->addLecture($lecture);
+        $teacher->addLecture($lecture);
         $course->addLecture($lecture);
-        $lecture->setProfessor($professor);
+        $lecture->setTeacher($teacher);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
         $lecture->setType($request->get('type'));
@@ -134,8 +133,8 @@ class LectureController extends ApiController
             return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
         }
 
-        /** @var Professor $professor */
-        $professor = $this->professorRepository->find($request->get('professorId'));
+        /** @var Teacher $teacher */
+        $teacher = $this->teacherRepository->find($request->get('teacherId'));
 
         /** @var Course $course */
         $course = $this->courseRepository->find($request->get('courseId'));
@@ -143,7 +142,7 @@ class LectureController extends ApiController
         /** @var Classroom $classroom */
         $classroom = $this->classroomRepository->find($request->get('classroomId'));
 
-        if ($professor == null) {
+        if ($teacher == null) {
             return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
         }
         if ($course == null) {
@@ -163,9 +162,9 @@ class LectureController extends ApiController
         /** @var Lecture $lecture */
         $lecture = $this->lectureRepository->find($id);
 
-        $professor->addLecture($lecture);
+        $teacher->addLecture($lecture);
         $course->addLecture($lecture);
-        $lecture->setProfessor($professor);
+        $lecture->setTeacher($teacher);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
         $lecture->setType($request->get('type'));

@@ -4,7 +4,6 @@ namespace StudentInfo\Repositories;
 
 use Doctrine\ORM\EntityRepository;
 use StudentInfo\ValueObjects\Email;
-use StudentInfo\ValueObjects\Password;
 
 class DoctrineUserRepository extends EntityRepository implements UserRepositoryInterface
 {
@@ -16,7 +15,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u')->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
     }
 
     public function destroy($object)

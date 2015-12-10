@@ -3,6 +3,7 @@
 namespace StudentInfo\Repositories;
 
 use Doctrine\ORM\EntityRepository;
+use StudentInfo\Models\Faculty;
 
 class DoctrineProfessorRepository extends EntityRepository implements ProfessorRepositoryInterface {
 
@@ -39,5 +40,12 @@ class DoctrineProfessorRepository extends EntityRepository implements ProfessorR
         $query->setParameter('firstName', $firstName);
         $query->setParameter('lastName', $lastName);
         return $query->getOneOrNullResult();
+    }
+
+    public function getAllProfessorForFaculty(Faculty $faculty, $start = 0, $count = 20)
+    {
+        $query = $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p WHERE p.organisation = :faculty_id');
+        $query->setParameter('faculty_id', $faculty->getId());
+        return $query->setFirstResult($start)->setMaxResults($count)->getArrayResult();
     }
 }

@@ -28,8 +28,8 @@
             <join-column name="course_id" referenced-column-name="id"/>
         </many-to-one>
 
-        <many-to-one target-entity="StudentInfo\Models\Professor" field="professor" inversed-by="lectures">
-            <join-column name="professor_id" referenced-column-name="id"/>
+        <many-to-one target-entity="StudentInfo\Models\Teacher" field="teacher" inversed-by="lectures">
+            <join-column name="teacher_id" referenced-column-name="id"/>
         </many-to-one>
 
         <many-to-one target-entity="StudentInfo\Models\Classroom" field="classroom" inversed-by="lectures">

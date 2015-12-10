@@ -78,6 +78,8 @@ Route::delete('auth', 'AuthController@logout');
 
 Route::post('register', 'RegisterController@issueRegisterTokens');
 
+Route::get('updateRegisterToken/{id}', ['middleware' => 'role:token.update', 'uses' => 'RegisterController@updateRegisterToken']);
+
 Route::get('register/{registerToken}', 'RegisterController@registerStudent');
 
 Route::post('register/{registerToken}', 'RegisterController@createPassword');
@@ -106,6 +108,8 @@ Route::post('globalEvent', 'GlobalEventController@addEvent');
 
 Route::post('professor', 'ProfessorController@addProfessor');
 
+Route::post('assistant', 'AssistantController@addAssistant');
+
 Route::post('lecture', 'LectureController@addLecture');
 
 Route::post('course', 'CourseController@addCourse');
@@ -131,6 +135,10 @@ Route::get('classrooms/{start?}/{count?}', 'ClassroomController@getClassrooms');
 Route::get('professor/{id}', 'ProfessorController@getProfessor');
 
 Route::get('professors/{start?}/{count?}', 'ProfessorController@getProfessors');
+
+Route::get('assistant/{id}', 'AssistantController@retrieveAssistant');
+
+Route::get('assistants/{start?}/{count?}', 'AssistantController@retrieveAssistants');
 
 Route::get('groupEvents/{groupId}', 'GroupEventController@getGroupEvents');
 
@@ -174,7 +182,9 @@ Route::put('student/{id}', ['middleware' => 'role:student.edit', 'uses' => 'Stud
 
 Route::put('classroom/{id}', ['middleware' => 'role:classroom.edit', 'uses' => 'ClassroomController@putEditClassroom']);
 
-Route::put('professor/{id}', ['middleware' => 'role:professor.edit', 'uses' => 'ProfessorController@putEditProfessor']);
+Route::put('professor/{id}', ['middleware' => 'role:teacher.edit', 'uses' => 'ProfessorController@putEditProfessor']);
+
+Route::put('assistant/{id}', ['middleware' => 'role:teacher.edit', 'uses' => 'AssistantController@updateAssistant']);
 
 Route::put('course/{id}', ['middleware' => 'role:course.edit', 'uses' => 'CourseController@putEditCourse']);
 
@@ -200,7 +210,9 @@ Route::delete('classroom/{id}' , ['middleware' => 'role:classroom.delete', 'uses
 
 Route::delete('course/{id}' , ['middleware' => 'role:course.delete', 'uses' => 'CourseController@deleteCourse']);
 
-Route::delete('professor/{id}' , ['middleware' => 'role:professor.delete', 'uses' => 'ProfessorController@deleteProfessor']);
+Route::delete('professor/{id}', ['middleware' => 'role:teacher.delete', 'uses' => 'ProfessorController@deleteProfessor']);
+
+Route::delete('assistant/{id}', ['middleware' => 'role:teacher.delete', 'uses' => 'AssistantController@deleteAssistant']);
 
 Route::delete('lecture/{id}' , ['middleware' => 'role:lecture.delete', 'uses' => 'LectureController@deleteLecture']);
 

@@ -22,10 +22,10 @@ class AdminRole extends Role
             'classroom.delete',
             'classroom.edit',
             'classroom.retrieve',
-            'professor.create',
-            'professor.delete',
-            'professor.edit',
-            'professor.retrieve',
+            'teacher.create',
+            'teacher.delete',
+            'teacher.edit',
+            'teacher.retrieve',
             'course.create',
             'course.delete',
             'course.edit',
@@ -49,6 +49,7 @@ class AdminRole extends Role
             'image.add',
             'classroom.to.event',
             'language.set',
+            'token.update',
         ];
     }
 
