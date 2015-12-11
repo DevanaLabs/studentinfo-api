@@ -34,7 +34,7 @@ class AddLectureRequest extends Request
     public function rules()
     {
         return [
-            'professorId' => 'required | integer',
+            'teacherId' => 'required | integer',
             'courseId'    => 'required | integer',
             'classroomId' => 'required | integer',
             'type'        => 'required',

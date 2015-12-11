@@ -73,7 +73,7 @@ class LectureController extends ApiController
         $classroom = $this->classroomRepository->find($request->get('classroomId'));
 
         if ($teacher == null) {
-            return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
+            return $this->returnError(500, UserErrorCodes::TEACHER_NOT_IN_DB);
         }
         if ($course == null) {
             return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);

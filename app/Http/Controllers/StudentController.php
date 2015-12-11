@@ -66,7 +66,7 @@ class StudentController extends ApiController
         /** @var Email $email */
         $email = new Email($request->get('email'));
         if ($this->userRepository->findByEmail($email)) {
-            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_EMAIL);
+            return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
         }
         $indexNumber = $request->get('indexNumber');
         if ($this->studentRepository->findByIndexNumber($indexNumber)) {
@@ -125,7 +125,7 @@ class StudentController extends ApiController
         $user = $this->userRepository->findByEmail($email);
         if ($user) {
             if ($user->getId() != $id) {
-                return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_EMAIL);
+                return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
             }
         }
 

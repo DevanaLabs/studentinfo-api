@@ -55,7 +55,7 @@ class AssistantController extends ApiController
         /** @var Email $email */
         $email = new Email($request->get('email'));
         if ($this->userRepository->findByEmail($email)) {
-            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_EMAIL);
+            return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
         }
         $assistant = new Assistant();
         $assistant->setFirstName($request->get('firstName'));
@@ -102,7 +102,7 @@ class AssistantController extends ApiController
         /** @var Email $email */
         $email = new Email($request->get('email'));
         if ($this->userRepository->findByEmail($email)) {
-            return $this->returnError(500, UserErrorCodes::ASSISTANT_NOT_UNIQUE_EMAIL);
+            return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
         }
 
         /** @var Assistant $assistant */

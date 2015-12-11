@@ -54,5 +54,4 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
         $query->setParameter('registerToken', $registerToken);
         return $query->getOneOrNullResult();
     }
-
 }

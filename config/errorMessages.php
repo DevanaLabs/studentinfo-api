@@ -49,4 +49,18 @@ return [
     \StudentInfo\ErrorCodes\UserErrorCodes::USER_BELONGS_TO_THIS_FACULTY  => 'You can\'t delete this faculty, there are users in it',
 
     \StudentInfo\ErrorCodes\UserErrorCodes::NOTIFICATION_NOT_IN_DB  => 'Notification is not in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::CLASSROOM_ALREADY_ADDED_TO_EVENT     => 'Classroom is already added to event',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::CLASSROOM_NOT_ADDED_TO_EVENT         => 'Classroom not added for event',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::ASSISTANT_NOT_IN_DB                  => 'Assistant is not in database',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::USER_DOES_NOT_BELONG_TO_THIS_FACULTY => 'User does not belong to this faculty',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::TEACHER_NOT_IN_DB                    => 'Teacher is not in database',
+
+
+
+
 ];
