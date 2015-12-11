@@ -7,6 +7,7 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddCourseRequest;
+use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 
@@ -53,6 +54,36 @@ class CourseController extends ApiController
 
         return $this->returnSuccess([
             'course' => $course,
+        ]);
+    }
+
+    public function addCoursesFromCSV(AddFromCSVRequest $request)
+    {
+        $addedCourses = [];
+
+        $handle = $request->file('import');
+
+        $file_path = $handle->getPathname();
+        $resource  = fopen($file_path, "r");
+        while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
+            $name = $data[0];
+            $code  = $data[1];
+            $espb = $data[2];
+            $semester = $data[3];
+
+            $course = new Course();
+            $course->setName($name);
+            $course->setCode($code);
+            $course->setEspb($espb);
+            $course->setSemester($semester);
+
+            $this->courseRepository->create($course);
+
+            $addedCourses[] = $course;
+        }
+
+        return $this->returnSuccess([
+            "successful"   => $addedCourses
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
+use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\AddProfessorRequest;
 use StudentInfo\Models\Professor;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
@@ -72,6 +73,44 @@ class ProfessorController extends ApiController
         ]);
     }
 
+    public function addProfessorsFromCSV(AddFromCSVRequest $request)
+    {
+        $addedProfessors       = [];
+        $failedToAddProfessors = [];
+        $handle = $request->file('import');
+
+        $file_path = $handle->getPathname();
+        $resource  = fopen($file_path, "r");
+        while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
+            $firstName = $data[0];
+            $lastName  = $data[1];
+            $title = $data[2];
+            $email = new Email($data[3]);
+
+            if ($this->userRepository->findByEmail($email))
+            {
+                $failedToAddProfessors[] = $email;
+                continue;
+            }
+            $professor = new Professor();
+            $professor->setFirstName($firstName);
+            $professor->setLastName($lastName);
+            $professor->setTitle($title);
+            $professor->setEmail($email);
+            $professor->setPassword(new Password('password'));
+            $professor->generateRegisterToken();
+            $professor->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
+            $this->professorRepository->create($professor);
+
+            $addedProfessors[] = $professor;
+        }
+
+        return $this->returnSuccess([
+            "successful"   => $addedProfessors,
+            "unsuccessful" => $failedToAddProfessors,
+        ]);
+
+    }
     public function getProfessor($id)
     {
         $professor = $this->professorRepository->find($id);

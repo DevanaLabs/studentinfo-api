@@ -10,7 +10,13 @@ Route::get('/', function () {
 
 /* Test Routes */
 
-Route::post('importCSV', 'StudentController@addStudentsFromCSV');
+Route::post('importStudents', 'StudentController@addStudentsFromCSV');
+
+Route::post('importClassrooms', 'ClassroomController@addClassroomsFromCSV');
+
+Route::post('importCourses', 'CourseController@addCoursesFromCSV');
+
+Route::post('importProfessors', 'ProfessorController@addProfessorsFromCSV');
 
 Route::post('wallpaper', 'SettingsController@setWallpaper');
 
