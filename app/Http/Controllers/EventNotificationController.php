@@ -6,7 +6,8 @@ namespace StudentInfo\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddPutEventNotificationRequest;
+use StudentInfo\Http\Requests\Create\CreateEventNotificationRequest;
+use StudentInfo\Http\Requests\Update\UpdateEventNotificationRequest;
 use StudentInfo\Models\Event;
 use StudentInfo\Models\EventNotification;
 use StudentInfo\Repositories\EventRepositoryInterface;
@@ -42,7 +43,7 @@ class EventNotificationController extends ApiController
     }
 
 
-    public function addNotification(AddPutEventNotificationRequest $request)
+    public function createNotification(CreateEventNotificationRequest $request)
     {
         $description = $request->get('description');
 
@@ -71,7 +72,7 @@ class EventNotificationController extends ApiController
         ]);
     }
 
-    public function getNotification($id)
+    public function retrieveNotification($id)
     {
         $notification = $this->notificationRepository->find($id);
 
@@ -84,14 +85,14 @@ class EventNotificationController extends ApiController
         ]);
     }
 
-    public function getNotifications($start = 0, $count = 20)
+    public function retrieveNotifications($start = 0, $count = 20)
     {
         $notifications = $this->notificationRepository->all($start, $count);
 
         return $this->returnSuccess($notifications);
     }
 
-    public function putEditNotification(AddPutEventNotificationRequest $request, $id)
+    public function updateNotification(UpdateEventNotificationRequest $request, $id)
     {
         /** @var EventNotification $notification */
         $notification = $this->notificationRepository->find($id);

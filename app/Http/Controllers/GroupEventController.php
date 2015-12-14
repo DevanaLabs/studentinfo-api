@@ -5,13 +5,15 @@ namespace StudentInfo\Http\Controllers;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddEventRequest;
+use StudentInfo\Http\Requests\Create\CreateGroupEventRequest;
+use StudentInfo\Http\Requests\Update\UpdateGroupEventRequest;
 use StudentInfo\Models\Group;
 use StudentInfo\Models\GroupEvent;
+use StudentInfo\Repositories\ClassroomRepositoryInterface;
 
 class GroupEventController extends EventController
 {
-    public function addEvent(AddEventRequest $request)
+    public function createEvent(CreateGroupEventRequest $request, ClassroomRepositoryInterface $classroomRepository)
     {
         $event = new GroupEvent(new ArrayCollection());
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
@@ -26,9 +28,21 @@ class GroupEventController extends EventController
             return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
         }
 
+        $classroomsEntry = $request->get('classrooms');
+        $classrooms      = [];
+
+        for ($i = 0; $i < count($classroomsEntry); $i++) {
+            $classroom = $classroomRepository->find($classroomsEntry[$i]);
+            if ($classroom === null) {
+                continue;
+            }
+            $classrooms[] = $classroom;
+        }
+
         $event->setType($request->get('type'));
         $event->setDescription($request->get('description'));
         $event->setGroup($group);
+        $event->setClassrooms($classrooms);
         $event->setStartsAt($startsAt);
         $event->setEndsAt($endsAt);
 
@@ -38,17 +52,8 @@ class GroupEventController extends EventController
         ]);
     }
 
-    public function getGroupEvents($groupId)
-    {
-        /** @var Group $group */
-        $group = $this->groupRepository->find($groupId);
 
-        return $this->returnSuccess([
-            'events' => $group->getEvents(),
-        ]);
-    }
-
-    public function putEditEvent(AddEventRequest $request, $id)
+    public function updateEvent(UpdateGroupEventRequest $request, ClassroomRepositoryInterface $classroomRepository, $id)
     {
         if ($this->eventRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
@@ -69,9 +74,21 @@ class GroupEventController extends EventController
             return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
         }
 
+        $classroomsEntry = $request->get('classrooms');
+        $classrooms      = [];
+
+        for ($i = 0; $i < count($classroomsEntry); $i++) {
+            $classroom = $classroomRepository->find($classroomsEntry[$i]);
+            if ($classroom === null) {
+                continue;
+            }
+            $classrooms[] = $classroom;
+        }
+
         $event->setType($request['type']);
         $event->setDescription($request['description']);
         $event->setGroup($group);
+        $event->setClassrooms($classrooms);
         $event->setStartsAt($startsAt);
         $event->setEndsAt($endsAt);
 

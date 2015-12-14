@@ -10,8 +10,8 @@
                   serialized-name="course"
                   expose="true"
                 />
-        <property name="professor"
-                  serialized-name="professor"
+        <property name="teacher"
+                  serialized-name="teacher"
                   expose="true"
                 />
         <property name="classroom"
@@ -37,17 +37,16 @@
         <property name="students"
                   serialized-name="students"
                   expose="true"
-                  max-depth="2"
                 />
         <property name="groups"
                   serialized-name="groups"
                   expose="true"
-                  max-depth="2"
+                  max-depth="1"
                 />
         <property name="notifications"
                   serialized-name="notifications"
                   expose="true"
-                  max-depth="2"
+                  max-depth="1"
                 />
     </class>
 </serializer>

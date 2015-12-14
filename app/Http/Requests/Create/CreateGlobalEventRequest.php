@@ -1,14 +1,14 @@
 <?php
 
-namespace StudentInfo\Http\Requests;
+namespace StudentInfo\Http\Requests\Create;
 
 
-use Illuminate\Auth\Guard;
+use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Models\User;
 
-class RemoveLecturesRequest extends Request
+class CreateGlobalEventRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -22,7 +22,8 @@ class RemoveLecturesRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('lecture.remove'));
+        return ($user->hasPermissionTo('event.create'));
+
     }
 
     /**
@@ -33,7 +34,10 @@ class RemoveLecturesRequest extends Request
     public function rules()
     {
         return [
-            'ids' => 'array',
+            'type'     => 'required',
+            'description' => 'required',
+            'startsAt' => 'required',
+            'endsAt'   => 'required',
         ];
     }
 }

@@ -6,7 +6,8 @@ namespace StudentInfo\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddPutLectureNotificationRequest;
+use StudentInfo\Http\Requests\Create\CreateLectureNotificationRequest;
+use StudentInfo\Http\Requests\Update\UpdateLectureNotificationRequest;
 use StudentInfo\Models\Lecture;
 use StudentInfo\Models\LectureNotification;
 use StudentInfo\Repositories\LectureRepositoryInterface;
@@ -42,7 +43,7 @@ class LectureNotificationController extends ApiController
     }
 
 
-    public function addNotification(AddPutLectureNotificationRequest $request)
+    public function createNotification(CreateLectureNotificationRequest $request)
     {
         $description = $request->get('description');
 
@@ -71,7 +72,7 @@ class LectureNotificationController extends ApiController
         ]);
     }
 
-    public function getNotification($id)
+    public function retrieveNotification($id)
     {
         $notification = $this->notificationRepository->find($id);
 
@@ -84,14 +85,14 @@ class LectureNotificationController extends ApiController
         ]);
     }
 
-    public function getNotifications($start = 0, $count = 20)
+    public function retrieveNotifications($start = 0, $count = 20)
     {
         $notifications = $this->notificationRepository->all($start, $count);
 
         return $this->returnSuccess($notifications);
     }
 
-    public function putEditNotification(AddPutLectureNotificationRequest $request, $id)
+    public function updateNotification(UpdateLectureNotificationRequest $request, $id)
     {
         /** @var LectureNotification $notification */
         $notification = $this->notificationRepository->find($id);

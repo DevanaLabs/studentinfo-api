@@ -6,8 +6,9 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddCourseRequest;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
+use StudentInfo\Http\Requests\Create\CreateCourseRequest;
+use StudentInfo\Http\Requests\Update\UpdateCourseRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 
@@ -34,11 +35,7 @@ class CourseController extends ApiController
         $this->guard            = $guard;
     }
 
-    /**
-     * @param AddCourseRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function addCourse(AddCourseRequest $request)
+    public function createCourse(CreateCourseRequest $request)
     {
         $code = $request->get('code');
         if ($this->courseRepository->findByCode($request->get('code'))) {
@@ -57,37 +54,7 @@ class CourseController extends ApiController
         ]);
     }
 
-    public function addCoursesFromCSV(AddFromCSVRequest $request)
-    {
-        $addedCourses = [];
-
-        $handle = $request->file('import');
-
-        $file_path = $handle->getPathname();
-        $resource  = fopen($file_path, "r");
-        while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
-            $name = $data[0];
-            $code  = $data[1];
-            $espb = $data[2];
-            $semester = $data[3];
-
-            $course = new Course();
-            $course->setName($name);
-            $course->setCode($code);
-            $course->setEspb($espb);
-            $course->setSemester($semester);
-
-            $this->courseRepository->create($course);
-
-            $addedCourses[] = $course;
-        }
-
-        return $this->returnSuccess([
-            "successful"   => $addedCourses
-        ]);
-    }
-
-    public function getCourse($id)
+    public function retrieveCourse($id)
     {
         $course = $this->courseRepository->find($id);
 
@@ -100,14 +67,14 @@ class CourseController extends ApiController
         ]);
     }
 
-    public function getCourses($start = 0, $count = 20)
+    public function retrieveCourses($start = 0, $count = 20)
     {
         $courses = $this->courseRepository->all($start, $count);
 
         return $this->returnSuccess($courses);
     }
 
-    public function putEditCourse(AddCourseRequest $request, $id)
+    public function updateCourse(UpdateCourseRequest $request, $id)
     {
         if ($this->courseRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
@@ -138,5 +105,35 @@ class CourseController extends ApiController
         $this->courseRepository->destroy($course);
 
         return $this->returnSuccess();
+    }
+
+    public function addCoursesFromCSV(AddFromCSVRequest $request)
+    {
+        $addedCourses = [];
+
+        $handle = $request->file('import');
+
+        $file_path = $handle->getPathname();
+        $resource  = fopen($file_path, "r");
+        while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
+            $name     = $data[0];
+            $code     = $data[1];
+            $espb     = $data[2];
+            $semester = $data[3];
+
+            $course = new Course();
+            $course->setName($name);
+            $course->setCode($code);
+            $course->setEspb($espb);
+            $course->setSemester($semester);
+
+            $this->courseRepository->create($course);
+
+            $addedCourses[] = $course;
+        }
+
+        return $this->returnSuccess([
+            "successful" => $addedCourses,
+        ]);
     }
 }

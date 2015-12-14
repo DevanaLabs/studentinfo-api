@@ -1,11 +1,13 @@
 <?php
 
-namespace StudentInfo\Http\Requests;
+namespace StudentInfo\Http\Requests\Create;
+
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Models\User;
 
-class EditUserGetRequest extends Request
+class CreateCourseRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,19 +17,13 @@ class EditUserGetRequest extends Request
      */
     public function authorize(Guard $guard)
     {
-        $userId = $this->route('user_id');
-
         /** @var User $user */
         $user = $guard->user();
         if ($user === null) {
             return false;
         }
+        return ($user->hasPermissionTo('course.create'));
 
-        if ($user->getId() == $userId) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -37,6 +33,10 @@ class EditUserGetRequest extends Request
      */
     public function rules()
     {
-        return [];
+        return [
+            'name' => 'required',
+            'espb' => 'required',
+            'semester' => 'required',
+        ];
     }
 }

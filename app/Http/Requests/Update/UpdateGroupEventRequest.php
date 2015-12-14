@@ -1,11 +1,12 @@
 <?php
 
-namespace StudentInfo\Http\Requests;
+namespace StudentInfo\Http\Requests\Update;
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Models\User;
 
-class EditUserGetRequest extends Request
+class UpdateGroupEventRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,19 +16,13 @@ class EditUserGetRequest extends Request
      */
     public function authorize(Guard $guard)
     {
-        $userId = $this->route('user_id');
-
         /** @var User $user */
         $user = $guard->user();
         if ($user === null) {
             return false;
         }
+        return ($user->hasPermissionTo('event.update'));
 
-        if ($user->getId() == $userId) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -37,6 +32,13 @@ class EditUserGetRequest extends Request
      */
     public function rules()
     {
-        return [];
+        return [
+            'type'        => 'required',
+            'description' => 'required',
+            'startsAt'    => 'required',
+            'endsAt'      => 'required',
+            'groupId'     => 'required',
+            'classrooms'  => 'required|array',
+        ];
     }
 }

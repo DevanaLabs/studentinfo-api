@@ -5,7 +5,8 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddAdminRequest;
+use StudentInfo\Http\Requests\Create\CreateAdminRequest;
+use StudentInfo\Http\Requests\Create\UpdateAdminRequest;
 use StudentInfo\Models\Admin;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\AdminRepositoryInterface;
@@ -38,14 +39,14 @@ class AdminController extends ApiController
 
     public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, AdminRepositoryInterface $adminRepository, Guard $guard)
     {
-        $this->userRepository        = $userRepository;
-        $this->facultyRepository     = $facultyRepository;
-        $this->adminRepository       = $adminRepository;
-        $this->guard                 = $guard;
+        $this->userRepository    = $userRepository;
+        $this->facultyRepository = $facultyRepository;
+        $this->adminRepository   = $adminRepository;
+        $this->guard             = $guard;
     }
 
 
-    public function addAdmin(AddAdminRequest $request)
+    public function createAdmin(CreateAdminRequest $request)
     {
         /** @var Email $email */
         $email = new Email($request->get('email'));
@@ -53,7 +54,7 @@ class AdminController extends ApiController
             return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
         }
         $faculty = $this->facultyRepository->findFacultyByName($request->get('faculty'));
-        if ($faculty === null){
+        if ($faculty === null) {
             return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);
         }
         $admin = new Admin();
@@ -70,31 +71,31 @@ class AdminController extends ApiController
         ]);
     }
 
-    public function getAdmin($id)
+    public function retrieveAdmin($id)
     {
         $admin = $this->adminRepository->find($id);
 
-        if($admin === null){
+        if ($admin === null) {
             return $this->returnError(500, UserErrorCodes::ADMIN_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
-            'admin' => $admin
+            'admin' => $admin,
         ]);
     }
 
-    public function getAdmins($start = 0, $count = 20)
+    public function retrieveAdmins($start = 0, $count = 20)
     {
-        $admins  = $this->adminRepository->all($start, $count);
+        $admins = $this->adminRepository->all($start, $count);
 
         return $this->returnSuccess($admins);
     }
 
-    public function putEditAdmin(AddAdminRequest $request, $id)
+    public function updateAdmin(UpdateAdminRequest $request, $id)
     {
         /** @var  Admin $admin */
         $admin = $this->adminRepository->find($id);
-        if($admin  === null){
+        if ($admin === null) {
             return $this->returnError(500, UserErrorCodes::ADMIN_NOT_IN_DB);
         }
 
@@ -121,7 +122,7 @@ class AdminController extends ApiController
         $this->adminRepository->update($admin);
 
         return $this->returnSuccess([
-            'admin' => $admin
+            'admin' => $admin,
         ]);
     }
 

@@ -1,12 +1,13 @@
 <?php
 
-namespace StudentInfo\Http\Requests;
+namespace StudentInfo\Http\Requests\Create;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Models\User;
 
-class AddPutLectureNotificationRequest extends Request
+class CreateClassroomRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,7 +22,7 @@ class AddPutLectureNotificationRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('notification.create'));
+        return ($user->hasPermissionTo('classroom.create'));
     }
 
     /**
@@ -31,10 +32,9 @@ class AddPutLectureNotificationRequest extends Request
      */
     public function rules()
     {
-        return [
-            'description' => 'required',
-            'expiresAt'   => 'required',
-            'lectureId'   => 'required',
+        return $rules = [
+            'name' => 'required',
+            'floor' => 'required',
         ];
     }
 }

@@ -5,7 +5,8 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddTeacherRequest;
+use StudentInfo\Http\Requests\Create\CreateTeacherRequest;
+use StudentInfo\Http\Requests\UpdateTeacherRequest;
 use StudentInfo\Models\Assistant;
 use StudentInfo\Repositories\AssistantRepositoryInterface;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
@@ -50,7 +51,7 @@ class AssistantController extends ApiController
         $this->guard               = $guard;
     }
 
-    public function addAssistant(AddTeacherRequest $request)
+    public function createAssistant(CreateTeacherRequest $request)
     {
         /** @var Email $email */
         $email = new Email($request->get('email'));
@@ -93,7 +94,7 @@ class AssistantController extends ApiController
         return $this->returnSuccess($assistants);
     }
 
-    public function updateAssistant(AddTeacherRequest $request, $id)
+    public function updateAssistant(UpdateTeacherRequest $request, $id)
     {
         if ($this->assistantRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::ASSISTANT_NOT_IN_DB);

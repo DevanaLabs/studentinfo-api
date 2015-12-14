@@ -6,8 +6,8 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
-use StudentInfo\Http\Requests\AddStudentsRequest;
-use StudentInfo\Http\Requests\SetGetLecturesRequest;
+use StudentInfo\Http\Requests\Create\CreateStudentRequest;
+use StudentInfo\Http\Requests\Update\UpdateStudentRequest;
 use StudentInfo\Models\Student;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
@@ -61,23 +61,37 @@ class StudentController extends ApiController
         $this->guard             = $guard;
     }
 
-    public function addStudent(AddStudentsRequest $request)
+    public function createStudent(CreateStudentRequest $request)
     {
         /** @var Email $email */
         $email = new Email($request->get('email'));
         if ($this->userRepository->findByEmail($email)) {
             return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
         }
+
         $indexNumber = $request->get('indexNumber');
         if ($this->studentRepository->findByIndexNumber($indexNumber)) {
             return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
         }
+
+        $lecturesEntry = $request->get('lectures');
+        $lectures      = [];
+
+        for ($i = 0; $i < count($lecturesEntry); $i++) {
+            $lecture = $this->lectureRepository->find($lecturesEntry[$i]);
+            if ($lecture === null) {
+                continue;
+            }
+            $lectures[] = $lecture;
+        }
+
         $student = new Student();
         $student->setFirstName($request->get('firstName'));
         $student->setLastName($request->get('lastName'));
         $student->setEmail($email);
         $student->setIndexNumber($indexNumber);
         $student->setYear($request->get('year'));
+        $student->setLectures($lectures);
         $student->setPassword(new Password('password'));
         $student->generateRegisterToken();
         $student->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
@@ -89,7 +103,7 @@ class StudentController extends ApiController
         ]);
     }
 
-    public function getStudent($id)
+    public function retrieveStudent($id)
     {
         $student = $this->studentRepository->find($id);
 
@@ -103,14 +117,14 @@ class StudentController extends ApiController
 
     }
 
-    public function getStudents($start = 0, $count = 20)
+    public function retrieveStudents($start = 0, $count = 20)
     {
         $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()), $start, $count);
 
         return $this->returnSuccess($students);
     }
 
-    public function putEditStudent(AddStudentsRequest $request, $id)
+    public function updateStudent(UpdateStudentRequest $request, $id)
     {
         if ($this->studentRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::STUDENT_NOT_IN_DB);
@@ -137,10 +151,22 @@ class StudentController extends ApiController
             }
         }
 
+        $lecturesEntry = $request->get('lectures');
+        $lectures      = [];
+
+        for ($i = 0; $i < count($lecturesEntry); $i++) {
+            $lecture = $this->lectureRepository->find($lecturesEntry[$i]);
+            if ($lecture === null) {
+                continue;
+            }
+            $lectures[] = $lecture;
+        }
+
         $student->setFirstName($request->get('firstName'));
         $student->setLastName($request->get('lastName'));
         $student->setEmail($email);
         $student->setIndexNumber($indexNumber);
+        $student->setLectures($lectures);
         $student->setYear($request->get('year'));
 
         $this->studentRepository->update($student);
@@ -160,49 +186,6 @@ class StudentController extends ApiController
         $this->studentRepository->destroy($student);
 
         return $this->returnSuccess();
-    }
-
-    public function chooseLectures(SetGetLecturesRequest $request)
-    {
-        $ids = $request->get('ids');
-
-        $addedLectures = [];
-
-        $failedToAddLectures = [];
-
-        foreach ($ids as $id) {
-            $lecture = $this->lectureRepository->find($id);
-            if ($lecture === null) {
-                $failedToAddLectures[] = $id;
-                continue;
-            }
-            $addedLectures[] = $lecture;
-        }
-        /** @var Student $student */
-        $student = $this->studentRepository->find($this->guard->user()->getId());
-
-        $student->setLectures($addedLectures);
-
-        $this->studentRepository->update($student);
-
-        return $this->returnSuccess([
-            'successful'   => $addedLectures,
-            'unsuccessful' => $failedToAddLectures,
-        ]);
-    }
-
-    public function showMyLectures(SetGetLecturesRequest $request)
-    {
-        $lecture = [];
-
-        /** @var Student $student */
-        $student = $this->studentRepository->find($this->guard->user()->getId());
-
-        for ($i = 0; $i < count($student->getLectures()); $i++) {
-            $lecture[] = $student->getLectures()[$i];
-        }
-
-        return $this->returnSuccess($lecture);
     }
 
     /**

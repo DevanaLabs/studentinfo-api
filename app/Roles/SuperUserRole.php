@@ -13,14 +13,14 @@ class SuperUserRole extends Role
     public function getPermissions()
     {
         return [
-            'admin.edit',
             'admin.create',
-            'admin.delete',
             'admin.retrieve',
-            'faculty.edit',
+            'admin.update',
+            'admin.delete',
             'faculty.create',
-            'faculty.delete',
             'faculty.retrieve',
+            'faculty.update',
+            'faculty.delete',
         ];
     }
 

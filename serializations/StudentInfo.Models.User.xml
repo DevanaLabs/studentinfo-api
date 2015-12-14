@@ -22,10 +22,6 @@
                   serialized-name="email"
                   expose="true"
                 />
-        <property name="registerTokenCreatedAt"
-                  serialized-name="registerTokenCreatedAt"
-                  expose="true"
-                />
 
     </class>
 </serializer>

@@ -1,13 +1,13 @@
 <?php
 
-
-namespace StudentInfo\Http\Requests;
+namespace StudentInfo\Http\Requests\Create;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Models\User;
 
-class AddTeacherRequest extends Request
+class CreateGroupRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class AddTeacherRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('teacher.create'));
+        return ($user->hasPermissionTo('group.create'));
+
     }
 
     /**
@@ -33,10 +34,10 @@ class AddTeacherRequest extends Request
     public function rules()
     {
         return [
-            'email'     => 'required',
-            'firstName' => 'required',
-            'lastName'  => 'required',
-            'title'     => 'required',
+            'name' => 'required',
+            'year' => 'required',
+            'lecture' => 'required|array',
+            'events'  => 'required|array',
         ];
     }
 }

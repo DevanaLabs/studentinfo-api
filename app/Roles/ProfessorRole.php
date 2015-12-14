@@ -14,10 +14,9 @@ class ProfessorRole extends Role
     public function getPermissions()
     {
         return [
-            'user.edit',
-            'lecture.add',
-            'event.add',
-            'event.edit',
+            'user.update',
+            'event.create',
+            'event.update',
         ];
     }
 

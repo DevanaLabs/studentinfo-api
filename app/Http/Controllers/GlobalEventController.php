@@ -6,12 +6,13 @@ namespace StudentInfo\Http\Controllers;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddEventRequest;
+use StudentInfo\Http\Requests\Create\CreateGlobalEventRequest;
+use StudentInfo\Http\Requests\Update\UpdateGlobalEventRequest;
 use StudentInfo\Models\GlobalEvent;
 
 class GlobalEventController extends EventController
 {
-    public function addEvent(AddEventRequest $request)
+    public function createEvent(CreateGlobalEventRequest $request)
     {
         $event    = new GlobalEvent(new ArrayCollection());
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
@@ -31,7 +32,7 @@ class GlobalEventController extends EventController
         ]);
     }
 
-    public function putEditEvent(AddEventRequest $request, $id)
+    public function updateEvent(UpdateGlobalEventRequest $request, $id)
     {
         if ($this->eventRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);

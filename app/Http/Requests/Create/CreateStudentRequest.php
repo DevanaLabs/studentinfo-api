@@ -1,14 +1,14 @@
 <?php
 
-namespace StudentInfo\Http\Requests;
+namespace StudentInfo\Http\Requests\Create;
 
 
-use Illuminate\Auth\Guard;
+use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Models\User;
 
-class SetGetLecturesRequest extends Request
+class CreateStudentRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -22,7 +22,7 @@ class SetGetLecturesRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('lecture.add'));
+        return ($user->hasPermissionTo('student.create'));
     }
 
     /**
@@ -32,8 +32,13 @@ class SetGetLecturesRequest extends Request
      */
     public function rules()
     {
-        return [
-            'ids' => 'array',
+        return $rules = [
+            'email'     => 'required',
+            'firstName' => 'required',
+            'lastName'  => 'required',
+            'indexNumber' => 'required',
+            'year'      => 'required',
+            'lectures'  => 'required|array',
         ];
     }
 }

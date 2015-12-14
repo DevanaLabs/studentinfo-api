@@ -1,11 +1,13 @@
 <?php
 
-namespace StudentInfo\Http\Requests;
+namespace StudentInfo\Http\Requests\Create;
+
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Models\User;
 
-class EditUserGetRequest extends Request
+class CreateEventNotificationRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,19 +17,12 @@ class EditUserGetRequest extends Request
      */
     public function authorize(Guard $guard)
     {
-        $userId = $this->route('user_id');
-
         /** @var User $user */
         $user = $guard->user();
         if ($user === null) {
             return false;
         }
-
-        if ($user->getId() == $userId) {
-            return true;
-        }
-
-        return false;
+        return ($user->hasPermissionTo('notification.create'));
     }
 
     /**
@@ -37,6 +32,10 @@ class EditUserGetRequest extends Request
      */
     public function rules()
     {
-        return [];
+        return [
+            'description' => 'required',
+            'expiresAt'   => 'required',
+            'eventId'     => 'required',
+        ];
     }
 }

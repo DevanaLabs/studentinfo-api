@@ -13,7 +13,7 @@
 
         <field name="name" column="name" type="string" nullable="false"/>
 
-        <field name="code" column="code" type="string" unique="true" nullable="false"/>
+        <field name="code" column="code" type="string"/>
 
         <field name="espb" column="espb" type="integer" nullable="false"/>
 

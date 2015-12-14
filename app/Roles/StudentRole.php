@@ -14,8 +14,7 @@ class StudentRole extends Role
     public function getPermissions()
     {
         return [
-            'user.edit',
-            'lecture.add',
+            'user.update',
         ];
     }
 

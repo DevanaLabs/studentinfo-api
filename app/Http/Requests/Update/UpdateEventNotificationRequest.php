@@ -1,13 +1,12 @@
 <?php
 
-
-namespace StudentInfo\Http\Requests;
-
+namespace StudentInfo\Http\Requests\Update;
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Models\User;
 
-class AddNotificationRequest extends Request
+class UpdateEventNotificationRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +21,7 @@ class AddNotificationRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('notification.create'));
+        return ($user->hasPermissionTo('notification.update'));
     }
 
     /**
@@ -32,6 +31,10 @@ class AddNotificationRequest extends Request
      */
     public function rules()
     {
-        return [];
+        return [
+            'description' => 'required',
+            'expiresAt'   => 'required',
+            'eventId'     => 'required',
+        ];
     }
 }

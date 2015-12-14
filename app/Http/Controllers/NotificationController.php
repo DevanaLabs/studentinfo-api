@@ -39,7 +39,7 @@ class NotificationController extends ApiController
         $this->eventRepository        = $eventRepository;
     }
 
-    public function getNotification($id)
+    public function retrieveNotification($id)
     {
         $notification = $this->notificationRepository->find($id);
 
@@ -52,7 +52,7 @@ class NotificationController extends ApiController
         ]);
     }
 
-    public function getNotifications($start = 0, $count = 20)
+    public function retrieveNotifications($start = 0, $count = 20)
     {
         $notifications = $this->notificationRepository->all($start, $count);
 

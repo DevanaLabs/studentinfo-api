@@ -6,7 +6,8 @@ namespace StudentInfo\Http\Controllers;
 use Exception;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddFacultyRequest;
+use StudentInfo\Http\Requests\Create\CreateFacultyRequest;
+use StudentInfo\Http\Requests\Update\UpdateFacultyRequest;
 use StudentInfo\Models\Faculty;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 
@@ -33,11 +34,7 @@ class FacultyController extends ApiController
         $this->guard             = $guard;
     }
 
-    /**
-     * @param AddFacultyRequest $request
-     * @return \Illuminate\Http\Response
-     */
-    public function addFaculty(AddFacultyRequest $request)
+    public function createFaculty(CreateFacultyRequest $request)
     {
         $name = $request->get('name');
         if ($this->facultyRepository->findFacultyByName($name)) {
@@ -54,7 +51,7 @@ class FacultyController extends ApiController
         ]);
     }
 
-    public function getFaculty($id)
+    public function retrieveFaculty($id)
     {
         $faculty = $this->facultyRepository->find($id);
 
@@ -67,14 +64,14 @@ class FacultyController extends ApiController
         ]);
     }
 
-    public function getFaculties($start = 0, $count = 20)
+    public function retrieveFaculties($start = 0, $count = 20)
     {
         $faculty = $this->facultyRepository->all($start, $count);
 
         return $this->returnSuccess($faculty);
     }
 
-    public function putEditFaculty(AddFacultyRequest $request, $id)
+    public function updateFaculty(UpdateFacultyRequest $request, $id)
     {
         if ($this->facultyRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);

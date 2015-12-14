@@ -17,12 +17,12 @@
         <property name="lectures"
                   serialized-name="lectures"
                   expose="true"
-                  max-depth="2"
+                  max-depth="1"
                 />
         <property name="events"
                   serialized-name="events"
                   expose="true"
-                  max-depth="2"
+                  max-depth="1"
                 />
     </class>
 </serializer>

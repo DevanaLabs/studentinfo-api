@@ -4,8 +4,9 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddClassroomRequest;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
+use StudentInfo\Http\Requests\Create\CreateClassroomRequest;
+use StudentInfo\Http\Requests\UpdateClassroomRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 
@@ -32,7 +33,7 @@ class ClassroomController extends ApiController
         $this->guard               = $guard;
     }
 
-    public function addClassroom(AddClassroomRequest $request)
+    public function createClassroom(CreateClassroomRequest $request)
     {
         $name = $request->get('name');
         if ($this->classroomRepository->findByName($name)) {
@@ -50,35 +51,7 @@ class ClassroomController extends ApiController
         ]);
     }
 
-    public function addClassroomsFromCSV(AddFromCSVRequest $request)
-    {
-        $addedClassrooms = [];
-
-        $handle = $request->file('import');
-
-        $file_path = $handle->getPathname();
-        $resource  = fopen($file_path, "r");
-        while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
-            $name = $data[0];
-            $directions  = $data[1];
-            $floor = $data[2];
-
-            $classroom = new Classroom();
-            $classroom->setName($name);
-            $classroom->setDirections($directions);
-            $classroom->setFloor($floor);
-
-            $this->classroomRepository->create($classroom);
-
-            $addedClassrooms[] = $classroom;
-        }
-
-        return $this->returnSuccess([
-            "successful"   => $addedClassrooms
-        ]);
-    }
-
-    public function getClassroom($id)
+    public function retrieveClassroom($id)
     {
         $classroom = $this->classroomRepository->find($id);
 
@@ -91,14 +64,14 @@ class ClassroomController extends ApiController
         ]);
     }
 
-    public function getClassrooms($start = 0, $count = 20)
+    public function retrieveClassrooms($start = 0, $count = 20)
     {
         $classrooms = $this->classroomRepository->all($start, $count);
 
         return $this->returnSuccess($classrooms);
     }
 
-    public function putEditClassroom(AddClassroomRequest $request, $id)
+    public function updateClassroom(UpdateClassroomRequest $request, $id)
     {
         if ($this->classroomRepository->find($id) === null) {
             return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
@@ -127,5 +100,33 @@ class ClassroomController extends ApiController
         $this->classroomRepository->destroy($classroom);
 
         return $this->returnSuccess();
+    }
+
+    public function addClassroomsFromCSV(AddFromCSVRequest $request)
+    {
+        $addedClassrooms = [];
+
+        $handle = $request->file('import');
+
+        $file_path = $handle->getPathname();
+        $resource  = fopen($file_path, "r");
+        while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
+            $name       = $data[0];
+            $directions = $data[1];
+            $floor      = $data[2];
+
+            $classroom = new Classroom();
+            $classroom->setName($name);
+            $classroom->setDirections($directions);
+            $classroom->setFloor($floor);
+
+            $this->classroomRepository->create($classroom);
+
+            $addedClassrooms[] = $classroom;
+        }
+
+        return $this->returnSuccess([
+            "successful" => $addedClassrooms,
+        ]);
     }
 }

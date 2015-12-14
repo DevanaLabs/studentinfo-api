@@ -1,11 +1,12 @@
 <?php
 
-namespace StudentInfo\Http\Requests;
+namespace StudentInfo\Http\Requests\Create;
+
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Models\User;
 
-class AddDeleteClassroomToEventRequest extends Request
+class CreateAdminRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,7 +21,7 @@ class AddDeleteClassroomToEventRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('classroom.to.event'));
+        return ($user->hasPermissionTo('admin.create'));
     }
 
     /**
@@ -31,7 +32,10 @@ class AddDeleteClassroomToEventRequest extends Request
     public function rules()
     {
         return $rules = [
-            'name' => 'required',
+            'email'    => 'required',
+            'firstName' => 'required',
+            'lastName' => 'required',
         ];
+
     }
 }

@@ -1,13 +1,12 @@
 <?php
 
-
-namespace StudentInfo\Http\Requests;
-
+namespace StudentInfo\Http\Requests\Update;
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Models\User;
 
-class AddEventRequest extends Request
+class UpdateGlobalEventRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +21,7 @@ class AddEventRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('event.create'));
+        return ($user->hasPermissionTo('event.update'));
 
     }
 
@@ -34,11 +33,10 @@ class AddEventRequest extends Request
     public function rules()
     {
         return [
-            'type' => 'required',
+            'type'        => 'required',
             'description' => 'required',
-            'startsAt' => 'required',
-            'endsAt' => 'required',
+            'startsAt'    => 'required',
+            'endsAt'      => 'required',
         ];
     }
-
 }

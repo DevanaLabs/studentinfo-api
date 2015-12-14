@@ -1,17 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Nebojsa
- * Date: 11/23/2015
- * Time: 3:47 PM
- */
 
 namespace StudentInfo\Http\Controllers;
 
 
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddGroupRequest;
+use StudentInfo\Http\Requests\Create\CreateGroupRequest;
+use StudentInfo\Http\Requests\Update\UpdateGroupRequest;
 use StudentInfo\Models\Group;
+use StudentInfo\Repositories\EventRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
 
@@ -28,29 +24,52 @@ class GroupController extends ApiController
     protected $lectureRepository;
 
     /**
+     * @var EventRepositoryInterface
+     */
+    protected $eventRepository;
+
+    /**
      * GroupController constructor.
      * @param GroupRepositoryInterface   $groupRepository
      * @param LectureRepositoryInterface $lectureRepository
+     * @param EventRepositoryInterface   $eventRepository
      */
-    public function __construct(GroupRepositoryInterface $groupRepository, LectureRepositoryInterface $lectureRepository)
+    public function __construct(GroupRepositoryInterface $groupRepository, LectureRepositoryInterface $lectureRepository, EventRepositoryInterface $eventRepository)
     {
         $this->groupRepository   = $groupRepository;
         $this->lectureRepository = $lectureRepository;
+        $this->eventRepository = $eventRepository;
     }
 
-    public function addGroup(AddGroupRequest $request)
+    public function createGroup(CreateGroupRequest $request)
     {
-        $lecturesEntry = $request->get('lectures');
-        $lectures      = [];
         $group         = new Group();
         $name          = $request->get('name');
         $group->setName($name);
         $group->setYear($request->get('year'));
 
+        $lecturesEntry = $request->get('lectures');
+        $lectures      = [];
         for ($i = 0; $i < count($lecturesEntry); $i++) {
-            $lectures[] = $this->lectureRepository->find($lecturesEntry[$i]);
+            $lecture = $this->lectureRepository->find($lecturesEntry[$i]);
+            if ($lecture === null) {
+                continue;
+            }
+            $lectures[] = $lecture;
         }
         $group->setLectures($lectures);
+
+        $eventEntry = $request->get('events');
+        $events     = [];
+        for ($i = 0; $i < count($eventEntry); $i++) {
+            $event = $this->eventRepository->find($eventEntry[$i]);
+            if ($event === null) {
+                continue;
+            }
+            $events[] = $event;
+        }
+        $group->setEvents($events);
+
         if ($this->groupRepository->findByName($name)) {
             return $this->returnError(500, UserErrorCodes::GROUP_ALREADY_EXISTS);
         }
@@ -61,7 +80,7 @@ class GroupController extends ApiController
         ]);
     }
 
-    public function getGroup($id)
+    public function retrieveGroup($id)
     {
         $group = $this->groupRepository->find($id);
 
@@ -74,25 +93,16 @@ class GroupController extends ApiController
         ]);
     }
 
-    public function getGroups($start = 0, $count = 20)
+    public function retrieveGroups($start = 0, $count = 20)
     {
-        $groupsAll = $this->groupRepository->all($start, $count);
-        $groups    = [];
-
-        foreach ($groupsAll as $group) {
-            $groups[] = $this->groupRepository->find($group['id']);
-        }
-
-//        return $this->returnSuccess([
-//            'group' => $this->groupRepository->find(2)
-//        ]);
+        $groups = $this->groupRepository->all($start, $count);
 
         return $this->returnSuccess([
-            'groups' => $groupsAll,
+            'groups' => $groups,
         ]);
     }
 
-    public function putEditGroup(AddGroupRequest $request, $id)
+    public function updateGroup(UpdateGroupRequest $request, $id)
     {
         /** @var Group $group */
         $group = $this->groupRepository->find($id);
@@ -105,8 +115,26 @@ class GroupController extends ApiController
         $lectures      = [];
 
         for ($i = 0; $i < count($lecturesEntry); $i++) {
-            $lectures[] = $this->lectureRepository->find($lecturesEntry[$i]);
+            $lecture = $this->lectureRepository->find($lecturesEntry[$i]);
+            if ($lecture === null) {
+                continue;
+            }
+            $lectures[] = $lecture;
         }
+        $group->setLectures($lectures);
+
+        $eventEntry = $request->get('events');
+        $events     = [];
+
+        for ($i = 0; $i < count($eventEntry); $i++) {
+            $event = $this->eventRepository->find($eventEntry[$i]);
+            if ($event === null) {
+                continue;
+            }
+            $events[] = $event;
+        }
+        $group->setEvents($events);
+
         $group->setLectures($lectures);
         $group->setName($request->get('name'));
         $group->setYear($request->get('year'));

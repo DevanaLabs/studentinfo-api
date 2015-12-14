@@ -1,12 +1,13 @@
 <?php
 
-namespace StudentInfo\Http\Requests;
+namespace StudentInfo\Http\Requests\Update;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\Http\Requests\Request;
 use StudentInfo\Models\User;
 
-class AddFacultyRequest extends Request
+class UpdateCourseEventRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,7 +22,7 @@ class AddFacultyRequest extends Request
         if ($user === null) {
             return false;
         }
-        return ($user->hasPermissionTo('faculty.create'));
+        return ($user->hasPermissionTo('event.update'));
 
     }
 
@@ -33,8 +34,12 @@ class AddFacultyRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'required',
-            'university' => 'required',
+            'type'        => 'required',
+            'description' => 'required',
+            'startsAt'    => 'required',
+            'endsAt'      => 'required',
+            'courseId'    => 'required',
+            'classrooms'  => 'required|array',
         ];
     }
 }

@@ -25,12 +25,12 @@
         <property name="notifications"
                   serialized-name="notifications"
                   expose="true"
-                  max-depth="2"
+                  max-depth="1"
                 />
         <property name="classrooms"
                   serialized-name="classrooms"
                   expose="true"
-                  max-depth="2"
+                  max-depth="1"
                 />
     </class>
 </serializer>

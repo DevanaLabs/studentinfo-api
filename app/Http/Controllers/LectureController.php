@@ -7,7 +7,8 @@ namespace StudentInfo\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Requests\AddLectureRequest;
+use StudentInfo\Http\Requests\Create\CreateLectureRequest;
+use StudentInfo\Http\Requests\Update\UpdateLectureRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\Lecture;
@@ -61,7 +62,7 @@ class LectureController extends ApiController
         $this->classroomRepository = $classroomRepository;
     }
 
-    public function addLecture(AddLectureRequest $request)
+    public function createLecture(CreateLectureRequest $request)
     {
         /** @var Teacher $teacher */
         $teacher = $this->teacherRepository->find($request->get('teacherId'));
@@ -92,8 +93,6 @@ class LectureController extends ApiController
 
         $lecture = new Lecture();
 
-        $teacher->addLecture($lecture);
-        $course->addLecture($lecture);
         $lecture->setTeacher($teacher);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
@@ -107,7 +106,7 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function getLecture($id)
+    public function retrieveLecture($id)
     {
         $lecture = $this->lectureRepository->find($id);
 
@@ -120,14 +119,14 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function getLectures($start = 0, $count = 20)
+    public function retrieveLectures($start = 0, $count = 20)
     {
         $lectures = $this->lectureRepository->all($start, $count);
 
         return $this->returnSuccess($lectures);
     }
 
-    public function putEditLecture(AddLectureRequest $request, $id)
+    public function updateLecture(UpdateLectureRequest $request, $id)
     {
         if($this->lectureRepository->find($id)  === null){
             return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
@@ -162,8 +161,6 @@ class LectureController extends ApiController
         /** @var Lecture $lecture */
         $lecture = $this->lectureRepository->find($id);
 
-        $teacher->addLecture($lecture);
-        $course->addLecture($lecture);
         $lecture->setTeacher($teacher);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
