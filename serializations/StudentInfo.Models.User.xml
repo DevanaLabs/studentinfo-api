@@ -5,23 +5,22 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="firstName"
                   serialized-name="firstName"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="lastName"
                   serialized-name="lastName"
                   expose="true"
-                />
-        <property name="organisation"
-                  serialized-name="organisation"
-                  expose="true"
+                  groups="limited,all"
                 />
         <property name="email"
                   serialized-name="email"
                   expose="true"
+                  groups="limited,all"
                 />
-
     </class>
 </serializer>

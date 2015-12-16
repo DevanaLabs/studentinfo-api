@@ -15,7 +15,10 @@ class DoctrineStudentRepository extends EntityRepository implements StudentRepos
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function destroy($object)
@@ -36,15 +39,17 @@ class DoctrineStudentRepository extends EntityRepository implements StudentRepos
 
     public function getAllStudentsForFaculty(Faculty $faculty, $start = 0, $count = 20)
     {
-        $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s WHERE s.organisation = :faculty_id');
-        $query->setParameter('faculty_id', $faculty->getId());
-        return $query->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s WHERE s.organisation = :faculty_id')
+            ->setParameter('faculty_id', $faculty->getId())
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function findByIndexNumber($indexNumber)
     {
-        $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s WHERE s.indexNumber = :index_number');
-        $query->setParameter('index_number', $indexNumber);
-        return $query->getOneOrNullResult();
+        return $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s WHERE s.indexNumber = :index_number')
+            ->setParameter('index_number', $indexNumber)
+            ->getOneOrNullResult();
     }
 }

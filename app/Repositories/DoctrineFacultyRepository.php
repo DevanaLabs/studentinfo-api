@@ -14,7 +14,10 @@ class DoctrineFacultyRepository extends EntityRepository implements FacultyRepos
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function find($id)
@@ -35,8 +38,8 @@ class DoctrineFacultyRepository extends EntityRepository implements FacultyRepos
 
     public function findFacultyByName($name)
     {
-        $query = $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f WHERE f.name = :name');
-        $query->setParameter('name', $name);
-        return $query->getOneOrNullResult();
+        return $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f WHERE f.name = :name')
+            ->setParameter('name', $name)
+            ->getOneOrNullResult();
     }
 }

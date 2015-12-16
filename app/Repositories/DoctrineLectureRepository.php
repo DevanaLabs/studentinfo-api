@@ -16,7 +16,10 @@ class DoctrineLectureRepository extends EntityRepository implements LectureRepos
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT l FROM StudentInfo\Models\Lecture l')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT l FROM StudentInfo\Models\Lecture l')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function destroy($object)

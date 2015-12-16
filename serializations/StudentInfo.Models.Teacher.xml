@@ -5,11 +5,13 @@
         <property name="title"
                   serialized-name="title"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="lectures"
                   serialized-name="lectures"
                   expose="true"
-                  max-depth="1"
+                  groups="all"
+                  max-depth="4"
                 />
     </class>
 </serializer>

@@ -72,6 +72,8 @@ Route::get('/addFaculty', function (FacultyRepositoryInterface $repository) {
 
     $repository->create($faculty);
 });
+Route::post('importLecture', 'LectureController@AddLecturesFromCSV');
+
 Route::get('data', 'DataController@getData');
 
 Route::get('user/{user_id}', 'UserController@getProfile');
@@ -138,6 +140,10 @@ Route::get('classroom/{id}', 'ClassroomController@retrieveClassroom');
 
 Route::get('classrooms/{start?}/{count?}', 'ClassroomController@retrieveClassrooms');
 
+Route::get('teacher/{id}', 'TeacherController@retrieveTeacher');
+
+Route::get('teachers/{start?}/{count?}', 'TeacherController@retrieveTeachers');
+
 Route::get('professor/{id}', 'ProfessorController@retrieveProfessor');
 
 Route::get('professors/{start?}/{count?}', 'ProfessorController@retrieveProfessors');
@@ -152,9 +158,13 @@ Route::get('event/{id}', ['middleware' => 'role:event.retrieve', 'uses' => 'Even
 
 Route::get('events/{start?}/{count?}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@retrieveEvents']);
 
-Route::get('lecture/{id}', ['middleware' => 'role:lecture.retrieve', 'uses' => 'LectureController@retrieveLecture']);
+Route::get('globalEvent/{id}', 'GlobalEventController@retrieveEvent');
 
-Route::get('lectures/{start?}/{count?}', ['middleware' => 'role:lecture.retrieve', 'uses' => 'LectureController@retrieveLectures']);
+Route::get('globalEvents/{start?}/{count?}', 'GlobalEventController@retrieveEvents');
+
+Route::get('lecture/{id}', 'LectureController@retrieveLecture');
+
+Route::get('lectures/{start?}/{count?}', 'LectureController@retrieveLectures');
 
 Route::get('eventNotifications/{id}', 'EventNotificationController@retrieveNotificationsForEvent');
 

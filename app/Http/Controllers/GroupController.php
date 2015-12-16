@@ -93,7 +93,7 @@ class GroupController extends ApiController
         ]);
     }
 
-    public function retrieveGroups($start = 0, $count = 20)
+    public function retrieveGroups($start = 0, $count = 2000)
     {
         $groups = $this->groupRepository->all($start, $count);
 

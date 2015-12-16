@@ -35,8 +35,6 @@ class CreateCourseRequest extends Request
     {
         return [
             'name' => 'required',
-            'espb' => 'required',
-            'semester' => 'required',
         ];
     }
 }

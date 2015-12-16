@@ -87,9 +87,9 @@ class ProfessorController extends ApiController
         ]);
     }
 
-    public function retrieveProfessors($start = 0, $count = 20)
+    public function retrieveProfessors($start = 0, $count = 2000)
     {
-        $professors = $this->professorRepository->getAllProfessorForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()), $start, $count);
+        $professors = $this->professorRepository->getAllProfessorForFaculty($this->facultyRepository->findFacultyByName("Racunarski fakultet"), $start, $count);
 
         return $this->returnSuccess($professors);
     }

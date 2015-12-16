@@ -113,6 +113,8 @@ class StudentController extends ApiController
 
         return $this->returnSuccess([
             'student' => $student,
+        ], [
+            'display' => 'limited',
         ]);
 
     }

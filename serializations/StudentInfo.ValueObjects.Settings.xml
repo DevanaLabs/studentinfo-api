@@ -4,10 +4,12 @@
         <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
         <property name="wallpaperPath"
                   serialized-name="wallpaperPath"
+                  groups="limited,all"
                   expose="true"
                 />
         <property name="language"
                   serialized-name="language"
+                  groups="limited,all"
                   expose="true"
                 />
     </class>

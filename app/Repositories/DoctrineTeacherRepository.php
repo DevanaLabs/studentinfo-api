@@ -15,7 +15,10 @@ class DoctrineTeacherRepository extends EntityRepository implements TeacherRepos
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT t FROM StudentInfo\Models\Teacher t')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT t FROM StudentInfo\Models\Teacher t')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function destroy($object)
@@ -34,4 +37,11 @@ class DoctrineTeacherRepository extends EntityRepository implements TeacherRepos
         return $this->_em->find('StudentInfo\Models\Teacher', $id);
     }
 
+    public function findByName($firstName, $lastName)
+    {
+        return $this->_em->createQuery('SELECT t FROM StudentInfo\Models\Teacher t WHERE t.firstName = :firstName and t.lastName = :lastName')
+            ->setParameter('firstName', $firstName)
+            ->setParameter('lastName', $lastName)
+            ->getOneOrNullResult();
+    }
 }

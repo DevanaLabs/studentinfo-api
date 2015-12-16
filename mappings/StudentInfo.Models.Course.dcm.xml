@@ -15,9 +15,9 @@
 
         <field name="code" column="code" type="string"/>
 
-        <field name="espb" column="espb" type="integer" nullable="false"/>
+        <field name="espb" column="espb" type="integer"/>
 
-        <field name="semester" column="semester" type="integer" nullable="false"/>
+        <field name="semester" column="semester" type="integer"/>
 
         <one-to-many field="events" target-entity="StudentInfo\Models\CourseEvent" mapped-by="course">
             <cascade>

@@ -35,8 +35,8 @@ class UpdateGroupRequest extends Request
         return [
             'name'    => 'required',
             'year'    => 'required',
-            'lecture' => 'required|array',
-            'events'  => 'required|array',
+//            'lectures' => 'required|array',
+//            'events'  => 'required|array',
         ];
     }
 }

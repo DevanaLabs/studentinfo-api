@@ -38,9 +38,6 @@ class CourseController extends ApiController
     public function createCourse(CreateCourseRequest $request)
     {
         $code = $request->get('code');
-        if ($this->courseRepository->findByCode($request->get('code'))) {
-            return $this->returnError(500, UserErrorCodes::COURSE_ALREADY_EXISTS);
-        }
         $course = new Course();
         $course->setCode($code);
         $course->setEspb($request->get('espb'));

@@ -6,7 +6,7 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
-use StudentInfo\Repositories\ProfessorRepositoryInterface;
+use StudentInfo\Repositories\TeacherRepositoryInterface;
 
 class DataController extends ApiController
 {
@@ -16,9 +16,9 @@ class DataController extends ApiController
     protected $classroomRepository;
 
     /**
-     * @var ProfessorRepositoryInterface
+     * @var TeacherRepositoryInterface
      */
-    protected $professorRepository;
+    protected $teacherRepository;
 
     /**
      * @var GroupRepositoryInterface
@@ -33,28 +33,30 @@ class DataController extends ApiController
     /**
      * CourseController constructor.
      * @param ClassroomRepositoryInterface $classroomRepository
-     * @param ProfessorRepositoryInterface $professorRepository
+     * @param TeacherRepositoryInterface   $teacherRepository
      * @param GroupRepositoryInterface     $groupRepository
      * @param Guard                        $guard
      */
-    public function __construct(ClassroomRepositoryInterface $classroomRepository, ProfessorRepositoryInterface $professorRepository, GroupRepositoryInterface $groupRepository, Guard $guard)
+    public function __construct(ClassroomRepositoryInterface $classroomRepository, TeacherRepositoryInterface $teacherRepository, GroupRepositoryInterface $groupRepository, Guard $guard)
     {
         $this->classroomRepository = $classroomRepository;
-        $this->professorRepository = $professorRepository;
+        $this->teacherRepository = $teacherRepository;
         $this->groupRepository     = $groupRepository;
         $this->guard               = $guard;
     }
 
     public function getData()
     {
-        $professors = $this->professorRepository->all();
-        $groups     = $this->groupRepository->all();
-        $classrooms = $this->classroomRepository->all();
+        $teachers   = $this->teacherRepository->all(0, 2000);
+        $groups     = $this->groupRepository->all(0, 2000);
+        $classrooms = $this->classroomRepository->all(0, 2000);
 
         return $this->returnSuccess([
             'groups'     => $groups,
-            'professors' => $professors,
+            'teachers' => $teachers,
             'classrooms' => $classrooms,
+        ], [
+            'display' => 'limited',
         ]);
     }
 

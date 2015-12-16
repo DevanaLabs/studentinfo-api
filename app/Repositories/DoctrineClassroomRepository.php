@@ -14,7 +14,10 @@ class DoctrineClassroomRepository extends EntityRepository implements ClassroomR
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Classroom c')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Classroom c')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function destroy($object)
@@ -30,9 +33,9 @@ class DoctrineClassroomRepository extends EntityRepository implements ClassroomR
 
     public function findByName($name)
     {
-        $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Classroom c WHERE c.name = :name');
-        $query->setParameter('name', $name);
-        return $query->getOneOrNullResult();
+        return $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Classroom c WHERE c.name = :name')
+            ->setParameter('name', $name)
+            ->getOneOrNullResult();
     }
 
     public function find($id)

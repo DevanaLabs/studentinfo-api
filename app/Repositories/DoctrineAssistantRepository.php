@@ -15,7 +15,10 @@ class DoctrineAssistantRepository extends EntityRepository implements AssistantR
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT a FROM StudentInfo\Models\Assistant a')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT a FROM StudentInfo\Models\Assistant a')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function destroy($object)
@@ -36,8 +39,10 @@ class DoctrineAssistantRepository extends EntityRepository implements AssistantR
 
     public function getAllAssistantsForFaculty(Faculty $faculty, $start = 0, $count = 20)
     {
-        $query = $this->_em->createQuery('SELECT a FROM StudentInfo\Models\Assistant a WHERE a.organisation = :faculty_id');
-        $query->setParameter('faculty_id', $faculty->getId());
-        return $query->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $this->_em->createQuery('SELECT a FROM StudentInfo\Models\Assistant a WHERE a.organisation = :faculty_id')
+            ->setParameter('faculty_id', $faculty->getId())
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 }

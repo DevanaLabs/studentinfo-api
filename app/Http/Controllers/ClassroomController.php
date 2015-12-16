@@ -6,7 +6,7 @@ use Illuminate\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateClassroomRequest;
-use StudentInfo\Http\Requests\UpdateClassroomRequest;
+use StudentInfo\Http\Requests\Update\UpdateClassroomRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 
@@ -64,7 +64,7 @@ class ClassroomController extends ApiController
         ]);
     }
 
-    public function retrieveClassrooms($start = 0, $count = 20)
+    public function retrieveClassrooms($start = 0, $count = 2000)
     {
         $classrooms = $this->classroomRepository->all($start, $count);
 

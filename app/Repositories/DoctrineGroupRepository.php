@@ -16,7 +16,10 @@ class DoctrineGroupRepository extends EntityRepository implements GroupRepositor
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT g FROM StudentInfo\Models\Group g')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT g FROM StudentInfo\Models\Group g')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function destroy($object)
@@ -37,9 +40,9 @@ class DoctrineGroupRepository extends EntityRepository implements GroupRepositor
 
     public function findByName($name)
     {
-        $query = $this->_em->createQuery('SELECT g FROM StudentInfo\Models\Group g WHERE g.name = :name');
-        $query->setParameter('name', $name);
-        return $query->getOneOrNullResult();
+        return $this->_em->createQuery('SELECT g FROM StudentInfo\Models\Group g WHERE g.name = :name')
+            ->setParameter('name', $name)
+            ->getOneOrNullResult();
     }
 
     public function getAllYears()
@@ -49,8 +52,8 @@ class DoctrineGroupRepository extends EntityRepository implements GroupRepositor
 
     public function getAllGroups($year)
     {
-        $query = $this->_em->createQuery('SELECT g.name FROM StudentInfo\Models\Group g WHERE g.year =:year');
-        $query->setParameter('year', $year);
-        return $query->getArrayResult();
+        return $this->_em->createQuery('SELECT g.name FROM StudentInfo\Models\Group g WHERE g.year =:year')
+            ->setParameter('year', $year)
+            ->getResult();
     }
 }

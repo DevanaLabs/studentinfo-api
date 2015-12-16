@@ -31,7 +31,10 @@ class DoctrineCourseRepository extends EntityRepository implements CourseReposit
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function destroy($object)
@@ -52,8 +55,15 @@ class DoctrineCourseRepository extends EntityRepository implements CourseReposit
 
     public function findByCode($code)
     {
-        $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c WHERE c.code = :code');
-        $query->setParameter('code', $code);
-        return $query->getOneOrNullResult();
+        return $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c WHERE c.code = :code')
+            ->setParameter('code', $code)
+            ->getOneOrNullResult();
+    }
+
+    public function findByName($name)
+    {
+        return $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c WHERE c.name = :name')
+            ->setParameter('name', $name)
+            ->getOneOrNullResult();
     }
 }

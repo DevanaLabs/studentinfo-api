@@ -10,4 +10,6 @@ interface CourseRepositoryInterface extends RepositoryInterface
     public function getAllProfessorsTeaching($courseId);
 
     public function findByCode($code);
+
+    public function findByName($name);
 }

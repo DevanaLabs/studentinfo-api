@@ -32,6 +32,26 @@ class GlobalEventController extends EventController
         ]);
     }
 
+    public function retrieveEvent($id)
+    {
+        $event = $this->globalEventRepository->find($id);
+
+        if ($event === null) {
+            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
+        }
+
+        return $this->returnSuccess([
+            'event' => $event,
+        ]);
+    }
+
+    public function retrieveEvents($start = 0, $count = 20)
+    {
+        $events = $this->globalEventRepository->all($start, $count);
+
+        return $this->returnSuccess($events);
+    }
+
     public function updateEvent(UpdateGlobalEventRequest $request, $id)
     {
         if ($this->eventRepository->find($id) === null) {

@@ -15,7 +15,10 @@ class DoctrineProfessorRepository extends EntityRepository implements ProfessorR
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function destroy($object)
@@ -36,16 +39,18 @@ class DoctrineProfessorRepository extends EntityRepository implements ProfessorR
 
     public function findByName($firstName, $lastName)
     {
-        $query = $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p WHERE p.firstName = :firstName and p.lastName = :lastName');
-        $query->setParameter('firstName', $firstName);
-        $query->setParameter('lastName', $lastName);
-        return $query->getOneOrNullResult();
+        return $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p WHERE p.firstName = :firstName and p.lastName = :lastName')
+            ->setParameter('firstName', $firstName)
+            ->setParameter('lastName', $lastName)
+            ->getOneOrNullResult();
     }
 
     public function getAllProfessorForFaculty(Faculty $faculty, $start = 0, $count = 20)
     {
-        $query = $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p WHERE p.organisation = :faculty_id');
-        $query->setParameter('faculty_id', $faculty->getId());
-        return $query->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Professor p WHERE p.organisation = :faculty_id')
+            ->setParameter('faculty_id', $faculty->getId())
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 }

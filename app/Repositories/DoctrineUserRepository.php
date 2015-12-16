@@ -15,7 +15,10 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getArrayResult();
     }
 
     public function destroy($object)
@@ -36,22 +39,22 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
 
     public function findByEmail(Email $email)
     {
-        $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u WHERE u.email.email = :email');
-        $query->setParameter('email', $email->getEmail());
-        return $query->getOneOrNullResult();
+        return $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u WHERE u.email.email = :email')
+            ->setParameter('email', $email->getEmail())
+            ->getOneOrNullResult();
     }
 
     public function isAdmin($id)
     {
-        $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\Admin u WHERE u.id = :id');
-        $query->setParameter('id', $id);
-        return $query->getOneOrNullResult() != null;
+        return $this->_em->createQuery('SELECT u FROM StudentInfo\Models\Admin u WHERE u.id = :id')
+            ->setParameter('id', $id)
+            ->getOneOrNullResult() != null;
     }
 
     public function findByRegisterToken($registerToken)
     {
-        $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u WHERE u.registerToken = :registerToken');
-        $query->setParameter('registerToken', $registerToken);
-        return $query->getOneOrNullResult();
+        return $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u WHERE u.registerToken = :registerToken')
+            ->setParameter('registerToken', $registerToken)
+            ->getOneOrNullResult();
     }
 }

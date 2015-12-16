@@ -38,7 +38,16 @@
 
         <many-to-many field="students" mapped-by="lectures" target-entity="StudentInfo\Models\Student"/>
 
-        <many-to-many field="groups" mapped-by="lectures" target-entity="StudentInfo\Models\Group"/>
+        <many-to-many target-entity="Group" field="groups" inversed-by="lectures">
+            <join-table name="classes_lectures">
+                <join-columns>
+                    <join-column name="lecture_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="class_id" referenced-column-name="id"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
     </entity>
 
 </doctrine-mapping>

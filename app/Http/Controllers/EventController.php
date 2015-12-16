@@ -8,6 +8,7 @@ use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 use StudentInfo\Repositories\EventRepositoryInterface;
+use StudentInfo\Repositories\GlobalEventRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
 
 class EventController extends ApiController
@@ -16,6 +17,11 @@ class EventController extends ApiController
      * @var EventRepositoryInterface
      */
     protected $eventRepository;
+
+    /**
+     * @var GlobalEventRepositoryInterface
+     */
+    protected $globalEventRepository;
 
     /**
      * @var ClassroomRepositoryInterface
@@ -39,19 +45,21 @@ class EventController extends ApiController
 
     /**
      * CourseController constructor.
-     * @param EventRepositoryInterface     $eventRepository
-     * @param ClassroomRepositoryInterface $classroomRepository
-     * @param CourseRepositoryInterface    $courseRepository
-     * @param GroupRepositoryInterface     $groupRepository
-     * @param Guard                        $guard
+     * @param EventRepositoryInterface       $eventRepository
+     * @param ClassroomRepositoryInterface   $classroomRepository
+     * @param CourseRepositoryInterface      $courseRepository
+     * @param GroupRepositoryInterface       $groupRepository
+     * @param GlobalEventRepositoryInterface $globalEventRepository
+     * @param Guard                          $guard
      */
-    public function __construct(EventRepositoryInterface $eventRepository, ClassroomRepositoryInterface $classroomRepository, CourseRepositoryInterface $courseRepository, GroupRepositoryInterface $groupRepository, Guard $guard)
+    public function __construct(EventRepositoryInterface $eventRepository, ClassroomRepositoryInterface $classroomRepository, CourseRepositoryInterface $courseRepository, GroupRepositoryInterface $groupRepository, GlobalEventRepositoryInterface $globalEventRepository, Guard $guard)
     {
-        $this->eventRepository     = $eventRepository;
-        $this->classroomRepository = $classroomRepository;
-        $this->courseRepository    = $courseRepository;
-        $this->groupRepository     = $groupRepository;
-        $this->guard               = $guard;
+        $this->eventRepository       = $eventRepository;
+        $this->globalEventRepository = $globalEventRepository;
+        $this->classroomRepository   = $classroomRepository;
+        $this->courseRepository      = $courseRepository;
+        $this->groupRepository       = $groupRepository;
+        $this->guard                 = $guard;
     }
 
     public function retrieveEvent($id)

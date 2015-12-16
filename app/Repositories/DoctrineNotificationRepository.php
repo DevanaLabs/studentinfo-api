@@ -19,7 +19,10 @@ class DoctrineNotificationRepository extends EntityRepository implements Notific
 
     public function all($start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT n FROM StudentInfo\Models\Notification n')->setFirstResult($start)->setMaxResults($count)->getArrayResult();
+        return $query = $this->_em->createQuery('SELECT n FROM StudentInfo\Models\Notification n')
+            ->setFirstResult($start)
+            ->setMaxResults($count)
+            ->getResult();
     }
 
     public function destroy($object)
@@ -40,10 +43,9 @@ class DoctrineNotificationRepository extends EntityRepository implements Notific
 
     public function getForInterval(Carbon $start, Carbon $end)
     {
-        $query = $this->_em->createQuery('SELECT n FROM StudentInfo\Models\Notification n
-                  WHERE n.expiresAt BETWEEN :start AND :end ORDER BY n.expiresAt');
-        $query->setParameter('start', $start);
-        $query->setParameter('end', $end);
-        return $query->getArrayResult();
+        return $this->_em->createQuery('SELECT n FROM StudentInfo\Models\Notification n WHERE n.expiresAt BETWEEN :start AND :end ORDER BY n.expiresAt')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getResult();
     }
 }

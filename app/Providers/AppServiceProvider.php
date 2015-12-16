@@ -8,9 +8,12 @@ use StudentInfo\Models\Admin;
 use StudentInfo\Models\Assistant;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Models\Course;
+use StudentInfo\Models\CourseEvent;
 use StudentInfo\Models\Event;
 use StudentInfo\Models\Faculty;
+use StudentInfo\Models\GlobalEvent;
 use StudentInfo\Models\Group;
+use StudentInfo\Models\GroupEvent;
 use StudentInfo\Models\Lecture;
 use StudentInfo\Models\Notification;
 use StudentInfo\Models\Professor;
@@ -21,9 +24,12 @@ use StudentInfo\Models\User;
 use StudentInfo\Repositories\DoctrineAdminRepository;
 use StudentInfo\Repositories\DoctrineAssistantRepository;
 use StudentInfo\Repositories\DoctrineClassroomRepository;
+use StudentInfo\Repositories\DoctrineCourseEventRepository;
 use StudentInfo\Repositories\DoctrineCourseRepository;
 use StudentInfo\Repositories\DoctrineEventRepository;
 use StudentInfo\Repositories\DoctrineFacultyRepository;
+use StudentInfo\Repositories\DoctrineGlobalEventRepository;
+use StudentInfo\Repositories\DoctrineGroupEventRepository;
 use StudentInfo\Repositories\DoctrineGroupRepository;
 use StudentInfo\Repositories\DoctrineLectureRepository;
 use StudentInfo\Repositories\DoctrineNotificationRepository;
@@ -115,6 +121,24 @@ class AppServiceProvider extends ServiceProvider
             return new DoctrineEventRepository(
                 $app['em'],
                 new ClassMetaData(Event::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\GlobalEventRepositoryInterface', function ($app) {
+            return new DoctrineGlobalEventRepository(
+                $app['em'],
+                new ClassMetaData(GlobalEvent::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\GroupEventRepositoryInterface', function ($app) {
+            return new DoctrineGroupEventRepository(
+                $app['em'],
+                new ClassMetaData(GroupEvent::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\CourseEventRepositoryInterface', function ($app) {
+            return new DoctrineCourseEventRepository(
+                $app['em'],
+                new ClassMetaData(CourseEvent::class)
             );
         });
         $this->app->bind('StudentInfo\Repositories\SuperUserRepositoryInterface', function ($app) {

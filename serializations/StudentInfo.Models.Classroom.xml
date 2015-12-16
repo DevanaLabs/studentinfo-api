@@ -5,28 +5,34 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="name"
                   serialized-name="name"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="directions"
                   serialized-name="directions"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="floor"
                   serialized-name="floor"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="lectures"
                   serialized-name="lectures"
                   expose="true"
-                  max-depth="2"
+                  groups="all"
+                  max-depth="4"
                 />
         <property name="events"
                   serialized-name="events"
                   expose="true"
-                  max-depth="2"
+                  groups="all"
+                  max-depth="4"
                 />
     </class>
 </serializer>

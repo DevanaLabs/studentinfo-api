@@ -9,32 +9,40 @@
         <property name="code"
                   serialized-name="code"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="name"
                   serialized-name="name"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="semester"
                   serialized-name="semester"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="espb"
                   serialized-name="espb"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="events"
                   serialized-name="events"
                   expose="true"
-                  max-depth="1"
+                  groups="all"
+                  max-depth="4"
                 />
         <property name="students"
                   serialized-name="students"
                   expose="true"
+                  groups="all"
+                  max-depth="4"
                 />
         <property name="lectures"
                   serialized-name="lectures"
                   expose="true"
-                  max-depth="1"
+                  groups="all"
+                  max-depth="4"
                 />
     </class>
 </serializer>
