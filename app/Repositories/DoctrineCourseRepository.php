@@ -29,6 +29,16 @@ class DoctrineCourseRepository extends EntityRepository implements CourseReposit
         $this->_em->flush($object);
     }
 
+    public function persist($object)
+    {
+        $this->_em->persist($object);
+    }
+
+    public function flush()
+    {
+        $this->_em->flush();
+    }
+
     public function all($start = 0, $count = 20)
     {
         return $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c')
