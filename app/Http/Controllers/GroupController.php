@@ -156,14 +156,4 @@ class GroupController extends ApiController
 
         return $this->returnSuccess();
     }
-
-    public function getAllYears()
-    {
-        return $this->returnSuccess($this->groupRepository->getAllYears());
-    }
-
-    public function getAllGroups($year)
-    {
-        return $this->returnSuccess($this->groupRepository->getAllGroups($year));
-    }
 }

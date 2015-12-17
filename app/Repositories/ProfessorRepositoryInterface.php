@@ -10,4 +10,8 @@ interface ProfessorRepositoryInterface extends RepositoryInterface
     public function findByName($firstName, $lastName);
 
     public function getAllProfessorForFaculty(Faculty $faculty, $start = 0, $count = 20);
+
+    public function persist($object);
+
+    public function flush();
 }

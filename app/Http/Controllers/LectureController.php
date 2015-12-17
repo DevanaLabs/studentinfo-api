@@ -195,10 +195,6 @@ class LectureController extends ApiController
         $lecture->setStartsAt($startsAt);
         $lecture->setEndsAt($endsAt);
         $lecture->setGroups($groups);
-//        $student = $repository->find(68);
-//        $lecture->setStudents([$student]);
-
-        //return $this->returnSuccess([$lecture]);
 
         $this->lectureRepository->update($lecture);
 
@@ -220,9 +216,6 @@ class LectureController extends ApiController
 
     public function AddLecturesFromCSV(AddFromCSVRequest $request)
     {
-        $addedLectures       = [];
-        $failedToAddLectures = [];
-
         $handle = $request->file('import');
 
         $file_path = $handle->getPathname();
@@ -238,19 +231,16 @@ class LectureController extends ApiController
 
             $course = $this->courseRepository->findByName($courseName);
             if ($course === null) {
-                dd($courseName);
-                continue;
+                return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
             }
             $teacherNames = explode(" ", $teacherName);
             $teacher      = $this->teacherRepository->findByName($teacherNames[1], $teacherNames[0]);
             if ($teacher === null) {
-                dd($teacherNames[1] . " " . $teacherNames[0]);
-                continue;
+                return $this->returnError(500, UserErrorCodes::TEACHER_NOT_IN_DB);
             }
             $classroom = $this->classroomRepository->findByName($classroomName);
             if ($classroom === null) {
-                dd($classroomName);
-                continue;
+                return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
             }
             $startsAt = null;
             $endsAt   = null;
@@ -314,13 +304,10 @@ class LectureController extends ApiController
             $lecture->setTeacher($teacher);
             $lecture->setGroups($groupsForLecture);
 
-            $this->lectureRepository->create($lecture);
-            $addedLectures[] = $lecture->getId();
+            $this->lectureRepository->persist($lecture);
         }
+        $this->lectureRepository->flush();
 
-        return $this->returnSuccess([
-            "successful"   => $addedLectures,
-            "unsuccessful" => $failedToAddLectures,
-        ]);
+        return $this->returnSuccess();
     }
 }

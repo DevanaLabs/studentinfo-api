@@ -13,6 +13,16 @@ class DoctrineStudentRepository extends EntityRepository implements StudentRepos
         $this->_em->flush($object);
     }
 
+    public function persist($object)
+    {
+        $this->_em->persist($object);
+    }
+
+    public function flush()
+    {
+        $this->_em->flush();
+    }
+
     public function all($start = 0, $count = 20)
     {
         return $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s')

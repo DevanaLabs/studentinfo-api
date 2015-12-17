@@ -5,14 +5,17 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="name"
                   serialized-name="name"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="university"
                   serialized-name="university"
                   expose="true"
+                  groups="limited,all"
                 />
     </class>
 </serializer>

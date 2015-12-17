@@ -13,6 +13,16 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
         $this->_em->flush($object);
     }
 
+    public function persist($object)
+    {
+        $this->_em->persist($object);
+    }
+
+    public function flush()
+    {
+        $this->flush();
+    }
+
     public function all($start = 0, $count = 20)
     {
         return $query = $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u')

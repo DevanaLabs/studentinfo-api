@@ -196,8 +196,6 @@ class StudentController extends ApiController
      */
     public function addStudentsFromCSV(AddFromCSVRequest $request)
     {
-        $addedStudents       = [];
-        $failedToAddStudents = [];
         $firstNameIndex      = $request->get('firstNameIndex');
         $lastNameIndex       = $request->get('lastNameIndex');
         $emailIndex          = $request->get('emailIndex');
@@ -225,13 +223,12 @@ class StudentController extends ApiController
             $year        = $data[$yearIndex];
 
             if ($this->userRepository->findByEmail($email)) {
-                $failedToAddStudents[] = $email;
-                continue;
+                return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
             }
             if ($this->studentRepository->findByIndexNumber($indexNumber)) {
-                $failedToAddStudents[] = $email;
-                continue;
+                return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
             }
+
             $student = new Student();
             $student->setFirstName($firstName);
             $student->setLastName($lastName);
@@ -241,15 +238,11 @@ class StudentController extends ApiController
             $student->setPassword(new Password('password'));
             $student->generateRegisterToken();
             $student->setOrganisation($this->facultyRepository->findFacultyByName('Racunarski fakultet'));
-            $this->userRepository->create($student);
 
-            $addedStudents[] = $student;
+            $this->studentRepository->persist($student);
         }
+        $this->studentRepository->flush();
 
-        return $this->returnSuccess([
-            "successful"   => $addedStudents,
-            "unsuccessful" => $failedToAddStudents,
-        ]);
-
+        return $this->returnSuccess();
     }
 }

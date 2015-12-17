@@ -137,12 +137,11 @@ class ProfessorController extends ApiController
 
     public function addProfessorsFromCSV(AddFromCSVRequest $request)
     {
-        $addedProfessors       = [];
-        $failedToAddProfessors = [];
-        $handle                = $request->file('import');
+        $handle = $request->file('import');
 
         $file_path = $handle->getPathname();
         $resource  = fopen($file_path, "r");
+
         while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
             $firstName = $data[0];
             $lastName  = $data[1];
@@ -150,8 +149,7 @@ class ProfessorController extends ApiController
             $email     = new Email($data[3]);
 
             if ($this->userRepository->findByEmail($email)) {
-                $failedToAddProfessors[] = $email;
-                continue;
+                return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
             }
             $professor = new Professor();
             $professor->setFirstName($firstName);
@@ -161,15 +159,11 @@ class ProfessorController extends ApiController
             $professor->setPassword(new Password('password'));
             $professor->generateRegisterToken();
             $professor->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
-            $this->professorRepository->create($professor);
 
-            $addedProfessors[] = $professor;
+            $this->professorRepository->persist($professor);
         }
+        $this->professorRepository->flush();
 
-        return $this->returnSuccess([
-            "successful"   => $addedProfessors,
-            "unsuccessful" => $failedToAddProfessors,
-        ]);
-
+        return $this->returnSuccess();
     }
 }

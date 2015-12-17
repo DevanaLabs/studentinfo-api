@@ -5,6 +5,7 @@
         <property name="lecture"
                   serialized-name="lecture"
                   expose="true"
+                  groups="limited,all"
                 />
     </class>
 </serializer>

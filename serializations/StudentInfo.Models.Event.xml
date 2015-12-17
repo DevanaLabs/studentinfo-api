@@ -5,31 +5,38 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="type"
                   serialized-name="type"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="description"
                   serialized-name="description"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="startsAt"
                   serialized-name="startsAt"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="endsAt"
                   serialized-name="endsAt"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="notifications"
                   serialized-name="notifications"
                   expose="true"
                   max-depth="4"
+                  groups="all"
                 />
         <property name="classrooms"
                   serialized-name="classrooms"
                   expose="true"
+                  groups="all"
                   max-depth="4"
                 />
     </class>

@@ -9,4 +9,8 @@ interface StudentRepositoryInterface extends RepositoryInterface
     public function getAllStudentsForFaculty(Faculty $faculty, $start = 0, $count = 20);
 
     public function findByIndexNumber($indexNumber);
+
+    public function persist($object);
+
+    public function flush();
 }

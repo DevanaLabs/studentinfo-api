@@ -104,8 +104,6 @@ class ClassroomController extends ApiController
 
     public function addClassroomsFromCSV(AddFromCSVRequest $request)
     {
-        $addedClassrooms = [];
-
         $handle = $request->file('import');
 
         $file_path = $handle->getPathname();
@@ -121,12 +119,8 @@ class ClassroomController extends ApiController
             $classroom->setFloor($floor);
 
             $this->classroomRepository->create($classroom);
-
-            $addedClassrooms[] = $classroom;
         }
 
-        return $this->returnSuccess([
-            "successful" => $addedClassrooms,
-        ]);
+        return $this->returnSuccess();
     }
 }

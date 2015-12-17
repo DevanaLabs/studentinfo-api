@@ -45,15 +45,4 @@ class DoctrineGroupRepository extends EntityRepository implements GroupRepositor
             ->getOneOrNullResult();
     }
 
-    public function getAllYears()
-    {
-        return $query = $this->_em->createQuery('SELECT DISTINCT g.year FROM StudentInfo\Models\Group g')->getArrayResult();
-    }
-
-    public function getAllGroups($year)
-    {
-        return $this->_em->createQuery('SELECT g.name FROM StudentInfo\Models\Group g WHERE g.year =:year')
-            ->setParameter('year', $year)
-            ->getResult();
-    }
 }

@@ -5,8 +5,9 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
+use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateTeacherRequest;
-use StudentInfo\Http\Requests\UpdateTeacherRequest;
+use StudentInfo\Http\Requests\Update\UpdateTeacherRequest;
 use StudentInfo\Models\Assistant;
 use StudentInfo\Repositories\AssistantRepositoryInterface;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
@@ -130,6 +131,38 @@ class AssistantController extends ApiController
             return $this->returnError(500, UserErrorCodes::ASSISTANT_NOT_IN_DB);
         }
         $this->assistantRepository->destroy($assistant);
+
+        return $this->returnSuccess();
+    }
+
+    public function addProfessorsFromCSV(AddFromCSVRequest $request)
+    {
+        $handle = $request->file('import');
+
+        $file_path = $handle->getPathname();
+        $resource  = fopen($file_path, "r");
+
+        while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
+            $firstName = $data[0];
+            $lastName  = $data[1];
+            $title     = $data[2];
+            $email     = new Email($data[3]);
+
+            if ($this->userRepository->findByEmail($email)) {
+                return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
+            }
+            $assistant = new Assistant();
+            $assistant->setFirstName($firstName);
+            $assistant->setLastName($lastName);
+            $assistant->setTitle($title);
+            $assistant->setEmail($email);
+            $assistant->setPassword(new Password('password'));
+            $assistant->generateRegisterToken();
+            $assistant->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
+
+            $this->assistantRepository->persist($assistant);
+        }
+        $this->assistantRepository->flush();
 
         return $this->returnSuccess();
     }

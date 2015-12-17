@@ -28,7 +28,7 @@ class GlobalEventController extends EventController
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
-            'successful' => $event,
+            'event' => $event,
         ]);
     }
 

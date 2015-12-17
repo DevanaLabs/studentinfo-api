@@ -18,6 +18,8 @@ Route::post('importCourses', 'CourseController@addCoursesFromCSV');
 
 Route::post('importProfessors', 'ProfessorController@addProfessorsFromCSV');
 
+Route::post('importAssistants', 'AssistantController@addAssistantFromCSV');
+
 Route::post('wallpaper', 'SettingsController@setWallpaper');
 
 Route::post('language', 'SettingsController@setLanguage');

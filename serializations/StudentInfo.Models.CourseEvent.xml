@@ -5,6 +5,7 @@
         <property name="course"
                   serialized-name="course"
                   expose="true"
+                  groups="limited,all"
                   max-depth="4"
                 />
     </class>
