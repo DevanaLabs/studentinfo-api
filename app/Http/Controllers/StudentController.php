@@ -4,10 +4,13 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\StudentErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateStudentRequest;
 use StudentInfo\Http\Requests\Update\UpdateStudentRequest;
+use StudentInfo\Models\Course;
+use StudentInfo\Models\Lecture;
 use StudentInfo\Models\Student;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
@@ -17,6 +20,10 @@ use StudentInfo\Repositories\UserRepositoryInterface;
 use StudentInfo\ValueObjects\Email;
 use StudentInfo\ValueObjects\Password;
 
+/**
+ * Class StudentController
+ * @package StudentInfo\Http\Controllers
+ */
 class StudentController extends ApiController
 {
     /**
@@ -61,6 +68,10 @@ class StudentController extends ApiController
         $this->guard             = $guard;
     }
 
+    /**
+     * @param CreateStudentRequest $request
+     * @return \Illuminate\Http\Response
+     */
     public function createStudent(CreateStudentRequest $request)
     {
         /** @var Email $email */
@@ -71,18 +82,25 @@ class StudentController extends ApiController
 
         $indexNumber = $request->get('indexNumber');
         if ($this->studentRepository->findByIndexNumber($indexNumber)) {
-            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
+            return $this->returnError(500, StudentErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
         }
 
         $lecturesEntry = $request->get('lectures');
         $lectures      = [];
+        $courses = [];
 
         for ($i = 0; $i < count($lecturesEntry); $i++) {
+            /** @var Lecture $lecture */
             $lecture = $this->lectureRepository->find($lecturesEntry[$i]);
             if ($lecture === null) {
                 continue;
             }
             $lectures[] = $lecture;
+            /** @var Course $course */
+            $course = $lecture->getCourse();
+            if (!in_array($course, $courses)) {
+                $courses[] = $course;
+            }
         }
 
         $student = new Student();
@@ -92,6 +110,7 @@ class StudentController extends ApiController
         $student->setIndexNumber($indexNumber);
         $student->setYear($request->get('year'));
         $student->setLectures($lectures);
+        $student->setCourses($courses);
         $student->setPassword(new Password('password'));
         $student->generateRegisterToken();
         $student->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
@@ -108,20 +127,17 @@ class StudentController extends ApiController
         $student = $this->studentRepository->find($id);
 
         if ($student === null) {
-            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_IN_DB);
+            return $this->returnError(500, StudentErrorCodes::STUDENT_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
             'student' => $student,
-        ], [
-            'display' => 'limited',
         ]);
-
     }
 
-    public function retrieveStudents($start = 0, $count = 20)
+    public function retrieveStudents($start = 0, $count = 2000)
     {
-        $students = $this->studentRepository->getAllStudentsForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()), $start, $count);
+        $students = $this->studentRepository->all($start, $count);
 
         return $this->returnSuccess($students);
     }
@@ -129,7 +145,7 @@ class StudentController extends ApiController
     public function updateStudent(UpdateStudentRequest $request, $id)
     {
         if ($this->studentRepository->find($id) === null) {
-            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_IN_DB);
+            return $this->returnError(500, StudentErrorCodes::STUDENT_NOT_IN_DB);
         }
 
         /** @var  Student $student */
@@ -149,7 +165,7 @@ class StudentController extends ApiController
 
         if ($this->studentRepository->findByIndexNumber($indexNumber)) {
             if ($user->getId() != $id) {
-                return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
+                return $this->returnError(500, StudentErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
             }
         }
 
@@ -180,10 +196,10 @@ class StudentController extends ApiController
 
     public function deleteStudent($id)
     {
-
         $student = $this->studentRepository->find($id);
+
         if ($student === null) {
-            return $this->returnError(500, UserErrorCodes::STUDENT_NOT_IN_DB);
+            return $this->returnError(500, StudentErrorCodes::STUDENT_NOT_IN_DB);
         }
         $this->studentRepository->destroy($student);
 
@@ -196,18 +212,19 @@ class StudentController extends ApiController
      */
     public function addStudentsFromCSV(AddFromCSVRequest $request)
     {
-        $firstNameIndex      = $request->get('firstNameIndex');
-        $lastNameIndex       = $request->get('lastNameIndex');
-        $emailIndex          = $request->get('emailIndex');
-        $indexNumberIndex    = $request->get('indexNumberIndex');
-        $yearIndex           = $request->get('yearIndex');
+        $firstNameIndex   = $request->get('firstNameIndex');
+        $lastNameIndex    = $request->get('lastNameIndex');
+        $emailIndex       = $request->get('emailIndex');
+        $indexNumberIndex = $request->get('indexNumberIndex');
+        $yearIndex        = $request->get('yearIndex');
         if (($firstNameIndex === null) or ($lastNameIndex === null) or ($emailIndex === null) or ($indexNumberIndex === null)
-        or ($yearIndex === null)) {
+            or ($yearIndex === null)
+        ) {
             $firstNameIndex = 0;
-            $lastNameIndex = 1;
-            $emailIndex = 2;
+            $lastNameIndex  = 1;
+            $emailIndex     = 2;
             $indexNumberIndex = 3;
-            $yearIndex = 4;
+            $yearIndex      = 4;
         }
         $handle = $request->file('import');
 
@@ -226,7 +243,7 @@ class StudentController extends ApiController
                 return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
             }
             if ($this->studentRepository->findByIndexNumber($indexNumber)) {
-                return $this->returnError(500, UserErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
+                return $this->returnError(500, StudentErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
             }
 
             $student = new Student();

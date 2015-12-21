@@ -3,7 +3,7 @@
 namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
-use StudentInfo\ErrorCodes\UserErrorCodes;
+use StudentInfo\ErrorCodes\ClassroomErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateClassroomRequest;
 use StudentInfo\Http\Requests\Update\UpdateClassroomRequest;
@@ -37,7 +37,7 @@ class ClassroomController extends ApiController
     {
         $name = $request->get('name');
         if ($this->classroomRepository->findByName($name)) {
-            return $this->returnError(500, UserErrorCodes::CLASSROOM_ALREADY_EXISTS);
+            return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_ALREADY_EXISTS);
         }
         $classroom = new Classroom();
         $classroom->setName($request->get('name'));
@@ -56,7 +56,7 @@ class ClassroomController extends ApiController
         $classroom = $this->classroomRepository->find($id);
 
         if ($classroom === null) {
-            return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
+            return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -74,7 +74,7 @@ class ClassroomController extends ApiController
     public function updateClassroom(UpdateClassroomRequest $request, $id)
     {
         if ($this->classroomRepository->find($id) === null) {
-            return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
+            return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB);
         }
 
         /** @var  Classroom $classroom */
@@ -95,7 +95,7 @@ class ClassroomController extends ApiController
     {
         $classroom = $this->classroomRepository->find($id);
         if ($classroom === null) {
-            return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
+            return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB);
         }
         $this->classroomRepository->destroy($classroom);
 

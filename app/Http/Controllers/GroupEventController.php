@@ -4,6 +4,8 @@ namespace StudentInfo\Http\Controllers;
 
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
+use StudentInfo\ErrorCodes\EventErrorCodes;
+use StudentInfo\ErrorCodes\GroupErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateGroupEventRequest;
 use StudentInfo\Http\Requests\Update\UpdateGroupEventRequest;
@@ -25,7 +27,7 @@ class GroupEventController extends EventController
         /** @var Group $group */
         $group = $this->groupRepository->find($request['groupId']);
         if ($group === null) {
-            return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
+            return $this->returnError(500, GroupErrorCodes::GROUP_NOT_IN_DB);
         }
 
         $classroomsEntry = $request->get('classrooms');
@@ -54,10 +56,10 @@ class GroupEventController extends EventController
 
     public function retrieveEvent($id)
     {
-        $event = $this->globalEventRepository->find($id);
+        $event = $this->groupEventRepository->find($id);
 
         if ($event === null) {
-            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
+            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -65,9 +67,9 @@ class GroupEventController extends EventController
         ]);
     }
 
-    public function retrieveEvents($start = 0, $count = 20)
+    public function retrieveEvents($start = 0, $count = 2000)
     {
-        $events = $this->globalEventRepository->all($start, $count);
+        $events = $this->groupEventRepository->all($start, $count);
 
         return $this->returnSuccess($events);
     }
@@ -75,7 +77,7 @@ class GroupEventController extends EventController
     public function updateEvent(UpdateGroupEventRequest $request, ClassroomRepositoryInterface $classroomRepository, $id)
     {
         if ($this->eventRepository->find($id) === null) {
-            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
+            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
         /** @var  GroupEvent $event */
@@ -90,7 +92,7 @@ class GroupEventController extends EventController
         /** @var Group $group */
         $group = $this->groupRepository->find($request['groupId']);
         if ($group === null) {
-            return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
+            return $this->returnError(500, GroupErrorCodes::GROUP_NOT_IN_DB);
         }
 
         $classroomsEntry = $request->get('classrooms');

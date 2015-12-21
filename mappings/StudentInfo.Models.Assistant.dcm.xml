@@ -4,6 +4,6 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="StudentInfo\Models\Assistant" table="assistant"/>
+    <entity name="StudentInfo\Models\Assistant" table="assistants"/>
 
 </doctrine-mapping>

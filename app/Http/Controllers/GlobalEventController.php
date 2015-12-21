@@ -5,6 +5,7 @@ namespace StudentInfo\Http\Controllers;
 
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
+use StudentInfo\ErrorCodes\EventErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateGlobalEventRequest;
 use StudentInfo\Http\Requests\Update\UpdateGlobalEventRequest;
@@ -37,7 +38,7 @@ class GlobalEventController extends EventController
         $event = $this->globalEventRepository->find($id);
 
         if ($event === null) {
-            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
+            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -45,7 +46,7 @@ class GlobalEventController extends EventController
         ]);
     }
 
-    public function retrieveEvents($start = 0, $count = 20)
+    public function retrieveEvents($start = 0, $count = 2000)
     {
         $events = $this->globalEventRepository->all($start, $count);
 
@@ -55,7 +56,7 @@ class GlobalEventController extends EventController
     public function updateEvent(UpdateGlobalEventRequest $request, $id)
     {
         if ($this->eventRepository->find($id) === null) {
-            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
+            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
         /** @var  GlobalEvent $event */

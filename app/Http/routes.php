@@ -48,21 +48,6 @@ Route::get('/addAdmin', function (FacultyRepositoryInterface $facultyRepository,
     $userRepository->create($admin);
 });
 
-Route::get('/addStudent', function (FacultyRepositoryInterface $facultyRepository, UserRepositoryInterface $userRepository) {
-    $student = new \StudentInfo\Models\Student();
-    $student->setFirstName('Milan');
-    $student->setLastName('Vucic');
-    $student->setEmail(new \StudentInfo\ValueObjects\Email('mv@gmail1.com'));
-    $student->setPassword(new \StudentInfo\ValueObjects\Password('blabla'));
-    $student->setIndexNumber('1244221');
-    $student->setRememberToken('bla');
-    $student->generateRegisterToken();
-    $student->setYear(3);
-    $student->setOrganisation($facultyRepository->findFacultyByName('Racunarski fakultet'));
-
-    $userRepository->create($student);
-});
-
 Route::get('/addFaculty', function (FacultyRepositoryInterface $repository) {
     $faculty = new \StudentInfo\Models\Faculty();
     $faculty->setName('Racunarski fakultet');

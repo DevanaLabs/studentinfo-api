@@ -4,6 +4,7 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\AssistantErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateTeacherRequest;
@@ -80,7 +81,7 @@ class AssistantController extends ApiController
         $assistant = $this->assistantRepository->find($id);
 
         if ($assistant === null) {
-            return $this->returnError(500, UserErrorCodes::ASSISTANT_NOT_IN_DB);
+            return $this->returnError(500, AssistantErrorCodes::ASSISTANT_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -88,9 +89,9 @@ class AssistantController extends ApiController
         ]);
     }
 
-    public function retrieveAssistants($start = 0, $count = 20)
+    public function retrieveAssistants($start = 0, $count = 2000)
     {
-        $assistants = $this->assistantRepository->getAllAssistantsForFaculty($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()), $start, $count);
+        $assistants = $this->assistantRepository->all($start, $count);
 
         return $this->returnSuccess($assistants);
     }
@@ -98,7 +99,7 @@ class AssistantController extends ApiController
     public function updateAssistant(UpdateTeacherRequest $request, $id)
     {
         if ($this->assistantRepository->find($id) === null) {
-            return $this->returnError(500, UserErrorCodes::ASSISTANT_NOT_IN_DB);
+            return $this->returnError(500, AssistantErrorCodes::ASSISTANT_NOT_IN_DB);
         }
 
         /** @var Email $email */
@@ -128,7 +129,7 @@ class AssistantController extends ApiController
     {
         $assistant = $this->assistantRepository->find($id);
         if ($assistant === null) {
-            return $this->returnError(500, UserErrorCodes::ASSISTANT_NOT_IN_DB);
+            return $this->returnError(500, AssistantErrorCodes::ASSISTANT_NOT_IN_DB);
         }
         $this->assistantRepository->destroy($assistant);
 

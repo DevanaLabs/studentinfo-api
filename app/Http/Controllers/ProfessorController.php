@@ -3,6 +3,7 @@
 namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
+use StudentInfo\ErrorCodes\ProfessorErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateTeacherRequest;
@@ -79,7 +80,7 @@ class ProfessorController extends ApiController
         $professor = $this->professorRepository->find($id);
 
         if($professor === null){
-            return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
+            return $this->returnError(500, ProfessorErrorCodes::PROFESSOR_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -89,7 +90,7 @@ class ProfessorController extends ApiController
 
     public function retrieveProfessors($start = 0, $count = 2000)
     {
-        $professors = $this->professorRepository->getAllProfessorForFaculty($this->facultyRepository->findFacultyByName("Racunarski fakultet"), $start, $count);
+        $professors = $this->professorRepository->all($start, $count);
 
         return $this->returnSuccess($professors);
     }
@@ -97,7 +98,7 @@ class ProfessorController extends ApiController
     public function updateProfessor(UpdateTeacherRequest $request, $id)
     {
         if($this->professorRepository->find($id) === null){
-            return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
+            return $this->returnError(500, ProfessorErrorCodes::PROFESSOR_NOT_IN_DB);
         }
 
         /** @var Email $email */
@@ -128,7 +129,7 @@ class ProfessorController extends ApiController
         $professor = $this->professorRepository->find($id);
         if ($professor === null)
         {
-            return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
+            return $this->returnError(500, ProfessorErrorCodes::PROFESSOR_NOT_IN_DB);
         }
         $this->professorRepository->destroy($professor);
 

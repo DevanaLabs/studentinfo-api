@@ -4,9 +4,11 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\AdminErrorCodes;
+use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateAdminRequest;
-use StudentInfo\Http\Requests\Create\UpdateAdminRequest;
+use StudentInfo\Http\Requests\Update\UpdateAdminRequest;
 use StudentInfo\Models\Admin;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\AdminRepositoryInterface;
@@ -55,7 +57,7 @@ class AdminController extends ApiController
         }
         $faculty = $this->facultyRepository->findFacultyByName($request->get('faculty'));
         if ($faculty === null) {
-            return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);
+            return $this->returnError(500, FacultyErrorCodes::FACULTY_NOT_IN_DB);
         }
         $admin = new Admin();
         $admin->setFirstName($request->get('firstName'));
@@ -76,7 +78,7 @@ class AdminController extends ApiController
         $admin = $this->adminRepository->find($id);
 
         if ($admin === null) {
-            return $this->returnError(500, UserErrorCodes::ADMIN_NOT_IN_DB);
+            return $this->returnError(500, AdminErrorCodes::ADMIN_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -84,7 +86,7 @@ class AdminController extends ApiController
         ]);
     }
 
-    public function retrieveAdmins($start = 0, $count = 20)
+    public function retrieveAdmins($start = 0, $count = 2000)
     {
         $admins = $this->adminRepository->all($start, $count);
 
@@ -96,7 +98,7 @@ class AdminController extends ApiController
         /** @var  Admin $admin */
         $admin = $this->adminRepository->find($id);
         if ($admin === null) {
-            return $this->returnError(500, UserErrorCodes::ADMIN_NOT_IN_DB);
+            return $this->returnError(500, AdminErrorCodes::ADMIN_NOT_IN_DB);
         }
 
         $email = new Email($request->get('email'));
@@ -110,7 +112,7 @@ class AdminController extends ApiController
         }
         $faculty = $this->facultyRepository->findFacultyByName($request->get('faculty'));
         if ($faculty === null) {
-            return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);
+            return $this->returnError(500, FacultyErrorCodes::FACULTY_NOT_IN_DB);
         }
 
         $admin->setFirstName($request->get('firstName'));
@@ -130,7 +132,7 @@ class AdminController extends ApiController
     {
         $admin = $this->adminRepository->find($id);
         if ($admin === null) {
-            return $this->returnError(500, UserErrorCodes::ADMIN_NOT_IN_DB);
+            return $this->returnError(500, AdminErrorCodes::ADMIN_NOT_IN_DB);
         }
         $this->adminRepository->destroy($admin);
 

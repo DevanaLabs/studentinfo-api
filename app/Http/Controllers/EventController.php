@@ -4,11 +4,13 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
-use StudentInfo\ErrorCodes\UserErrorCodes;
+use StudentInfo\ErrorCodes\EventErrorCodes;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
+use StudentInfo\Repositories\CourseEventRepositoryInterface;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 use StudentInfo\Repositories\EventRepositoryInterface;
 use StudentInfo\Repositories\GlobalEventRepositoryInterface;
+use StudentInfo\Repositories\GroupEventRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
 
 class EventController extends ApiController
@@ -19,9 +21,19 @@ class EventController extends ApiController
     protected $eventRepository;
 
     /**
+     * @var CourseEventRepositoryInterface
+     */
+    protected $courseEventRepository;
+
+    /**
      * @var GlobalEventRepositoryInterface
      */
     protected $globalEventRepository;
+
+    /**
+     * @var GroupEventRepositoryInterface
+     */
+    protected $groupEventRepository;
 
     /**
      * @var ClassroomRepositoryInterface
@@ -49,15 +61,19 @@ class EventController extends ApiController
      * @param ClassroomRepositoryInterface   $classroomRepository
      * @param CourseRepositoryInterface      $courseRepository
      * @param GroupRepositoryInterface       $groupRepository
+     * @param CourseEventRepositoryInterface $courseEventRepository
+     * @param GroupEventRepositoryInterface  $groupEventRepository
      * @param GlobalEventRepositoryInterface $globalEventRepository
      * @param Guard                          $guard
      */
-    public function __construct(EventRepositoryInterface $eventRepository, ClassroomRepositoryInterface $classroomRepository, CourseRepositoryInterface $courseRepository, GroupRepositoryInterface $groupRepository, GlobalEventRepositoryInterface $globalEventRepository, Guard $guard)
+    public function __construct(EventRepositoryInterface $eventRepository, ClassroomRepositoryInterface $classroomRepository, CourseRepositoryInterface $courseRepository, GroupRepositoryInterface $groupRepository, CourseEventRepositoryInterface $courseEventRepository, GroupEventRepositoryInterface $groupEventRepository, GlobalEventRepositoryInterface $globalEventRepository, Guard $guard)
     {
         $this->eventRepository       = $eventRepository;
-        $this->globalEventRepository = $globalEventRepository;
         $this->classroomRepository   = $classroomRepository;
         $this->courseRepository      = $courseRepository;
+        $this->courseEventRepository = $courseEventRepository;
+        $this->globalEventRepository = $globalEventRepository;
+        $this->globalEventRepository = $globalEventRepository;
         $this->groupRepository       = $groupRepository;
         $this->guard                 = $guard;
     }
@@ -67,7 +83,7 @@ class EventController extends ApiController
         $event = $this->eventRepository->find($id);
 
         if ($event === null) {
-            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
+            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -75,7 +91,7 @@ class EventController extends ApiController
         ]);
     }
 
-    public function retrieveEvents($start = 0, $count = 20)
+    public function retrieveEvents($start = 0, $count = 2000)
     {
         $events = $this->eventRepository->all($start, $count);
 
@@ -87,7 +103,7 @@ class EventController extends ApiController
 
         $event = $this->eventRepository->find($id);
         if ($event === null) {
-            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
+            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
         $this->eventRepository->destroy($event);
 

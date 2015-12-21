@@ -5,6 +5,8 @@ namespace StudentInfo\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\LectureErrorCodes;
+use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateLectureNotificationRequest;
 use StudentInfo\Http\Requests\Update\UpdateLectureNotificationRequest;
@@ -57,7 +59,7 @@ class LectureNotificationController extends ApiController
 
         $lecture = $this->lectureRepository->find($lectureId);
         if ($lecture === null) {
-            return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
+            return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
         }
 
         $notification = new LectureNotification();
@@ -77,7 +79,7 @@ class LectureNotificationController extends ApiController
         $notification = $this->notificationRepository->find($id);
 
         if ($notification === null) {
-            return $this->returnError(500, UserErrorCodes::NOTIFICATION_NOT_IN_DB);
+            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -85,7 +87,7 @@ class LectureNotificationController extends ApiController
         ]);
     }
 
-    public function retrieveNotifications($start = 0, $count = 20)
+    public function retrieveNotifications($start = 0, $count = 2000)
     {
         $notifications = $this->notificationRepository->all($start, $count);
 
@@ -98,7 +100,7 @@ class LectureNotificationController extends ApiController
         $notification = $this->notificationRepository->find($id);
 
         if ($notification === null) {
-            return $this->returnError(500, UserErrorCodes::NOTIFICATION_NOT_IN_DB);
+            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
         }
 
         $expiresAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('expiresAt'));
@@ -110,7 +112,7 @@ class LectureNotificationController extends ApiController
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
         if ($lecture === null) {
-            return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
+            return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
         }
 
         $notification->setDescription($request->get('description'));
@@ -127,7 +129,7 @@ class LectureNotificationController extends ApiController
     {
         $notification = $this->notificationRepository->find($id);
         if ($notification === null) {
-            return $this->returnError(500, UserErrorCodes::NOTIFICATION_NOT_IN_DB);
+            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
         }
         $this->notificationRepository->destroy($notification);
 
@@ -154,7 +156,7 @@ class LectureNotificationController extends ApiController
         $lecture = $this->lectureRepository->find($lectureId);
 
         if ($lecture === null) {
-            return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
+            return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
         }
 
         return $this->returnSuccess([

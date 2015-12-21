@@ -5,6 +5,7 @@ namespace StudentInfo\Http\Controllers;
 
 use Exception;
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateFacultyRequest;
 use StudentInfo\Http\Requests\Update\UpdateFacultyRequest;
@@ -38,7 +39,7 @@ class FacultyController extends ApiController
     {
         $name = $request->get('name');
         if ($this->facultyRepository->findFacultyByName($name)) {
-            return $this->returnError(500, UserErrorCodes::FACULTY_ALREADY_EXISTS);
+            return $this->returnError(500, FacultyErrorCodes::FACULTY_ALREADY_EXISTS);
         }
         $faculty = new Faculty();
         $faculty->setName($name);
@@ -56,7 +57,7 @@ class FacultyController extends ApiController
         $faculty = $this->facultyRepository->find($id);
 
         if ($faculty === null) {
-            return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);
+            return $this->returnError(500, FacultyErrorCodes::FACULTY_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -64,7 +65,7 @@ class FacultyController extends ApiController
         ]);
     }
 
-    public function retrieveFaculties($start = 0, $count = 20)
+    public function retrieveFaculties($start = 0, $count = 2000)
     {
         $faculty = $this->facultyRepository->all($start, $count);
 
@@ -74,7 +75,7 @@ class FacultyController extends ApiController
     public function updateFaculty(UpdateFacultyRequest $request, $id)
     {
         if ($this->facultyRepository->find($id) === null) {
-            return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);
+            return $this->returnError(500, FacultyErrorCodes::FACULTY_NOT_IN_DB);
         }
 
         /** @var  Faculty $faculty */
@@ -95,7 +96,7 @@ class FacultyController extends ApiController
     {
         $faculty = $this->facultyRepository->find($id);
         if ($faculty === null) {
-            return $this->returnError(500, UserErrorCodes::FACULTY_NOT_IN_DB);
+            return $this->returnError(500, FacultyErrorCodes::FACULTY_NOT_IN_DB);
         }
         try {
             $this->facultyRepository->destroy($faculty);

@@ -4,7 +4,7 @@ namespace StudentInfo\Http\Controllers;
 
 
 use Illuminate\Contracts\Auth\Guard;
-use StudentInfo\ErrorCodes\UserErrorCodes;
+use StudentInfo\ErrorCodes\TeacherErrorCodes;
 use StudentInfo\Repositories\TeacherRepositoryInterface;
 
 class TeacherController extends ApiController
@@ -35,7 +35,7 @@ class TeacherController extends ApiController
         $teacher = $this->teacherRepository->find($id);
 
         if ($teacher === null) {
-            return $this->returnError(500, UserErrorCodes::TEACHER_NOT_IN_DB);
+            return $this->returnError(500, TeacherErrorCodes::TEACHER_NOT_IN_DB);
         }
 
         return $this->returnSuccess([

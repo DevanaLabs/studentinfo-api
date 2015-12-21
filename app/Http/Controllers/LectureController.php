@@ -6,6 +6,11 @@ namespace StudentInfo\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\ClassroomErrorCodes;
+use StudentInfo\ErrorCodes\CourseErrorCodes;
+use StudentInfo\ErrorCodes\LectureErrorCodes;
+use StudentInfo\ErrorCodes\ProfessorErrorCodes;
+use StudentInfo\ErrorCodes\TeacherErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateLectureRequest;
@@ -18,7 +23,6 @@ use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
-use StudentInfo\Repositories\StudentRepositoryInterface;
 use StudentInfo\Repositories\TeacherRepositoryInterface;
 
 class LectureController extends ApiController
@@ -84,13 +88,13 @@ class LectureController extends ApiController
         $classroom = $this->classroomRepository->find($request->get('classroomId'));
 
         if ($teacher == null) {
-            return $this->returnError(500, UserErrorCodes::TEACHER_NOT_IN_DB);
+            return $this->returnError(500, TeacherErrorCodes::TEACHER_NOT_IN_DB);
         }
         if ($course == null) {
-            return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
+            return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB);
         }
         if ($classroom == null) {
-            return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
+            return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB);
         }
 
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
@@ -129,7 +133,7 @@ class LectureController extends ApiController
         $lecture = $this->lectureRepository->find($id);
 
         if ($lecture === null) {
-            return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
+            return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -144,10 +148,10 @@ class LectureController extends ApiController
         return $this->returnSuccess($lectures);
     }
 
-    public function updateLecture(UpdateLectureRequest $request, StudentRepositoryInterface $repository, $id)
+    public function updateLecture(UpdateLectureRequest $request, $id)
     {
         if ($this->lectureRepository->find($id) === null) {
-            return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
+            return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
         }
 
         /** @var Teacher $teacher */
@@ -160,13 +164,13 @@ class LectureController extends ApiController
         $classroom = $this->classroomRepository->find($request->get('classroomId'));
 
         if ($teacher == null) {
-            return $this->returnError(500, UserErrorCodes::PROFESSOR_NOT_IN_DB);
+            return $this->returnError(500, ProfessorErrorCodes::PROFESSOR_NOT_IN_DB);
         }
         if ($course == null) {
-            return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
+            return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB);
         }
         if ($classroom == null) {
-            return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
+            return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB);
         }
 
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
@@ -207,7 +211,7 @@ class LectureController extends ApiController
     {
         $lecture = $this->lectureRepository->find($id);
         if ($lecture === null) {
-            return $this->returnError(500, UserErrorCodes::LECTURE_NOT_IN_DB);
+            return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
         }
         $this->lectureRepository->destroy($lecture);
 
@@ -231,16 +235,16 @@ class LectureController extends ApiController
 
             $course = $this->courseRepository->findByName($courseName);
             if ($course === null) {
-                return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
+                return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB);
             }
             $teacherNames = explode(" ", $teacherName);
             $teacher      = $this->teacherRepository->findByName($teacherNames[1], $teacherNames[0]);
             if ($teacher === null) {
-                return $this->returnError(500, UserErrorCodes::TEACHER_NOT_IN_DB);
+                return $this->returnError(500, TeacherErrorCodes::TEACHER_NOT_IN_DB);
             }
             $classroom = $this->classroomRepository->findByName($classroomName);
             if ($classroom === null) {
-                return $this->returnError(500, UserErrorCodes::CLASSROOM_NOT_IN_DB);
+                return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB);
             }
             $startsAt = null;
             $endsAt   = null;

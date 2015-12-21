@@ -3,7 +3,7 @@
 namespace StudentInfo\Http\Controllers;
 
 
-use StudentInfo\ErrorCodes\UserErrorCodes;
+use StudentInfo\ErrorCodes\GroupErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateGroupRequest;
 use StudentInfo\Http\Requests\Update\UpdateGroupRequest;
 use StudentInfo\Models\Group;
@@ -71,7 +71,7 @@ class GroupController extends ApiController
         $group->setEvents($events);
 
         if ($this->groupRepository->findByName($name)) {
-            return $this->returnError(500, UserErrorCodes::GROUP_ALREADY_EXISTS);
+            return $this->returnError(500, GroupErrorCodes::GROUP_ALREADY_EXISTS);
         }
         $this->groupRepository->create($group);
 
@@ -85,7 +85,7 @@ class GroupController extends ApiController
         $group = $this->groupRepository->find($id);
 
         if ($group === null) {
-            return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
+            return $this->returnError(500, GroupErrorCodes::GROUP_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -108,7 +108,7 @@ class GroupController extends ApiController
         $group = $this->groupRepository->find($id);
 
         if ($group === null) {
-            return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
+            return $this->returnError(500, GroupErrorCodes::GROUP_NOT_IN_DB);
         }
 
         $lecturesEntry = $request->get('lectures');
@@ -150,7 +150,7 @@ class GroupController extends ApiController
     {
         $group = $this->groupRepository->find($id);
         if ($group === null) {
-            return $this->returnError(500, UserErrorCodes::GROUP_NOT_IN_DB);
+            return $this->returnError(500, GroupErrorCodes::GROUP_NOT_IN_DB);
         }
         $this->groupRepository->destroy($group);
 

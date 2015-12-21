@@ -5,6 +5,8 @@ namespace StudentInfo\Http\Controllers;
 
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
+use StudentInfo\ErrorCodes\CourseErrorCodes;
+use StudentInfo\ErrorCodes\EventErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateCourseEventRequest;
 use StudentInfo\Http\Requests\Update\UpdateCourseEventRequest;
@@ -25,7 +27,7 @@ class CourseEventController extends EventController
 
         $course = $this->courseRepository->find($request['courseId']);
         if ($course === null) {
-            return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
+            return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB);
         }
 
         $classroomsEntry = $request->get('classrooms');
@@ -52,10 +54,30 @@ class CourseEventController extends EventController
         ]);
     }
 
+    public function retrieveEvent($id)
+    {
+        $event = $this->courseEventRepository->find($id);
+
+        if ($event === null) {
+            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
+        }
+
+        return $this->returnSuccess([
+            'event' => $event,
+        ]);
+    }
+
+    public function retrieveEvents($start = 0, $count = 2000)
+    {
+        $events = $this->courseEventRepository->all($start, $count);
+
+        return $this->returnSuccess($events);
+    }
+
     public function updateEvent(UpdateCourseEventRequest $request, ClassroomRepositoryInterface $classroomRepository, $id)
     {
         if ($this->eventRepository->find($id) === null) {
-            return $this->returnError(500, UserErrorCodes::EVENT_NOT_IN_DB);
+            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
         /** @var  CourseEvent $event */
@@ -70,7 +92,7 @@ class CourseEventController extends EventController
         $course = $this->courseRepository->find($request['courseId']);
 
         if ($course === null) {
-            return $this->returnError(500, UserErrorCodes::COURSE_NOT_IN_DB);
+            return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB);
         }
 
         $classroomsEntry = $request->get('classrooms');

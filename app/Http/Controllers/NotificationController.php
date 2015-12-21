@@ -6,6 +6,7 @@ namespace StudentInfo\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
+use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Repositories\EventRepositoryInterface;
 use StudentInfo\Repositories\NotificationRepositoryInterface;
@@ -44,7 +45,7 @@ class NotificationController extends ApiController
         $notification = $this->notificationRepository->find($id);
 
         if($notification  === null){
-            return $this->returnError(500, UserErrorCodes::NOTIFICATION_NOT_IN_DB);
+            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
         }
 
         return $this->returnSuccess([
@@ -52,7 +53,7 @@ class NotificationController extends ApiController
         ]);
     }
 
-    public function retrieveNotifications($start = 0, $count = 20)
+    public function retrieveNotifications($start = 0, $count = 2000)
     {
         $notifications = $this->notificationRepository->all($start, $count);
 
@@ -63,7 +64,7 @@ class NotificationController extends ApiController
     {
         $notification = $this->notificationRepository->find($id);
         if ($notification=== null) {
-            return $this->returnError(500, UserErrorCodes::NOTIFICATION_NOT_IN_DB);
+            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
         }
         $this->notificationRepository->destroy($notification);
 

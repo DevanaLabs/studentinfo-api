@@ -5,6 +5,7 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
+                  groups="limited,all"
                 />
         <property name="code"
                   serialized-name="code"

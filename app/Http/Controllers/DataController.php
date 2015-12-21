@@ -6,6 +6,7 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
+use StudentInfo\Repositories\LectureRepositoryInterface;
 use StudentInfo\Repositories\TeacherRepositoryInterface;
 
 class DataController extends ApiController
@@ -26,19 +27,26 @@ class DataController extends ApiController
     protected $groupRepository;
 
     /**
+     * @var LectureRepositoryInterface
+     */
+    protected $lectureRepository;
+
+    /**
      * @var Guard
      */
     protected $guard;
 
     /**
      * CourseController constructor.
+     * @param LectureRepositoryInterface $lectureRepository
      * @param ClassroomRepositoryInterface $classroomRepository
      * @param TeacherRepositoryInterface   $teacherRepository
      * @param GroupRepositoryInterface     $groupRepository
      * @param Guard                        $guard
      */
-    public function __construct(ClassroomRepositoryInterface $classroomRepository, TeacherRepositoryInterface $teacherRepository, GroupRepositoryInterface $groupRepository, Guard $guard)
+    public function __construct(LectureRepositoryInterface $lectureRepository, ClassroomRepositoryInterface $classroomRepository, TeacherRepositoryInterface $teacherRepository, GroupRepositoryInterface $groupRepository, Guard $guard)
     {
+        $this->lectureRepository = $lectureRepository;
         $this->classroomRepository = $classroomRepository;
         $this->teacherRepository = $teacherRepository;
         $this->groupRepository     = $groupRepository;
@@ -50,13 +58,14 @@ class DataController extends ApiController
         $teachers   = $this->teacherRepository->all(0, 2000);
         $groups     = $this->groupRepository->all(0, 2000);
         $classrooms = $this->classroomRepository->all(0, 2000);
+        //$lectures    = $this->lectureRepository->all(0,2000);
 
         return $this->returnSuccess([
             'groups'     => $groups,
             'teachers' => $teachers,
             'classrooms' => $classrooms,
         ], [
-            'display' => 'limited',
+            'display' => 'all',
         ]);
     }
 
