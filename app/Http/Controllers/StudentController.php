@@ -148,9 +148,6 @@ class StudentController extends ApiController
             return $this->returnError(500, StudentErrorCodes::STUDENT_NOT_IN_DB);
         }
 
-        /** @var  Student $student */
-        $student = $this->studentRepository->find($id);
-
         $email = new Email($request->get('email'));
 
         /** @var  User $user */
@@ -160,6 +157,9 @@ class StudentController extends ApiController
                 return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
             }
         }
+
+        /** @var  Student $student */
+        $student = $this->studentRepository->find($id);
 
         $indexNumber = $request->get('indexNumber');
 

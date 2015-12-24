@@ -10,6 +10,7 @@ use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateTeacherRequest;
 use StudentInfo\Http\Requests\Update\UpdateTeacherRequest;
 use StudentInfo\Models\Assistant;
+use StudentInfo\Models\User;
 use StudentInfo\Repositories\AssistantRepositoryInterface;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
@@ -98,18 +99,21 @@ class AssistantController extends ApiController
 
     public function updateAssistant(UpdateTeacherRequest $request, $id)
     {
-        if ($this->assistantRepository->find($id) === null) {
+        /** @var Assistant $assistant */
+        $assistant = $this->assistantRepository->find($id);
+        if ($assistant === null) {
             return $this->returnError(500, AssistantErrorCodes::ASSISTANT_NOT_IN_DB);
         }
 
-        /** @var Email $email */
         $email = new Email($request->get('email'));
-        if ($this->userRepository->findByEmail($email)) {
-            return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
-        }
 
-        /** @var Assistant $assistant */
-        $assistant = $this->assistantRepository->find($id);
+        /** @var  User $user */
+        $user = $this->userRepository->findByEmail($email);
+        if ($user) {
+            if ($user->getId() != $id) {
+                return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
+            }
+        }
 
         $assistant->setFirstName($request->get('firstName'));
         $assistant->setLastName($request->get('lastName'));

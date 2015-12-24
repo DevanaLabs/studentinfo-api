@@ -48,7 +48,7 @@ Feature: Professor
                   }
     """
     Given I request "POST /professor"
-    Given I request "GET /professor/1"
+    Given I request "GET /professor/2"
     Then I get a "200" response
     Given I have the payload:
     """
@@ -59,15 +59,10 @@ Feature: Professor
                     "title": "mr"
                   }
     """
-    Given I request "PUT /professor/1"
+    Given I request "PUT /professor/2"
     Then I get a "200" response
     Given I request "GET /professor/5"
-    Then I get a "500" response
-
-  Scenario: DeleteProfessorSuccess
-    Given I am logged in as admin
-    Given I request "DELETE /professor/1"
-    Then I get a "200" response
+    Then I get a "500" responses
 
   Scenario: DeleteProfessorSuccess
     Given I am logged in as admin

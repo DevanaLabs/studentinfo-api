@@ -38,7 +38,7 @@ class CreateStudentRequest extends Request
             'lastName'  => 'required',
             'indexNumber' => 'required',
             'year'      => 'required',
-            'lectures'  => 'required|array',
+            'lectures' => 'array',
         ];
     }
 }

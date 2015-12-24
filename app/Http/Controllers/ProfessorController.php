@@ -9,6 +9,7 @@ use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateTeacherRequest;
 use StudentInfo\Http\Requests\Update\UpdateTeacherRequest;
 use StudentInfo\Models\Professor;
+use StudentInfo\Models\User;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\ProfessorRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
@@ -97,18 +98,21 @@ class ProfessorController extends ApiController
 
     public function updateProfessor(UpdateTeacherRequest $request, $id)
     {
-        if($this->professorRepository->find($id) === null){
+        /** @var  Professor $professor */
+        $professor = $this->professorRepository->find($id);
+        if ($professor === null) {
             return $this->returnError(500, ProfessorErrorCodes::PROFESSOR_NOT_IN_DB);
         }
 
-        /** @var Email $email */
         $email = new Email($request->get('email'));
-        if ($this->userRepository->findByEmail($email)) {
-            return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
-        }
 
-        /** @var Professor $professor */
-        $professor = $this->professorRepository->find($id);
+        /** @var  User $user */
+        $user = $this->userRepository->findByEmail($email);
+        if ($user) {
+            if ($user->getId() != $id) {
+                return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
+            }
+        }
 
         $professor->setFirstName($request->get('firstName'));
         $professor->setLastName($request->get('lastName'));
