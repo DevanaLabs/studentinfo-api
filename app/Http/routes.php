@@ -119,6 +119,8 @@ Route::post('eventNotification', 'EventNotificationController@createNotification
 
 Route::post('faculty', 'FacultyController@createFaculty');
 
+Route::post('feedback', 'FeedbackController@createFeedback');
+
 Route::get('student/{id}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@retrieveStudent']);
 
 Route::get('students/{start?}/{count?}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@retrieveStudents']);
@@ -181,6 +183,10 @@ Route::get('faculty/{id}', ['middleware' => 'role:faculty.retrieve', 'uses' => '
 
 Route::get('faculties/{start?}/{count?}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@retrieveFaculties']);
 
+Route::get('feedback/{id}', ['middleware' => 'role:feedback.retrieve', 'uses' => 'FeedbackController@retrieveFeedback']);
+
+Route::get('feedbacks/{start?}/{count?}', ['middleware' => 'role:feedback.retrieve', 'uses' => 'FeedbackController@retrieveFeedbacks']);
+
 Route::put('student/{id}', ['middleware' => 'role:student.update', 'uses' => 'StudentController@updateStudent']);
 
 Route::put('classroom/{id}', ['middleware' => 'role:classroom.update', 'uses' => 'ClassroomController@updateClassroom']);
@@ -205,6 +211,8 @@ Route::put('admin/{id}', ['middleware' => 'role:admin.update', 'uses' => 'AdminC
 
 Route::put('faculty/{id}', ['middleware' => 'role:faculty.update', 'uses' => 'FacultyController@updateFaculty']);
 
+Route::put('feedback/{id}', ['middleware' => 'role:feedback.update', 'uses' => 'FeedbackController@updateFeedback']);
+
 Route::put('eventNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'EventNotificationController@updateNotification']);
 
 Route::put('lectureNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'LectureNotificationController@updateNotification']);
@@ -228,6 +236,8 @@ Route::delete('student/{id}' , ['middleware' => 'role:student.delete', 'uses' =>
 Route::delete('admin/{id}' , ['middleware' => 'role:admin.delete', 'uses' => 'AdminController@deleteAdmin']);
 
 Route::delete('faculty/{id}' , ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
+
+Route::delete('feedback/{id}', ['middleware' => 'role:feedback.delete', 'uses' => 'FeedbackController@deleteFeedback']);
 
 Route::delete('notification/{id}' , ['middleware' => 'role:notification.delete', 'uses' => 'NotificationController@deleteNotification']);
 

@@ -21,6 +21,10 @@ class SuperUserRole extends Role
             'faculty.retrieve',
             'faculty.update',
             'faculty.delete',
+            'feedback.create',
+            'feedback.retrieve',
+            'feedback.update',
+            'feedback.delete',
         ];
     }
 

@@ -11,6 +11,7 @@ use StudentInfo\Models\Course;
 use StudentInfo\Models\CourseEvent;
 use StudentInfo\Models\Event;
 use StudentInfo\Models\Faculty;
+use StudentInfo\Models\Feedback;
 use StudentInfo\Models\GlobalEvent;
 use StudentInfo\Models\Group;
 use StudentInfo\Models\GroupEvent;
@@ -28,6 +29,7 @@ use StudentInfo\Repositories\DoctrineCourseEventRepository;
 use StudentInfo\Repositories\DoctrineCourseRepository;
 use StudentInfo\Repositories\DoctrineEventRepository;
 use StudentInfo\Repositories\DoctrineFacultyRepository;
+use StudentInfo\Repositories\DoctrineFeedbackRepository;
 use StudentInfo\Repositories\DoctrineGlobalEventRepository;
 use StudentInfo\Repositories\DoctrineGroupEventRepository;
 use StudentInfo\Repositories\DoctrineGroupRepository;
@@ -163,6 +165,12 @@ class AppServiceProvider extends ServiceProvider
             return new DoctrineAssistantRepository(
                 $app['em'],
                 new ClassMetaData(Assistant::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\FeedbackRepositoryInterface', function ($app) {
+            return new DoctrineFeedbackRepository(
+                $app['em'],
+                new ClassMetaData(Feedback::class)
             );
         });
     }
