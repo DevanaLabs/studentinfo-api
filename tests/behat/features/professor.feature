@@ -6,6 +6,7 @@ Feature: Professor
     """
                   {
                     "firstName": "Nebojsa",
+                    "email": "testing@test.com",
                     "lastName": "Urosevic",
                     "title": "dr"
                   }
@@ -41,6 +42,7 @@ Feature: Professor
     """
                   {
                     "firstName": "Nebojsa",
+                    "email": "testing@test.com",
                     "lastName": "Urosevic",
                     "title": "dr"
                   }
@@ -52,6 +54,7 @@ Feature: Professor
     """
                   {
                     "firstName": "Nebojsa",
+                    "email": "testing@test.com",
                     "lastName": "Urosevic",
                     "title": "mr"
                   }

@@ -6,7 +6,8 @@ Feature: Classroom
     """
                   {
                     "name": "r12",
-                    "directions": "levo"
+                    "directions": "levo",
+                    "floor": "11"
                   }
     """
     Given I request "POST /classroom"
@@ -39,7 +40,8 @@ Feature: Classroom
     """
                   {
                     "name": "r123",
-                    "directions": "levo"
+                    "directions": "levo",
+                    "floor": "11"
                   }
     """
     Given I request "POST /classroom"
@@ -49,7 +51,8 @@ Feature: Classroom
     """
                   {
                     "name": "r1231",
-                    "directions": "desno"
+                    "directions": "desno",
+                    "floor": "11"
                   }
     """
     Given I request "PUT /classroom/1"

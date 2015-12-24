@@ -9,7 +9,8 @@ Feature: Student
                   "lastName": "lastName",
                   "email": "mail1@mail.com",
                   "indexNumber": "123",
-                  "year": "3"
+                  "year": "3",
+                  "lectures": []
                   }
     """
     When I request "POST /student"
@@ -48,11 +49,12 @@ Feature: Student
                   "lastName": "lastName",
                   "email": "mail2@mail.com",
                   "indexNumber": "124",
-                  "year": "3"
+                  "year": "3",
+                  "lectures": []
                   }
     """
     Given I request "POST /student"
-    Given I request "GET /student/4"
+    Given I request "GET /student/2"
     Then I get a "200" response
     Given I have the payload:
     """
@@ -61,25 +63,26 @@ Feature: Student
                   "lastName": "lastName",
                   "email": "mail2@mail.com",
                   "indexNumber": "124",
-                  "year": "3"
+                  "year": "3",
+                  "lectures": []
                   }
     """
-    Given I request "PUT /student/4"
+    Given I request "PUT /student/2"
     Then I get a "200" response
-    Given I request "GET /student/5"
+    Given I request "GET /student/3"
     Then I get a "500" response
+
+  Scenario: DeleteStudentSuccess
+    Given I am logged in as admin
+    Given I request "DELETE /student/2"
+    Then I get a "200" response
 
   Scenario: DeleteStudentSuccess
     Given I am logged in as admin
     Given I request "DELETE /student/3"
     Then I get a "200" response
 
-  Scenario: DeleteStudentSuccess
-    Given I am logged in as admin
-    Given I request "DELETE /student/4"
-    Then I get a "200" response
-
   Scenario: DeleteStudentFail
     Given I am logged in as admin
-    Given I request "DELETE /student/5"
+    Given I request "DELETE /student/4"
     Then I get a "500" response

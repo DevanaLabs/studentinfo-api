@@ -15,21 +15,6 @@ Feature: Log
     When I request "DELETE /auth"
     Then I get a "200" response
 
-  Scenario: logIn2Success
-    Given I have the payload:
-     """
-           {
-              "email": "mv@gmail1.com",
-              "password": "blabla"
-           }
-    """
-    When I request "POST /auth"
-    Then I get a "200" response
-
-  Scenario: logOut2Success
-    When I request "DELETE /auth"
-    Then I get a "200" response
-
   Scenario: logIn1Fail
     Given I have the payload:
      """

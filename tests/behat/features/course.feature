@@ -5,8 +5,10 @@ Feature: Course
     Given I have the payload:
     """
                   {
+                    "name": "Analiza",
                     "code": "M1",
-                    "semester": "3"
+                    "semester": "3",
+                    "espb": "6"
                   }
     """
     Given I request "POST /course"
@@ -40,8 +42,10 @@ Feature: Course
     Given I have the payload:
     """
                   {
+                    "name": "Analiza",
                     "code": "M2",
-                    "semester": "4"
+                    "semester": "4",
+                    "espb": "6"
                   }
     """
     Given I request "POST /course"
@@ -50,8 +54,10 @@ Feature: Course
     Given I have the payload:
     """
                   {
+                    "name": "Analiza",
                     "code": "M2",
-                    "semester": "2"
+                    "semester": "2",
+                    "espb": "6"
                   }
     """
     Given I request "PUT /course/2"
