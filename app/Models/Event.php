@@ -3,8 +3,8 @@
 namespace StudentInfo\Models;
 
 
-use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
+use StudentInfo\ValueObjects\Datetime;
 
 abstract class Event
 {
@@ -24,14 +24,9 @@ abstract class Event
     protected $description;
 
     /**
-     * @var Carbon
+     * @var Datetime
      */
-    protected $startsAt;
-
-    /**
-     * @var Carbon
-     */
-    protected $endsAt;
+    protected $datetime;
 
     /**
      * @var ArrayCollection|EventNotification[]
@@ -93,35 +88,19 @@ abstract class Event
     }
 
     /**
-     * @return Carbon
+     * @return Datetime
      */
-    public function getStartsAt()
+    public function getDatetime()
     {
-        return $this->startsAt;
+        return $this->datetime;
     }
 
     /**
-     * @param Carbon $startsAt
+     * @param Datetime $datetime
      */
-    public function setStartsAt($startsAt)
+    public function setDatetime($datetime)
     {
-        $this->startsAt = $startsAt;
-    }
-
-    /**
-     * @return Carbon
-     */
-    public function getEndsAt()
-    {
-        return $this->endsAt;
-    }
-
-    /**
-     * @param Carbon $endsAt
-     */
-    public function setEndsAt($endsAt)
-    {
-        $this->endsAt = $endsAt;
+        $this->datetime = $datetime;
     }
 
     /**

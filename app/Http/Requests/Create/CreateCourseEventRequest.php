@@ -39,7 +39,7 @@ class CreateCourseEventRequest extends Request
             'startsAt'    => 'required',
             'endsAt'      => 'required',
             'courseId'    => 'required',
-            'classrooms'  => 'required|array',
+            'classrooms' => 'array',
         ];
     }
 }

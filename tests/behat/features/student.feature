@@ -31,6 +31,11 @@ Feature: Student
 
   Scenario: GetStudent
     Given I am logged in as admin
+    Given I request "GET /student/4"
+    Then I get a "200" response
+
+  Scenario: GetStudents
+    Given I am logged in as admin
     Given I request "GET /students"
     Then I get a "200" response
 
@@ -41,21 +46,6 @@ Feature: Student
 
 
   Scenario: EditStudent
-    Given I am logged in as admin
-    Given I have the payload:
-    """
-                  {
-                  "firstName": "firstName",
-                  "lastName": "lastName",
-                  "email": "mail2@mail.com",
-                  "indexNumber": "124",
-                  "year": "3",
-                  "lectures": []
-                  }
-    """
-    Given I request "POST /student"
-    Given I request "GET /student/4"
-    Then I get a "200" response
     Given I have the payload:
     """
                   {
@@ -68,13 +58,6 @@ Feature: Student
                   }
     """
     Given I request "PUT /student/4"
-    Then I get a "200" response
-    Given I request "GET /student/5"
-    Then I get a "500" response
-
-  Scenario: DeleteStudentSuccess
-    Given I am logged in as admin
-    Given I request "DELETE /student/3"
     Then I get a "200" response
 
   Scenario: DeleteStudentSuccess

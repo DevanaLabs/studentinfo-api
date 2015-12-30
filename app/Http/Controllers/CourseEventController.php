@@ -13,6 +13,7 @@ use StudentInfo\Http\Requests\Update\UpdateCourseEventRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\CourseEvent;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
+use StudentInfo\ValueObjects\Datetime;
 
 class CourseEventController extends EventController
 {
@@ -21,6 +22,7 @@ class CourseEventController extends EventController
         $event    = new CourseEvent(new ArrayCollection());
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
         $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
+
         if ($endsAt->lte($startsAt)) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
@@ -40,13 +42,15 @@ class CourseEventController extends EventController
             }
             $classrooms[] = $classroom;
         }
+        $datetime = new Datetime();
+        $datetime->setStartsAt($startsAt);
+        $datetime->setEndsAt($endsAt);
 
         $event->setType($request->get('type'));
         $event->setDescription($request->get('description'));
         $event->setCourse($course);
         $event->setClassrooms($classrooms);
-        $event->setStartsAt($startsAt);
-        $event->setEndsAt($endsAt);
+        $event->setDatetime($datetime);
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
@@ -105,13 +109,15 @@ class CourseEventController extends EventController
             }
             $classrooms[] = $classroom;
         }
+        $datetime = new Datetime();
+        $datetime->setStartsAt($startsAt);
+        $datetime->setEndsAt($endsAt);
 
         $event->setType($request['type']);
         $event->setDescription($request['description']);
         $event->setCourse($course);
         $event->setClassrooms($classrooms);
-        $event->setStartsAt($startsAt);
-        $event->setEndsAt($endsAt);
+        $event->setDatetime($datetime);
 
         $this->eventRepository->update($event);
 

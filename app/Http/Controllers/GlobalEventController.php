@@ -10,6 +10,7 @@ use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateGlobalEventRequest;
 use StudentInfo\Http\Requests\Update\UpdateGlobalEventRequest;
 use StudentInfo\Models\GlobalEvent;
+use StudentInfo\ValueObjects\Datetime;
 
 class GlobalEventController extends EventController
 {
@@ -21,11 +22,13 @@ class GlobalEventController extends EventController
         if ($endsAt->lte($startsAt)) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
+        $datetime = new Datetime();
+        $datetime->setStartsAt($startsAt);
+        $datetime->setEndsAt($endsAt);
 
         $event->setType($request->get('type'));
         $event->setDescription($request->get('description'));
-        $event->setStartsAt($startsAt);
-        $event->setEndsAt($endsAt);
+        $event->setDatetime($datetime);
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
@@ -67,11 +70,13 @@ class GlobalEventController extends EventController
         if ($endsAt->lte($startsAt)) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
+        $datetime = new Datetime();
+        $datetime->setStartsAt($startsAt);
+        $datetime->setEndsAt($endsAt);
 
         $event->setType($request->get('type'));
         $event->setDescription($request->get('description'));
-        $event->setStartsAt($startsAt);
-        $event->setEndsAt($endsAt);
+        $event->setDatetime($datetime);
 
         $this->eventRepository->update($event);
 

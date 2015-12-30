@@ -26,7 +26,7 @@ Feature: Course
 
   Scenario: GetCourse
     Given I am logged in as admin
-    Given I request "GET /courses"
+    Given I request "GET /course/1"
     Then I get a "200" response
 
   Scenario: GetCourseFail
@@ -35,19 +35,6 @@ Feature: Course
     Then I get a "200" response
 
   Scenario: EditCourse
-    Given I am logged in as admin
-    Given I have the payload:
-    """
-                  {
-                    "name": "Analiza",
-                    "code": "M2",
-                    "semester": "4",
-                    "espb": "6"
-                  }
-    """
-    Given I request "POST /course"
-    Given I request "GET /course/2"
-    Then I get a "200" response
     Given I have the payload:
     """
                   {
@@ -57,22 +44,15 @@ Feature: Course
                     "espb": "6"
                   }
     """
-    Given I request "PUT /course/2"
+    Given I request "PUT /course/1"
     Then I get a "200" response
-    Given I request "GET /course/5"
-    Then I get a "500" response
 
   Scenario: DeleteCourseSuccess
     Given I am logged in as admin
     Given I request "DELETE /course/1"
     Then I get a "200" response
 
-  Scenario: DeleteCourseSuccess
-    Given I am logged in as admin
-    Given I request "DELETE /course/2"
-    Then I get a "200" response
-
   Scenario: DeleteCourseFail
     Given I am logged in as admin
-    Given I request "DELETE /course/3"
+    Given I request "DELETE /course/2"
     Then I get a "500" response

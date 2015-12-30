@@ -24,9 +24,7 @@
 
         <field name="description" column="description" type="string"/>
 
-        <field name="startsAt" column="starts_at" type="datetime" nullable="false"/>
-
-        <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
+        <embedded name="datetime" class="StudentInfo\ValueObjects\Datetime" use-column-prefix="false"/>
 
         <one-to-many field="notifications" target-entity="StudentInfo\Models\EventNotification" mapped-by="event">
             <cascade>

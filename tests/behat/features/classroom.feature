@@ -25,28 +25,17 @@ Feature: Classroom
 
   Scenario: GetClassroom
     Given I am logged in as admin
-    Given I request "GET /classrooms"
+    Given I request "GET /classroom/1"
     Then I get a "200" response
 
-  Scenario: GetClassroomFail
-    Given I am logged in as student
+
+  Scenario: GetClassroom
+    Given I am logged in as admin
     Given I request "GET /classrooms"
     Then I get a "200" response
 
 
   Scenario: EditClassroom
-    Given I am logged in as admin
-    Given I have the payload:
-    """
-                  {
-                    "name": "r123",
-                    "directions": "levo",
-                    "floor": "11"
-                  }
-    """
-    Given I request "POST /classroom"
-    Given I request "GET /classroom/1"
-    Then I get a "200" response
     Given I have the payload:
     """
                   {
@@ -57,20 +46,13 @@ Feature: Classroom
     """
     Given I request "PUT /classroom/1"
     Then I get a "200" response
-    Given I request "GET /classroom/5"
-    Then I get a "500" response
 
   Scenario: DeleteClassroomSuccess
     Given I am logged in as admin
     Given I request "DELETE /classroom/1"
     Then I get a "200" response
 
-  Scenario: DeleteClassroomSuccess
-    Given I am logged in as admin
-    Given I request "DELETE /classroom/2"
-    Then I get a "200" response
-
   Scenario: DeleteClassroomFail
     Given I am logged in as admin
-    Given I request "DELETE /classroom/3"
+    Given I request "DELETE /classroom/2"
     Then I get a "500" response

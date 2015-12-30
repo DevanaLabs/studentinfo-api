@@ -13,9 +13,7 @@
 
         <field name="type" column="type" type="string" nullable="false"/>
 
-        <field name="startsAt" column="starts_at" type="datetime" nullable="false"/>
-
-        <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
+        <embedded name="time" class="StudentInfo\ValueObjects\Time" use-column-prefix="false"/>
 
         <one-to-many field="notifications" target-entity="StudentInfo\Models\LectureNotification" mapped-by="lecture">
             <cascade>
