@@ -20,9 +20,11 @@ class DoctrineEventRepository extends EntityRepository implements EventRepositor
         $this->_em->flush($object);
     }
 
-    public function all($start = 0, $count = 20)
+    public function all($faculty, $start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT e FROM StudentInfo\Models\Event e')
+        return $query = $this->_em->createQuery('SELECT e FROM StudentInfo\Models\Event e, StudentInfo\Models\Faculty f
+              WHERE e.organisation = f.id AND f.slug =:faculty')
+            ->setParameter('faculty', $faculty)
             ->setFirstResult($start)
             ->setMaxResults($count)
             ->getResult();

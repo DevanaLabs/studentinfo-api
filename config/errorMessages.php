@@ -56,5 +56,5 @@ return [
 
     \StudentInfo\ErrorCodes\TeacherErrorCodes::TEACHER_NOT_IN_DB                 => 'Teacher is not in database',
 
-    \StudentInfo\ErrorCodes\FeedbackErrorCodes::FEEDBACK_NOT_IN_DB => 'Feedback is not in database',
+    \StudentInfo\ErrorCodes\FeedbackErrorCodes::FEEDBACK_NOT_IN_DB               => 'Feedback is not in database',
 ];

@@ -12,6 +12,8 @@
 
         <field name="name" column="name" type="string" nullable="false"/>
 
+        <field name="slug" column="slug" type="string" nullable="false"/>
+
         <field name="university" column="university" type="string" nullable="false"/>
 
         <embedded name="settings" class="StudentInfo\ValueObjects\Settings" use-column-prefix="false"/>

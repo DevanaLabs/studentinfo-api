@@ -13,9 +13,11 @@ class DoctrineFeedbackRepository extends EntityRepository implements FeedbackRep
         $this->_em->flush($object);
     }
 
-    public function all($start = 0, $count = 20)
+    public function all($faculty, $start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Feedback f')
+        return $query = $this->_em->createQuery('SELECT fe FROM StudentInfo\Models\Feedback fe, StudentInfo\Models\Faculty f
+              WHERE fe.organisation = f.id AND f.slug =:faculty')
+            ->setParameter('faculty', $faculty)
             ->setFirstResult($start)
             ->setMaxResults($count)
             ->getResult();

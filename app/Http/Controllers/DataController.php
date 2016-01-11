@@ -77,14 +77,14 @@ class DataController extends ApiController
         $this->guard                 = $guard;
     }
 
-    public function getData()
+    public function getData($faculty)
     {
-        $teachers     = $this->teacherRepository->all(0, 2000);
-        $groups       = $this->groupRepository->all(0, 2000);
-        $classrooms   = $this->classroomRepository->all(0, 2000);
-        $globalEvents = $this->globalEventRepository->all(0, 2000);
-        $courseEvents = $this->courseEventRepository->all(0, 2000);
-        $groupEvents  = $this->groupEventRepository->all(0, 2000);
+        $teachers     = $this->teacherRepository->all($faculty, 0, 2000);
+        $groups       = $this->groupRepository->all($faculty, 0, 2000);
+        $classrooms   = $this->classroomRepository->all($faculty, 0, 2000);
+        $globalEvents = $this->globalEventRepository->all($faculty, 0, 2000);
+        $courseEvents = $this->courseEventRepository->all($faculty, 0, 2000);
+        $groupEvents  = $this->groupEventRepository->all($faculty, 0, 2000);
 
         return $this->returnSuccess([
             'groups'       => $groups,

@@ -39,6 +39,11 @@ abstract class Event
     protected $classrooms;
 
     /**
+     * @var Faculty
+     */
+    protected $organisation;
+
+    /**
      * Event constructor.
      */
     public function __construct()
@@ -53,6 +58,22 @@ abstract class Event
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return Faculty
+     */
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    /**
+     * @param Faculty $organisation
+     */
+    public function setOrganisation($organisation)
+    {
+        $this->organisation = $organisation;
     }
 
     /**

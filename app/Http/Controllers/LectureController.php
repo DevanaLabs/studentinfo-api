@@ -129,7 +129,7 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function retrieveLecture($id)
+    public function retrieveLecture($faculty, $id)
     {
         $lecture = $this->lectureRepository->find($id);
 
@@ -137,14 +137,18 @@ class LectureController extends ApiController
             return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
         }
 
+        if ($lecture->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, LectureErrorCodes::LECTURE_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'lecture' => $lecture,
         ]);
     }
 
-    public function retrieveLectures($start = 0, $count = 2000)
+    public function retrieveLectures($faculty, $start = 0, $count = 2000)
     {
-        $lectures = $this->lectureRepository->all($start, $count);
+        $lectures = $this->lectureRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($lectures);
     }

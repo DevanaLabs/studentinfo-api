@@ -10,4 +10,6 @@ class StudentErrorCodes
     const STUDENT_NOT_UNIQUE_INDEX = 113;
 
     const STUDENT_NOT_IN_DB = 117;
+
+    const STUDENT_DOES_NOT_BELONG_TO_THIS_FACULTY = 130;
 }

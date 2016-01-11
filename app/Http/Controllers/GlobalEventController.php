@@ -6,6 +6,7 @@ namespace StudentInfo\Http\Controllers;
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\EventErrorCodes;
+use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateGlobalEventRequest;
 use StudentInfo\Http\Requests\Update\UpdateGlobalEventRequest;
@@ -29,6 +30,7 @@ class GlobalEventController extends EventController
         $event->setType($request->get('type'));
         $event->setDescription($request->get('description'));
         $event->setDatetime($datetime);
+        $event->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
@@ -36,7 +38,7 @@ class GlobalEventController extends EventController
         ]);
     }
 
-    public function retrieveEvent($id)
+    public function retrieveEvent($faculty, $id)
     {
         $event = $this->globalEventRepository->find($id);
 
@@ -44,14 +46,18 @@ class GlobalEventController extends EventController
             return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
+        if ($event->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, EventErrorCodes::EVENT_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'event' => $event,
         ]);
     }
 
-    public function retrieveEvents($start = 0, $count = 2000)
+    public function retrieveEvents($faculty, $start = 0, $count = 2000)
     {
-        $events = $this->globalEventRepository->all($start, $count);
+        $events = $this->globalEventRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($events);
     }
@@ -77,6 +83,7 @@ class GlobalEventController extends EventController
         $event->setType($request->get('type'));
         $event->setDescription($request->get('description'));
         $event->setDatetime($datetime);
+        $event->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->eventRepository->update($event);
 

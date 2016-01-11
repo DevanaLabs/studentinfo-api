@@ -6,7 +6,7 @@ interface RepositoryInterface
 {
     public function create($object);
 
-    public function all($start = 0, $count = 20);
+    public function all($faculty, $start = 0, $count = 20);
 
     public function find($id);
 

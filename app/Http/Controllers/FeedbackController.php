@@ -45,7 +45,7 @@ class FeedbackController extends ApiController
         ]);
     }
 
-    public function retrieveFeedback($id)
+    public function retrieveFeedback($faculty, $id)
     {
         $feedback = $this->feedbackRepository->find($id);
 
@@ -53,14 +53,18 @@ class FeedbackController extends ApiController
             return $this->returnError(500, FeedbackErrorCodes::FEEDBACK_NOT_IN_DB);
         }
 
+        if ($feedback->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, FeedbackErrorCodes::FEEDBACK_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'feedback' => $feedback,
         ]);
     }
 
-    public function retrieveFeedbacks($start = 0, $count = 2000)
+    public function retrieveFeedbacks($faculty, $start = 0, $count = 2000)
     {
-        $faculty = $this->feedbackRepository->all($start, $count);
+        $faculty = $this->feedbackRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($faculty);
     }

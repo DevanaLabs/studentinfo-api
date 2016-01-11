@@ -6,18 +6,25 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\CourseErrorCodes;
+use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateCourseRequest;
 use StudentInfo\Http\Requests\Update\UpdateCourseRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Repositories\CourseRepositoryInterface;
+use StudentInfo\Repositories\FacultyRepositoryInterface;
 
 class CourseController extends ApiController
 {
     /**
-     * @var CourseRepositoryInterface
+     * @var CourseRepositoryInterface $courseRepository
      */
     protected $courseRepository;
+
+    /**
+     * @var FacultyRepositoryInterface $facultyRepository
+     */
+    protected $facultyRepository;
 
     /**
      * @var Guard
@@ -26,13 +33,15 @@ class CourseController extends ApiController
 
     /**
      * CourseController constructor.
-     * @param CourseRepositoryInterface $courseRepository
-     * @param Guard                     $guard
+     * @param CourseRepositoryInterface  $courseRepository
+     * @param FacultyRepositoryInterface $facultyRepository
+     * @param Guard                      $guard
      */
-    public function __construct(CourseRepositoryInterface $courseRepository, Guard $guard)
+    public function __construct(CourseRepositoryInterface $courseRepository, FacultyRepositoryInterface $facultyRepository, Guard $guard)
     {
-        $this->courseRepository = $courseRepository;
-        $this->guard            = $guard;
+        $this->courseRepository   = $courseRepository;
+        $this->facultyRepository   = $facultyRepository;
+        $this->guard               = $guard;
     }
 
     public function createCourse(CreateCourseRequest $request)
@@ -43,6 +52,7 @@ class CourseController extends ApiController
         $course->setEspb($request->get('espb'));
         $course->setSemester($request->get('semester'));
         $course->setName($request->get('name'));
+        $course->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->courseRepository->create($course);
 
@@ -51,7 +61,7 @@ class CourseController extends ApiController
         ]);
     }
 
-    public function retrieveCourse($id)
+    public function retrieveCourse($faculty, $id)
     {
         $course = $this->courseRepository->find($id);
 
@@ -59,14 +69,18 @@ class CourseController extends ApiController
             return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB);
         }
 
+        if ($course->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, CourseErrorCodes::COURSE_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'course' => $course,
         ]);
     }
 
-    public function retrieveCourses($start = 0, $count = 2000)
+    public function retrieveCourses($faculty, $start = 0, $count = 2000)
     {
-        $courses = $this->courseRepository->all($start, $count);
+        $courses = $this->courseRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($courses);
     }
@@ -84,6 +98,7 @@ class CourseController extends ApiController
         $course->setEspb($request->get('espb'));
         $course->setSemester($request->get('semester'));
         $course->setName($request->get('name'));
+        $course->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->courseRepository->update($course);
 
@@ -123,6 +138,7 @@ class CourseController extends ApiController
             $course->setCode($code);
             $course->setEspb($espb);
             $course->setSemester($semester);
+            $course->setOrganisation($this->guard->user()->getOrganisation());
 
             $this->courseRepository->create($course);
 

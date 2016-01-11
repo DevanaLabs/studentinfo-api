@@ -39,9 +39,11 @@ class DoctrineCourseRepository extends EntityRepository implements CourseReposit
         $this->_em->flush();
     }
 
-    public function all($start = 0, $count = 20)
+    public function all($faculty, $start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c')
+        return $query = $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c, StudentInfo\Models\Faculty f
+              WHERE c.organisation = f.id AND f.slug =:faculty')
+            ->setParameter('faculty', $faculty)
             ->setFirstResult($start)
             ->setMaxResults($count)
             ->getResult();

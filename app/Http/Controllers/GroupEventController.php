@@ -57,7 +57,7 @@ class GroupEventController extends EventController
         ]);
     }
 
-    public function retrieveEvent($id)
+    public function retrieveEvent($faculty, $id)
     {
         $event = $this->groupEventRepository->find($id);
 
@@ -65,14 +65,18 @@ class GroupEventController extends EventController
             return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
+        if ($event->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, EventErrorCodes::EVENT_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'event' => $event,
         ]);
     }
 
-    public function retrieveEvents($start = 0, $count = 2000)
+    public function retrieveEvents($faculty, $start = 0, $count = 2000)
     {
-        $events = $this->groupEventRepository->all($start, $count);
+        $events = $this->groupEventRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($events);
     }

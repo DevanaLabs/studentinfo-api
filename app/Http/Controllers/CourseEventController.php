@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\CourseErrorCodes;
 use StudentInfo\ErrorCodes\EventErrorCodes;
+use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateCourseEventRequest;
 use StudentInfo\Http\Requests\Update\UpdateCourseEventRequest;
@@ -22,7 +23,6 @@ class CourseEventController extends EventController
         $event    = new CourseEvent(new ArrayCollection());
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
         $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
-
         if ($endsAt->lte($startsAt)) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
@@ -42,6 +42,7 @@ class CourseEventController extends EventController
             }
             $classrooms[] = $classroom;
         }
+
         $datetime = new Datetime();
         $datetime->setStartsAt($startsAt);
         $datetime->setEndsAt($endsAt);
@@ -51,6 +52,7 @@ class CourseEventController extends EventController
         $event->setCourse($course);
         $event->setClassrooms($classrooms);
         $event->setDatetime($datetime);
+        $event->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
@@ -58,12 +60,16 @@ class CourseEventController extends EventController
         ]);
     }
 
-    public function retrieveEvent($id)
+    public function retrieveEvent($faculty, $id)
     {
         $event = $this->courseEventRepository->find($id);
 
         if ($event === null) {
             return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
+        }
+
+        if ($event->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, EventErrorCodes::EVENT_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
         return $this->returnSuccess([
@@ -118,6 +124,7 @@ class CourseEventController extends EventController
         $event->setCourse($course);
         $event->setClassrooms($classrooms);
         $event->setDatetime($datetime);
+        $event->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->eventRepository->update($event);
 
