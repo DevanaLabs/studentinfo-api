@@ -330,6 +330,7 @@ class Version20151224145023 extends AbstractMigration
         $this->addSql('INSERT INTO classrooms (id, name, directions, floor) VALUES (\'7\', \'Професорски кабинет\', \'\', \'6\')');
         $this->addSql('INSERT INTO classrooms (id, name, directions, floor) VALUES (\'8\', \'Асистентска соба\', \'\', \'6\')');
         $this->addSql('INSERT INTO classrooms (id, name, directions, floor) VALUES (\'9\', \'РГ 3\', \'\', \'6\')');
+        $this->addSql('INSERT INTO classrooms (id, name, directions, floor) VALUES (\'10\', \'РГ 1\', \'\', \'6\')');
         $this->addSql('INSERT INTO courses (id, name, code, espb, semester) VALUES (\'1\', \'Линеарна алгебра и аналитичка геометрија\', \'\', \'8\', \'1\')');
         $this->addSql('INSERT INTO courses (id, name, code, espb, semester) VALUES (\'2\', \'Дискретне структуре\', \'\', \'8\', \'1\')');
         $this->addSql('INSERT INTO courses (id, name, code, espb, semester) VALUES (\'3\', \'Увод у програмирање\', \'\', \'8\', \'1\')');

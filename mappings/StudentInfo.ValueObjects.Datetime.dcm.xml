@@ -6,9 +6,9 @@
 
     <embeddable name="StudentInfo\ValueObjects\Datetime">
 
-        <field name="startsAt" column="starts_at" type="time" nullable="false"/>
+        <field name="startsAt" column="starts_at" type="datetime" nullable="false"/>
 
-        <field name="endsAt" column="ends_at" type="time" nullable="false"/>
+        <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
 
     </embeddable>
 

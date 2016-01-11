@@ -17,8 +17,8 @@
                   expose="true"
                   groups="limited,all"
                 />
-        <property name="Datetime"
-                  serialized-name="Datetime"
+        <property name="datetime"
+                  serialized-name="datetime"
                   expose="true"
                   groups="limited,all"
                 />
