@@ -64,10 +64,10 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name');
+            return array('__isInitialized__', 'id', 'name', 'slug', 'university', 'settings');
         }
 
-        return array('__isInitialized__', 'id', 'name');
+        return array('__isInitialized__', 'id', 'name', 'slug', 'university', 'settings');
     }
 
     /**
@@ -208,6 +208,72 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', array($name));
 
         return parent::setName($name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSlug()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', array());
+
+        return parent::getSlug();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSlug($slug)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', array($slug));
+
+        return parent::setSlug($slug);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUniversity()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUniversity', array());
+
+        return parent::getUniversity();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUniversity($university)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUniversity', array($university));
+
+        return parent::setUniversity($university);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSettings()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSettings', array());
+
+        return parent::getSettings();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSettings($settings)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSettings', array($settings));
+
+        return parent::setSettings($settings);
     }
 
 }

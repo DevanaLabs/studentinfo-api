@@ -64,10 +64,10 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'firstName', 'lastName', 'title', 'lectures');
+            return array('__isInitialized__', 'title', 'lectures', 'password', 'id', 'firstName', 'lastName', 'email', 'rememberToken', 'registerToken', 'registerTokenCreatedAt', 'organisation');
         }
 
-        return array('__isInitialized__', 'id', 'firstName', 'lastName', 'title', 'lectures');
+        return array('__isInitialized__', 'title', 'lectures', 'password', 'id', 'firstName', 'lastName', 'email', 'rememberToken', 'registerToken', 'registerTokenCreatedAt', 'organisation');
     }
 
     /**
@@ -176,23 +176,12 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getTitle()
+    public function getRoles()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTitle', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRoles', array());
 
-        return parent::getTitle();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setTitle($title)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTitle', array($title));
-
-        return parent::setTitle($title);
+        return parent::getRoles();
     }
 
     /**
@@ -215,6 +204,105 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLectures', array($lectures));
 
         return parent::setLectures($lectures);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTitle()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTitle', array());
+
+        return parent::getTitle();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTitle($title)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTitle', array($title));
+
+        return parent::setTitle($title);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addLecture($lecture)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addLecture', array($lecture));
+
+        return parent::addLecture($lecture);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isRegisterTokenExpired()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isRegisterTokenExpired', array());
+
+        return parent::isRegisterTokenExpired();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrganisation()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganisation', array());
+
+        return parent::getOrganisation();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOrganisation(\StudentInfo\Models\Faculty $organisation)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', array($organisation));
+
+        return parent::setOrganisation($organisation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRegisterTokenCreatedAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegisterTokenCreatedAt', array());
+
+        return parent::getRegisterTokenCreatedAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRegisterToken()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegisterToken', array());
+
+        return parent::getRegisterToken();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function generateRegisterToken()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateRegisterToken', array());
+
+        return parent::generateRegisterToken();
     }
 
     /**
@@ -279,12 +367,122 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function addLecture(\StudentInfo\Models\Lecture $lecture)
+    public function setPassword(\StudentInfo\ValueObjects\Password $password)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addLecture', array($lecture));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPassword', array($password));
 
-        return parent::addLecture($lecture);
+        return parent::setPassword($password);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmail()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', array());
+
+        return parent::getEmail();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmail(\StudentInfo\ValueObjects\Email $email)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', array($email));
+
+        return parent::setEmail($email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAuthIdentifier()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthIdentifier', array());
+
+        return parent::getAuthIdentifier();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAuthPassword()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthPassword', array());
+
+        return parent::getAuthPassword();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAuthIdentifierName()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthIdentifierName', array());
+
+        return parent::getAuthIdentifierName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRememberToken()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRememberToken', array());
+
+        return parent::getRememberToken();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRememberToken($value)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRememberToken', array($value));
+
+        return parent::setRememberToken($value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRememberTokenName()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRememberTokenName', array());
+
+        return parent::getRememberTokenName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function hasPermissionTo($name, $requireAll = false)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'hasPermissionTo', array($name, $requireAll));
+
+        return parent::hasPermissionTo($name, $requireAll);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function belongsToOrganisation($org, $requireAll = false)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'belongsToOrganisation', array($org, $requireAll));
+
+        return parent::belongsToOrganisation($org, $requireAll);
     }
 
 }

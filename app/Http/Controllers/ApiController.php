@@ -33,7 +33,6 @@ class ApiController extends BaseController
         } else {
             $jsonData = $serializer->serialize($responseData, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array('all')));
         }
-
         $response = new Response($jsonData, 200);
 
         $response->header('Content-Type', 'application/json');

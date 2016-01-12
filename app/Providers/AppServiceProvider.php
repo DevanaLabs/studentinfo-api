@@ -27,12 +27,14 @@ use StudentInfo\Repositories\DoctrineAssistantRepository;
 use StudentInfo\Repositories\DoctrineClassroomRepository;
 use StudentInfo\Repositories\DoctrineCourseEventRepository;
 use StudentInfo\Repositories\DoctrineCourseRepository;
+use StudentInfo\Repositories\DoctrineEventNotificationRepository;
 use StudentInfo\Repositories\DoctrineEventRepository;
 use StudentInfo\Repositories\DoctrineFacultyRepository;
 use StudentInfo\Repositories\DoctrineFeedbackRepository;
 use StudentInfo\Repositories\DoctrineGlobalEventRepository;
 use StudentInfo\Repositories\DoctrineGroupEventRepository;
 use StudentInfo\Repositories\DoctrineGroupRepository;
+use StudentInfo\Repositories\DoctrineLectureNotificationRepository;
 use StudentInfo\Repositories\DoctrineLectureRepository;
 use StudentInfo\Repositories\DoctrineNotificationRepository;
 use StudentInfo\Repositories\DoctrineProfessorRepository;
@@ -171,6 +173,18 @@ class AppServiceProvider extends ServiceProvider
             return new DoctrineFeedbackRepository(
                 $app['em'],
                 new ClassMetaData(Feedback::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\EventNotificationRepositoryInterface', function ($app) {
+            return new DoctrineEventNotificationRepository(
+                $app['em'],
+                new ClassMetaData(Notification::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\LectureNotificationRepositoryInterface', function ($app) {
+            return new DoctrineLectureNotificationRepository(
+                $app['em'],
+                new ClassMetaData(Notification::class)
             );
         });
     }

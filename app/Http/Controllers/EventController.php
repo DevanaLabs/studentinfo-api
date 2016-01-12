@@ -73,7 +73,7 @@ class EventController extends ApiController
         $this->courseRepository      = $courseRepository;
         $this->courseEventRepository = $courseEventRepository;
         $this->globalEventRepository = $globalEventRepository;
-        $this->globalEventRepository = $globalEventRepository;
+        $this->groupEventRepository = $groupEventRepository;
         $this->groupRepository       = $groupRepository;
         $this->guard                 = $guard;
     }

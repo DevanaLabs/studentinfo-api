@@ -10,17 +10,16 @@ use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateEventNotificationRequest;
 use StudentInfo\Http\Requests\Update\UpdateEventNotificationRequest;
-use StudentInfo\Models\Event;
 use StudentInfo\Models\EventNotification;
+use StudentInfo\Repositories\EventNotificationRepositoryInterface;
 use StudentInfo\Repositories\EventRepositoryInterface;
-use StudentInfo\Repositories\NotificationRepositoryInterface;
 
 class EventNotificationController extends ApiController
 {
     /**
-     * @var NotificationRepositoryInterface
+     * @var EventNotificationRepositoryInterface
      */
-    protected $notificationRepository;
+    protected $eventNotificationRepository;
 
     /**
      * @var Guard
@@ -33,15 +32,15 @@ class EventNotificationController extends ApiController
 
     /**
      * NotificationController constructor.
-     * @param NotificationRepositoryInterface $notificationRepository
+     * @param EventNotificationRepositoryInterface $eventNotificationRepository
      * @param Guard                           $guard
      * @param EventRepositoryInterface        $eventRepository
      */
-    public function __construct(NotificationRepositoryInterface $notificationRepository, Guard $guard, EventRepositoryInterface $eventRepository)
+    public function __construct(EventNotificationRepositoryInterface $eventNotificationRepository, Guard $guard, EventRepositoryInterface $eventRepository)
     {
-        $this->notificationRepository = $notificationRepository;
-        $this->guard                  = $guard;
-        $this->eventRepository        = $eventRepository;
+        $this->eventNotificationRepository = $eventNotificationRepository;
+        $this->guard                       = $guard;
+        $this->eventRepository             = $eventRepository;
     }
 
 
@@ -67,19 +66,23 @@ class EventNotificationController extends ApiController
         $notification->setEvent($event);
         $notification->setExpiresAt($expiresAt);
 
-        $this->notificationRepository->create($notification);
+        $this->eventNotificationRepository->create($notification);
 
         return $this->returnSuccess([
             'successful' => $notification,
         ]);
     }
 
-    public function retrieveNotification($id)
+    public function retrieveNotification($faculty, $id)
     {
-        $notification = $this->notificationRepository->find($id);
+        $notification = $this->eventNotificationRepository->find($id);
 
         if ($notification === null) {
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
+        }
+
+        if ($notification->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
         return $this->returnSuccess([
@@ -87,9 +90,9 @@ class EventNotificationController extends ApiController
         ]);
     }
 
-    public function retrieveNotifications($start = 0, $count = 2000)
+    public function retrieveNotifications($faculty, $start = 0, $count = 2000)
     {
-        $notifications = $this->notificationRepository->all($start, $count);
+        $notifications = $this->eventNotificationRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($notifications);
     }
@@ -97,7 +100,7 @@ class EventNotificationController extends ApiController
     public function updateNotification(UpdateEventNotificationRequest $request, $id)
     {
         /** @var EventNotification $notification */
-        $notification = $this->notificationRepository->find($id);
+        $notification = $this->eventNotificationRepository->find($id);
 
         if ($notification === null) {
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
@@ -105,20 +108,13 @@ class EventNotificationController extends ApiController
 
         $expiresAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('expiresAt'));
 
-        $eventId = $request->get('eventId');
-
-        $event = $this->eventRepository->find($eventId);
         if ($expiresAt->lt(Carbon::now())) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
-        }
-        if ($event === null) {
-            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
         $notification->setDescription($request->get('description'));
         $notification->setExpiresAt($expiresAt);
-        $notification->setEvent($event);
-        $this->notificationRepository->update($notification);
+        $this->eventNotificationRepository->update($notification);
 
         return $this->returnSuccess([
             'notification' => $notification,
@@ -127,11 +123,11 @@ class EventNotificationController extends ApiController
 
     public function deleteNotification($id)
     {
-        $notification = $this->notificationRepository->find($id);
+        $notification = $this->eventNotificationRepository->find($id);
         if ($notification === null) {
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
         }
-        $this->notificationRepository->destroy($notification);
+        $this->eventNotificationRepository->destroy($notification);
 
         return $this->returnSuccess();
     }
@@ -147,20 +143,6 @@ class EventNotificationController extends ApiController
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
 
-        return $this->returnSuccess($this->notificationRepository->getForInterval($startCarbon, $endCarbon));
-    }
-
-    public function getNotificationsForEvent($eventId)
-    {
-        /** @var Event $event */
-        $event = $this->eventRepository->find($eventId);
-
-        if ($event === null) {
-            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
-        }
-
-        return $this->returnSuccess([
-            'notifications' => $event->getNotifications(),
-        ]);
+        return $this->returnSuccess($this->eventNotificationRepository->getForInterval($startCarbon, $endCarbon));
     }
 }

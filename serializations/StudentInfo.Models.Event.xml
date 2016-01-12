@@ -30,14 +30,14 @@
         <property name="notifications"
                   serialized-name="notifications"
                   expose="true"
-                  max-depth="4"
+                  max-depth="3"
                   groups="all"
                 />
         <property name="classrooms"
                   serialized-name="classrooms"
                   expose="true"
                   groups="all"
-                  max-depth="4"
+                  max-depth="3"
                 />
     </class>
 </serializer>

@@ -39,6 +39,7 @@ class CreateStudentRequest extends Request
             'indexNumber' => 'required',
             'year'      => 'required',
             'lectures' => 'array',
+            'courses' => 'array',
         ];
     }
 }

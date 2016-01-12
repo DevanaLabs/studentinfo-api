@@ -61,8 +61,6 @@ Route::get('/addFaculty', function (FacultyRepositoryInterface $repository) {
 });
 Route::post('importLecture', 'LectureController@AddLecturesFromCSV');
 
-Route::get('data', 'DataController@getData');
-
 Route::get('user/{user_id}', 'UserController@getProfile');
 
 Route::put('user/{user_id}', 'UserController@updateProfile');
@@ -79,17 +77,11 @@ Route::get('register/{registerToken}', 'RegisterController@registerStudent');
 
 Route::post('register/{registerToken}', 'RegisterController@createPassword');
 
-Route::post('chooseLectures', 'StudentController@chooseLectures');
-
 Route::get('showMyLectures', 'StudentController@showMyLectures');
 
 Route::post('addClassroom/{eventId}', 'EventController@AddClassroom');
 
 Route::get('years', 'GroupController@getAllYears');
-
-Route::get('getClassrooms/{eventId}', 'EventController@getClassrooms');
-
-Route::delete('deleteClassroom/{eventId}', 'EventController@deleteClassroom');
 
 Route::post('student', 'StudentController@createStudent');
 
@@ -121,71 +113,84 @@ Route::post('faculty', 'FacultyController@createFaculty');
 
 Route::post('feedback', 'FeedbackController@createFeedback');
 
-Route::get('student/{id}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@retrieveStudent']);
+Route::get('faculty/{id}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@retrieveFaculty']);
 
-Route::get('students/{start?}/{count?}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@retrieveStudents']);
-
-Route::get('classroom/{id}', 'ClassroomController@retrieveClassroom');
-
-Route::get('classrooms/{start?}/{count?}', 'ClassroomController@retrieveClassrooms');
-
-Route::get('teacher/{id}', 'TeacherController@retrieveTeacher');
-
-Route::get('teachers/{start?}/{count?}', 'TeacherController@retrieveTeachers');
-
-Route::get('professor/{id}', 'ProfessorController@retrieveProfessor');
-
-Route::get('professors/{start?}/{count?}', 'ProfessorController@retrieveProfessors');
-
-Route::get('assistant/{id}', 'AssistantController@retrieveAssistant');
-
-Route::get('assistants/{start?}/{count?}', 'AssistantController@retrieveAssistants');
-
-Route::get('groupEvents/{groupId}', 'GroupEventController@retrieveGroupEvents');
-
-Route::get('event/{id}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@retrieveEvent']);
-
-Route::get('events/{start?}/{count?}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@retrieveEvents']);
-
-Route::get('globalEvent/{id}', 'GlobalEventController@retrieveEvent');
-
-Route::get('globalEvents/{start?}/{count?}', 'GlobalEventController@retrieveEvents');
-
-Route::get('lecture/{id}', 'LectureController@retrieveLecture');
-
-Route::get('lectures/{start?}/{count?}', 'LectureController@retrieveLectures');
-
-Route::get('eventNotifications/{id}', 'EventNotificationController@retrieveNotificationsForEvent');
-
-Route::get('eventNotification/{id}', 'EventNotificationController@retrieveNotification');
-
-Route::get('eventNotifications/{start?}/{count?}', 'EventNotificationController@retrieveNotifications');
-
-Route::get('lectureNotifications/{id}', 'LectureNotificationController@retrieveNotificationsForLecture');
-
-Route::get('lectureNotification/{id}', 'LectureNotificationController@retrieveNotification');
-
-Route::get('lectureNotifications/{start?}/{count?}', 'LectureNotificationController@retrieveNotifications');
-
-Route::get('course/{id}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@retrieveCourse']);
-
-Route::get('courses/{start?}/{count?}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@retrieveCourses']);
-
-Route::get('group/{id}', 'GroupController@retrieveGroup');
-
-Route::get('groups/{start?}/{count?}', 'GroupController@retrieveGroups');
+Route::get('faculties/{start?}/{count?}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@retrieveFaculties']);
 
 Route::get('admin/{id}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@retrieveAdmin']);
 
 Route::get('admins/{start?}/{count?}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@retrieveAdmins']);
 
-Route::get('faculty/{id}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@retrieveFaculty']);
+Route::group(['prefix' => '{faculty}'], function () {
 
-Route::get('faculties/{start?}/{count?}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@retrieveFaculties']);
+    Route::get('data', 'DataController@getData');
 
-Route::get('feedback/{id}', ['middleware' => 'role:feedback.retrieve', 'uses' => 'FeedbackController@retrieveFeedback']);
+    Route::get('student/{id}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@retrieveStudent']);
 
-Route::get('feedbacks/{start?}/{count?}', ['middleware' => 'role:feedback.retrieve', 'uses' => 'FeedbackController@retrieveFeedbacks']);
+    Route::get('students/{start?}/{count?}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@retrieveStudents']);
+
+    Route::get('classroom/{id}', 'ClassroomController@retrieveClassroom');
+
+    Route::get('classrooms/{start?}/{count?}', 'ClassroomController@retrieveClassrooms');
+
+    Route::get('teacher/{id}', 'TeacherController@retrieveTeacher');
+
+    Route::get('teachers/{start?}/{count?}', 'TeacherController@retrieveTeachers');
+
+    Route::get('professor/{id}', 'ProfessorController@retrieveProfessor');
+
+    Route::get('professors/{start?}/{count?}', 'ProfessorController@retrieveProfessors');
+
+    Route::get('assistant/{id}', 'AssistantController@retrieveAssistant');
+
+    Route::get('assistants/{start?}/{count?}', 'AssistantController@retrieveAssistants');
+
+    Route::get('event/{id}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@retrieveEvent']);
+
+    Route::get('events/{start?}/{count?}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@retrieveEvents']);
+
+    Route::get('courseEvent/{id}', 'CourseEventController@retrieveEvent');
+
+    Route::get('courseEvents/{start?}/{count?}', 'CourseEventController@retrieveEvents');
+
+    Route::get('groupEvent/{id}', 'GroupEventController@retrieveEvent');
+
+    Route::get('groupEvents/{start?}/{count?}', 'GroupEventController@retrieveEvents');
+
+    Route::get('globalEvent/{id}', 'GlobalEventController@retrieveEvent');
+
+    Route::get('globalEvents/{start?}/{count?}', 'GlobalEventController@retrieveEvents');
+
+    Route::get('lecture/{id}', 'LectureController@retrieveLecture');
+
+    Route::get('lectures/{start?}/{count?}', 'LectureController@retrieveLectures');
+
+    Route::get('notification/{id}', 'NotificationController@retrieveNotification');
+
+    Route::get('notifications/{start?}/{count?}', 'NotificationController@retrieveNotifications');
+
+    Route::get('eventNotification/{id}', 'EventNotificationController@retrieveNotification');
+
+    Route::get('eventNotifications/{start?}/{count?}', 'EventNotificationController@retrieveNotifications');
+
+    Route::get('lectureNotification/{id}', 'LectureNotificationController@retrieveNotification');
+
+    Route::get('lectureNotifications/{start?}/{count?}', 'LectureNotificationController@retrieveNotifications');
+
+    Route::get('course/{id}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@retrieveCourse']);
+
+    Route::get('courses/{start?}/{count?}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@retrieveCourses']);
+
+    Route::get('group/{id}', 'GroupController@retrieveGroup');
+
+    Route::get('groups/{start?}/{count?}', 'GroupController@retrieveGroups');
+
+    Route::get('feedback/{id}', ['middleware' => 'role:feedback.retrieve', 'uses' => 'FeedbackController@retrieveFeedback']);
+
+    Route::get('feedbacks/{start?}/{count?}', ['middleware' => 'role:feedback.retrieve', 'uses' => 'FeedbackController@retrieveFeedbacks']);
+
+    Route::get('notifications/between/{start}/{end}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotificationsInInterval']);
+});
 
 Route::put('student/{id}', ['middleware' => 'role:student.update', 'uses' => 'StudentController@updateStudent']);
 
@@ -211,8 +216,6 @@ Route::put('admin/{id}', ['middleware' => 'role:admin.update', 'uses' => 'AdminC
 
 Route::put('faculty/{id}', ['middleware' => 'role:faculty.update', 'uses' => 'FacultyController@updateFaculty']);
 
-Route::put('feedback/{id}', ['middleware' => 'role:feedback.update', 'uses' => 'FeedbackController@updateFeedback']);
-
 Route::put('eventNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'EventNotificationController@updateNotification']);
 
 Route::put('lectureNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'LectureNotificationController@updateNotification']);
@@ -237,9 +240,6 @@ Route::delete('admin/{id}' , ['middleware' => 'role:admin.delete', 'uses' => 'Ad
 
 Route::delete('faculty/{id}' , ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
 
-Route::delete('feedback/{id}', ['middleware' => 'role:feedback.delete', 'uses' => 'FeedbackController@deleteFeedback']);
-
 Route::delete('notification/{id}' , ['middleware' => 'role:notification.delete', 'uses' => 'NotificationController@deleteNotification']);
 
-Route::get('notifications/between/{start}/{end}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotificationsInInterval']);
-
+Route::delete('deleteClassroom/{eventId}', 'EventController@deleteClassroom');

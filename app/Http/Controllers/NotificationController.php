@@ -40,7 +40,7 @@ class NotificationController extends ApiController
         $this->eventRepository        = $eventRepository;
     }
 
-    public function retrieveNotification($id)
+    public function retrieveNotification($faculty, $id)
     {
         $notification = $this->notificationRepository->find($id);
 
@@ -48,14 +48,18 @@ class NotificationController extends ApiController
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
         }
 
+        if ($notification->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'notification' => $notification
         ]);
     }
 
-    public function retrieveNotifications($start = 0, $count = 2000)
+    public function retrieveNotifications($faculty, $start = 0, $count = 2000)
     {
-        $notifications = $this->notificationRepository->all($start, $count);
+        $notifications = $this->notificationRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($notifications);
     }

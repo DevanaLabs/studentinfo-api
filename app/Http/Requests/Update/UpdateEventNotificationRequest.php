@@ -34,7 +34,6 @@ class UpdateEventNotificationRequest extends Request
         return [
             'description' => 'required',
             'expiresAt'   => 'required',
-            'eventId'     => 'required',
         ];
     }
 }

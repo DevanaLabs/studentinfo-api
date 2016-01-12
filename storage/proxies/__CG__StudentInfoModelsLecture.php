@@ -64,10 +64,10 @@ class Lecture extends \StudentInfo\Models\Lecture implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'id', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'course', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'professor', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'classroom', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'students', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'groups', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'startsAt', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'endsAt');
+            return array('__isInitialized__', 'id', 'type', 'course', 'teacher', 'classroom', 'students', 'groups', 'notifications', 'time');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'id', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'course', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'professor', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'classroom', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'students', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'groups', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'startsAt', '' . "\0" . 'StudentInfo\\Models\\Lecture' . "\0" . 'endsAt');
+        return array('__isInitialized__', 'id', 'type', 'course', 'teacher', 'classroom', 'students', 'groups', 'notifications', 'time');
     }
 
     /**
@@ -191,6 +191,28 @@ class Lecture extends \StudentInfo\Models\Lecture implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function setType($type)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setType', array($type));
+
+        return parent::setType($type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getType()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getType', array());
+
+        return parent::getType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getCourse()
     {
 
@@ -213,23 +235,23 @@ class Lecture extends \StudentInfo\Models\Lecture implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getProfessor()
+    public function getTeacher()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getProfessor', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeacher', array());
 
-        return parent::getProfessor();
+        return parent::getTeacher();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setProfessor($professor)
+    public function setTeacher($teacher)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setProfessor', array($professor));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTeacher', array($teacher));
 
-        return parent::setProfessor($professor);
+        return parent::setTeacher($teacher);
     }
 
     /**
@@ -301,45 +323,45 @@ class Lecture extends \StudentInfo\Models\Lecture implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getStartsAt()
+    public function getNotification()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStartsAt', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNotification', array());
 
-        return parent::getStartsAt();
+        return parent::getNotification();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setStartsAt($startsAt)
+    public function setNotification($notifications)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStartsAt', array($startsAt));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNotification', array($notifications));
 
-        return parent::setStartsAt($startsAt);
+        return parent::setNotification($notifications);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getEndsAt()
+    public function getTime()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEndsAt', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTime', array());
 
-        return parent::getEndsAt();
+        return parent::getTime();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setEndsAt($endsAt)
+    public function setTime($time)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEndsAt', array($endsAt));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTime', array($time));
 
-        return parent::setEndsAt($endsAt);
+        return parent::setTime($time);
     }
 
 }

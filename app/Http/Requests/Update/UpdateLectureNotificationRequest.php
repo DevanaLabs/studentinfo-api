@@ -34,7 +34,6 @@ class UpdateLectureNotificationRequest extends Request
         return [
             'description' => 'required',
             'expiresAt'   => 'required',
-            'lectureId'   => 'required',
         ];
     }
 }

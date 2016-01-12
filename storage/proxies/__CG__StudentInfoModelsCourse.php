@@ -64,10 +64,10 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'code', 'semester', 'lectures', 'students', '' . "\0" . 'StudentInfo\\Models\\Course' . "\0" . 'events');
+            return array('__isInitialized__', 'id', 'code', 'name', 'semester', 'espb', 'lectures', 'students', 'events', 'organisation');
         }
 
-        return array('__isInitialized__', 'id', 'code', 'semester', 'lectures', 'students', '' . "\0" . 'StudentInfo\\Models\\Course' . "\0" . 'events');
+        return array('__isInitialized__', 'id', 'code', 'name', 'semester', 'espb', 'lectures', 'students', 'events', 'organisation');
     }
 
     /**
@@ -176,6 +176,28 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
+    public function getOrganisation()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganisation', array());
+
+        return parent::getOrganisation();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOrganisation($organisation)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', array($organisation));
+
+        return parent::setOrganisation($organisation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getLectures()
     {
 
@@ -235,6 +257,28 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
+    public function getEspb()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEspb', array());
+
+        return parent::getEspb();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEspb($espb)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEspb', array($espb));
+
+        return parent::setEspb($espb);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getSemester()
     {
 
@@ -252,6 +296,28 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSemester', array($semester));
 
         return parent::setSemester($semester);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', array());
+
+        return parent::getName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setName($name)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', array($name));
+
+        return parent::setName($name);
     }
 
     /**

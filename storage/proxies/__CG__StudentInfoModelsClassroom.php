@@ -64,10 +64,10 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'StudentInfo\\Models\\Classroom' . "\0" . 'id', '' . "\0" . 'StudentInfo\\Models\\Classroom' . "\0" . 'name', '' . "\0" . 'StudentInfo\\Models\\Classroom' . "\0" . 'directions', '' . "\0" . 'StudentInfo\\Models\\Classroom' . "\0" . 'lectures');
+            return array('__isInitialized__', 'id', 'name', 'directions', 'floor', 'lectures', 'events', 'organisation');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'StudentInfo\\Models\\Classroom' . "\0" . 'id', '' . "\0" . 'StudentInfo\\Models\\Classroom' . "\0" . 'name', '' . "\0" . 'StudentInfo\\Models\\Classroom' . "\0" . 'directions', '' . "\0" . 'StudentInfo\\Models\\Classroom' . "\0" . 'lectures');
+        return array('__isInitialized__', 'id', 'name', 'directions', 'floor', 'lectures', 'events', 'organisation');
     }
 
     /**
@@ -176,23 +176,23 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
-    public function getLectures()
+    public function getOrganisation()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLectures', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganisation', array());
 
-        return parent::getLectures();
+        return parent::getOrganisation();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setLectures($lectures)
+    public function setOrganisation($organisation)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLectures', array($lectures));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', array($organisation));
 
-        return parent::setLectures($lectures);
+        return parent::setOrganisation($organisation);
     }
 
     /**
@@ -252,6 +252,72 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDirections', array($directions));
 
         return parent::setDirections($directions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFloor()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFloor', array());
+
+        return parent::getFloor();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFloor($floor)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFloor', array($floor));
+
+        return parent::setFloor($floor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLectures()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLectures', array());
+
+        return parent::getLectures();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLectures($lectures)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLectures', array($lectures));
+
+        return parent::setLectures($lectures);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEvents()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEvents', array());
+
+        return parent::getEvents();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEvents($events)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEvents', array($events));
+
+        return parent::setEvents($events);
     }
 
 }

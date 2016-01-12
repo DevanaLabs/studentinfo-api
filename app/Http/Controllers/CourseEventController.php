@@ -67,9 +67,9 @@ class CourseEventController extends EventController
         ]);
     }
 
-    public function retrieveEvents($start = 0, $count = 2000)
+    public function retrieveEvents($faculty, $start = 0, $count = 2000)
     {
-        $events = $this->courseEventRepository->all($start, $count);
+        $events = $this->courseEventRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($events);
     }
