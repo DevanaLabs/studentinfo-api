@@ -39,7 +39,7 @@ class CreateGroupEventRequest extends Request
             'startsAt'    => 'required',
             'endsAt'      => 'required',
             'groupId'     => 'required',
-            'classrooms'  => 'required|array',
+            'classrooms' => 'array',
         ];
     }
 }

@@ -36,7 +36,7 @@
         <embedded name="password" class="StudentInfo\ValueObjects\Password" use-column-prefix="false"/>
 
         <many-to-one field="organisation" target-entity="StudentInfo\Models\Faculty">
-            <join-column name="organisation_id" referenced-column-name="id" />
+            <join-column name="organisation_id" referenced-column-name="id"/>
         </many-to-one>
 
     </entity>

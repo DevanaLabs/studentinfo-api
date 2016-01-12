@@ -12,6 +12,7 @@ use StudentInfo\Http\Requests\Update\UpdateGroupEventRequest;
 use StudentInfo\Models\Group;
 use StudentInfo\Models\GroupEvent;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
+use StudentInfo\ValueObjects\Datetime;
 
 class GroupEventController extends EventController
 {
@@ -40,13 +41,15 @@ class GroupEventController extends EventController
             }
             $classrooms[] = $classroom;
         }
+        $datetime = new Datetime();
+        $datetime->setStartsAt($startsAt);
+        $datetime->setEndsAt($endsAt);
 
         $event->setType($request->get('type'));
         $event->setDescription($request->get('description'));
         $event->setGroup($group);
         $event->setClassrooms($classrooms);
-        $event->setStartsAt($startsAt);
-        $event->setEndsAt($endsAt);
+        $event->setDatetime($datetime);
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
@@ -54,7 +57,7 @@ class GroupEventController extends EventController
         ]);
     }
 
-    public function retrieveEvent($id)
+    public function retrieveEvent($faculty, $id)
     {
         $event = $this->groupEventRepository->find($id);
 
@@ -62,14 +65,18 @@ class GroupEventController extends EventController
             return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
+        if ($event->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, EventErrorCodes::EVENT_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'event' => $event,
         ]);
     }
 
-    public function retrieveEvents($start = 0, $count = 2000)
+    public function retrieveEvents($faculty, $start = 0, $count = 2000)
     {
-        $events = $this->groupEventRepository->all($start, $count);
+        $events = $this->groupEventRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($events);
     }
@@ -105,13 +112,15 @@ class GroupEventController extends EventController
             }
             $classrooms[] = $classroom;
         }
+        $datetime = new Datetime();
+        $datetime->setStartsAt($startsAt);
+        $datetime->setEndsAt($endsAt);
 
         $event->setType($request['type']);
         $event->setDescription($request['description']);
         $event->setGroup($group);
         $event->setClassrooms($classrooms);
-        $event->setStartsAt($startsAt);
-        $event->setEndsAt($endsAt);
+        $event->setDatetime($datetime);
 
         $this->eventRepository->update($event);
 

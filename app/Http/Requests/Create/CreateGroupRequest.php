@@ -36,8 +36,8 @@ class CreateGroupRequest extends Request
         return [
             'name' => 'required',
             'year' => 'required',
-//            'lectures' => 'required|array',
-//            'events'  => 'required|array',
+            'lectures' => 'array',
+            'events'   => 'array',
         ];
     }
 }

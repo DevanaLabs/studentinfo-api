@@ -76,7 +76,7 @@ class ProfessorController extends ApiController
         ]);
     }
 
-    public function retrieveProfessor($id)
+    public function retrieveProfessor($faculty, $id)
     {
         $professor = $this->professorRepository->find($id);
 
@@ -84,14 +84,18 @@ class ProfessorController extends ApiController
             return $this->returnError(500, ProfessorErrorCodes::PROFESSOR_NOT_IN_DB);
         }
 
+        if ($professor->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, ProfessorErrorCodes::PROFESSOR_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'professor' => $professor
         ]);
     }
 
-    public function retrieveProfessors($start = 0, $count = 2000)
+    public function retrieveProfessors($faculty, $start = 0, $count = 2000)
     {
-        $professors = $this->professorRepository->all($start, $count);
+        $professors = $this->professorRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($professors);
     }

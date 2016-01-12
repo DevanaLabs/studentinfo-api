@@ -1053,6 +1053,7 @@ class Version20160111155433 extends AbstractMigration
         $this->addSql('INSERT INTO classrooms_events (event_id, classroom_id) VALUES (\'95\', \'5\')');
         $this->addSql('INSERT INTO classrooms_events (event_id, classroom_id) VALUES (\'96\', \'4\')');
         $this->addSql('INSERT INTO classrooms_events (event_id, classroom_id) VALUES (\'97\', \'5\')');
+<<<<<<< HEAD
         $this->addSql('INSERT INTO classrooms_events (event_id, classroom_id) VALUES (\'98\', \'6\')');
         $this->addSql('INSERT INTO classrooms_events (event_id, classroom_id) VALUES (\'99\', \'6\')');
         $this->addSql('INSERT INTO classrooms_events (event_id, classroom_id) VALUES (\'100\', \'2\')');
@@ -1078,6 +1079,8 @@ class Version20160111155433 extends AbstractMigration
         $this->addSql('INSERT INTO classrooms_events (event_id, classroom_id) VALUES (\'109\', \'5\')');
         $this->addSql('INSERT INTO classrooms_events (event_id, classroom_id) VALUES (\'110\', \'5\')');
         $this->addSql('INSERT INTO classrooms_events (event_id, classroom_id) VALUES (\'111\', \'3\')');
+=======
+>>>>>>> origin/Development
         $this->addSql('INSERT INTO course_events (id, course_id) VALUES (\'49\', \'1\')');
         $this->addSql('INSERT INTO course_events (id, course_id) VALUES (\'83\', \'1\')');
         $this->addSql('INSERT INTO course_events (id, course_id) VALUES (\'29\', \'2\')');

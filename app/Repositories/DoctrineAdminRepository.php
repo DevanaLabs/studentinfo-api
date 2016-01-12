@@ -13,9 +13,10 @@ class DoctrineAdminRepository extends EntityRepository implements AdminRepositor
         $this->_em->flush($object);
     }
 
-    public function all($start = 0, $count = 20)
+    public function all($faculty, $start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT a FROM StudentInfo\Models\Admin a')
+        return $query = $this->_em->createQuery('SELECT a FROM StudentInfo\Models\Admin a WHERE a.slug = :faculty')
+            ->setParameter('faculty', $faculty)
             ->setFirstResult($start)
             ->setMaxResults($count)
             ->getResult();

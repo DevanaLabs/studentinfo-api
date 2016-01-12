@@ -11,6 +11,11 @@ class Feedback
     protected $id;
 
     /**
+     * @var Faculty
+     */
+    protected $organisation;
+
+    /**
      * @var String
      */
     protected $text;
@@ -21,6 +26,22 @@ class Feedback
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return Faculty
+     */
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    /**
+     * @param Faculty $organisation
+     */
+    public function setOrganisation($organisation)
+    {
+        $this->organisation = $organisation;
     }
 
     /**

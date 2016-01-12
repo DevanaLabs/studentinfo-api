@@ -77,7 +77,7 @@ class AssistantController extends ApiController
         ]);
     }
 
-    public function retrieveAssistant($id)
+    public function retrieveAssistant($faculty, $id)
     {
         $assistant = $this->assistantRepository->find($id);
 
@@ -85,14 +85,18 @@ class AssistantController extends ApiController
             return $this->returnError(500, AssistantErrorCodes::ASSISTANT_NOT_IN_DB);
         }
 
+        if ($assistant->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, AssistantErrorCodes::ASSISTANT_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'assistant' => $assistant,
         ]);
     }
 
-    public function retrieveAssistants($start = 0, $count = 2000)
+    public function retrieveAssistants($faculty, $start = 0, $count = 2000)
     {
-        $assistants = $this->assistantRepository->all($start, $count);
+        $assistants = $this->assistantRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($assistants);
     }

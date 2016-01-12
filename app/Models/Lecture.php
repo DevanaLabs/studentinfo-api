@@ -2,8 +2,8 @@
 
 namespace StudentInfo\Models;
 
-use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
+use StudentInfo\ValueObjects\Time;
 
 class Lecture
 {
@@ -48,14 +48,9 @@ class Lecture
     protected $notifications;
 
     /**
-     * @var Carbon
+     * @var Time
      */
-    protected $startsAt;
-
-    /**
-     * @var Carbon
-     */
-    protected $endsAt;
+    protected $time;
 
     /**
      * Lecture constructor.
@@ -188,34 +183,18 @@ class Lecture
     }
 
     /**
-     * @return Carbon
+     * @return Time
      */
-    public function getStartsAt()
+    public function getTime()
     {
-        return $this->startsAt;
+        return $this->time;
     }
 
     /**
-     * @param Carbon $startsAt
+     * @param Time $time
      */
-    public function setStartsAt($startsAt)
+    public function setTime($time)
     {
-        $this->startsAt = $startsAt;
-    }
-
-    /**
-     * @return Carbon
-     */
-    public function getEndsAt()
-    {
-        return $this->endsAt;
-    }
-
-    /**
-     * @param Carbon $endsAt
-     */
-    public function setEndsAt($endsAt)
-    {
-        $this->endsAt = $endsAt;
+        $this->time = $time;
     }
 }

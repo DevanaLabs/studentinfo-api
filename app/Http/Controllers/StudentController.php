@@ -122,7 +122,7 @@ class StudentController extends ApiController
         ]);
     }
 
-    public function retrieveStudent($id)
+    public function retrieveStudent($faculty, $id)
     {
         $student = $this->studentRepository->find($id);
 
@@ -130,14 +130,18 @@ class StudentController extends ApiController
             return $this->returnError(500, StudentErrorCodes::STUDENT_NOT_IN_DB);
         }
 
+        if ($student->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, StudentErrorCodes::STUDENT_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'student' => $student,
         ]);
     }
 
-    public function retrieveStudents($start = 0, $count = 2000)
+    public function retrieveStudents($faculty, $start = 0, $count = 2000)
     {
-        $students = $this->studentRepository->all($start, $count);
+        $students = $this->studentRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($students);
     }

@@ -5,7 +5,6 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
-use StudentInfo\Http\Controllers\Controller;
 use StudentInfo\Http\Requests\UserLoginPostRequest;
 use StudentInfo\Repositories\UserRepositoryInterface;
 

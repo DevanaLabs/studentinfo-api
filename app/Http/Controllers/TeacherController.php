@@ -30,7 +30,7 @@ class TeacherController extends ApiController
         $this->guard             = $guard;
     }
 
-    public function retrieveTeacher($id)
+    public function retrieveTeacher($faculty, $id)
     {
         $teacher = $this->teacherRepository->find($id);
 
@@ -38,14 +38,18 @@ class TeacherController extends ApiController
             return $this->returnError(500, TeacherErrorCodes::TEACHER_NOT_IN_DB);
         }
 
+        if ($teacher->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, TeacherErrorCodes::TEACHER_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'teacher' => $teacher,
         ]);
     }
 
-    public function retrieveTeachers($start = 0, $count = 2000)
+    public function retrieveTeachers($faculty, $start = 0, $count = 2000)
     {
-        $teachers = $this->teacherRepository->all($start, $count);
+        $teachers = $this->teacherRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($teachers);
     }

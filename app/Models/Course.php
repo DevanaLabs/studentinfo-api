@@ -47,6 +47,11 @@ class Course
     protected $events;
 
     /**
+     * @var Faculty
+     */
+    protected $organisation;
+
+    /**
      * Course constructor.
      */
     public function __construct()
@@ -54,6 +59,22 @@ class Course
         $this->lectures = new ArrayCollection();
         $this->students = new ArrayCollection();
         $this->events = new ArrayCollection();
+    }
+
+    /**
+     * @return Faculty
+     */
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    /**
+     * @param Faculty $organisation
+     */
+    public function setOrganisation($organisation)
+    {
+        $this->organisation = $organisation;
     }
 
     /**

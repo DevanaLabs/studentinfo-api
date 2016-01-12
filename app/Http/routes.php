@@ -216,6 +216,8 @@ Route::put('admin/{id}', ['middleware' => 'role:admin.update', 'uses' => 'AdminC
 
 Route::put('faculty/{id}', ['middleware' => 'role:faculty.update', 'uses' => 'FacultyController@updateFaculty']);
 
+Route::put('feedback/{id}', ['middleware' => 'role:feedback.update', 'uses' => 'FeedbackController@updateFeedback']);
+
 Route::put('eventNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'EventNotificationController@updateNotification']);
 
 Route::put('lectureNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'LectureNotificationController@updateNotification']);
@@ -240,6 +242,9 @@ Route::delete('admin/{id}' , ['middleware' => 'role:admin.delete', 'uses' => 'Ad
 
 Route::delete('faculty/{id}' , ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
 
+Route::delete('feedback/{id}', ['middleware' => 'role:feedback.delete', 'uses' => 'FeedbackController@deleteFeedback']);
+
 Route::delete('notification/{id}' , ['middleware' => 'role:notification.delete', 'uses' => 'NotificationController@deleteNotification']);
 
-Route::delete('deleteClassroom/{eventId}', 'EventController@deleteClassroom');
+Route::get('notifications/between/{start}/{end}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotificationsInInterval']);
+

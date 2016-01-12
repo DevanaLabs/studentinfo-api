@@ -12,6 +12,11 @@
                   expose="true"
                   groups="limited,all"
                 />
+        <property name="slug"
+                  serialized-name="slug"
+                  expose="true"
+                  groups="limited,all"
+                />
         <property name="university"
                   serialized-name="university"
                   expose="true"

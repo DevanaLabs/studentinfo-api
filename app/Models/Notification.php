@@ -17,6 +17,11 @@ abstract class Notification
      * @var
      */
     protected $description;
+
+    /**
+     * @var Faculty
+     */
+    protected $organisation;
     
     /**
      * @var Carbon
@@ -37,6 +42,22 @@ abstract class Notification
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return Faculty
+     */
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    /**
+     * @param Faculty $organisation
+     */
+    public function setOrganisation($organisation)
+    {
+        $this->organisation = $organisation;
     }
 
     /**

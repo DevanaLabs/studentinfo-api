@@ -28,6 +28,10 @@ class Group
     protected $lectures;
 
     /**
+     * @var Faculty
+     */
+    protected $organisation;
+    /**
      * @var ArrayCollection|GroupEvent[]
      */
     private $events;
@@ -38,7 +42,7 @@ class Group
     public function __construct()
     {
         $this->lectures = new ArrayCollection();
-        $this->events = new ArrayCollection();
+        $this->events   = new ArrayCollection();
     }
 
     public function getId()
@@ -60,6 +64,22 @@ class Group
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return Faculty
+     */
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    /**
+     * @param Faculty $organisation
+     */
+    public function setOrganisation($organisation)
+    {
+        $this->organisation = $organisation;
     }
 
     /**

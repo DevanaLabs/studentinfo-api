@@ -4,11 +4,13 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
 use StudentInfo\ErrorCodes\ClassroomErrorCodes;
+use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateClassroomRequest;
 use StudentInfo\Http\Requests\Update\UpdateClassroomRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
+use StudentInfo\Repositories\FacultyRepositoryInterface;
 
 class ClassroomController extends ApiController
 {
@@ -18,6 +20,11 @@ class ClassroomController extends ApiController
     protected $classroomRepository;
 
     /**
+     * @var FacultyRepositoryInterface $facultyRepository
+     */
+    protected $facultyRepository;
+
+    /**
      * @var Guard
      */
     protected $guard;
@@ -25,11 +32,13 @@ class ClassroomController extends ApiController
     /**
      * StudentController constructor.
      * @param ClassroomRepositoryInterface $classroomRepository
+     * @param FacultyRepositoryInterface   $facultyRepository
      * @param Guard                        $guard
      */
-    public function __construct(ClassroomRepositoryInterface $classroomRepository, Guard $guard)
+    public function __construct(ClassroomRepositoryInterface $classroomRepository, FacultyRepositoryInterface $facultyRepository, Guard $guard)
     {
         $this->classroomRepository = $classroomRepository;
+        $this->facultyRepository   = $facultyRepository;
         $this->guard               = $guard;
     }
 
@@ -43,6 +52,7 @@ class ClassroomController extends ApiController
         $classroom->setName($request->get('name'));
         $classroom->setDirections($request->get('directions'));
         $classroom->setFloor($request->get('floor'));
+        $classroom->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->classroomRepository->create($classroom);
 
@@ -51,7 +61,7 @@ class ClassroomController extends ApiController
         ]);
     }
 
-    public function retrieveClassroom($id)
+    public function retrieveClassroom($faculty, $id)
     {
         $classroom = $this->classroomRepository->find($id);
 
@@ -59,14 +69,18 @@ class ClassroomController extends ApiController
             return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB);
         }
 
+        if ($classroom->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, ClassroomErrorCodes::ClASSROOM_DOES_NOT_BELONG_TO_THIS_FACULTY);
+        }
+
         return $this->returnSuccess([
             'classroom' => $classroom,
         ]);
     }
 
-    public function retrieveClassrooms($start = 0, $count = 2000)
+    public function retrieveClassrooms($faculty, $start = 0, $count = 2000)
     {
-        $classrooms = $this->classroomRepository->all($start, $count);
+        $classrooms = $this->classroomRepository->all($faculty, $start, $count);
 
         return $this->returnSuccess($classrooms);
     }
@@ -83,6 +97,7 @@ class ClassroomController extends ApiController
         $classroom->setName($request->get('name'));
         $classroom->setDirections($request->get('directions'));
         $classroom->setFloor($request->get('floor'));
+        $classroom->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->classroomRepository->update($classroom);
 
@@ -117,6 +132,7 @@ class ClassroomController extends ApiController
             $classroom->setName($name);
             $classroom->setDirections($directions);
             $classroom->setFloor($floor);
+            $classroom->setOrganisation($this->guard->user()->getOrganisation());
 
             $this->classroomRepository->create($classroom);
         }

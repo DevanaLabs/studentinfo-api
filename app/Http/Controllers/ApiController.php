@@ -45,12 +45,13 @@ class ApiController extends BaseController
         return $this->returnError(403, $errorCode);
     }
 
-    public function returnError($statusCode, $errorCode)
+    public function returnError($statusCode, $errorCode, $data = [])
     {
         $response = new Response([
             'error' => [
                 'errorCode' => $errorCode,
                 'message'   => config("errorMessages.{$errorCode}"),
+                'data'      => $data,
             ],
         ], $statusCode);
 

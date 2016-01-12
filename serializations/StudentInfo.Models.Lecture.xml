@@ -27,13 +27,8 @@
                   expose="true"
                   groups="limited,all"
                 />
-        <property name="startsAt"
-                  serialized-name="startsAt"
-                  expose="true"
-                  groups="limited,all"
-                />
-        <property name="endsAt"
-                  serialized-name="endsAt"
+        <property name="time"
+                  serialized-name="time"
                   expose="true"
                   groups="limited,all"
                 />

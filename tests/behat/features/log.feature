@@ -30,24 +30,13 @@ Feature: Log
     Given I have the payload:
      """
            {
-              "email": "mv@gmail1.com",
-              "password": "bla"
-           }
-    """
-    When I request "POST /auth"
-    Then I get a "403" response
-
-  Scenario: logIn3Fail
-    Given I have the payload:
-     """
-           {
               "password": "bla"
            }
     """
     When I request "POST /auth"
     Then I get a "422" response
 
-  Scenario: logIn4Fail
+  Scenario: logIn3Fail
     Given I have the payload:
      """
            {

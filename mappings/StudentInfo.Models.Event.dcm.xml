@@ -24,9 +24,7 @@
 
         <field name="description" column="description" type="string"/>
 
-        <field name="startsAt" column="starts_at" type="datetime" nullable="false"/>
-
-        <field name="endsAt" column="ends_at" type="datetime" nullable="false"/>
+        <embedded name="datetime" class="StudentInfo\ValueObjects\Datetime" use-column-prefix="false"/>
 
         <one-to-many field="notifications" target-entity="StudentInfo\Models\EventNotification" mapped-by="event">
             <cascade>
@@ -34,6 +32,10 @@
                 <cascade-remove/>
             </cascade>
         </one-to-many>
+
+        <many-to-one field="organisation" target-entity="StudentInfo\Models\Faculty">
+            <join-column name="organisation_id" referenced-column-name="id" />
+        </many-to-one>
 
         <many-to-many target-entity="Classroom" field="classrooms" inversed-by="events">
             <join-table name="classrooms_events">

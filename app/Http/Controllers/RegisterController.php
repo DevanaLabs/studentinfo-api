@@ -32,7 +32,7 @@ class RegisterController extends ApiController
     /**
      * @var UserRepositoryInterface
      */
-    private $userRepository;
+    protected $userRepository;
 
     public function __construct(UserRepositoryInterface $userRepository, Guard $guard, MailQueue $mailer)
     {
@@ -67,6 +67,7 @@ class RegisterController extends ApiController
         foreach ($emails as $email) {
             /** @var User $user */
             $user = $this->userRepository->findByEmail(new Email($email));
+            $user->generateRegisterToken();
 
             $this->mailer->queue('emails.register_mail_template', [
                 'email' => $email,
@@ -76,7 +77,7 @@ class RegisterController extends ApiController
                 $message->to($email);
                 $message->subject('Registration');
             });
-
+            $this->userRepository->update($user);
             // TODO : Check for failed emails
 
         }

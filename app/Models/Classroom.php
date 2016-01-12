@@ -37,12 +37,33 @@ class Classroom
     protected $events;
 
     /**
+     * @var Faculty
+     */
+    protected $organisation;
+
+    /**
      * Classroom constructor.
      */
     public function __construct()
     {
         $this->lectures = new ArrayCollection();
         $this->events = new ArrayCollection();
+    }
+
+    /**
+     * @return Faculty
+     */
+    public function getOrganisation()
+    {
+        return $this->organisation;
+    }
+
+    /**
+     * @param Faculty $organisation
+     */
+    public function setOrganisation($organisation)
+    {
+        $this->organisation = $organisation;
     }
 
     /**

@@ -23,9 +23,11 @@ class DoctrineStudentRepository extends EntityRepository implements StudentRepos
         $this->_em->flush();
     }
 
-    public function all($start = 0, $count = 20)
+    public function all($faculty, $start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s')
+        return $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\Student s, StudentInfo\Models\Faculty f
+              WHERE s.organisation = f.id AND f.slug =:faculty')
+            ->setParameter('faculty', $faculty)
             ->setFirstResult($start)
             ->setMaxResults($count)
             ->getResult();

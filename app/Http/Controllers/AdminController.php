@@ -88,7 +88,7 @@ class AdminController extends ApiController
 
     public function retrieveAdmins($start = 0, $count = 2000)
     {
-        $admins = $this->adminRepository->all($start, $count);
+        $admins = $this->adminRepository->all(null, $start, $count);
 
         return $this->returnSuccess($admins);
     }
