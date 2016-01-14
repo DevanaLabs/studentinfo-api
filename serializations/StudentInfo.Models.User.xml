@@ -22,5 +22,10 @@
                   expose="true"
                   groups="limited,all"
                 />
+        <property name="registerToken"
+                  serialized-name="registerToken"
+                  expose="true"
+                  groups="limited,all"
+                />
     </class>
 </serializer>

@@ -158,7 +158,7 @@ class LectureNotificationController extends ApiController
         return $this->returnSuccess($this->lectureNotificationRepository->getForInterval($startCarbon, $endCarbon));
     }
 
-    public function getNotificationsForLecture($lectureId)
+    public function retrieveNotificationsForLecture($lectureId)
     {
         /** @var Lecture $lecture */
         $lecture = $this->lectureRepository->find($lectureId);

@@ -24,8 +24,8 @@ class DoctrineAssistantRepository extends EntityRepository implements AssistantR
     }
     public function all($faculty, $start = 0, $count = 20)
     {
-        return $query = $this->_em->createQuery('SELECT a FROM StudentInfo\Models\Assistant a, StudentInfo\Models\Faculty f,
-              WHERE a.organisation_id = f.id AND f.slug =: faculty')
+        return $query = $this->_em->createQuery('SELECT a FROM StudentInfo\Models\Assistant a, StudentInfo\Models\Faculty f
+              WHERE a.organisation = f.id AND f.slug =:faculty')
             ->setParameter('faculty', $faculty)
             ->setFirstResult($start)
             ->setMaxResults($count)

@@ -147,7 +147,7 @@ class EventNotificationController extends ApiController
         return $this->returnSuccess($this->eventNotificationRepository->getForInterval($startCarbon, $endCarbon));
     }
 
-    public function getNotificationsForEvent($eventId)
+    public function retrieveNotificationsForEvent($eventId)
     {
         /** @var Event $event */
         $event = $this->eventRepository->find($eventId);

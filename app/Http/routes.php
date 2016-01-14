@@ -171,9 +171,13 @@ Route::group(['prefix' => '{faculty}'], function () {
 
     Route::get('eventNotification/{id}', 'EventNotificationController@retrieveNotification');
 
+    Route::get('notificationsForEvent/{id}', 'EventNotificationController@retrieveNotificationsForEvent');
+
     Route::get('eventNotifications/{start?}/{count?}', 'EventNotificationController@retrieveNotifications');
 
     Route::get('lectureNotification/{id}', 'LectureNotificationController@retrieveNotification');
+
+    Route::get('notificationsForLecture/{id}', 'LectureNotificationController@retrieveNotificationsForLecture');
 
     Route::get('lectureNotifications/{start?}/{count?}', 'LectureNotificationController@retrieveNotifications');
 
