@@ -104,9 +104,6 @@ class RegisterController extends ApiController
             return $this->returnForbidden(UserErrorCodes::EXPIRED_REGISTER_TOKEN);
         }
 
-        $user->setRegisterToken(0);
-        $this->userRepository->update($user);
-
         return $this->returnSuccess([
             'user' => $user
         ]);
@@ -130,6 +127,7 @@ class RegisterController extends ApiController
             return $this->returnForbidden(UserErrorCodes::EXPIRED_REGISTER_TOKEN);
         }
 
+        $user->setRegisterToken(0);
         $user->setPassword(new Password($request->get('password')));
 
         $this->userRepository->update($user);
