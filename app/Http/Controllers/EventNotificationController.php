@@ -147,13 +147,17 @@ class EventNotificationController extends ApiController
         return $this->returnSuccess($this->eventNotificationRepository->getForInterval($startCarbon, $endCarbon));
     }
 
-    public function retrieveNotificationsForEvent($eventId)
+    public function retrieveNotificationsForEvent($faculty, $eventId)
     {
         /** @var Event $event */
         $event = $this->eventRepository->find($eventId);
 
         if ($event === null) {
             return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
+        }
+
+        if ($this->guard->user()->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
         return $this->returnSuccess([

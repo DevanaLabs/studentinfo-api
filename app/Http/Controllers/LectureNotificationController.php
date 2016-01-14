@@ -85,16 +85,12 @@ class LectureNotificationController extends ApiController
         ]);
     }
 
-    public function retrieveNotification($faculty, $id)
+    public function retrieveNotification($id)
     {
         $notification = $this->lectureNotificationRepository->find($id);
 
         if ($notification === null) {
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
-        }
-
-        if ($notification->getOrganisation()->getSlug() != $faculty) {
-            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
         return $this->returnSuccess([
@@ -144,7 +140,7 @@ class LectureNotificationController extends ApiController
         return $this->returnSuccess();
     }
 
-    public function getNotificationsInInterval($start, $end)
+    public function getNotificationsInInterval($faculty, $start, $end)
     {
         $startParsed = str_replace('_', ' ', $start);
         $startCarbon = Carbon::createFromFormat('Y-m-d H:i', $startParsed);
@@ -155,16 +151,20 @@ class LectureNotificationController extends ApiController
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
 
-        return $this->returnSuccess($this->lectureNotificationRepository->getForInterval($startCarbon, $endCarbon));
+        return $this->returnSuccess($this->lectureNotificationRepository->getForInterval($faculty, $startCarbon, $endCarbon));
     }
 
-    public function retrieveNotificationsForLecture($lectureId)
+    public function retrieveNotificationsForLecture($faculty, $lectureId)
     {
         /** @var Lecture $lecture */
         $lecture = $this->lectureRepository->find($lectureId);
 
         if ($lecture === null) {
             return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
+        }
+
+        if ($this->guard->user()->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
         return $this->returnSuccess([

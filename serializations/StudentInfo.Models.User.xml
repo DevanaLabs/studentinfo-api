@@ -22,10 +22,9 @@
                   expose="true"
                   groups="limited,all"
                 />
-        <property name="registerToken"
-                  serialized-name="registerToken"
-                  expose="true"
+        <virtual-property method="isRegisterTokenExpired"
+                  serialized-name="registerTokenExpired"
                   groups="limited,all"
-                />
+                  since-version="1.0"/>
     </class>
 </serializer>

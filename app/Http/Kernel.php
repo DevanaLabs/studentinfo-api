@@ -10,6 +10,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use StudentInfo\Http\Middleware\Authenticate;
 use StudentInfo\Http\Middleware\EncryptCookies;
+use StudentInfo\Http\Middleware\FacultyCheck;
 use StudentInfo\Http\Middleware\RedirectIfAuthenticated;
 use StudentInfo\Http\Middleware\RoleMiddleware;
 
@@ -38,5 +39,16 @@ class Kernel extends HttpKernel
         'auth'       => Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
         'guest'      => RedirectIfAuthenticated::class,
+    ];
+
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'FacultyCheck' => [
+            FacultyCheck::class,
+        ],
     ];
 }

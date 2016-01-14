@@ -1,14 +1,8 @@
 <?php
 
-use StudentInfo\Repositories\FacultyRepositoryInterface;
-use StudentInfo\Repositories\SuperUserRepositoryInterface;
-use StudentInfo\Repositories\UserRepositoryInterface;
-
 Route::get('/', function () {
     return view('welcome');
 });
-
-/* Test Routes */
 
 Route::post('importStudents', 'StudentController@addStudentsFromCSV');
 
@@ -20,45 +14,6 @@ Route::post('importProfessors', 'ProfessorController@addProfessorsFromCSV');
 
 Route::post('importAssistants', 'AssistantController@addAssistantFromCSV');
 
-Route::post('wallpaper', 'SettingsController@setWallpaper');
-
-Route::post('language', 'SettingsController@setLanguage');
-
-Route::get('/addSuperUser', function (SuperUserRepositoryInterface $superUserRepository, FacultyRepositoryInterface $facultyRepository) {
-    $superUser = new \StudentInfo\Models\SuperUser();
-    $superUser->setFirstName("Nebojsa");
-    $superUser->setLastName("Urosevic");
-    $superUser->setEmail(new \StudentInfo\ValueObjects\Email("nu1@gmail.com"));
-    $superUser->setPassword(new \StudentInfo\ValueObjects\Password("blabla"));
-    $superUser->setOrganisation($facultyRepository->findFacultyByName('Racunarski fakultet'));
-    $superUser->setRememberToken("bla");
-
-    $superUserRepository->create($superUser);
-});
-
-Route::get('/addAdmin', function (FacultyRepositoryInterface $facultyRepository, UserRepositoryInterface $userRepository) {
-    $admin = new \StudentInfo\Models\Admin();
-    $admin->setFirstName("Nebojsa");
-    $admin->setLastName("Urosevic");
-    $admin->setEmail(new \StudentInfo\ValueObjects\Email("nu@gmail.com"));
-    $admin->setPassword(new \StudentInfo\ValueObjects\Password("blabla"));
-    $admin->setRememberToken("bla");
-    $admin->setOrganisation($facultyRepository->findFacultyByName('Racunarski fakultet'));
-
-    $userRepository->create($admin);
-});
-
-Route::get('/addFaculty', function (FacultyRepositoryInterface $repository) {
-    $faculty = new \StudentInfo\Models\Faculty();
-    $faculty->setName('Racunarski fakultet');
-    $faculty->setUniversity('Union');
-    $settings = new \StudentInfo\ValueObjects\Settings();
-    $settings->setLanguage('english');
-    $settings->setWallpaperPath('/settings/default/wallpaper/wallpaper.png');
-    $faculty->setSettings($settings);
-
-    $repository->create($faculty);
-});
 Route::post('importLecture', 'LectureController@AddLecturesFromCSV');
 
 Route::get('user/{user_id}', 'UserController@getProfile');
@@ -71,47 +26,9 @@ Route::delete('auth', 'AuthController@logout');
 
 Route::post('register', 'RegisterController@issueRegisterTokens');
 
-Route::get('updateRegisterToken/{id}', ['middleware' => 'role:token.update', 'uses' => 'RegisterController@updateRegisterToken']);
-
 Route::get('register/{registerToken}', 'RegisterController@registerStudent');
 
 Route::post('register/{registerToken}', 'RegisterController@createPassword');
-
-Route::get('showMyLectures', 'StudentController@showMyLectures');
-
-Route::post('addClassroom/{eventId}', 'EventController@AddClassroom');
-
-Route::get('years', 'GroupController@getAllYears');
-
-Route::post('student', 'StudentController@createStudent');
-
-Route::post('classroom', 'ClassroomController@createClassroom');
-
-Route::post('courseEvent', 'CourseEventController@createEvent');
-
-Route::post('groupEvent', 'GroupEventController@createEvent');
-
-Route::post('globalEvent', 'GlobalEventController@createEvent');
-
-Route::post('professor', 'ProfessorController@createProfessor');
-
-Route::post('assistant', 'AssistantController@createAssistant');
-
-Route::post('lecture', 'LectureController@createLecture');
-
-Route::post('course', 'CourseController@createCourse');
-
-Route::post('group', 'GroupController@createGroup');
-
-Route::post('admin', 'AdminController@createAdmin');
-
-Route::post('lectureNotification', 'LectureNotificationController@createNotification');
-
-Route::post('eventNotification', 'EventNotificationController@createNotification');
-
-Route::post('faculty', 'FacultyController@createFaculty');
-
-Route::post('feedback', 'FeedbackController@createFeedback');
 
 Route::get('faculty/{id}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@retrieveFaculty']);
 
@@ -121,7 +38,43 @@ Route::get('admin/{id}', ['middleware' => 'role:admin.retrieve', 'uses' => 'Admi
 
 Route::get('admins/{start?}/{count?}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@retrieveAdmins']);
 
-Route::group(['prefix' => '{faculty}'], function () {
+Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middleware\FacultyCheck:{faculty}']], function () {
+
+    Route::post('wallpaper', 'SettingsController@setWallpaper');
+
+    Route::post('language', 'SettingsController@setLanguage');
+
+    Route::get('updateRegisterToken/{id}', ['middleware' => 'role:token.update', 'uses' => 'RegisterController@updateRegisterToken']);
+
+    Route::post('student', 'StudentController@createStudent');
+
+    Route::post('classroom', 'ClassroomController@createClassroom');
+
+    Route::post('courseEvent', 'CourseEventController@createEvent');
+
+    Route::post('groupEvent', 'GroupEventController@createEvent');
+
+    Route::post('globalEvent', 'GlobalEventController@createEvent');
+
+    Route::post('professor', 'ProfessorController@createProfessor');
+
+    Route::post('assistant', 'AssistantController@createAssistant');
+
+    Route::post('lecture', 'LectureController@createLecture');
+
+    Route::post('course', 'CourseController@createCourse');
+
+    Route::post('group', 'GroupController@createGroup');
+
+    Route::post('admin', 'AdminController@createAdmin');
+
+    Route::post('lectureNotification', 'LectureNotificationController@createNotification');
+
+    Route::post('eventNotification', 'EventNotificationController@createNotification');
+
+    Route::post('faculty', 'FacultyController@createFaculty');
+
+    Route::post('feedback', 'FeedbackController@createFeedback');
 
     Route::get('data', 'DataController@getData');
 
@@ -194,61 +147,58 @@ Route::group(['prefix' => '{faculty}'], function () {
     Route::get('feedbacks/{start?}/{count?}', ['middleware' => 'role:feedback.retrieve', 'uses' => 'FeedbackController@retrieveFeedbacks']);
 
     Route::get('notifications/between/{start}/{end}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotificationsInInterval']);
+
+    Route::put('student/{id}', ['middleware' => 'role:student.update', 'uses' => 'StudentController@updateStudent']);
+
+    Route::put('classroom/{id}', ['middleware' => 'role:classroom.update', 'uses' => 'ClassroomController@updateClassroom']);
+
+    Route::put('professor/{id}', ['middleware' => 'role:teacher.update', 'uses' => 'ProfessorController@updateProfessor']);
+
+    Route::put('assistant/{id}', ['middleware' => 'role:teacher.update', 'uses' => 'AssistantController@updateAssistant']);
+
+    Route::put('course/{id}', ['middleware' => 'role:course.update', 'uses' => 'CourseController@updateCourse']);
+
+    Route::put('lecture/{id}', ['middleware' => 'role:lecture.update', 'uses' => 'LectureController@updateLecture']);
+
+    Route::put('group/{id}', ['middleware' => 'role:group.update', 'uses' => 'GroupController@updateGroup']);
+
+    Route::put('courseEvent/{id}', ['middleware' => 'role:event.update', 'uses' => 'CourseEventController@updateEvent']);
+
+    Route::put('groupEvent/{id}', ['middleware' => 'role:event.update', 'uses' => 'GroupEventController@updateEvent']);
+
+    Route::put('globalEvent/{id}', ['middleware' => 'role:event.update', 'uses' => 'GlobalEventController@updateEvent']);
+
+    Route::put('admin/{id}', ['middleware' => 'role:admin.update', 'uses' => 'AdminController@updateAdmin']);
+
+    Route::put('faculty/{id}', ['middleware' => 'role:faculty.update', 'uses' => 'FacultyController@updateFaculty']);
+
+    Route::put('feedback/{id}', ['middleware' => 'role:feedback.update', 'uses' => 'FeedbackController@updateFeedback']);
+
+    Route::put('eventNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'EventNotificationController@updateNotification']);
+
+    Route::put('lectureNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'LectureNotificationController@updateNotification']);
+
+    Route::delete('classroom/{id}', ['middleware' => 'role:classroom.delete', 'uses' => 'ClassroomController@deleteClassroom']);
+
+    Route::delete('course/{id}', ['middleware' => 'role:course.delete', 'uses' => 'CourseController@deleteCourse']);
+
+    Route::delete('professor/{id}', ['middleware' => 'role:teacher.delete', 'uses' => 'ProfessorController@deleteProfessor']);
+
+    Route::delete('assistant/{id}', ['middleware' => 'role:teacher.delete', 'uses' => 'AssistantController@deleteAssistant']);
+
+    Route::delete('lecture/{id}', ['middleware' => 'role:lecture.delete', 'uses' => 'LectureController@deleteLecture']);
+
+    Route::delete('group/{id}', ['middleware' => 'role:group.delete', 'uses' => 'GroupController@deleteGroup']);
+
+    Route::delete('event/{id}', ['middleware' => 'role:event.delete', 'uses' => 'EventController@deleteEvent']);
+
+    Route::delete('student/{id}', ['middleware' => 'role:student.delete', 'uses' => 'StudentController@deleteStudent']);
+
+    Route::delete('admin/{id}', ['middleware' => 'role:admin.delete', 'uses' => 'AdminController@deleteAdmin']);
+
+    Route::delete('faculty/{id}', ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
+
+    Route::delete('feedback/{id}', ['middleware' => 'role:feedback.delete', 'uses' => 'FeedbackController@deleteFeedback']);
+
+    Route::delete('notification/{id}', ['middleware' => 'role:notification.delete', 'uses' => 'NotificationController@deleteNotification']);
 });
-
-Route::put('student/{id}', ['middleware' => 'role:student.update', 'uses' => 'StudentController@updateStudent']);
-
-Route::put('classroom/{id}', ['middleware' => 'role:classroom.update', 'uses' => 'ClassroomController@updateClassroom']);
-
-Route::put('professor/{id}', ['middleware' => 'role:teacher.update', 'uses' => 'ProfessorController@updateProfessor']);
-
-Route::put('assistant/{id}', ['middleware' => 'role:teacher.update', 'uses' => 'AssistantController@updateAssistant']);
-
-Route::put('course/{id}', ['middleware' => 'role:course.update', 'uses' => 'CourseController@updateCourse']);
-
-Route::put('lecture/{id}', ['middleware' => 'role:lecture.update', 'uses' => 'LectureController@updateLecture']);
-
-Route::put('group/{id}', ['middleware' => 'role:group.update', 'uses' => 'GroupController@updateGroup']);
-
-Route::put('courseEvent/{id}', ['middleware' => 'role:event.update', 'uses' => 'CourseEventController@updateEvent']);
-
-Route::put('groupEvent/{id}', ['middleware' => 'role:event.update', 'uses' => 'GroupEventController@updateEvent']);
-
-Route::put('globalEvent/{id}', ['middleware' => 'role:event.update', 'uses' => 'GlobalEventController@updateEvent']);
-
-Route::put('admin/{id}', ['middleware' => 'role:admin.update', 'uses' => 'AdminController@updateAdmin']);
-
-Route::put('faculty/{id}', ['middleware' => 'role:faculty.update', 'uses' => 'FacultyController@updateFaculty']);
-
-Route::put('feedback/{id}', ['middleware' => 'role:feedback.update', 'uses' => 'FeedbackController@updateFeedback']);
-
-Route::put('eventNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'EventNotificationController@updateNotification']);
-
-Route::put('lectureNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'LectureNotificationController@updateNotification']);
-
-Route::delete('classroom/{id}' , ['middleware' => 'role:classroom.delete', 'uses' => 'ClassroomController@deleteClassroom']);
-
-Route::delete('course/{id}' , ['middleware' => 'role:course.delete', 'uses' => 'CourseController@deleteCourse']);
-
-Route::delete('professor/{id}', ['middleware' => 'role:teacher.delete', 'uses' => 'ProfessorController@deleteProfessor']);
-
-Route::delete('assistant/{id}', ['middleware' => 'role:teacher.delete', 'uses' => 'AssistantController@deleteAssistant']);
-
-Route::delete('lecture/{id}' , ['middleware' => 'role:lecture.delete', 'uses' => 'LectureController@deleteLecture']);
-
-Route::delete('group/{id}' , ['middleware' => 'role:group.delete', 'uses' => 'GroupController@deleteGroup']);
-
-Route::delete('event/{id}', ['middleware' => 'role:event.delete', 'uses' => 'EventController@deleteEvent']);
-
-Route::delete('student/{id}' , ['middleware' => 'role:student.delete', 'uses' => 'StudentController@deleteStudent']);
-
-Route::delete('admin/{id}' , ['middleware' => 'role:admin.delete', 'uses' => 'AdminController@deleteAdmin']);
-
-Route::delete('faculty/{id}' , ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
-
-Route::delete('feedback/{id}', ['middleware' => 'role:feedback.delete', 'uses' => 'FeedbackController@deleteFeedback']);
-
-Route::delete('notification/{id}' , ['middleware' => 'role:notification.delete', 'uses' => 'NotificationController@deleteNotification']);
-
-Route::get('notifications/between/{start}/{end}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotificationsInInterval']);
-

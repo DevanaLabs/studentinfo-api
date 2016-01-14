@@ -116,7 +116,7 @@ class RegisterController extends ApiController
      */
     public function createPassword(CreatePasswordPostRequest $request, $registerToken)
     {
-        if ($registerToken === 0) {
+        if ($registerToken == 0) {
             return $this->returnForbidden(UserErrorCodes::INVALID_REGISTER_TOKEN);
         }
         /** @var User $user */
