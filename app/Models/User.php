@@ -176,6 +176,14 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
     }
 
     /**
+     * @param string $registerToken
+     */
+    public function setRegisterToken($registerToken)
+    {
+        $this->registerToken = $registerToken;
+    }
+
+    /**
      * @return int
      */
     public function getAuthIdentifier()

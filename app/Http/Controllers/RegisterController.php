@@ -103,6 +103,10 @@ class RegisterController extends ApiController
         if ($user->isRegisterTokenExpired()) {
             return $this->returnForbidden(UserErrorCodes::EXPIRED_REGISTER_TOKEN);
         }
+
+        $user->setRegisterToken(0);
+        $this->userRepository->update($user);
+
         return $this->returnSuccess([
             'user' => $user
         ]);

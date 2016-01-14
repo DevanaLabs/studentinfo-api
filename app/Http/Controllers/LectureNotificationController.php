@@ -10,6 +10,7 @@ use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateLectureNotificationRequest;
 use StudentInfo\Http\Requests\Update\UpdateLectureNotificationRequest;
+use StudentInfo\Models\Lecture;
 use StudentInfo\Models\LectureNotification;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\LectureNotificationRepositoryInterface;
@@ -40,7 +41,7 @@ class LectureNotificationController extends ApiController
     /**
      * NotificationController constructor.
      * @param LectureNotificationRepositoryInterface $lectureNotificationRepository
-     * @param LectureRepositoryInterface      $lectureRepository
+     * @param LectureRepositoryInterface             $lectureRepository
      * @param Guard                                  $guard
      * @param FacultyRepositoryInterface             $facultyRepository
      */
@@ -155,5 +156,19 @@ class LectureNotificationController extends ApiController
         }
 
         return $this->returnSuccess($this->lectureNotificationRepository->getForInterval($startCarbon, $endCarbon));
+    }
+
+    public function getNotificationsForLecture($lectureId)
+    {
+        /** @var Lecture $lecture */
+        $lecture = $this->lectureRepository->find($lectureId);
+
+        if ($lecture === null) {
+            return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
+        }
+
+        return $this->returnSuccess([
+            'notifications' => $lecture->getNotification(),
+        ]);
     }
 }

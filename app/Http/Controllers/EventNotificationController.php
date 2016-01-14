@@ -10,6 +10,7 @@ use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateEventNotificationRequest;
 use StudentInfo\Http\Requests\Update\UpdateEventNotificationRequest;
+use StudentInfo\Models\Event;
 use StudentInfo\Models\EventNotification;
 use StudentInfo\Repositories\EventNotificationRepositoryInterface;
 use StudentInfo\Repositories\EventRepositoryInterface;
@@ -33,8 +34,8 @@ class EventNotificationController extends ApiController
     /**
      * NotificationController constructor.
      * @param EventNotificationRepositoryInterface $eventNotificationRepository
-     * @param Guard                           $guard
-     * @param EventRepositoryInterface        $eventRepository
+     * @param Guard                                $guard
+     * @param EventRepositoryInterface             $eventRepository
      */
     public function __construct(EventNotificationRepositoryInterface $eventNotificationRepository, Guard $guard, EventRepositoryInterface $eventRepository)
     {
@@ -144,5 +145,19 @@ class EventNotificationController extends ApiController
         }
 
         return $this->returnSuccess($this->eventNotificationRepository->getForInterval($startCarbon, $endCarbon));
+    }
+
+    public function getNotificationsForEvent($eventId)
+    {
+        /** @var Event $event */
+        $event = $this->eventRepository->find($eventId);
+
+        if ($event === null) {
+            return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
+        }
+
+        return $this->returnSuccess([
+            'notifications' => $event->getNotifications(),
+        ]);
     }
 }
