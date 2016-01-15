@@ -64,9 +64,10 @@ class NotificationController extends ApiController
         return $this->returnSuccess($notifications);
     }
 
-    public function deleteNotification($id)
+    public function deleteNotification($faculty, $id)
     {
         $notification = $this->notificationRepository->find($id);
+
         if ($notification=== null) {
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
         }
@@ -75,7 +76,7 @@ class NotificationController extends ApiController
         return $this->returnSuccess();
     }
 
-    public function getNotificationsInInterval($start, $end)
+    public function getNotificationsInInterval($faculty, $start, $end)
     {
         $startParsed = str_replace('_', ' ', $start);
         $startCarbon = Carbon::createFromFormat('Y-m-d H:i', $startParsed);

@@ -114,7 +114,7 @@ class EventController extends ApiController
         return $this->returnSuccess($events);
     }
 
-    public function deleteEvent($id)
+    public function deleteEvent($faculty, $id)
     {
 
         $event = $this->eventRepository->find($id);

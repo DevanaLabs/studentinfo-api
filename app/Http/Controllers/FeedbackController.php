@@ -33,7 +33,7 @@ class FeedbackController extends ApiController
         $this->guard              = $guard;
     }
 
-    public function createFeedback(CreateFeedbackRequest $request)
+    public function createFeedback(CreateFeedbackRequest $request, $faculty)
     {
         $feedback = new Feedback();
         $feedback->setText($request->get('text'));
@@ -88,7 +88,7 @@ class FeedbackController extends ApiController
         ]);
     }
 
-    public function deleteFeedback($id)
+    public function deleteFeedback($faculty, $id)
     {
         $feedback = $this->feedbackRepository->find($id);
 

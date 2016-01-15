@@ -51,6 +51,7 @@ class AuthController extends ApiController
      */
     public function login(UserLoginPostRequest $request, Guard $guard)
     {
+
         $input = $request->only(['email', 'password']);
         if (!$guard->attempt([
             'email.email' => $input['email'],

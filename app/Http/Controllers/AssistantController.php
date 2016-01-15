@@ -54,7 +54,7 @@ class AssistantController extends ApiController
         $this->guard               = $guard;
     }
 
-    public function createAssistant(CreateTeacherRequest $request)
+    public function createAssistant(CreateTeacherRequest $request, $faculty)
     {
         /** @var Email $email */
         $email = new Email($request->get('email'));
@@ -101,7 +101,7 @@ class AssistantController extends ApiController
         return $this->returnSuccess($assistants);
     }
 
-    public function updateAssistant(UpdateTeacherRequest $request, $id)
+    public function updateAssistant(UpdateTeacherRequest $request, $faculty, $id)
     {
         /** @var Assistant $assistant */
         $assistant = $this->assistantRepository->find($id);
@@ -133,7 +133,7 @@ class AssistantController extends ApiController
         ]);
     }
 
-    public function deleteAssistant($id)
+    public function deleteAssistant($faculty, $id)
     {
         $assistant = $this->assistantRepository->find($id);
         if ($assistant === null) {
@@ -144,7 +144,7 @@ class AssistantController extends ApiController
         return $this->returnSuccess();
     }
 
-    public function addProfessorsFromCSV(AddFromCSVRequest $request)
+    public function addProfessorsFromCSV(AddFromCSVRequest $request, $faculty)
     {
         $handle = $request->file('import');
 

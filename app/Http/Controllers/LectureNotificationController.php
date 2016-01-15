@@ -55,7 +55,7 @@ class LectureNotificationController extends ApiController
     }
 
 
-    public function createNotification(CreateLectureNotificationRequest $request)
+    public function createNotification(CreateLectureNotificationRequest $request, $faculty)
     {
         $description = $request->get('description');
 
@@ -85,7 +85,7 @@ class LectureNotificationController extends ApiController
         ]);
     }
 
-    public function retrieveNotification($id)
+    public function retrieveNotification($faculty, $id)
     {
         $notification = $this->lectureNotificationRepository->find($id);
 
@@ -105,7 +105,7 @@ class LectureNotificationController extends ApiController
         return $this->returnSuccess($notifications);
     }
 
-    public function updateNotification(UpdateLectureNotificationRequest $request, $id)
+    public function updateNotification(UpdateLectureNotificationRequest $request, $faculty, $id)
     {
         /** @var LectureNotification $notification */
         $notification = $this->lectureNotificationRepository->find($id);
@@ -129,7 +129,7 @@ class LectureNotificationController extends ApiController
         ]);
     }
 
-    public function deleteNotification($id)
+    public function deleteNotification($faculty, $id)
     {
         $notification = $this->lectureNotificationRepository->find($id);
         if ($notification === null) {

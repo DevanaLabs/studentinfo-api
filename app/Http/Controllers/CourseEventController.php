@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\CourseErrorCodes;
 use StudentInfo\ErrorCodes\EventErrorCodes;
-use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateCourseEventRequest;
 use StudentInfo\Http\Requests\Update\UpdateCourseEventRequest;
@@ -18,7 +17,7 @@ use StudentInfo\ValueObjects\Datetime;
 
 class CourseEventController extends EventController
 {
-    public function createEvent(CreateCourseEventRequest $request, ClassroomRepositoryInterface $classroomRepository)
+    public function createEvent(CreateCourseEventRequest $request, ClassroomRepositoryInterface $classroomRepository, $faculty)
     {
         $event    = new CourseEvent(new ArrayCollection());
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
@@ -84,7 +83,7 @@ class CourseEventController extends EventController
         return $this->returnSuccess($events);
     }
 
-    public function updateEvent(UpdateCourseEventRequest $request, ClassroomRepositoryInterface $classroomRepository, $id)
+    public function updateEvent(UpdateCourseEventRequest $request, ClassroomRepositoryInterface $classroomRepository, $faculty, $id)
     {
         if ($this->eventRepository->find($id) === null) {
             return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);

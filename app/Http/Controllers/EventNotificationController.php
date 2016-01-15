@@ -45,7 +45,7 @@ class EventNotificationController extends ApiController
     }
 
 
-    public function createNotification(CreateEventNotificationRequest $request)
+    public function createNotification(CreateEventNotificationRequest $request, $faculty)
     {
         $description = $request->get('description');
 
@@ -66,6 +66,7 @@ class EventNotificationController extends ApiController
         $notification->setDescription($description);
         $notification->setEvent($event);
         $notification->setExpiresAt($expiresAt);
+        $notification->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->eventNotificationRepository->create($notification);
 
@@ -98,7 +99,7 @@ class EventNotificationController extends ApiController
         return $this->returnSuccess($notifications);
     }
 
-    public function updateNotification(UpdateEventNotificationRequest $request, $id)
+    public function updateNotification(UpdateEventNotificationRequest $request, $faculty, $id)
     {
         /** @var EventNotification $notification */
         $notification = $this->eventNotificationRepository->find($id);
@@ -122,7 +123,7 @@ class EventNotificationController extends ApiController
         ]);
     }
 
-    public function deleteNotification($id)
+    public function deleteNotification($faculty, $id)
     {
         $notification = $this->eventNotificationRepository->find($id);
         if ($notification === null) {

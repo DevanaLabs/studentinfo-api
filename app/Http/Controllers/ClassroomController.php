@@ -4,7 +4,6 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
 use StudentInfo\ErrorCodes\ClassroomErrorCodes;
-use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateClassroomRequest;
 use StudentInfo\Http\Requests\Update\UpdateClassroomRequest;
@@ -42,7 +41,7 @@ class ClassroomController extends ApiController
         $this->guard               = $guard;
     }
 
-    public function createClassroom(CreateClassroomRequest $request)
+    public function createClassroom(CreateClassroomRequest $request, $faculty)
     {
         $name = $request->get('name');
         if ($this->classroomRepository->findByName($name)) {
@@ -85,7 +84,7 @@ class ClassroomController extends ApiController
         return $this->returnSuccess($classrooms);
     }
 
-    public function updateClassroom(UpdateClassroomRequest $request, $id)
+    public function updateClassroom(UpdateClassroomRequest $request, $faculty, $id)
     {
         if ($this->classroomRepository->find($id) === null) {
             return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB);
@@ -106,7 +105,7 @@ class ClassroomController extends ApiController
         ]);
     }
 
-    public function deleteClassroom($id)
+    public function deleteClassroom($faculty, $id)
     {
         $classroom = $this->classroomRepository->find($id);
         if ($classroom === null) {
@@ -117,7 +116,7 @@ class ClassroomController extends ApiController
         return $this->returnSuccess();
     }
 
-    public function addClassroomsFromCSV(AddFromCSVRequest $request)
+    public function addClassroomsFromCSV(AddFromCSVRequest $request, $faculty)
     {
         $handle = $request->file('import');
 

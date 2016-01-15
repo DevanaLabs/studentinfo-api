@@ -53,7 +53,7 @@ class ProfessorController extends ApiController
         $this->guard             = $guard;
     }
 
-    public function createProfessor(CreateTeacherRequest $request)
+    public function createProfessor(CreateTeacherRequest $request, $faculty)
     {
         /** @var Email $email */
         $email = new Email($request->get('email'));
@@ -100,7 +100,7 @@ class ProfessorController extends ApiController
         return $this->returnSuccess($professors);
     }
 
-    public function updateProfessor(UpdateTeacherRequest $request, $id)
+    public function updateProfessor(UpdateTeacherRequest $request, $faculty, $id)
     {
         /** @var  Professor $professor */
         $professor = $this->professorRepository->find($id);
@@ -132,7 +132,7 @@ class ProfessorController extends ApiController
         ]);
     }
 
-    public function deleteProfessor($id)
+    public function deleteProfessor($faculty, $id)
     {
         $professor = $this->professorRepository->find($id);
         if ($professor === null)
@@ -144,7 +144,7 @@ class ProfessorController extends ApiController
         return $this->returnSuccess();
     }
 
-    public function addProfessorsFromCSV(AddFromCSVRequest $request)
+    public function addProfessorsFromCSV(AddFromCSVRequest $request, $faculty)
     {
         $handle = $request->file('import');
 

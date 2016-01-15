@@ -16,7 +16,7 @@ use StudentInfo\ValueObjects\Datetime;
 
 class GroupEventController extends EventController
 {
-    public function createEvent(CreateGroupEventRequest $request, ClassroomRepositoryInterface $classroomRepository)
+    public function createEvent(CreateGroupEventRequest $request, ClassroomRepositoryInterface $classroomRepository, $faculty)
     {
         $event = new GroupEvent(new ArrayCollection());
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
@@ -81,7 +81,7 @@ class GroupEventController extends EventController
         return $this->returnSuccess($events);
     }
 
-    public function updateEvent(UpdateGroupEventRequest $request, ClassroomRepositoryInterface $classroomRepository, $id)
+    public function updateEvent(UpdateGroupEventRequest $request, ClassroomRepositoryInterface $classroomRepository, $faculty, $id)
     {
         if ($this->eventRepository->find($id) === null) {
             return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);

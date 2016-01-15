@@ -58,7 +58,7 @@ class GroupController extends ApiController
         $this->guard = $guard;
     }
 
-    public function createGroup(CreateGroupRequest $request)
+    public function createGroup(CreateGroupRequest $request, $faculty)
     {
         $group         = new Group();
         $name          = $request->get('name');
@@ -124,7 +124,7 @@ class GroupController extends ApiController
         ]);
     }
 
-    public function updateGroup(UpdateGroupRequest $request, $id)
+    public function updateGroup(UpdateGroupRequest $request, $faculty, $id)
     {
         /** @var Group $group */
         $group = $this->groupRepository->find($id);
@@ -169,7 +169,7 @@ class GroupController extends ApiController
         ]);
     }
 
-    public function deleteGroup($id)
+    public function deleteGroup($faculty, $id)
     {
         $group = $this->groupRepository->find($id);
         if ($group === null) {

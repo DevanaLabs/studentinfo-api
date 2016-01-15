@@ -4,18 +4,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('importStudents', 'StudentController@addStudentsFromCSV');
-
-Route::post('importClassrooms', 'ClassroomController@addClassroomsFromCSV');
-
-Route::post('importCourses', 'CourseController@addCoursesFromCSV');
-
-Route::post('importProfessors', 'ProfessorController@addProfessorsFromCSV');
-
-Route::post('importAssistants', 'AssistantController@addAssistantFromCSV');
-
-Route::post('importLecture', 'LectureController@AddLecturesFromCSV');
-
 Route::get('user/{user_id}', 'UserController@getProfile');
 
 Route::put('user/{user_id}', 'UserController@updateProfile');
@@ -39,6 +27,18 @@ Route::get('admin/{id}', ['middleware' => 'role:admin.retrieve', 'uses' => 'Admi
 Route::get('admins/{start?}/{count?}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@retrieveAdmins']);
 
 Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middleware\FacultyCheck:{faculty}']], function () {
+
+    Route::post('importStudents', 'StudentController@addStudentsFromCSV');
+
+    Route::post('importClassrooms', 'ClassroomController@addClassroomsFromCSV');
+
+    Route::post('importCourses', 'CourseController@addCoursesFromCSV');
+
+    Route::post('importProfessors', 'ProfessorController@addProfessorsFromCSV');
+
+    Route::post('importAssistants', 'AssistantController@addAssistantFromCSV');
+
+    Route::post('importLecture', 'LectureController@AddLecturesFromCSV');
 
     Route::post('wallpaper', 'SettingsController@setWallpaper');
 

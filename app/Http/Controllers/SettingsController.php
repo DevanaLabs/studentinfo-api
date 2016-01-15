@@ -39,7 +39,7 @@ class SettingsController extends ApiController
         $this->faculty = $this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName());
     }
 
-    public function setWallpaper(AddImageRequest $request)
+    public function setWallpaper(AddImageRequest $request, $faculty)
     {
         $facultyName = $this->faculty->getName();
         $handle      = $request->file('import')->move('../settings/' . $facultyName . '/wallpaper', 'wallpaper.png');
@@ -53,7 +53,7 @@ class SettingsController extends ApiController
         ]);
     }
 
-    public function setLanguage(SetLanguageRequest $request)
+    public function setLanguage(SetLanguageRequest $request, $faculty)
     {
         $this->faculty->getSettings()->setLanguage($request->get('language'));
         $this->facultyRepository->update($this->faculty);

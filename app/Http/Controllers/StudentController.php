@@ -72,7 +72,7 @@ class StudentController extends ApiController
      * @param CreateStudentRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function createStudent(CreateStudentRequest $request)
+    public function createStudent(CreateStudentRequest $request, $faculty)
     {
         /** @var Email $email */
         $email = new Email($request->get('email'));
@@ -146,7 +146,7 @@ class StudentController extends ApiController
         return $this->returnSuccess($students);
     }
 
-    public function updateStudent(UpdateStudentRequest $request, $id)
+    public function updateStudent(UpdateStudentRequest $request, $faculty, $id)
     {
         if ($this->studentRepository->find($id) === null) {
             return $this->returnError(500, StudentErrorCodes::STUDENT_NOT_IN_DB);
@@ -198,7 +198,7 @@ class StudentController extends ApiController
         ]);
     }
 
-    public function deleteStudent($id)
+    public function deleteStudent($faculty, $id)
     {
         $student = $this->studentRepository->find($id);
 
@@ -214,7 +214,7 @@ class StudentController extends ApiController
      * @param AddFromCSVRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function addStudentsFromCSV(AddFromCSVRequest $request)
+    public function addStudentsFromCSV(AddFromCSVRequest $request, $faculty)
     {
         $firstNameIndex   = $request->get('firstNameIndex');
         $lastNameIndex    = $request->get('lastNameIndex');

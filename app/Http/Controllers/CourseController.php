@@ -6,7 +6,6 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\CourseErrorCodes;
-use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateCourseRequest;
 use StudentInfo\Http\Requests\Update\UpdateCourseRequest;
@@ -44,7 +43,7 @@ class CourseController extends ApiController
         $this->guard               = $guard;
     }
 
-    public function createCourse(CreateCourseRequest $request)
+    public function createCourse(CreateCourseRequest $request, $faculty)
     {
         $code = $request->get('code');
         $course = new Course();
@@ -85,7 +84,7 @@ class CourseController extends ApiController
         return $this->returnSuccess($courses);
     }
 
-    public function updateCourse(UpdateCourseRequest $request, $id)
+    public function updateCourse(UpdateCourseRequest $request, $faculty, $id)
     {
         if ($this->courseRepository->find($id) === null) {
             return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB);
@@ -108,7 +107,7 @@ class CourseController extends ApiController
         ]);
     }
 
-    public function deleteCourse($id)
+    public function deleteCourse($faculty, $id)
     {
         $course = $this->courseRepository->find($id);
         if ($course === null) {
@@ -119,7 +118,7 @@ class CourseController extends ApiController
         return $this->returnSuccess();
     }
 
-    public function addCoursesFromCSV(AddFromCSVRequest $request)
+    public function addCoursesFromCSV(AddFromCSVRequest $request, $faculty)
     {
         $addedCourses = [];
 

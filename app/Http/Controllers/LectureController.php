@@ -4,12 +4,10 @@
 namespace StudentInfo\Http\Controllers;
 
 
-use Carbon\Carbon;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\ClassroomErrorCodes;
 use StudentInfo\ErrorCodes\CourseErrorCodes;
 use StudentInfo\ErrorCodes\LectureErrorCodes;
-use StudentInfo\ErrorCodes\ProfessorErrorCodes;
 use StudentInfo\ErrorCodes\TeacherErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
@@ -24,6 +22,7 @@ use StudentInfo\Repositories\CourseRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
 use StudentInfo\Repositories\TeacherRepositoryInterface;
+use StudentInfo\ValueObjects\Time;
 
 class LectureController extends ApiController
 {
@@ -76,7 +75,7 @@ class LectureController extends ApiController
         $this->groupRepository = $groupRepository;
     }
 
-    public function createLecture(CreateLectureRequest $request)
+    public function createLecture(CreateLectureRequest $request, $faculty)
     {
         /** @var Teacher $teacher */
         $teacher = $this->teacherRepository->find($request->get('teacherId'));
@@ -156,7 +155,7 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function updateLecture(UpdateLectureRequest $request, $id)
+    public function updateLecture(UpdateLectureRequest $request, $faculty, $id)
     {
         if ($this->lectureRepository->find($id) === null) {
             return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
@@ -216,7 +215,7 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function deleteLecture($id)
+    public function deleteLecture($faculty, $id)
     {
         $lecture = $this->lectureRepository->find($id);
         if ($lecture === null) {
@@ -227,7 +226,7 @@ class LectureController extends ApiController
         return $this->returnSuccess();
     }
 
-    public function AddLecturesFromCSV(AddFromCSVRequest $request)
+    public function AddLecturesFromCSV(AddFromCSVRequest $request, $faculty)
     {
         $handle = $request->file('import');
 
