@@ -69,6 +69,11 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
         return Carbon::instance($this->getRegisterTokenCreatedAt())->diffInHours(Carbon::now()) > 48;
     }
 
+    public function getRoute()
+    {
+        return $this->organisation->getSlug().'.studentinfo.rs';
+    }
+
     /**
      * @return Faculty
      */

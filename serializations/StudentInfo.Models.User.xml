@@ -22,6 +22,16 @@
                   expose="true"
                   groups="limited,all"
                 />
+        <property name="organisation"
+                  serialized-name="organisation"
+                  expose="true"
+                  groups="limited,all"
+                />
+        <virtual-property method="getRoute"
+                          serialized-name="route"
+                          expose="true"
+                          groups="limited,all"
+                />
         <virtual-property method="isRegisterTokenExpired"
                   serialized-name="registerTokenExpired"
                   groups="limited,all"

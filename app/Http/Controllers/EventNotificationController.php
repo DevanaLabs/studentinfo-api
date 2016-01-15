@@ -161,8 +161,6 @@ class EventNotificationController extends ApiController
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
-        return $this->returnSuccess([
-            'notifications' => $event->getNotifications(),
-        ]);
+        return $this->returnSuccess($event->getNotifications()->getValues());
     }
 }
