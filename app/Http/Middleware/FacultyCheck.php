@@ -34,15 +34,15 @@ class FacultyCheck
      */
     public function handle($request, Closure $next)
     {
-//        if (!$this->auth->check()) {
-//            return redirect()->guest('/');
-//        }
-//
-//        if ($this->auth->check()) {
-//            if ($request->route()->parameters()['faculty'] != $request->user()->getOrganisation()->getSlug()) {
-//                return redirect()->guest('/');
-//            }
-//        }
+        if (!$this->auth->check()) {
+            return redirect()->guest('/');
+        }
+
+        if ($this->auth->check()) {
+            if ($request->route()->parameters()['faculty'] != $request->user()->getOrganisation()->getSlug()) {
+                return redirect()->guest('/');
+            }
+        }
 
         return $next($request);
     }
