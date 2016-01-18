@@ -37,6 +37,7 @@ class FeedbackController extends ApiController
     {
         $feedback = new Feedback();
         $feedback->setText($request->get('text'));
+        $feedback->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->feedbackRepository->create($feedback);
 
@@ -64,9 +65,9 @@ class FeedbackController extends ApiController
 
     public function retrieveFeedbacks($faculty, $start = 0, $count = 2000)
     {
-        $faculty = $this->feedbackRepository->all($faculty, $start, $count);
+        $feedback = $this->feedbackRepository->all($faculty, $start, $count);
 
-        return $this->returnSuccess($faculty);
+        return $this->returnSuccess($feedback);
     }
 
     public function updateFeedback(UpdateFeedbackRequest $request, $id)
@@ -79,6 +80,7 @@ class FeedbackController extends ApiController
         $feedback = $this->feedbackRepository->find($id);
 
         $feedback->setText($request->get('text'));
+        $feedback->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->feedbackRepository->update($feedback);
 
