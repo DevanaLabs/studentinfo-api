@@ -8,6 +8,7 @@ use StudentInfo\ErrorCodes\FeedbackErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateFeedbackRequest;
 use StudentInfo\Http\Requests\Update\UpdateFeedbackRequest;
 use StudentInfo\Models\Feedback;
+use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\FeedbackRepositoryInterface;
 
 class FeedbackController extends ApiController
@@ -18,6 +19,11 @@ class FeedbackController extends ApiController
     protected $feedbackRepository;
 
     /**
+     * @var FacultyRepositoryInterface
+     */
+    protected $facultyRepository;
+
+    /**
      * @var Guard
      */
     protected $guard;
@@ -25,11 +31,13 @@ class FeedbackController extends ApiController
     /**
      * FacultyController constructor.
      * @param FeedbackRepositoryInterface $feedbackRepository
+     * @param FacultyRepositoryInterface  $facultyRepository
      * @param Guard                       $guard
      */
-    public function __construct(FeedbackRepositoryInterface $feedbackRepository, Guard $guard)
+    public function __construct(FeedbackRepositoryInterface $feedbackRepository, FacultyRepositoryInterface $facultyRepository, Guard $guard)
     {
         $this->feedbackRepository = $feedbackRepository;
+        $this->facultyRepository = $facultyRepository;
         $this->guard              = $guard;
     }
 
@@ -37,7 +45,7 @@ class FeedbackController extends ApiController
     {
         $feedback = new Feedback();
         $feedback->setText($request->get('text'));
-        $feedback->setOrganisation($this->guard->user()->getOrganisation());
+        $feedback->setOrganisation($this->facultyRepository->findFacultyByName("Racunarski Fakultet"));
 
         $this->feedbackRepository->create($feedback);
 
@@ -80,7 +88,7 @@ class FeedbackController extends ApiController
         $feedback = $this->feedbackRepository->find($id);
 
         $feedback->setText($request->get('text'));
-        $feedback->setOrganisation($this->guard->user()->getOrganisation());
+        $feedback->setOrganisation($this->facultyRepository->findFacultyByName("Racunarski Fakultet"));
 
         $this->feedbackRepository->update($feedback);
 
