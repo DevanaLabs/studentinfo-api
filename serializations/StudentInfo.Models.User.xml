@@ -26,5 +26,9 @@
                           serialized-name="registerTokenExpired"
                           groups="limited,all"
                           since-version="1.0"/>
+        <virtual-property method="getUserType"
+                          serialized-name="userType"
+                          groups="limited,all"
+                          since-version="1.0"/>
     </class>
 </serializer>
