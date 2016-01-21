@@ -214,7 +214,7 @@ class StudentController extends ApiController
      * @param AddFromCSVRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function addStudentsFromCSV(AddFromCSVRequest $request, $faculty)
+    public function addStudentsFromCSV(AddFromCSVRequest $request)
     {
         $firstNameIndex   = $request->get('firstNameIndex');
         $lastNameIndex    = $request->get('lastNameIndex');
@@ -226,7 +226,7 @@ class StudentController extends ApiController
         ) {
             $firstNameIndex = 0;
             $lastNameIndex  = 1;
-            $emailIndex     = 2;
+            $emailIndex = 0;
             $indexNumberIndex = 3;
             $yearIndex      = 4;
         }
@@ -234,6 +234,9 @@ class StudentController extends ApiController
 
         $file_path = $handle->getPathname();
         $resource  = fopen($file_path, "r");
+
+        $organisation = $this->guard->user()->getOrganisation();
+
         while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
             $firstName = $data[$firstNameIndex];
             $lastName  = $data[$lastNameIndex];
@@ -244,8 +247,9 @@ class StudentController extends ApiController
             $year        = $data[$yearIndex];
 
             if ($this->userRepository->findByEmail($email)) {
-                return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL);
+                return $this->returnError(500, UserErrorCodes::NOT_UNIQUE_EMAIL, $email->getEmail());
             }
+
             if ($this->studentRepository->findByIndexNumber($indexNumber)) {
                 return $this->returnError(500, StudentErrorCodes::STUDENT_NOT_UNIQUE_INDEX);
             }
@@ -258,7 +262,7 @@ class StudentController extends ApiController
             $student->setYear($year);
             $student->setPassword(new Password('password'));
             $student->generateRegisterToken();
-            $student->setOrganisation($this->facultyRepository->findFacultyByName('Racunarski fakultet'));
+            $student->setOrganisation($organisation);
 
             $this->studentRepository->persist($student);
         }

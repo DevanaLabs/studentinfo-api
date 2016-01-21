@@ -67,7 +67,19 @@ class RegisterController extends ApiController
         foreach ($emails as $email) {
             /** @var User $user */
             $user = $this->userRepository->findByEmail(new Email($email));
+
+            if ($user === null) {
+                $failedToSend[] = $email;
+                continue;
+            }
+
+            if ($user->getOrganisation()->getId() != $this->guard->user()->getOrganisation()->getId()) {
+                $failedToSend[] = $email;
+                continue;
+            }
+
             $user->generateRegisterToken();
+            $this->userRepository->update($user);
 
             $this->mailer->queue('emails.register_mail_template', [
                 'email' => $email,
@@ -77,7 +89,7 @@ class RegisterController extends ApiController
                 $message->to($email);
                 $message->subject('Registration');
             });
-            $this->userRepository->update($user);
+
             // TODO : Check for failed emails
 
         }
@@ -103,7 +115,6 @@ class RegisterController extends ApiController
         if ($user->isRegisterTokenExpired()) {
             return $this->returnForbidden(UserErrorCodes::EXPIRED_REGISTER_TOKEN);
         }
-
         return $this->returnSuccess([
             'user' => $user
         ]);
@@ -116,9 +127,6 @@ class RegisterController extends ApiController
      */
     public function createPassword(CreatePasswordPostRequest $request, $registerToken)
     {
-        if ($registerToken == 0) {
-            return $this->returnForbidden(UserErrorCodes::INVALID_REGISTER_TOKEN);
-        }
         /** @var User $user */
         $user = $this->userRepository->findByRegisterToken($registerToken);
 
@@ -130,7 +138,7 @@ class RegisterController extends ApiController
             return $this->returnForbidden(UserErrorCodes::EXPIRED_REGISTER_TOKEN);
         }
 
-        $user->setRegisterToken(0);
+        $user->setRegisterToken('');
         $user->setPassword(new Password($request->get('password')));
 
         $this->userRepository->update($user);
@@ -162,5 +170,4 @@ class RegisterController extends ApiController
 
         return $this->returnSuccess();
     }
-
 }

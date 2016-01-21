@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\UserLoginPostRequest;
 use StudentInfo\Repositories\UserRepositoryInterface;
+use StudentInfo\ValueObjects\Email;
 
 class AuthController extends ApiController
 {
@@ -53,12 +54,20 @@ class AuthController extends ApiController
     {
 
         $input = $request->only(['email', 'password']);
+
+        $user = $this->userRepository->findByEmail(new Email($input['email']));
+
+        if (($user->getRegisterToken() != "") && ($user->getRegisterToken() != "0")) {
+            return $this->returnForbidden(UserErrorCodes::YOU_NEED_TO_REGISTER_FIRST);
+        }
+
         if (!$guard->attempt([
             'email.email' => $input['email'],
             'password'    => $input['password']
         ])) {
             return $this->returnForbidden(UserErrorCodes::ACCESS_DENIED);
         }
+
         return $this->returnSuccess([
             'user' => $guard->user()
         ]);

@@ -3,7 +3,6 @@
 namespace StudentInfo\Http\Requests;
 
 use Illuminate\Contracts\Auth\Guard;
-use StudentInfo\Models\User;
 
 class IssueTokenPostRequest extends Request
 {
@@ -15,12 +14,13 @@ class IssueTokenPostRequest extends Request
      */
     public function authorize(Guard $guard)
     {
-        /** @var User $user */
-        $user = $guard->user();
-        if ($user === null) {
-            return false;
-        }
-        return $user->hasPermissionTo('student.create');
+//        /** @var User $user */
+//        $user = $guard->user();
+//        if ($user === null) {
+//            return false;
+//        }
+//        return $user->hasPermissionTo('student.create');
+        return true;
     }
 
     /**
