@@ -4,6 +4,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('test/mail', 'RegisterController@testEmail');
+
 Route::get('user/{user_id}', 'UserController@getProfile');
 
 Route::put('user/{user_id}', 'UserController@updateProfile');
