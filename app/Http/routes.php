@@ -4,7 +4,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('test/mail', 'RegisterController@testEmail');
+Route::get('test/mail', 'TestController@testEmail');
 
 Route::get('user/{user_id}', 'UserController@getProfile');
 

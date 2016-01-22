@@ -163,24 +163,4 @@ class RegisterController extends ApiController
         return $this->returnSuccess();
     }
 
-
-    public function testEmail(IssueTokenPostRequest $request)
-    {
-        if (!in_array($request->ip(), ['79.175.125.102', '77.105.2.42', '192.168.10.1'])){
-            return $this->returnForbidden(UserErrorCodes::YOU_DO_N0T_HAVE_PERMISSION_TO_SEE_THIS);
-        }
-        $emails = explode(',',$request->get('emails'));
-        foreach ($emails as $email) {
-
-            $this->mailer->queue('emails.register_mail_template', [
-                'email' => $email,
-                'token' => "Cao ljudi. ovo je test lol",
-            ], function (Message $message) use ($email) {
-                $message->from('us@example.com', 'Laravel');
-                $message->to($email);
-                $message->subject('Poziv za registraciju na studentinfo.rs');
-            });
-        }
-    }
-
 }

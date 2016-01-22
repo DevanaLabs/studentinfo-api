@@ -5,7 +5,7 @@ namespace StudentInfo\Http\Requests;
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Models\User;
 
-class IssueTokenPostRequest extends Request
+class SendEmailRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,11 +16,12 @@ class IssueTokenPostRequest extends Request
     public function authorize(Guard $guard)
     {
         /** @var User $user */
-        $user = $guard->user();
-        if ($user === null) {
-            return false;
-        }
-        return $user->hasPermissionTo('student.create');
+//        $user = $guard->user();
+//        if ($user === null) {
+//            return false;
+//        }
+//        return $user->hasPermissionTo('student.create');
+        return true;
     }
 
     /**
@@ -30,8 +31,6 @@ class IssueTokenPostRequest extends Request
      */
     public function rules()
     {
-        return [
-            'emails' => 'required|array',
-        ];
+        return [];
     }
 }
