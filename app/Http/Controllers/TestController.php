@@ -35,9 +35,9 @@ class TestController extends ApiController
 
     public function testEmail(SendEmailRequest $request)
     {
-        if (!in_array($request->ip(), ['79.175.125.102', '77.105.2.42', '192.168.10.1'])){
-            return $this->returnForbidden(UserErrorCodes::YOU_DO_N0T_HAVE_PERMISSION_TO_SEE_THIS);
-        }
+//        if (!in_array($request->ip(), ['79.175.125.102', '77.105.2.42', '192.168.10.1'])){
+//            return $this->returnForbidden(UserErrorCodes::YOU_DO_N0T_HAVE_PERMISSION_TO_SEE_THIS);
+//        }
         $emails = explode(',',$request->get('emails'));
         foreach ($emails as $email) {
 
