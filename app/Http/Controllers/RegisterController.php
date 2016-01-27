@@ -5,11 +5,11 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Auth\Guard;
 use Illuminate\Contracts\Mail\MailQueue;
-use Illuminate\Mail\Message;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\CreatePasswordPostRequest;
 use StudentInfo\Http\Requests\IssueTokenPostRequest;
-use StudentInfo\Http\Requests\UpdateTokenRequest;
+use StudentInfo\Jobs\SendEmails;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\UserRepositoryInterface;
 use StudentInfo\ValueObjects\Email;
@@ -17,6 +17,7 @@ use StudentInfo\ValueObjects\Password;
 
 class RegisterController extends ApiController
 {
+    use DispatchesJobs;
     /**
      * @var Guard
      */
@@ -25,10 +26,7 @@ class RegisterController extends ApiController
      * @var MailQueue
      */
     protected $mailer;
-    /**
-     * @var array string
-     */
-    protected $failedToSend = [];
+
     /**
      * @var UserRepositoryInterface
      */
@@ -63,6 +61,8 @@ class RegisterController extends ApiController
     public function issueRegisterTokens(IssueTokenPostRequest $request)
     {
         $emails = $request->get('emails');
+        $sending = [];
+        $failedToSend = [];
 
         foreach ($emails as $email) {
             /** @var User $user */
@@ -81,23 +81,13 @@ class RegisterController extends ApiController
             $user->generateRegisterToken();
             $this->userRepository->update($user);
 
-            $this->mailer->queue('emails.register_mail_template', [
-                'email' => $email,
-                'token' => $user->getRegisterToken(),
-            ], function (Message $message) use ($email) {
-                $message->from('us@example.com', 'Laravel');
-                $message->to($email);
-                $message->subject('Registration');
-            });
-
-            // TODO : Check for failed emails
-
+            $this->dispatch(new SendEmails($user, $email));
+            $sending[] = $email;
         }
         return $this->returnSuccess([
-            'successful'   => $emails,
-            'unsuccessful' => $this->failedToSend,
+            'sending'      => $sending,
+            'unsuccessful' => $failedToSend,
         ]);
-
     }
 
     /**

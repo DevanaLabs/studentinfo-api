@@ -14,16 +14,21 @@ class AuthController extends ApiController
     /**
      * @var UserRepositoryInterface
      */
-    private $userRepository;
+    protected $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    /**
+     * @var Guard
+     */
+    protected $guard;
+
+    public function __construct(UserRepositoryInterface $userRepository, Guard $guard)
     {
         $this->userRepository = $userRepository;
+        $this->guard = $guard;
     }
 
     /**
      * @param UserLoginPostRequest $request
-     * @param Guard                $guard
      * @return \Illuminate\Http\Response
      *
      * @api {post} /auth Authenticate the User
@@ -50,7 +55,7 @@ class AuthController extends ApiController
      *       {"error":{"errorCode":"Access denied","message":"The email or password is incorrect"}}
      *     }
      */
-    public function login(UserLoginPostRequest $request, Guard $guard)
+    public function login(UserLoginPostRequest $request)
     {
 
         $input = $request->only(['email', 'password']);
@@ -61,7 +66,7 @@ class AuthController extends ApiController
             return $this->returnForbidden(UserErrorCodes::YOU_NEED_TO_REGISTER_FIRST);
         }
 
-        if (!$guard->attempt([
+        if (!$this->guard->attempt([
             'email.email' => $input['email'],
             'password'    => $input['password']
         ])) {
@@ -69,23 +74,23 @@ class AuthController extends ApiController
         }
 
         return $this->returnSuccess([
-            'user' => $guard->user()
+            'user' => $user,
         ]);
     }
 
     /**
-     * @param Guard $guard
+     * @return \Illuminate\Http\Response
+     * @internal param Guard $guard
      *
      * @api {delete}
      *
      * @apiName Logout
      * @apiGroup User
      *
-     * @return \Illuminate\Http\Response
      */
-    public function logout(Guard $guard)
+    public function logout()
     {
-        $guard->logout();
+        $this->guard->logout();
 
         return $this->returnSuccess();
     }

@@ -286,6 +286,28 @@ class Student extends \StudentInfo\Models\Student implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getUserType()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUserType', array());
+
+        return parent::getUserType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRoute()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRoute', array());
+
+        return parent::getRoute();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getOrganisation()
     {
 
@@ -428,6 +450,17 @@ class Student extends \StudentInfo\Models\Student implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', array($email));
 
         return parent::setEmail($email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRegisterToken($registerToken)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegisterToken', array($registerToken));
+
+        return parent::setRegisterToken($registerToken);
     }
 
     /**
