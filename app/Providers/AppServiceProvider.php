@@ -3,7 +3,9 @@
 namespace StudentInfo\Providers;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use Queue;
 use StudentInfo\Models\Admin;
 use StudentInfo\Models\Assistant;
 use StudentInfo\Models\Classroom;
@@ -52,7 +54,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Queue::after(function ($connection, $job, $data) {
+            Log::info("Email was sent successfully at: " . time());
+        });
     }
 
     /**

@@ -198,6 +198,28 @@ class Admin extends \StudentInfo\Models\Admin implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function getUserType()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUserType', array());
+
+        return parent::getUserType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRoute()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRoute', array());
+
+        return parent::getRoute();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getOrganisation()
     {
 
@@ -340,6 +362,17 @@ class Admin extends \StudentInfo\Models\Admin implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', array($email));
 
         return parent::setEmail($email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRegisterToken($registerToken)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegisterToken', array($registerToken));
+
+        return parent::setRegisterToken($registerToken);
     }
 
     /**

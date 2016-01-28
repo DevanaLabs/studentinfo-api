@@ -80,5 +80,7 @@ return [
 
     \StudentInfo\ErrorCodes\TeacherErrorCodes::TEACHER_DOES_NOT_BELONG_TO_THIS_FACULTY           => 'Teacher does not belong to this faculty',
 
-    \StudentInfo\ErrorCodes\UserErrorCodes::YOU_DO_N0T_HAVE_PERMISSION_TO_SEE_THIS               => 'You do not have permission to see this',
+    \StudentInfo\ErrorCodes\UserErrorCodes::YOU_NEED_TO_REGISTER_FIRST             => 'You need to register first',
+
+    \StudentInfo\ErrorCodes\UserErrorCodes::YOU_DO_N0T_HAVE_PERMISSION_TO_SEE_THIS => 'You do not have permission to see this page',
 ];

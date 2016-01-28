@@ -22,6 +22,11 @@
                   expose="true"
                   groups="limited,all"
                 />
+        <property name="organisation"
+                  serialized-name="faculty"
+                  expose="true"
+                  groups="limited,all"
+                />
         <virtual-property method="isRegisterTokenExpired"
                           serialized-name="registerTokenExpired"
                           groups="limited,all"

@@ -67,7 +67,7 @@ class FacultyController extends ApiController
 
     public function retrieveFaculties($start = 0, $count = 2000)
     {
-        $faculty = $this->facultyRepository->all($start, $count);
+        $faculty = $this->facultyRepository->all(null, $start, $count);
 
         return $this->returnSuccess($faculty);
     }

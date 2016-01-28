@@ -8,7 +8,7 @@ Route::get('test/mail', 'TestController@testEmail');
 
 Route::get('user/{user_id}', 'UserController@getProfile');
 
-Route::put('user/{user_id}', 'UserController@updateProfile');
+Route::post('user/{user_id}', 'UserController@updateProfile');
 
 Route::post('auth', 'AuthController@login');
 
@@ -20,13 +20,25 @@ Route::get('register/{registerToken}', 'RegisterController@registerStudent');
 
 Route::post('register/{registerToken}', 'RegisterController@createPassword');
 
+Route::post('faculty', 'FacultyController@createFaculty');
+
 Route::get('faculty/{id}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@retrieveFaculty']);
 
 Route::get('faculties/{start?}/{count?}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@retrieveFaculties']);
 
+Route::put('faculty/{id}', ['middleware' => 'role:faculty.update', 'uses' => 'FacultyController@updateFaculty']);
+
+Route::delete('faculty/{id}', ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
+
+Route::post('admin', 'AdminController@createAdmin');
+
 Route::get('admin/{id}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@retrieveAdmin']);
 
 Route::get('admins/{start?}/{count?}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@retrieveAdmins']);
+
+Route::put('admin/{id}', ['middleware' => 'role:admin.update', 'uses' => 'AdminController@updateAdmin']);
+
+Route::delete('admin/{id}', ['middleware' => 'role:admin.delete', 'uses' => 'AdminController@deleteAdmin']);
 
 Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middleware\FacultyCheck:{faculty}']], function () {
 
@@ -68,13 +80,9 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middle
 
     Route::post('group', 'GroupController@createGroup');
 
-    Route::post('admin', 'AdminController@createAdmin');
-
     Route::post('lectureNotification', 'LectureNotificationController@createNotification');
 
     Route::post('eventNotification', 'EventNotificationController@createNotification');
-
-    Route::post('faculty', 'FacultyController@createFaculty');
 
     Route::post('feedback', 'FeedbackController@createFeedback');
 
@@ -170,10 +178,6 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middle
 
     Route::put('globalEvent/{id}', ['middleware' => 'role:event.update', 'uses' => 'GlobalEventController@updateEvent']);
 
-    Route::put('admin/{id}', ['middleware' => 'role:admin.update', 'uses' => 'AdminController@updateAdmin']);
-
-    Route::put('faculty/{id}', ['middleware' => 'role:faculty.update', 'uses' => 'FacultyController@updateFaculty']);
-
     Route::put('feedback/{id}', ['middleware' => 'role:feedback.update', 'uses' => 'FeedbackController@updateFeedback']);
 
     Route::put('eventNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'EventNotificationController@updateNotification']);
@@ -195,10 +199,6 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middle
     Route::delete('event/{id}', ['middleware' => 'role:event.delete', 'uses' => 'EventController@deleteEvent']);
 
     Route::delete('student/{id}', ['middleware' => 'role:student.delete', 'uses' => 'StudentController@deleteStudent']);
-
-    Route::delete('admin/{id}', ['middleware' => 'role:admin.delete', 'uses' => 'AdminController@deleteAdmin']);
-
-    Route::delete('faculty/{id}', ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
 
     Route::delete('feedback/{id}', ['middleware' => 'role:feedback.delete', 'uses' => 'FeedbackController@deleteFeedback']);
 
