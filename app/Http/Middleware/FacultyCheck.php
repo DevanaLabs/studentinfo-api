@@ -35,7 +35,18 @@ class FacultyCheck
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->auth->check() || (($this->auth->check()) && $request->route()->parameters()['faculty'] != $request->user()->getOrganisation()->getSlug())) {
+        if (!$this->auth->check()){
+            $response = new Response([
+                'error' => [
+                    'message' => 'You are not logged in',
+                ],
+            ], 403);
+
+            $response->header('Content-Type', 'application/json');
+
+            return $response;
+        }
+        if ($request->route()->parameters()['faculty'] != $request->user()->getOrganisation()->getSlug()) {
             $response = new Response([
                 'error' => [
                     'message' => 'You do not have permission to view this page',
