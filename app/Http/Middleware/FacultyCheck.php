@@ -4,7 +4,6 @@ namespace StudentInfo\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\Response;
 
 class FacultyCheck
 {
@@ -35,28 +34,28 @@ class FacultyCheck
      */
     public function handle($request, Closure $next)
     {
-        if (!$this->auth->check()){
-            $response = new Response([
-                'error' => [
-                    'message' => 'You are not logged in',
-                ],
-            ], 403);
-
-            $response->header('Content-Type', 'application/json');
-
-            return $response;
-        }
-        if ($request->route()->parameters()['faculty'] != $request->user()->getOrganisation()->getSlug()) {
-            $response = new Response([
-                'error' => [
-                    'message' => 'You do not have permission to view this page',
-                ],
-            ], 403);
-
-            $response->header('Content-Type', 'application/json');
-
-            return $response;
-        }
+//        if (!$this->auth->check()){
+//            $response = new Response([
+//                'error' => [
+//                    'message' => 'You are not logged in',
+//                ],
+//            ], 403);
+//
+//            $response->header('Content-Type', 'application/json');
+//
+//            return $response;
+//        }
+//        if ($request->route()->parameters()['faculty'] != $request->user()->getOrganisation()->getSlug()) {
+//            $response = new Response([
+//                'error' => [
+//                    'message' => 'You do not have permission to view this page',
+//                ],
+//            ], 403);
+//
+//            $response->header('Content-Type', 'application/json');
+//
+//            return $response;
+//        }
 
         return $next($request);
     }
