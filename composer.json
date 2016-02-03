@@ -14,13 +14,15 @@
     "laravel-doctrine/migrations": "^1.0",
     "laravel-doctrine/acl": "^1.0",
     "filp/whoops": "~1.0",
-    "jms/serializer": "^1.1"
+    "jms/serializer": "^1.1",
+    "davibennun/laravel-push-notification": "dev-laravel5",
+    "lucadegasperi/oauth2-server-laravel": " 5.1.*"
   },
   "require-dev": {
     "behat/behat": "~2.5",
     "behat/mink": "~1.5",
     "behat/mink-goutte-driver": "~1.0",
-    "guzzlehttp/guzzle": "4.*",
+    "guzzlehttp/guzzle": "6.0",
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "0.9.*",
     "phpunit/phpunit": "3.7.*",

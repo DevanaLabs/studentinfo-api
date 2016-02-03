@@ -3,18 +3,27 @@
 namespace StudentInfo\Http\Requests\Create;
 
 
+use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Http\Requests\Request;
+use StudentInfo\Models\User;
 
-class CreateFeedbackRequest extends Request
+class CreateDeviceTokenRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
      *
+     * @param Guard $guard
      * @return bool
      */
-    public function authorize()
+    public function authorize(Guard $guard)
     {
+        /** @var User $user */
+        $user = $guard->user();
+        if ($user === null) {
+            return false;
+        }
         return true;
+
     }
 
     /**
@@ -25,7 +34,8 @@ class CreateFeedbackRequest extends Request
     public function rules()
     {
         return [
-            'text' => 'required',
+            'token'  => 'required',
+            'userId' => 'required',
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace StudentInfo\Models;
 
 use Carbon\Carbon;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use LaravelDoctrine\ACL\Contracts\BelongsToOrganisation as BelongsToOrganisationContract;
 use LaravelDoctrine\ACL\Contracts\HasRoles as HasRolesContract;
@@ -10,11 +11,12 @@ use LaravelDoctrine\ACL\Mappings as ACL;
 use LaravelDoctrine\ACL\Organisations\BelongsToOrganisation;
 use LaravelDoctrine\ACL\Permissions\HasPermissions;
 use LaravelDoctrine\ORM\Contracts\Auth\Authenticatable;
+use League\OAuth2\Server\Grant\AbstractGrant;
 use StudentInfo\ValueObjects\Email;
 use StudentInfo\ValueObjects\Password;
 
 
-abstract class User implements HasRolesContract, Authenticatable, BelongsToOrganisationContract
+abstract class User extends AbstractGrant implements HasRolesContract, Authenticatable, BelongsToOrganisationContract
 {
     use HasPermissions;
     use BelongsToOrganisation;
@@ -23,14 +25,17 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
      * @var Password
      */
     protected $password;
+
     /**
      * @var int
      */
     protected $id;
+
     /**
      * @var string
      */
     protected $firstName;
+
     /**
      * @var string
      */
@@ -60,6 +65,19 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
      * @var Faculty
      */
     protected $organisation;
+
+    /**
+     * @var ArrayCollection|DeviceToken[]
+     */
+    protected $tokens;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->tokens = new ArrayCollection();
+    }
 
     /**
      * @return bool
@@ -242,4 +260,48 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
         return 'remember_token';
     }
 
+    /**
+     * @return ArrayCollection|DeviceToken[]
+     */
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+
+    /**
+     * @param ArrayCollection|DeviceToken[] $tokens
+     */
+    public function setTokens($tokens)
+    {
+        $this->tokens = $tokens;
+    }
+
+    /**
+     * Complete the grant flow
+     *
+     * @return array
+     */
+    public function completeFlow()
+    {
+        // TODO: Implement completeFlow() method.
+    }
+
+    /**
+     * @param $username
+     * @param $password
+     * @return bool
+     */
+    public function verify($username, $password)
+    {
+        $credentials = [
+            'email'    => $username,
+            'password' => $password,
+        ];
+
+        if (Auth::once($credentials)) {
+            return Auth::user()->id;
+        }
+
+        return false;
+    }
 }

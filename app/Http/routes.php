@@ -4,6 +4,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('oauth/access_token', 'AuthController@login');
+
+Route::get('pushNotification', 'PushNotificationController@pushNotification');
+
 Route::get('user/{user_id}', 'UserController@getProfile');
 
 Route::post('user/{user_id}', 'UserController@updateProfile');
@@ -27,6 +31,16 @@ Route::get('faculties/{start?}/{count?}', ['middleware' => 'role:faculty.retriev
 Route::put('faculty/{id}', ['middleware' => 'role:faculty.update', 'uses' => 'FacultyController@updateFaculty']);
 
 Route::delete('faculty/{id}', ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
+
+Route::post('deviceToken', 'DeviceTokenController@createDeviceToken');
+
+Route::get('deviceToken/{id}', ['middleware' => 'role:token.retrieve', 'uses' => 'DeviceTokenController@retrieveDeviceToken']);
+
+Route::get('deviceTokens/{start?}/{count?}', ['middleware' => 'role:token.retrieve', 'uses' => 'DeviceTokenController@retrieveDeviceTokens']);
+
+Route::put('deviceToken/{id}', ['middleware' => 'role:token.update', 'uses' => 'DeviceTokenController@updateDeviceToken']);
+
+Route::delete('deviceToken/{id}', ['middleware' => 'role:token.delete', 'uses' => 'DeviceTokenController@deleteDeviceToken']);
 
 Route::post('admin', 'AdminController@createAdmin');
 

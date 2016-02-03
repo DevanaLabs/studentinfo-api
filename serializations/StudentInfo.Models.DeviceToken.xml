@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="StudentInfo\Models\DeviceToken" exclusion-policy="ALL">
+        <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
+        <property name="id"
+                  serialized-name="id"
+                  expose="true"
+                  groups="limited,all"
+                />
+        <property name="token"
+                  serialized-name="token"
+                  expose="true"
+                  groups="limited,all"
+                />
+        <property name="user"
+                  serialized-name="user"
+                  expose="true"
+                  max-depth="2"
+                  groups="all"
+                />
+    </class>
+</serializer>

@@ -11,6 +11,7 @@ use StudentInfo\Models\Assistant;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Models\Course;
 use StudentInfo\Models\CourseEvent;
+use StudentInfo\Models\DeviceToken;
 use StudentInfo\Models\Event;
 use StudentInfo\Models\Faculty;
 use StudentInfo\Models\Feedback;
@@ -29,6 +30,7 @@ use StudentInfo\Repositories\DoctrineAssistantRepository;
 use StudentInfo\Repositories\DoctrineClassroomRepository;
 use StudentInfo\Repositories\DoctrineCourseEventRepository;
 use StudentInfo\Repositories\DoctrineCourseRepository;
+use StudentInfo\Repositories\DoctrineDeviceTokenRepository;
 use StudentInfo\Repositories\DoctrineEventNotificationRepository;
 use StudentInfo\Repositories\DoctrineEventRepository;
 use StudentInfo\Repositories\DoctrineFacultyRepository;
@@ -189,6 +191,12 @@ class AppServiceProvider extends ServiceProvider
             return new DoctrineLectureNotificationRepository(
                 $app['em'],
                 new ClassMetaData(Notification::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\DeviceTokenRepositoryInterface', function ($app) {
+            return new DoctrineDeviceTokenRepository(
+                $app['em'],
+                new ClassMetaData(DeviceToken::class)
             );
         });
     }

@@ -2,19 +2,17 @@
 
 namespace StudentInfo\Http\Requests;
 
-use Illuminate\Contracts\Auth\Guard;
 
 class UserLoginPostRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @param Guard $guard
      * @return bool
      */
-    public function authorize(Guard $guard)
+    public function authorize()
     {
-        return !$guard->check();
+        return true;
     }
 
     /**
@@ -25,7 +23,7 @@ class UserLoginPostRequest extends Request
     public function rules()
     {
         return [
-            'email'    => 'required|email',
+            'username' => 'required|email',
             'password' => 'required',
         ];
     }

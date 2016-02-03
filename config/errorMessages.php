@@ -83,4 +83,6 @@ return [
     \StudentInfo\ErrorCodes\UserErrorCodes::YOU_NEED_TO_REGISTER_FIRST             => 'You need to register first',
 
     \StudentInfo\ErrorCodes\UserErrorCodes::YOU_DO_N0T_HAVE_PERMISSION_TO_SEE_THIS => 'You do not have permission to see this page',
+
+    \StudentInfo\ErrorCodes\DeviceTokenErrorCodes::DEVICE_TOKEN_DOES_NOT_EXIST => 'Device token does not exist',
 ];
