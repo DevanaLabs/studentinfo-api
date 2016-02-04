@@ -43,6 +43,7 @@ class SendFeedback extends Job implements SelfHandling
                 'email'    => $email,
                 'feedback' => $this->feedback,
             ], function (Message $message) use ($email) {
+                $message->from('feedback@studentinfo.rs', 'Feedback - StudentInfo');
                 $message->to($email);
                 $message->subject('Registration');
             });
