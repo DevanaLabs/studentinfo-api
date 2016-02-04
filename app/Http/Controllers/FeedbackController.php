@@ -44,7 +44,6 @@ class FeedbackController extends ApiController
 
     public function createFeedback(CreateFeedbackRequest $request, $faculty)
     {
-        dd(1);
         $feedback = new Feedback();
         $feedback->setText($request->get('text'));
         $feedback->setOrganisation($this->facultyRepository->findFacultyByName("Racunarski Fakultet"));
