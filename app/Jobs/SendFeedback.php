@@ -31,12 +31,8 @@ class SendFeedback extends Job implements SelfHandling
     public function handle(Mailer $mailer)
     {
         $emails = [
+            'lazar.travica@devana.rs',
             'nebojsa.urosevic@labs.devana.rs',
-            'nikola.vukovic@labs.devana.rs',
-            'nikola.ninkovic@labs.devana.rs',
-            'milan.vucic@labs.devana.rs',
-            'vladimir.prelovac@devana.rs',
-            'bogdan.habic@devana.rs',
         ];
         foreach ($emails as $email) {
             $mailer->send('emails.feedback_mail_template', [
