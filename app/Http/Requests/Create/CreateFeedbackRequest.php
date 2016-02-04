@@ -24,6 +24,8 @@ class CreateFeedbackRequest extends Request
      */
     public function rules()
     {
-        return [];
+        return [
+            'text' => 'required',
+        ];
     }
 }

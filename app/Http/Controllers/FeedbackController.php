@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\FeedbackErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateFeedbackRequest;
 use StudentInfo\Http\Requests\Update\UpdateFeedbackRequest;
+use StudentInfo\Jobs\SendFeedback;
 use StudentInfo\Models\Feedback;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\FeedbackRepositoryInterface;
@@ -43,9 +44,12 @@ class FeedbackController extends ApiController
 
     public function createFeedback(CreateFeedbackRequest $request, $faculty)
     {
+        dd(1);
         $feedback = new Feedback();
         $feedback->setText($request->get('text'));
         $feedback->setOrganisation($this->facultyRepository->findFacultyByName("Racunarski Fakultet"));
+
+        $this->dispatch(new SendFeedback($feedback->getText()));
 
         $this->feedbackRepository->create($feedback);
 
