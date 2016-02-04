@@ -35,7 +35,7 @@ class SendFeedback extends Job implements SelfHandling
             'nikola.vukovic@labs.devana.rs',
             'nikola.ninkovic@labs.devana.rs',
             'milan.vucic@labs.devana.rs',
-            'vladimir.prelovac@devana.rs',
+            'vladimir@devana.rs',
             'bogdan.habic@devana.rs',
         ];
         foreach ($emails as $email) {
