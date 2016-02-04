@@ -2,9 +2,8 @@
 
 namespace StudentInfo\Jobs;
 
+use GuzzleHttp\Client;
 use Illuminate\Contracts\Bus\SelfHandling;
-use Illuminate\Mail\Mailer;
-use Illuminate\Mail\Message;
 
 class SendFeedback extends Job implements SelfHandling
 {
@@ -26,27 +25,15 @@ class SendFeedback extends Job implements SelfHandling
     /**
      * Execute the job.
      *
-     * @param Mailer $mailer
      */
-    public function handle(Mailer $mailer)
+    public function handle()
     {
-        $emails = [
-            'nebojsa.urosevic@labs.devana.rs',
-            'nikola.vukovic@labs.devana.rs',
-            'nikola.ninkovic@labs.devana.rs',
-            'milan.vucic@labs.devana.rs',
-            'vladimir@devana.rs',
-            'bogdan.habic@devana.rs',
-        ];
-        foreach ($emails as $email) {
-            $mailer->send('emails.feedback_mail_template', [
-                'email'    => $email,
-                'feedback' => $this->feedback,
-            ], function (Message $message) use ($email) {
-                $message->from('feedback@studentinfo.rs', 'Feedback - StudentInfo');
-                $message->to($email);
-                $message->subject('Feedback');
-            });
-        }
+        $client = new Client();
+
+        $client->request('POST', 'https://hooks.slack.com/services/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', [
+            'json' => [
+                'text' => $this->feedback,
+            ],
+        ]);
     }
 }
