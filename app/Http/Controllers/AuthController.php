@@ -2,11 +2,13 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
 use Illuminate\Contracts\Auth\Guard;
 use LucaDegasperi\OAuth2Server\Authorizer;
+use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\UserLoginPostRequest;
+use StudentInfo\Models\User;
 use StudentInfo\Repositories\UserRepositoryInterface;
+use StudentInfo\ValueObjects\Email;
 
 class AuthController extends ApiController
 {
@@ -61,31 +63,38 @@ class AuthController extends ApiController
      *       {"error":{"errorCode":"Access denied","message":"The email or password is incorrect"}}
      *     }
      */
-    public function login()
+
+    public function login(UserLoginPostRequest $request)
+    {
+        $input = $request->only(['email', 'password']);
+        /** @var User $user */
+        $user = $this->userRepository->findByEmail(new Email($input['email']));
+
+        if (($user->getRegisterToken() != "") && ($user->getRegisterToken() != "0")) {
+            return $this->returnForbidden(UserErrorCodes::YOU_NEED_TO_REGISTER_FIRST);
+        }
+
+        if (!$this->guard->validate([
+            'email.email' => $input['email'],
+            'password'    => $input['password'],
+        ])
+        ) {
+            return $this->returnForbidden(UserErrorCodes::ACCESS_DENIED);
+        }
+
+        return $this->returnSuccess([
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function getAccessToken()
     {
         return $this->returnSuccess([
             'oauth' => $this->authorizer->issueAccessToken(),
-            'user'  => $this->guard->user(),
         ]);
-
-//        $input = $request->only(['email', 'password']);
-//
-//        $user = $this->userRepository->findByEmail(new Email($input['email']));
-//
-//        if (($user->getRegisterToken() != "") && ($user->getRegisterToken() != "0")) {
-//            return $this->returnForbidden(UserErrorCodes::YOU_NEED_TO_REGISTER_FIRST);
-//        }
-//
-//        if (!$this->guard->attempt([
-//            'email.email' => $input['email'],
-//            'password'    => $input['password']
-//        ])) {
-//            return $this->returnForbidden(UserErrorCodes::ACCESS_DENIED);
-//        }
-//
-//        return $this->returnSuccess([
-//            'user' => $user,
-//        ]);
     }
 
     /**

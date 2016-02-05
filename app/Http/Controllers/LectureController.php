@@ -1,8 +1,6 @@
 <?php
 
-
 namespace StudentInfo\Http\Controllers;
-
 
 use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\ClassroomErrorCodes;

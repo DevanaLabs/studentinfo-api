@@ -2,8 +2,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\GroupErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateGroupRequest;
 use StudentInfo\Http\Requests\Update\UpdateGroupRequest;
@@ -12,9 +11,14 @@ use StudentInfo\Repositories\EventRepositoryInterface;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
+use StudentInfo\Repositories\UserRepositoryInterface;
 
 class GroupController extends ApiController
 {
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
     /**
      * @var GroupRepositoryInterface
      */
@@ -36,26 +40,28 @@ class GroupController extends ApiController
     protected $facultyRepository;
 
     /**
-     * @var Guard guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
     /**
      * GroupController constructor.
+     * @param UserRepositoryInterface                         $userRepository
      * @param GroupRepositoryInterface   $groupRepository
      * @param LectureRepositoryInterface $lectureRepository
      * @param EventRepositoryInterface   $eventRepository
      * @param FacultyRepositoryInterface $facultyRepository
-     * @param Guard                      $guard
+     * @param Authorizer                                      $authorizer
      */
-    public function __construct(GroupRepositoryInterface $groupRepository, LectureRepositoryInterface $lectureRepository,
-                                EventRepositoryInterface $eventRepository, FacultyRepositoryInterface $facultyRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, GroupRepositoryInterface $groupRepository, LectureRepositoryInterface $lectureRepository,
+                                EventRepositoryInterface $eventRepository, FacultyRepositoryInterface $facultyRepository, Authorizer $authorizer)
     {
+        $this->userRepository  = $userRepository;
         $this->groupRepository   = $groupRepository;
         $this->lectureRepository = $lectureRepository;
         $this->eventRepository = $eventRepository;
         $this->facultyRepository = $facultyRepository;
-        $this->guard = $guard;
+        $this->authorizer      = $authorizer;
     }
 
     public function createGroup(CreateGroupRequest $request, $faculty)
@@ -64,7 +70,7 @@ class GroupController extends ApiController
         $name          = $request->get('name');
         $group->setName($name);
         $group->setYear($request->get('year'));
-        $group->setOrganisation($this->guard->user()->getOrganisation());
+        $group->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $lecturesEntry = $request->get('lectures');
         $lectures      = [];
@@ -160,7 +166,7 @@ class GroupController extends ApiController
         $group->setLectures($lectures);
         $group->setName($request->get('name'));
         $group->setYear($request->get('year'));
-        $group->setOrganisation($this->guard->user()->getOrganisation());
+        $group->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->groupRepository->update($group);
 

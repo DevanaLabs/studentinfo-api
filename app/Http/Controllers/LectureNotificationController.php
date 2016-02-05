@@ -2,9 +2,8 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\LectureErrorCodes;
 use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
@@ -15,9 +14,15 @@ use StudentInfo\Models\LectureNotification;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\LectureNotificationRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
+use StudentInfo\Repositories\UserRepositoryInterface;
 
 class LectureNotificationController extends ApiController
 {
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
+
     /**
      * @var LectureNotificationRepositoryInterface
      */
@@ -34,24 +39,26 @@ class LectureNotificationController extends ApiController
     protected $facultyRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
     /**
      * NotificationController constructor.
+     * @param UserRepositoryInterface                              $userRepository
      * @param LectureNotificationRepositoryInterface $lectureNotificationRepository
      * @param LectureRepositoryInterface             $lectureRepository
-     * @param Guard                                  $guard
      * @param FacultyRepositoryInterface             $facultyRepository
+     * @param Authorizer                                           $authorizer
      */
-    public function __construct(LectureNotificationRepositoryInterface $lectureNotificationRepository, LectureRepositoryInterface $lectureRepository,
-                                FacultyRepositoryInterface $facultyRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, LectureNotificationRepositoryInterface $lectureNotificationRepository,
+                                LectureRepositoryInterface $lectureRepository, FacultyRepositoryInterface $facultyRepository, Authorizer $authorizer)
     {
+        $this->userRepository = $userRepository;
         $this->lectureNotificationRepository = $lectureNotificationRepository;
         $this->lectureRepository             = $lectureRepository;
         $this->facultyRepository             = $facultyRepository;
-        $this->guard                         = $guard;
+        $this->authorizer     = $authorizer;
     }
 
 
@@ -76,7 +83,7 @@ class LectureNotificationController extends ApiController
         $notification->setDescription($description);
         $notification->setLecture($lecture);
         $notification->setExpiresAt($expiresAt);
-        $notification->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
+        $notification->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->lectureNotificationRepository->create($notification);
 
@@ -122,6 +129,8 @@ class LectureNotificationController extends ApiController
 
         $notification->setDescription($request->get('description'));
         $notification->setExpiresAt($expiresAt);
+        $notification->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
+
         $this->lectureNotificationRepository->update($notification);
 
         return $this->returnSuccess([
@@ -163,7 +172,7 @@ class LectureNotificationController extends ApiController
             return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
         }
 
-        if ($this->guard->user()->getOrganisation()->getSlug() != $faculty) {
+        if ($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation()->getSlug() != $faculty) {
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 

@@ -2,7 +2,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-use Illuminate\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\ClassroomErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateClassroomRequest;
@@ -10,9 +10,15 @@ use StudentInfo\Http\Requests\Update\UpdateClassroomRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
+use StudentInfo\Repositories\UserRepositoryInterface;
 
 class ClassroomController extends ApiController
 {
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
+
     /**
      * @var ClassroomRepositoryInterface $classroomRepository
      */
@@ -24,21 +30,23 @@ class ClassroomController extends ApiController
     protected $facultyRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
     /**
      * StudentController constructor.
+     * @param UserRepositoryInterface             $userRepository
      * @param ClassroomRepositoryInterface $classroomRepository
      * @param FacultyRepositoryInterface   $facultyRepository
-     * @param Guard                        $guard
+     * @param Authorizer                          $authorizer
      */
-    public function __construct(ClassroomRepositoryInterface $classroomRepository, FacultyRepositoryInterface $facultyRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, ClassroomRepositoryInterface $classroomRepository, FacultyRepositoryInterface $facultyRepository, Authorizer $authorizer)
     {
+        $this->userRepository = $userRepository;
         $this->classroomRepository = $classroomRepository;
         $this->facultyRepository   = $facultyRepository;
-        $this->guard               = $guard;
+        $this->authorizer     = $authorizer;
     }
 
     public function createClassroom(CreateClassroomRequest $request, $faculty)
@@ -51,7 +59,7 @@ class ClassroomController extends ApiController
         $classroom->setName($request->get('name'));
         $classroom->setDirections($request->get('directions'));
         $classroom->setFloor($request->get('floor'));
-        $classroom->setOrganisation($this->guard->user()->getOrganisation());
+        $classroom->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->classroomRepository->create($classroom);
 
@@ -69,7 +77,7 @@ class ClassroomController extends ApiController
         }
 
         if ($classroom->getOrganisation()->getSlug() != $faculty) {
-            return $this->returnError(500, ClassroomErrorCodes::ClASSROOM_DOES_NOT_BELONG_TO_THIS_FACULTY);
+            return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
         return $this->returnSuccess([
@@ -96,7 +104,6 @@ class ClassroomController extends ApiController
         $classroom->setName($request->get('name'));
         $classroom->setDirections($request->get('directions'));
         $classroom->setFloor($request->get('floor'));
-        $classroom->setOrganisation($this->guard->user()->getOrganisation());
 
         $this->classroomRepository->update($classroom);
 
@@ -122,6 +129,9 @@ class ClassroomController extends ApiController
 
         $file_path = $handle->getPathname();
         $resource  = fopen($file_path, "r");
+
+        $organisation = $this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation();
+
         while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
             $name       = $data[0];
             $directions = $data[1];
@@ -131,7 +141,7 @@ class ClassroomController extends ApiController
             $classroom->setName($name);
             $classroom->setDirections($directions);
             $classroom->setFloor($floor);
-            $classroom->setOrganisation($this->guard->user()->getOrganisation());
+            $classroom->setOrganisation($organisation);
 
             $this->classroomRepository->create($classroom);
         }

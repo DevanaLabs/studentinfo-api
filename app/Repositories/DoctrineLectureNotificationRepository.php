@@ -40,4 +40,9 @@ class DoctrineLectureNotificationRepository extends EntityRepository implements 
     {
         $this->_em->flush($object);
     }
+
+    public function getForInterval($faculty, $startsAt, $endsAt)
+    {
+        // TODO: Implement getForInterval() method.
+    }
 }

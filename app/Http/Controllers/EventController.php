@@ -2,8 +2,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\EventErrorCodes;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\CourseEventRepositoryInterface;
@@ -13,9 +12,15 @@ use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\GlobalEventRepositoryInterface;
 use StudentInfo\Repositories\GroupEventRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
+use StudentInfo\Repositories\UserRepositoryInterface;
 
 class EventController extends ApiController
 {
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
+
     /**
      * @var EventRepositoryInterface
      */
@@ -57,9 +62,9 @@ class EventController extends ApiController
     protected $facultyRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
     /**
      * CourseController constructor.
@@ -71,13 +76,14 @@ class EventController extends ApiController
      * @param GroupEventRepositoryInterface  $groupEventRepository
      * @param GlobalEventRepositoryInterface $globalEventRepository
      * @param FacultyRepositoryInterface     $facultyRepository
-     * @param Guard                          $guard
+     * @param UserRepositoryInterface        $userRepository
+     * @param Authorizer                     $authorizer
      */
     public function __construct(EventRepositoryInterface $eventRepository, ClassroomRepositoryInterface $classroomRepository,
                                 CourseRepositoryInterface $courseRepository, GroupRepositoryInterface $groupRepository,
                                 CourseEventRepositoryInterface $courseEventRepository, GroupEventRepositoryInterface $groupEventRepository,
                                 GlobalEventRepositoryInterface $globalEventRepository, FacultyRepositoryInterface $facultyRepository,
-                                Guard $guard)
+                                UserRepositoryInterface $userRepository, Authorizer $authorizer)
     {
         $this->eventRepository       = $eventRepository;
         $this->classroomRepository   = $classroomRepository;
@@ -87,7 +93,8 @@ class EventController extends ApiController
         $this->groupEventRepository = $groupEventRepository;
         $this->groupRepository       = $groupRepository;
         $this->facultyRepository     = $facultyRepository;
-        $this->guard                 = $guard;
+        $this->userRepository = $userRepository;
+        $this->authorizer = $authorizer;
     }
 
     public function retrieveEvent($faculty, $id)

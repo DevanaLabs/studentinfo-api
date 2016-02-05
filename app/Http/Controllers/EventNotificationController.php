@@ -2,9 +2,8 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\EventErrorCodes;
 use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
@@ -14,18 +13,25 @@ use StudentInfo\Models\Event;
 use StudentInfo\Models\EventNotification;
 use StudentInfo\Repositories\EventNotificationRepositoryInterface;
 use StudentInfo\Repositories\EventRepositoryInterface;
+use StudentInfo\Repositories\UserRepositoryInterface;
 
 class EventNotificationController extends ApiController
 {
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
+
     /**
      * @var EventNotificationRepositoryInterface
      */
     protected $eventNotificationRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
+
     /**
      * @var EventRepositoryInterface
      */
@@ -33,15 +39,17 @@ class EventNotificationController extends ApiController
 
     /**
      * NotificationController constructor.
+     * @param UserRepositoryInterface                     $userRepository
      * @param EventNotificationRepositoryInterface $eventNotificationRepository
-     * @param Guard                                $guard
      * @param EventRepositoryInterface             $eventRepository
+     * @param Authorizer                                  $authorizer
      */
-    public function __construct(EventNotificationRepositoryInterface $eventNotificationRepository, Guard $guard, EventRepositoryInterface $eventRepository)
+    public function __construct(UserRepositoryInterface $userRepository, EventNotificationRepositoryInterface $eventNotificationRepository, EventRepositoryInterface $eventRepository, Authorizer $authorizer)
     {
+        $this->userRepository = $userRepository;
         $this->eventNotificationRepository = $eventNotificationRepository;
-        $this->guard                       = $guard;
         $this->eventRepository             = $eventRepository;
+        $this->authorizer     = $authorizer;
     }
 
 
@@ -66,7 +74,7 @@ class EventNotificationController extends ApiController
         $notification->setDescription($description);
         $notification->setEvent($event);
         $notification->setExpiresAt($expiresAt);
-        $notification->setOrganisation($this->guard->user()->getOrganisation());
+        $notification->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->eventNotificationRepository->create($notification);
 
@@ -116,6 +124,8 @@ class EventNotificationController extends ApiController
 
         $notification->setDescription($request->get('description'));
         $notification->setExpiresAt($expiresAt);
+        $notification->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
+
         $this->eventNotificationRepository->update($notification);
 
         return $this->returnSuccess([
@@ -134,7 +144,7 @@ class EventNotificationController extends ApiController
         return $this->returnSuccess();
     }
 
-    public function getNotificationsInInterval($start, $end)
+    public function getNotificationsInInterval($faculty, $start, $end)
     {
         $startParsed = str_replace('_', ' ', $start);
         $startCarbon = Carbon::createFromFormat('Y-m-d H:i', $startParsed);
@@ -145,7 +155,7 @@ class EventNotificationController extends ApiController
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
 
-        return $this->returnSuccess($this->eventNotificationRepository->getForInterval($startCarbon, $endCarbon));
+        return $this->returnSuccess($this->eventNotificationRepository->getForInterval($faculty, $startCarbon, $endCarbon));
     }
 
     public function retrieveNotificationsForEvent($faculty, $eventId)
@@ -157,7 +167,7 @@ class EventNotificationController extends ApiController
             return $this->returnError(500, EventErrorCodes::EVENT_NOT_IN_DB);
         }
 
-        if ($this->guard->user()->getOrganisation()->getSlug() != $faculty) {
+        if ($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation()->getSlug() != $faculty) {
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 

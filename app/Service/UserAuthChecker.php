@@ -36,8 +36,8 @@ class UserAuthChecker
             'password' => $password,
         ];
 
-        if ($this->guard->attempt($credentials)) {
-            return true;
+        if ($this->guard->validate($credentials)) {
+            return $user->getId();
         }
         return false;
     }

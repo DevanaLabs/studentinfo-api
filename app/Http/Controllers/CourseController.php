@@ -3,8 +3,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\CourseErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateCourseRequest;
@@ -12,9 +11,15 @@ use StudentInfo\Http\Requests\Update\UpdateCourseRequest;
 use StudentInfo\Models\Course;
 use StudentInfo\Repositories\CourseRepositoryInterface;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
+use StudentInfo\Repositories\UserRepositoryInterface;
 
 class CourseController extends ApiController
 {
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
+
     /**
      * @var CourseRepositoryInterface $courseRepository
      */
@@ -26,21 +31,23 @@ class CourseController extends ApiController
     protected $facultyRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
     /**
      * CourseController constructor.
+     * @param UserRepositoryInterface           $userRepository
      * @param CourseRepositoryInterface  $courseRepository
      * @param FacultyRepositoryInterface $facultyRepository
-     * @param Guard                      $guard
+     * @param Authorizer                        $authorizer
      */
-    public function __construct(CourseRepositoryInterface $courseRepository, FacultyRepositoryInterface $facultyRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, CourseRepositoryInterface $courseRepository, FacultyRepositoryInterface $facultyRepository, Authorizer $authorizer)
     {
-        $this->courseRepository   = $courseRepository;
+        $this->userRepository   = $userRepository;
+        $this->courseRepository = $courseRepository;
         $this->facultyRepository   = $facultyRepository;
-        $this->guard               = $guard;
+        $this->authorizer       = $authorizer;
     }
 
     public function createCourse(CreateCourseRequest $request, $faculty)
@@ -51,7 +58,7 @@ class CourseController extends ApiController
         $course->setEspb($request->get('espb'));
         $course->setSemester($request->get('semester'));
         $course->setName($request->get('name'));
-        $course->setOrganisation($this->guard->user()->getOrganisation());
+        $course->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->courseRepository->create($course);
 
@@ -97,7 +104,7 @@ class CourseController extends ApiController
         $course->setEspb($request->get('espb'));
         $course->setSemester($request->get('semester'));
         $course->setName($request->get('name'));
-        $course->setOrganisation($this->guard->user()->getOrganisation());
+        $course->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->courseRepository->update($course);
 
@@ -126,6 +133,9 @@ class CourseController extends ApiController
 
         $file_path = $handle->getPathname();
         $resource  = fopen($file_path, "r");
+
+        $organisation = $this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation();
+
         while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
             $name     = $data[0];
             $code     = $data[1];
@@ -137,7 +147,7 @@ class CourseController extends ApiController
             $course->setCode($code);
             $course->setEspb($espb);
             $course->setSemester($semester);
-            $course->setOrganisation($this->guard->user()->getOrganisation());
+            $course->setOrganisation($organisation);
 
             $this->courseRepository->create($course);
 

@@ -2,11 +2,6 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
