@@ -109,7 +109,7 @@ class AuthController extends ApiController
      */
     public function logout()
     {
-        $this->guard->logout();
+        $this->authorizer->getChecker()->getAccessToken()->expire();
 
         return $this->returnSuccess();
     }

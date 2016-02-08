@@ -8,21 +8,21 @@ Route::post('oauth/access_token', 'AuthController@getAccessToken');
 
 Route::get('pushNotification', 'PushNotificationController@pushNotification');
 
-Route::get('user/{user_id}', 'UserController@getProfile');
+Route::get('user/{user_id}', ['middleware' => 'oauth', 'uses' => 'UserController@getProfile']);
 
-Route::post('user/{user_id}', 'UserController@updateProfile');
+Route::post('user/{user_id}', ['middleware' => 'oauth', 'uses' => 'UserController@updateProfile']);
 
 Route::post('auth', 'AuthController@login');
 
-Route::delete('auth', 'AuthController@logout');
+Route::delete('auth', ['middleware' => 'oauth', 'uses' => 'AuthController@logout']);
 
-Route::post('register', 'RegisterController@issueRegisterTokens');
+Route::post('register', ['middleware' => ['oauth', 'role:student.create'], 'uses' => 'RegisterController@issueRegisterTokens']);
 
 Route::get('register/{registerToken}', 'RegisterController@registerStudent');
 
 Route::post('register/{registerToken}', 'RegisterController@createPassword');
 
-Route::post('faculty', 'FacultyController@createFaculty');
+Route::post('faculty', ['middleware' => 'oauth', 'uses' => 'FacultyController@createFaculty']);
 
 Route::get('faculty/{id}', ['middleware' => ['oauth', 'role:faculty.retrieve'], 'uses' => 'FacultyController@retrieveFaculty']);
 
@@ -42,7 +42,7 @@ Route::put('deviceToken/{id}', ['middleware' => ['oauth', 'role:token.update'], 
 
 Route::delete('deviceToken/{id}', ['middleware' => ['oauth', 'role:token.delete'], 'uses' => 'DeviceTokenController@deleteDeviceToken']);
 
-Route::post('admin', 'AdminController@createAdmin');
+Route::post('admin', ['middleware' => 'oauth', 'uses' => 'AdminController@createAdmin']);
 
 Route::get('admin/{id}', ['middleware' => ['oauth', 'role:admin.retrieve'], 'uses' => 'AdminController@retrieveAdmin']);
 
