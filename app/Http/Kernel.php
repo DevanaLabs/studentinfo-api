@@ -27,6 +27,7 @@ class Kernel extends HttpKernel
         AddQueuedCookiesToResponse::class,
         StartSession::class,
         ShareErrorsFromSession::class,
+        \LucaDegasperi\OAuth2Server\Middleware\OAuthExceptionHandlerMiddleware::class,
     ];
 
     /**
@@ -39,6 +40,11 @@ class Kernel extends HttpKernel
         'auth'       => Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
         'guest'      => RedirectIfAuthenticated::class,
+        'oauth'                      => \LucaDegasperi\OAuth2Server\Middleware\OAuthMiddleware::class,
+        'oauth-user'                 => \LucaDegasperi\OAuth2Server\Middleware\OAuthUserOwnerMiddleware::class,
+        'oauth-client'               => \LucaDegasperi\OAuth2Server\Middleware\OAuthClientOwnerMiddleware::class,
+        'check-authorization-params' => \LucaDegasperi\OAuth2Server\Middleware\CheckAuthCodeRequestMiddleware::class,
+        'csrf'                       => \StudentInfo\Http\Middleware\VerifyCsrfToken::class,
     ];
 
     /**

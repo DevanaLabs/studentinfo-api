@@ -2,32 +2,38 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\TeacherErrorCodes;
 use StudentInfo\Repositories\TeacherRepositoryInterface;
+use StudentInfo\Repositories\UserRepositoryInterface;
 
 class TeacherController extends ApiController
 {
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
     /**
      * @var TeacherRepositoryInterface
      */
     protected $teacherRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
     /**
      * StudentController constructor.
+     * @param UserRepositoryInterface    $userRepository
      * @param TeacherRepositoryInterface $teacherRepository
-     * @param Guard                      $guard
+     * @param Authorizer                 $authorizer
      */
-    public function __construct(TeacherRepositoryInterface $teacherRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, TeacherRepositoryInterface $teacherRepository, Authorizer $authorizer)
     {
+        $this->userRepository = $userRepository;
         $this->teacherRepository = $teacherRepository;
-        $this->guard             = $guard;
+        $this->authorizer     = $authorizer;
     }
 
     public function retrieveTeacher($faculty, $id)

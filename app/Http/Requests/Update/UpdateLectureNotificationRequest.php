@@ -2,26 +2,18 @@
 
 namespace StudentInfo\Http\Requests\Update;
 
-use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Http\Requests\Request;
-use StudentInfo\Models\User;
 
 class UpdateLectureNotificationRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @param Guard $guard
      * @return bool
      */
-    public function authorize(Guard $guard)
+    public function authorize()
     {
-        /** @var User $user */
-        $user = $guard->user();
-        if ($user === null) {
-            return false;
-        }
-        return ($user->hasPermissionTo('notification.update'));
+        return parent::checkIfHasPermission('notification.update');
     }
 
     /**

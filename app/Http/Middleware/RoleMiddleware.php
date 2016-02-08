@@ -3,27 +3,33 @@
 namespace StudentInfo\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Response;
+use LucaDegasperi\OAuth2Server\Authorizer;
+use StudentInfo\Models\User;
+use StudentInfo\Repositories\UserRepositoryInterface;
 
 class RoleMiddleware
 {
     /**
-     * The Guard implementation.
-     *
-     * @var Guard
+     * @var UserRepositoryInterface
      */
-    protected $auth;
+    protected $userRepository;
+
+    /**
+     * @var Authorizer
+     */
+    protected $authorizer;
 
     /**
      * Create a new filter instance.
      *
-     * @param  Guard $auth
-     *
+     * @param UserRepositoryInterface $userRepository
+     * @param Authorizer              $authorizer
      */
-    public function __construct(Guard $auth)
+    public function __construct(UserRepositoryInterface $userRepository, Authorizer $authorizer)
     {
-        $this->auth = $auth;
+        $this->userRepository = $userRepository;
+        $this->authorizer     = $authorizer;
     }
 
     /**
@@ -37,7 +43,11 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, $role)
     {
-        if (!$this->auth->check() || (($this->auth->check()) && !$request->user()->hasPermissionTo($role))) {
+        $userId = $this->authorizer->getResourceOwnerId();
+        /** @var User $user */
+        $user = $this->userRepository->find($userId);
+
+        if ($user === null || (($user !== null)) && !$user->hasPermissionTo($role)) {
             $response = new Response([
                 'error' => [
                     'message' => 'You do not have permission to view this page',

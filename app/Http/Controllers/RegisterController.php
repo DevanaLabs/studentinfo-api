@@ -1,11 +1,9 @@
 <?php
 
-
 namespace StudentInfo\Http\Controllers;
 
-use Illuminate\Auth\Guard;
-use Illuminate\Contracts\Mail\MailQueue;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\CreatePasswordPostRequest;
 use StudentInfo\Http\Requests\IssueTokenPostRequest;
@@ -18,25 +16,25 @@ use StudentInfo\ValueObjects\Password;
 class RegisterController extends ApiController
 {
     use DispatchesJobs;
-    /**
-     * @var Guard
-     */
-    protected $guard;
-    /**
-     * @var MailQueue
-     */
-    protected $mailer;
 
     /**
      * @var UserRepositoryInterface
      */
     protected $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository, Guard $guard, MailQueue $mailer)
+    /**
+     * @var Authorizer
+     */
+    protected $authorizer;
+
+    /**
+     * @param UserRepositoryInterface $userRepository
+     * @param Authorizer              $authorizer
+     */
+    public function __construct(UserRepositoryInterface $userRepository, Authorizer $authorizer)
     {
         $this->userRepository = $userRepository;
-        $this->guard          = $guard;
-        $this->mailer         = $mailer;
+        $this->authorizer = $authorizer;
     }
 
     /**
@@ -73,7 +71,7 @@ class RegisterController extends ApiController
                 continue;
             }
 
-            if ($user->getOrganisation()->getId() != $this->guard->user()->getOrganisation()->getId()) {
+            if ($user->getOrganisation()->getId() != $this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation()->getId()) {
                 $failedToSend[] = $email;
                 continue;
             }
@@ -151,7 +149,7 @@ class RegisterController extends ApiController
             return $this->returnError(500, UserErrorCodes::USER_DOES_NOT_EXIST);
         }
 
-        if ($user->getOrganisation()->getId() != $this->guard->user()->getOrganisation()->getId()) {
+        if ($user->getOrganisation()->getId() != $this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation()->getId()) {
             return $this->returnError(500, UserErrorCodes::USER_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 

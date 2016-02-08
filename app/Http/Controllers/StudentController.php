@@ -2,8 +2,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\StudentErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
@@ -47,9 +46,9 @@ class StudentController extends ApiController
     protected $lectureRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
     /**
      * StudentController constructor.
@@ -57,15 +56,15 @@ class StudentController extends ApiController
      * @param StudentRepositoryInterface $studentRepository
      * @param FacultyRepositoryInterface $facultyRepository
      * @param LectureRepositoryInterface $lectureRepository
-     * @param Guard                      $guard
+     * @param Authorizer                 $authorizer
      */
-    public function __construct(UserRepositoryInterface $userRepository, StudentRepositoryInterface $studentRepository, FacultyRepositoryInterface $facultyRepository, LectureRepositoryInterface $lectureRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, StudentRepositoryInterface $studentRepository, FacultyRepositoryInterface $facultyRepository, LectureRepositoryInterface $lectureRepository, Authorizer $authorizer)
     {
         $this->userRepository    = $userRepository;
         $this->studentRepository = $studentRepository;
         $this->facultyRepository = $facultyRepository;
         $this->lectureRepository = $lectureRepository;
-        $this->guard             = $guard;
+        $this->authorizer = $authorizer;
     }
 
     /**
@@ -113,7 +112,7 @@ class StudentController extends ApiController
         $student->setCourses($courses);
         $student->setPassword(new Password('password'));
         $student->generateRegisterToken();
-        $student->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
+        $student->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->studentRepository->create($student);
 
@@ -190,6 +189,7 @@ class StudentController extends ApiController
         $student->setIndexNumber($indexNumber);
         $student->setLectures($lectures);
         $student->setYear($request->get('year'));
+        $student->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->studentRepository->update($student);
 
@@ -235,7 +235,7 @@ class StudentController extends ApiController
         $file_path = $handle->getPathname();
         $resource  = fopen($file_path, "r");
 
-        $organisation = $this->guard->user()->getOrganisation();
+        $organisation = $this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation();
 
         while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
             $firstName = $data[$firstNameIndex];

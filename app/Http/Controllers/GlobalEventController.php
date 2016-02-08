@@ -2,7 +2,6 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\EventErrorCodes;
@@ -29,7 +28,7 @@ class GlobalEventController extends EventController
         $event->setType($request->get('type'));
         $event->setDescription($request->get('description'));
         $event->setDatetime($datetime);
-        $event->setOrganisation($this->guard->user()->getOrganisation());
+        $event->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
@@ -82,7 +81,7 @@ class GlobalEventController extends EventController
         $event->setType($request->get('type'));
         $event->setDescription($request->get('description'));
         $event->setDatetime($datetime);
-        $event->setOrganisation($this->guard->user()->getOrganisation());
+        $event->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->eventRepository->update($event);
 

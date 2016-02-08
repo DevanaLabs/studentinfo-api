@@ -3,9 +3,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Repositories\EventRepositoryInterface;
@@ -19,10 +17,6 @@ class NotificationController extends ApiController
     protected $notificationRepository;
 
     /**
-     * @var Guard
-     */
-    protected $guard;
-    /**
      * @var EventRepositoryInterface
      */
     protected $eventRepository;
@@ -30,13 +24,11 @@ class NotificationController extends ApiController
     /**
      * NotificationController constructor.
      * @param NotificationRepositoryInterface $notificationRepository
-     * @param Guard                           $guard
      * @param EventRepositoryInterface        $eventRepository
      */
-    public function __construct(NotificationRepositoryInterface $notificationRepository, Guard $guard, EventRepositoryInterface $eventRepository)
+    public function __construct(NotificationRepositoryInterface $notificationRepository, EventRepositoryInterface $eventRepository)
     {
         $this->notificationRepository = $notificationRepository;
-        $this->guard                  = $guard;
         $this->eventRepository        = $eventRepository;
     }
 

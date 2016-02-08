@@ -2,7 +2,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-use Illuminate\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\ProfessorErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
@@ -34,23 +34,23 @@ class ProfessorController extends ApiController
     protected $professorRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
     /**
      * StudentController constructor.
-     * @param UserRepositoryInterface    $userRepository
-     * @param FacultyRepositoryInterface $facultyRepository
+     * @param UserRepositoryInterface      $userRepository
+     * @param FacultyRepositoryInterface   $facultyRepository
      * @param ProfessorRepositoryInterface $professorRepository
-     * @param Guard                        $guard
+     * @param Authorizer                   $authorizer
      */
-    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, ProfessorRepositoryInterface $professorRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, ProfessorRepositoryInterface $professorRepository, Authorizer $authorizer)
     {
         $this->userRepository    = $userRepository;
         $this->facultyRepository = $facultyRepository;
         $this->professorRepository = $professorRepository;
-        $this->guard             = $guard;
+        $this->authorizer = $authorizer;
     }
 
     public function createProfessor(CreateTeacherRequest $request, $faculty)
@@ -67,7 +67,7 @@ class ProfessorController extends ApiController
         $professor->setEmail($email);
         $professor->setPassword(new Password('password'));
         $professor->generateRegisterToken();
-        $professor->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
+        $professor->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->professorRepository->create($professor);
 
@@ -124,6 +124,7 @@ class ProfessorController extends ApiController
         $professor->setEmail($email);
         $professor->setPassword(new Password('password'));
         $professor->generateRegisterToken();
+        $professor->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->professorRepository->update($professor);
 
@@ -151,6 +152,8 @@ class ProfessorController extends ApiController
         $file_path = $handle->getPathname();
         $resource  = fopen($file_path, "r");
 
+        $organisation = $this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation();
+
         while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
             $firstName = $data[0];
             $lastName  = $data[1];
@@ -167,7 +170,7 @@ class ProfessorController extends ApiController
             $professor->setEmail($email);
             $professor->setPassword(new Password('password'));
             $professor->generateRegisterToken();
-            $professor->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
+            $professor->setOrganisation($organisation);
 
             $this->professorRepository->persist($professor);
         }

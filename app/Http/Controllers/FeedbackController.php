@@ -2,8 +2,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\FeedbackErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateFeedbackRequest;
 use StudentInfo\Http\Requests\Update\UpdateFeedbackRequest;
@@ -11,9 +10,15 @@ use StudentInfo\Jobs\SendFeedback;
 use StudentInfo\Models\Feedback;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\FeedbackRepositoryInterface;
+use StudentInfo\Repositories\UserRepositoryInterface;
 
 class FeedbackController extends ApiController
 {
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
+
     /**
      * @var FeedbackRepositoryInterface
      */
@@ -25,28 +30,30 @@ class FeedbackController extends ApiController
     protected $facultyRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
     /**
      * FacultyController constructor.
+     * @param UserRepositoryInterface            $userRepository
      * @param FeedbackRepositoryInterface $feedbackRepository
      * @param FacultyRepositoryInterface  $facultyRepository
-     * @param Guard                       $guard
+     * @param Authorizer                         $authorizer
      */
-    public function __construct(FeedbackRepositoryInterface $feedbackRepository, FacultyRepositoryInterface $facultyRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, FeedbackRepositoryInterface $feedbackRepository, FacultyRepositoryInterface $facultyRepository, Authorizer $authorizer)
     {
+        $this->userRepository = $userRepository;
         $this->feedbackRepository = $feedbackRepository;
         $this->facultyRepository = $facultyRepository;
-        $this->guard              = $guard;
+        $this->authorizer     = $authorizer;
     }
 
     public function createFeedback(CreateFeedbackRequest $request, $faculty)
     {
         $feedback = new Feedback();
         $feedback->setText($request->get('text'));
-        $feedback->setOrganisation($this->facultyRepository->findFacultyByName("Racunarski Fakultet"));
+        $feedback->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->dispatch(new SendFeedback($feedback->getText()));
 
@@ -91,7 +98,7 @@ class FeedbackController extends ApiController
         $feedback = $this->feedbackRepository->find($id);
 
         $feedback->setText($request->get('text'));
-        $feedback->setOrganisation($this->facultyRepository->findFacultyByName("Racunarski Fakultet"));
+        $feedback->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->feedbackRepository->update($feedback);
 

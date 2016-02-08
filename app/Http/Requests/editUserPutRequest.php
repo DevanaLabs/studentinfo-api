@@ -2,23 +2,27 @@
 
 namespace StudentInfo\Http\Requests;
 
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\Models\User;
+use StudentInfo\Repositories\UserRepositoryInterface;
 
 class EditUserPutRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @param Guard $guard
+     * @param Authorizer              $authorizer
+     * @param UserRepositoryInterface $userRepository
      * @return bool
      */
-    public function authorize(Guard $guard)
+    public function authorize(Authorizer $authorizer, UserRepositoryInterface $userRepository)
     {
+        $userId = $authorizer->getResourceOwnerId();
+        /** @var User $user */
+        $user = $userRepository->find($userId);
+
         $userId = $this->route('user_id');
 
-        /** @var User $user */
-        $user = $guard->user();
         if ($user === null) {
             return false;
         }

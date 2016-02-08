@@ -1,10 +1,7 @@
 <?php
 
-
 namespace StudentInfo\Http\Controllers;
 
-
-use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\ClassroomErrorCodes;
 use StudentInfo\ErrorCodes\CourseErrorCodes;
 use StudentInfo\ErrorCodes\LectureErrorCodes;
@@ -32,11 +29,6 @@ class LectureController extends ApiController
     protected $lectureRepository;
 
     /**
-     * @var Guard
-     */
-    protected $guard;
-
-    /**
      * @var TeacherRepositoryInterface
      */
     protected $teacherRepository;
@@ -59,16 +51,14 @@ class LectureController extends ApiController
     /**
      * LectureController constructor.
      * @param LectureRepositoryInterface   $lectureRepository
-     * @param Guard                        $guard
      * @param TeacherRepositoryInterface   $teacherRepository
      * @param CourseRepositoryInterface    $courseRepository
      * @param ClassroomRepositoryInterface $classroomRepository
      * @param GroupRepositoryInterface     $groupRepository
      */
-    public function __construct(LectureRepositoryInterface $lectureRepository, Guard $guard, TeacherRepositoryInterface $teacherRepository, CourseRepositoryInterface $courseRepository, ClassroomRepositoryInterface $classroomRepository, GroupRepositoryInterface $groupRepository)
+    public function __construct(LectureRepositoryInterface $lectureRepository, TeacherRepositoryInterface $teacherRepository, CourseRepositoryInterface $courseRepository, ClassroomRepositoryInterface $classroomRepository, GroupRepositoryInterface $groupRepository)
     {
         $this->lectureRepository   = $lectureRepository;
-        $this->guard               = $guard;
         $this->teacherRepository = $teacherRepository;
         $this->courseRepository    = $courseRepository;
         $this->classroomRepository = $classroomRepository;

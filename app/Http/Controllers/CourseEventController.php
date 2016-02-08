@@ -2,7 +2,6 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
 use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\CourseErrorCodes;
@@ -51,7 +50,7 @@ class CourseEventController extends EventController
         $event->setCourse($course);
         $event->setClassrooms($classrooms);
         $event->setDatetime($datetime);
-        $event->setOrganisation($this->guard->user()->getOrganisation());
+        $event->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
@@ -123,7 +122,7 @@ class CourseEventController extends EventController
         $event->setCourse($course);
         $event->setClassrooms($classrooms);
         $event->setDatetime($datetime);
-        $event->setOrganisation($this->guard->user()->getOrganisation());
+        $event->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->eventRepository->update($event);
 

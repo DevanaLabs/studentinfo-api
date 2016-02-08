@@ -3,7 +3,7 @@
 namespace StudentInfo\Http\Controllers;
 
 
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\AdminErrorCodes;
 use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
@@ -35,16 +35,16 @@ class AdminController extends ApiController
     protected $adminRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
-    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, AdminRepositoryInterface $adminRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, AdminRepositoryInterface $adminRepository, Authorizer $authorizer)
     {
         $this->userRepository    = $userRepository;
         $this->facultyRepository = $facultyRepository;
         $this->adminRepository   = $adminRepository;
-        $this->guard             = $guard;
+        $this->authorizer = $authorizer;
     }
 
 

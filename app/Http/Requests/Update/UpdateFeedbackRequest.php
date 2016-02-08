@@ -2,7 +2,6 @@
 
 namespace StudentInfo\Http\Requests\Update;
 
-
 use StudentInfo\Http\Requests\Request;
 
 class UpdateFeedbackRequest extends Request
@@ -14,7 +13,7 @@ class UpdateFeedbackRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return parent::checkIfHasPermission('feedback.update');
     }
 
     /**

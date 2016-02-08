@@ -4,43 +4,55 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('test/mail', 'TestController@testEmail');
+Route::post('oauth/access_token', 'AuthController@getAccessToken');
 
-Route::get('user/{user_id}', 'UserController@getProfile');
+Route::get('pushNotification', 'PushNotificationController@pushNotification');
 
-Route::post('user/{user_id}', 'UserController@updateProfile');
+Route::get('user/{user_id}', ['middleware' => 'oauth', 'uses' => 'UserController@getProfile']);
+
+Route::post('user/{user_id}', ['middleware' => 'oauth', 'uses' => 'UserController@updateProfile']);
 
 Route::post('auth', 'AuthController@login');
 
-Route::delete('auth', 'AuthController@logout');
+Route::delete('auth', ['middleware' => 'oauth', 'uses' => 'AuthController@logout']);
 
-Route::post('register', 'RegisterController@issueRegisterTokens');
+Route::post('register', ['middleware' => ['oauth', 'role:student.create'], 'uses' => 'RegisterController@issueRegisterTokens']);
 
 Route::get('register/{registerToken}', 'RegisterController@registerStudent');
 
 Route::post('register/{registerToken}', 'RegisterController@createPassword');
 
-Route::post('faculty', 'FacultyController@createFaculty');
+Route::post('faculty', ['middleware' => 'oauth', 'uses' => 'FacultyController@createFaculty']);
 
-Route::get('faculty/{id}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@retrieveFaculty']);
+Route::get('faculty/{id}', ['middleware' => ['oauth', 'role:faculty.retrieve'], 'uses' => 'FacultyController@retrieveFaculty']);
 
-Route::get('faculties/{start?}/{count?}', ['middleware' => 'role:faculty.retrieve', 'uses' => 'FacultyController@retrieveFaculties']);
+Route::get('faculties/{start?}/{count?}', ['middleware' => ['oauth', 'role:faculty.retrieve'], 'uses' => 'FacultyController@retrieveFaculties']);
 
-Route::put('faculty/{id}', ['middleware' => 'role:faculty.update', 'uses' => 'FacultyController@updateFaculty']);
+Route::put('faculty/{id}', ['middleware' => ['oauth', 'role:faculty.update'], 'uses' => 'FacultyController@updateFaculty']);
 
-Route::delete('faculty/{id}', ['middleware' => 'role:faculty.delete', 'uses' => 'FacultyController@deleteFaculty']);
+Route::delete('faculty/{id}', ['middleware' => ['oauth', 'role:faculty.delete'], 'uses' => 'FacultyController@deleteFaculty']);
 
-Route::post('admin', 'AdminController@createAdmin');
+Route::post('deviceToken', 'DeviceTokenController@createDeviceToken');
 
-Route::get('admin/{id}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@retrieveAdmin']);
+Route::get('deviceToken/{id}', ['middleware' => ['oauth', 'role:token.retrieve'], 'uses' => 'DeviceTokenController@retrieveDeviceToken']);
 
-Route::get('admins/{start?}/{count?}', ['middleware' => 'role:admin.retrieve', 'uses' => 'AdminController@retrieveAdmins']);
+Route::get('deviceTokens/{start?}/{count?}', ['middleware' => ['oauth', 'role:token.retrieve'], 'uses' => 'DeviceTokenController@retrieveDeviceTokens']);
 
-Route::put('admin/{id}', ['middleware' => 'role:admin.update', 'uses' => 'AdminController@updateAdmin']);
+Route::put('deviceToken/{id}', ['middleware' => ['oauth', 'role:token.update'], 'uses' => 'DeviceTokenController@updateDeviceToken']);
 
-Route::delete('admin/{id}', ['middleware' => 'role:admin.delete', 'uses' => 'AdminController@deleteAdmin']);
+Route::delete('deviceToken/{id}', ['middleware' => ['oauth', 'role:token.delete'], 'uses' => 'DeviceTokenController@deleteDeviceToken']);
 
-Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middleware\FacultyCheck:{faculty}']], function () {
+Route::post('admin', ['middleware' => 'oauth', 'uses' => 'AdminController@createAdmin']);
+
+Route::get('admin/{id}', ['middleware' => ['oauth', 'role:admin.retrieve'], 'uses' => 'AdminController@retrieveAdmin']);
+
+Route::get('admins/{start?}/{count?}', ['middleware' => ['oauth', 'role:admin.retrieve'], 'uses' => 'AdminController@retrieveAdmins']);
+
+Route::put('admin/{id}', ['middleware' => ['oauth', 'role:admin.update'], 'uses' => 'AdminController@updateAdmin']);
+
+Route::delete('admin/{id}', ['middleware' => ['oauth', 'role:admin.delete'], 'uses' => 'AdminController@deleteAdmin']);
+
+Route::group(['prefix' => '{faculty}', 'middleware' => ['oauth', 'StudentInfo\Http\Middleware\FacultyCheck:{faculty}']], function () {
 
     Route::post('importStudents', 'StudentController@addStudentsFromCSV');
 
@@ -58,11 +70,11 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middle
 
     Route::post('language', 'SettingsController@setLanguage');
 
-    Route::get('updateRegisterToken/{id}', ['middleware' => 'role:token.update', 'uses' => 'RegisterController@updateRegisterToken']);
+    Route::get('updateRegisterToken/{id}', ['middleware' => ['oauth', 'role:token.update'], 'uses' => 'RegisterController@updateRegisterToken']);
 
     Route::post('student', 'StudentController@createStudent');
 
-    Route::post('classroom', 'ClassroomController@createClassroom');
+    Route::post('classroom', ['middleware' => 'oauth', 'uses' => 'ClassroomController@createClassroom']);
 
     Route::post('courseEvent', 'CourseEventController@createEvent');
 
@@ -88,9 +100,9 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middle
 
     Route::get('data', 'DataController@getData');
 
-    Route::get('student/{id}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@retrieveStudent']);
+    Route::get('student/{id}', ['middleware' => ['oauth', 'role:student.retrieve'], 'uses' => 'StudentController@retrieveStudent']);
 
-    Route::get('students/{start?}/{count?}', ['middleware' => 'role:student.retrieve', 'uses' => 'StudentController@retrieveStudents']);
+    Route::get('students/{start?}/{count?}', ['middleware' => ['oauth', 'role:student.retrieve'], 'uses' => 'StudentController@retrieveStudents']);
 
     Route::get('classroom/{id}', 'ClassroomController@retrieveClassroom');
 
@@ -108,9 +120,9 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middle
 
     Route::get('assistants/{start?}/{count?}', 'AssistantController@retrieveAssistants');
 
-    Route::get('event/{id}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@retrieveEvent']);
+    Route::get('event/{id}', ['middleware' => ['oauth', 'role:event.retrieve'], 'uses' => 'EventController@retrieveEvent']);
 
-    Route::get('events/{start?}/{count?}', ['middleware' => 'role:event.retrieve', 'uses' => 'EventController@retrieveEvents']);
+    Route::get('events/{start?}/{count?}', ['middleware' => ['oauth', 'role:event.retrieve'], 'uses' => 'EventController@retrieveEvents']);
 
     Route::get('courseEvent/{id}', 'CourseEventController@retrieveEvent');
 
@@ -144,63 +156,63 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['StudentInfo\Http\Middle
 
     Route::get('lectureNotifications/{start?}/{count?}', 'LectureNotificationController@retrieveNotifications');
 
-    Route::get('course/{id}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@retrieveCourse']);
+    Route::get('course/{id}', ['middleware' => ['oauth', 'role:course.retrieve'], 'uses' => 'CourseController@retrieveCourse']);
 
-    Route::get('courses/{start?}/{count?}', ['middleware' => 'role:course.retrieve', 'uses' => 'CourseController@retrieveCourses']);
+    Route::get('courses/{start?}/{count?}', ['middleware' => ['oauth', 'role:course.retrieve'], 'uses' => 'CourseController@retrieveCourses']);
 
     Route::get('group/{id}', 'GroupController@retrieveGroup');
 
     Route::get('groups/{start?}/{count?}', 'GroupController@retrieveGroups');
 
-    Route::get('feedback/{id}', ['middleware' => 'role:feedback.retrieve', 'uses' => 'FeedbackController@retrieveFeedback']);
+    Route::get('feedback/{id}', ['middleware' => ['oauth', 'role:feedback.retrieve'], 'uses' => 'FeedbackController@retrieveFeedback']);
 
-    Route::get('feedbacks/{start?}/{count?}', ['middleware' => 'role:feedback.retrieve', 'uses' => 'FeedbackController@retrieveFeedbacks']);
+    Route::get('feedbacks/{start?}/{count?}', ['middleware' => ['oauth', 'role:feedback.retrieve'], 'uses' => 'FeedbackController@retrieveFeedbacks']);
 
-    Route::get('notifications/between/{start}/{end}', ['middleware' => 'role:notification.retrieve', 'uses' => 'NotificationController@getNotificationsInInterval']);
+    Route::get('notifications/between/{start}/{end}', ['middleware' => ['oauth', 'role:notification.retrieve'], 'uses' => 'NotificationController@getNotificationsInInterval']);
 
-    Route::put('student/{id}', ['middleware' => 'role:student.update', 'uses' => 'StudentController@updateStudent']);
+    Route::put('student/{id}', ['middleware' => ['oauth', 'role:student.update'], 'uses' => 'StudentController@updateStudent']);
 
-    Route::put('classroom/{id}', ['middleware' => 'role:classroom.update', 'uses' => 'ClassroomController@updateClassroom']);
+    Route::put('classroom/{id}', ['middleware' => ['oauth', 'role:classroom.update'], 'uses' => 'ClassroomController@updateClassroom']);
 
-    Route::put('professor/{id}', ['middleware' => 'role:teacher.update', 'uses' => 'ProfessorController@updateProfessor']);
+    Route::put('professor/{id}', ['middleware' => ['oauth', 'role:teacher.update'], 'uses' => 'ProfessorController@updateProfessor']);
 
-    Route::put('assistant/{id}', ['middleware' => 'role:teacher.update', 'uses' => 'AssistantController@updateAssistant']);
+    Route::put('assistant/{id}', ['middleware' => ['oauth', 'role:teacher.update'], 'uses' => 'AssistantController@updateAssistant']);
 
-    Route::put('course/{id}', ['middleware' => 'role:course.update', 'uses' => 'CourseController@updateCourse']);
+    Route::put('course/{id}', ['middleware' => ['oauth', 'role:course.update'], 'uses' => 'CourseController@updateCourse']);
 
-    Route::put('lecture/{id}', ['middleware' => 'role:lecture.update', 'uses' => 'LectureController@updateLecture']);
+    Route::put('lecture/{id}', ['middleware' => ['oauth', 'role:lecture.update'], 'uses' => 'LectureController@updateLecture']);
 
-    Route::put('group/{id}', ['middleware' => 'role:group.update', 'uses' => 'GroupController@updateGroup']);
+    Route::put('group/{id}', ['middleware' => ['oauth', 'role:group.update'], 'uses' => 'GroupController@updateGroup']);
 
-    Route::put('courseEvent/{id}', ['middleware' => 'role:event.update', 'uses' => 'CourseEventController@updateEvent']);
+    Route::put('courseEvent/{id}', ['middleware' => ['oauth', 'role:event.update'], 'uses' => 'CourseEventController@updateEvent']);
 
-    Route::put('groupEvent/{id}', ['middleware' => 'role:event.update', 'uses' => 'GroupEventController@updateEvent']);
+    Route::put('groupEvent/{id}', ['middleware' => ['oauth', 'role:event.update'], 'uses' => 'GroupEventController@updateEvent']);
 
-    Route::put('globalEvent/{id}', ['middleware' => 'role:event.update', 'uses' => 'GlobalEventController@updateEvent']);
+    Route::put('globalEvent/{id}', ['middleware' => ['oauth', 'role:event.update'], 'uses' => 'GlobalEventController@updateEvent']);
 
-    Route::put('feedback/{id}', ['middleware' => 'role:feedback.update', 'uses' => 'FeedbackController@updateFeedback']);
+    Route::put('feedback/{id}', ['middleware' => ['oauth', 'role:feedback.update'], 'uses' => 'FeedbackController@updateFeedback']);
 
-    Route::put('eventNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'EventNotificationController@updateNotification']);
+    Route::put('eventNotification/{id}', ['middleware' => ['oauth', 'role:notification.edit'], 'uses' => 'EventNotificationController@updateNotification']);
 
-    Route::put('lectureNotification/{id}', ['middleware' => 'role:notification.edit', 'uses' => 'LectureNotificationController@updateNotification']);
+    Route::put('lectureNotification/{id}', ['middleware' => ['oauth', 'role:notification.edit'], 'uses' => 'LectureNotificationController@updateNotification']);
 
-    Route::delete('classroom/{id}', ['middleware' => 'role:classroom.delete', 'uses' => 'ClassroomController@deleteClassroom']);
+    Route::delete('classroom/{id}', ['middleware' => ['oauth', 'role:classroom.delete'], 'uses' => 'ClassroomController@deleteClassroom']);
 
-    Route::delete('course/{id}', ['middleware' => 'role:course.delete', 'uses' => 'CourseController@deleteCourse']);
+    Route::delete('course/{id}', ['middleware' => ['oauth', 'role:course.delete'], 'uses' => 'CourseController@deleteCourse']);
 
-    Route::delete('professor/{id}', ['middleware' => 'role:teacher.delete', 'uses' => 'ProfessorController@deleteProfessor']);
+    Route::delete('professor/{id}', ['middleware' => ['oauth', 'role:teacher.delete'], 'uses' => 'ProfessorController@deleteProfessor']);
 
-    Route::delete('assistant/{id}', ['middleware' => 'role:teacher.delete', 'uses' => 'AssistantController@deleteAssistant']);
+    Route::delete('assistant/{id}', ['middleware' => ['oauth', 'role:teacher.delete'], 'uses' => 'AssistantController@deleteAssistant']);
 
-    Route::delete('lecture/{id}', ['middleware' => 'role:lecture.delete', 'uses' => 'LectureController@deleteLecture']);
+    Route::delete('lecture/{id}', ['middleware' => ['oauth', 'role:lecture.delete'], 'uses' => 'LectureController@deleteLecture']);
 
-    Route::delete('group/{id}', ['middleware' => 'role:group.delete', 'uses' => 'GroupController@deleteGroup']);
+    Route::delete('group/{id}', ['middleware' => ['oauth', 'role:group.delete'], 'uses' => 'GroupController@deleteGroup']);
 
-    Route::delete('event/{id}', ['middleware' => 'role:event.delete', 'uses' => 'EventController@deleteEvent']);
+    Route::delete('event/{id}', ['middleware' => ['oauth', 'role:event.delete'], 'uses' => 'EventController@deleteEvent']);
 
-    Route::delete('student/{id}', ['middleware' => 'role:student.delete', 'uses' => 'StudentController@deleteStudent']);
+    Route::delete('student/{id}', ['middleware' => ['oauth', 'role:student.delete'], 'uses' => 'StudentController@deleteStudent']);
 
-    Route::delete('feedback/{id}', ['middleware' => 'role:feedback.delete', 'uses' => 'FeedbackController@deleteFeedback']);
+    Route::delete('feedback/{id}', ['middleware' => ['oauth', 'role:feedback.delete'], 'uses' => 'FeedbackController@deleteFeedback']);
 
-    Route::delete('notification/{id}', ['middleware' => 'role:notification.delete', 'uses' => 'NotificationController@deleteNotification']);
+    Route::delete('notification/{id}', ['middleware' => ['oauth', 'role:notification.delete'], 'uses' => 'NotificationController@deleteNotification']);
 });

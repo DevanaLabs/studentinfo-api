@@ -35,6 +35,13 @@
 
         <embedded name="password" class="StudentInfo\ValueObjects\Password" use-column-prefix="false"/>
 
+        <one-to-many field="tokens" target-entity="StudentInfo\Models\DeviceToken" mapped-by="user">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
+
         <many-to-one field="organisation" target-entity="StudentInfo\Models\Faculty">
             <join-column name="organisation_id" referenced-column-name="id"/>
         </many-to-one>

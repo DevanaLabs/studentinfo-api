@@ -2,8 +2,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
-use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\AssistantErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
@@ -35,23 +34,23 @@ class AssistantController extends ApiController
     protected $assistantRepository;
 
     /**
-     * @var Guard
+     * @var Authorizer
      */
-    protected $guard;
+    protected $authorizer;
 
     /**
      * StudentController constructor.
      * @param UserRepositoryInterface      $userRepository
      * @param FacultyRepositoryInterface   $facultyRepository
      * @param AssistantRepositoryInterface $assistantRepository
-     * @param Guard                        $guard
+     * @param Authorizer                   $authorizer
      */
-    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, AssistantRepositoryInterface $assistantRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, AssistantRepositoryInterface $assistantRepository, Authorizer $authorizer)
     {
         $this->userRepository      = $userRepository;
         $this->facultyRepository   = $facultyRepository;
         $this->assistantRepository = $assistantRepository;
-        $this->guard               = $guard;
+        $this->authorizer = $authorizer;
     }
 
     public function createAssistant(CreateTeacherRequest $request, $faculty)
@@ -68,7 +67,7 @@ class AssistantController extends ApiController
         $assistant->setEmail($email);
         $assistant->setPassword(new Password('password'));
         $assistant->generateRegisterToken();
-        $assistant->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
+        $assistant->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->assistantRepository->create($assistant);
 
@@ -144,12 +143,14 @@ class AssistantController extends ApiController
         return $this->returnSuccess();
     }
 
-    public function addProfessorsFromCSV(AddFromCSVRequest $request, $faculty)
+    public function addAssistantFromCSV(AddFromCSVRequest $request, $faculty)
     {
         $handle = $request->file('import');
 
         $file_path = $handle->getPathname();
         $resource  = fopen($file_path, "r");
+
+        $organisation = $this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation();
 
         while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
             $firstName = $data[0];
@@ -167,7 +168,8 @@ class AssistantController extends ApiController
             $assistant->setEmail($email);
             $assistant->setPassword(new Password('password'));
             $assistant->generateRegisterToken();
-            $assistant->setOrganisation($this->facultyRepository->findFacultyByName($this->guard->user()->getOrganisation()->getName()));
+            $user = $this->userRepository->find($this->authorizer->getResourceOwnerId());
+            $assistant->setOrganisation($organisation);
 
             $this->assistantRepository->persist($assistant);
         }

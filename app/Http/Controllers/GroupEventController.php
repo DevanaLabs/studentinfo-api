@@ -50,6 +50,7 @@ class GroupEventController extends EventController
         $event->setGroup($group);
         $event->setClassrooms($classrooms);
         $event->setDatetime($datetime);
+        $event->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
@@ -121,6 +122,7 @@ class GroupEventController extends EventController
         $event->setGroup($group);
         $event->setClassrooms($classrooms);
         $event->setDatetime($datetime);
+        $event->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->eventRepository->update($event);
 

@@ -2,7 +2,6 @@
 
 namespace StudentInfo\Http\Controllers;
 
-use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\EditUserGetRequest;
 use StudentInfo\Http\Requests\EditUserPutRequest;
@@ -18,14 +17,11 @@ class UserController extends ApiController
     protected $userRepository;
 
     /**
-     * @var Guard
+     * @param UserRepositoryInterface $userRepository
      */
-    protected $guard;
-
-    public function __construct(UserRepositoryInterface $userRepository, Guard $guard)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->guard    = $guard;
     }
 
     public function getProfile(EditUserGetRequest $request, $userId)

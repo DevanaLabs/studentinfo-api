@@ -2,8 +2,6 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
-use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\CourseEventRepositoryInterface;
 use StudentInfo\Repositories\GlobalEventRepositoryInterface;
@@ -50,11 +48,6 @@ class DataController extends ApiController
     protected $groupEventRepository;
 
     /**
-     * @var Guard
-     */
-    protected $guard;
-
-    /**
      * CourseController constructor.
      * @param LectureRepositoryInterface     $lectureRepository
      * @param ClassroomRepositoryInterface   $classroomRepository
@@ -63,9 +56,8 @@ class DataController extends ApiController
      * @param GlobalEventRepositoryInterface $globalEventRepository
      * @param CourseEventRepositoryInterface $courseEventRepository
      * @param GroupEventRepositoryInterface  $groupEventRepository
-     * @param Guard                          $guard
      */
-    public function __construct(LectureRepositoryInterface $lectureRepository, ClassroomRepositoryInterface $classroomRepository, TeacherRepositoryInterface $teacherRepository, GroupRepositoryInterface $groupRepository, GlobalEventRepositoryInterface $globalEventRepository, CourseEventRepositoryInterface $courseEventRepository, GroupEventRepositoryInterface $groupEventRepository, Guard $guard)
+    public function __construct(LectureRepositoryInterface $lectureRepository, ClassroomRepositoryInterface $classroomRepository, TeacherRepositoryInterface $teacherRepository, GroupRepositoryInterface $groupRepository, GlobalEventRepositoryInterface $globalEventRepository, CourseEventRepositoryInterface $courseEventRepository, GroupEventRepositoryInterface $groupEventRepository)
     {
         $this->lectureRepository     = $lectureRepository;
         $this->classroomRepository   = $classroomRepository;
@@ -74,7 +66,6 @@ class DataController extends ApiController
         $this->globalEventRepository = $globalEventRepository;
         $this->courseEventRepository = $courseEventRepository;
         $this->groupEventRepository  = $groupEventRepository;
-        $this->guard                 = $guard;
     }
 
     public function getData($faculty)

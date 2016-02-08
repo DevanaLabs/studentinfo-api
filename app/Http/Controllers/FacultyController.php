@@ -2,9 +2,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
 use Exception;
-use Illuminate\Contracts\Auth\Guard;
 use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateFacultyRequest;
@@ -20,19 +18,12 @@ class FacultyController extends ApiController
     protected $facultyRepository;
 
     /**
-     * @var Guard
-     */
-    protected $guard;
-
-    /**
      * FacultyController constructor.
      * @param FacultyRepositoryInterface $facultyRepository
-     * @param Guard                      $guard
      */
-    public function __construct(FacultyRepositoryInterface $facultyRepository, Guard $guard)
+    public function __construct(FacultyRepositoryInterface $facultyRepository)
     {
         $this->facultyRepository = $facultyRepository;
-        $this->guard             = $guard;
     }
 
     public function createFaculty(CreateFacultyRequest $request)

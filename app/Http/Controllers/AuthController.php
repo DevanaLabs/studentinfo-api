@@ -2,10 +2,11 @@
 
 namespace StudentInfo\Http\Controllers;
 
-
 use Illuminate\Contracts\Auth\Guard;
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\UserLoginPostRequest;
+use StudentInfo\Models\User;
 use StudentInfo\Repositories\UserRepositoryInterface;
 use StudentInfo\ValueObjects\Email;
 
@@ -21,10 +22,17 @@ class AuthController extends ApiController
      */
     protected $guard;
 
-    public function __construct(UserRepositoryInterface $userRepository, Guard $guard)
+    /**
+     * @var Authorizer
+     */
+    protected $authorizer;
+
+    public function __construct(UserRepositoryInterface $userRepository, Guard $guard, Authorizer $authorizer)
     {
         $this->userRepository = $userRepository;
         $this->guard = $guard;
+        $this->authorizer = $authorizer;
+
     }
 
     /**
@@ -55,11 +63,11 @@ class AuthController extends ApiController
      *       {"error":{"errorCode":"Access denied","message":"The email or password is incorrect"}}
      *     }
      */
+
     public function login(UserLoginPostRequest $request)
     {
-
         $input = $request->only(['email', 'password']);
-
+        /** @var User $user */
         $user = $this->userRepository->findByEmail(new Email($input['email']));
 
         if ($user === null) {
@@ -70,15 +78,26 @@ class AuthController extends ApiController
             return $this->returnForbidden(UserErrorCodes::YOU_NEED_TO_REGISTER_FIRST);
         }
 
-        if (!$this->guard->attempt([
+        if (!$this->guard->validate([
             'email.email' => $input['email'],
-            'password'    => $input['password']
-        ])) {
+            'password'    => $input['password'],
+        ])
+        ) {
             return $this->returnForbidden(UserErrorCodes::ACCESS_DENIED);
         }
 
         return $this->returnSuccess([
             'user' => $user,
+        ]);
+    }
+
+    /**
+     * @return \Illuminate\Http\Response
+     */
+    public function getAccessToken()
+    {
+        return $this->returnSuccess([
+            'oauth' => $this->authorizer->issueAccessToken(),
         ]);
     }
 
@@ -94,7 +113,7 @@ class AuthController extends ApiController
      */
     public function logout()
     {
-        $this->guard->logout();
+        $this->authorizer->getChecker()->getAccessToken()->expire();
 
         return $this->returnSuccess();
     }
