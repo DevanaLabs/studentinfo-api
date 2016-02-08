@@ -80,7 +80,7 @@ class AuthController extends ApiController
 
         if (!$this->guard->validate([
             'email.email' => $input['email'],
-            'password'    => $input['password'],
+            'password' => $input['password'],
         ])
         ) {
             return $this->returnForbidden(UserErrorCodes::ACCESS_DENIED);

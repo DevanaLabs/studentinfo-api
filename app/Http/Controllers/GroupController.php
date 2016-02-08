@@ -56,12 +56,12 @@ class GroupController extends ApiController
     public function __construct(UserRepositoryInterface $userRepository, GroupRepositoryInterface $groupRepository, LectureRepositoryInterface $lectureRepository,
                                 EventRepositoryInterface $eventRepository, FacultyRepositoryInterface $facultyRepository, Authorizer $authorizer)
     {
-        $this->userRepository  = $userRepository;
+        $this->userRepository = $userRepository;
         $this->groupRepository   = $groupRepository;
         $this->lectureRepository = $lectureRepository;
         $this->eventRepository = $eventRepository;
         $this->facultyRepository = $facultyRepository;
-        $this->authorizer      = $authorizer;
+        $this->authorizer     = $authorizer;
     }
 
     public function createGroup(CreateGroupRequest $request, $faculty)
