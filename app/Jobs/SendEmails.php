@@ -48,7 +48,6 @@ class SendEmails extends Job implements SelfHandling, ShouldQueue
             'email' => $email,
             'token' => $this->user->getRegisterToken(),
         ], function (Message $message) use ($email) {
-            $message->from('noreply@studentinfo.rs', 'noreply');
             $message->to($email);
             $message->subject('Registration');
         });
