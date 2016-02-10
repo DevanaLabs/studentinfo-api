@@ -13,7 +13,7 @@ class CreateDeviceTokenRequest extends Request
      */
     public function authorize()
     {
-        return parent::checkIfHasPermission('');
+        return true;
     }
 
     /**
