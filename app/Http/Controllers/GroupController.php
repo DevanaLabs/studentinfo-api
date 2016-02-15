@@ -125,9 +125,7 @@ class GroupController extends ApiController
     {
         $groups = $this->groupRepository->all($faculty, $start, $count);
 
-        return $this->returnSuccess([
-            'groups' => $groups,
-        ]);
+        return $this->returnSuccess($groups);
     }
 
     public function updateGroup(UpdateGroupRequest $request, $faculty, $id)

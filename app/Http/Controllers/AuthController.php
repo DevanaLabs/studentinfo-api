@@ -97,6 +97,11 @@ class AuthController extends ApiController
         ]);
     }
 
+    public function verify()
+    {
+        return $this->returnSuccess();
+    }
+
     /**
      * @return \Illuminate\Http\Response
      * @internal param Guard $guard

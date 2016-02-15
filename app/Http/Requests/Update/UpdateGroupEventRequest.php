@@ -28,7 +28,6 @@ class UpdateGroupEventRequest extends Request
             'description' => 'required',
             'startsAt'    => 'required',
             'endsAt'      => 'required',
-            'groupId'     => 'required',
             'classrooms' => 'array',
         ];
     }

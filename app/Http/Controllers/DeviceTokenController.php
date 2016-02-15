@@ -7,6 +7,7 @@ use StudentInfo\ErrorCodes\DeviceTokenErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateDeviceTokenRequest;
 use StudentInfo\Http\Requests\Update\UpdateDeviceTokenRequest;
+use StudentInfo\Jobs\SendNotification;
 use StudentInfo\Models\DeviceToken;
 use StudentInfo\Repositories\DeviceTokenRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
@@ -45,6 +46,9 @@ class DeviceTokenController extends ApiController
         $deviceToken = new DeviceToken();
         $deviceToken->setToken($token);
         $deviceToken->setUser($user);
+
+        $notification = 'Hello world';
+        $this->dispatch(new SendNotification($token, $notification));
 
         $this->deviceTokenRepositoryInterface->create($deviceToken);
 

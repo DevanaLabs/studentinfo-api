@@ -28,7 +28,6 @@ class UpdateCourseEventRequest extends Request
             'description' => 'required',
             'startsAt'    => 'required',
             'endsAt'      => 'required',
-            'courseId'    => 'required',
             'classrooms' => 'array',
         ];
     }
