@@ -54,8 +54,8 @@ class DeviceTokenController extends ApiController
         $deviceTokens = $this->deviceTokenRepositoryInterface->all(null);
         foreach ($deviceTokens as $deviceToken) {
             /** @var DeviceToken $deviceToken */
-            if (($deviceToken->getToken() === $token) && ($deviceToken->getUser()->getId() === $userId)) {
-                if ($deviceToken->isActive() == false) {
+            if (($deviceToken->getToken() === $token) && ($deviceToken->getUser()->getId() == $userId)) {
+                if ($deviceToken->getActive() == 0) {
                     $deviceToken->setActive($request->get('active'));
                     $this->deviceTokenRepositoryInterface->update($deviceToken);
                 }
