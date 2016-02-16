@@ -11,12 +11,11 @@ use LaravelDoctrine\ACL\Mappings as ACL;
 use LaravelDoctrine\ACL\Organisations\BelongsToOrganisation;
 use LaravelDoctrine\ACL\Permissions\HasPermissions;
 use LaravelDoctrine\ORM\Contracts\Auth\Authenticatable;
-use League\OAuth2\Server\Grant\AbstractGrant;
 use StudentInfo\ValueObjects\Email;
 use StudentInfo\ValueObjects\Password;
 
 
-abstract class User extends AbstractGrant implements HasRolesContract, Authenticatable, BelongsToOrganisationContract
+abstract class User implements HasRolesContract, Authenticatable, BelongsToOrganisationContract
 {
     use HasPermissions;
     use BelongsToOrganisation;
@@ -274,34 +273,5 @@ abstract class User extends AbstractGrant implements HasRolesContract, Authentic
     public function setTokens($tokens)
     {
         $this->tokens = $tokens;
-    }
-
-    /**
-     * Complete the grant flow
-     *
-     * @return array
-     */
-    public function completeFlow()
-    {
-        // TODO: Implement completeFlow() method.
-    }
-
-    /**
-     * @param $username
-     * @param $password
-     * @return bool
-     */
-    public function verify($username, $password)
-    {
-        $credentials = [
-            'email'    => $username,
-            'password' => $password,
-        ];
-
-        if (Auth::once($credentials)) {
-            return Auth::user()->id;
-        }
-
-        return false;
     }
 }

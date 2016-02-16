@@ -6,6 +6,8 @@ Route::get('/', function () {
 
 Route::post('oauth/access_token', 'AuthController@getAccessToken');
 
+Route::get('verifyAccessToken', ['middleware' => 'oauth', 'uses' => 'AuthController@verify']);
+
 Route::get('pushNotification', 'PushNotificationController@pushNotification');
 
 Route::get('user/{user_id}', ['middleware' => 'oauth', 'uses' => 'UserController@getProfile']);
@@ -32,7 +34,7 @@ Route::put('faculty/{id}', ['middleware' => ['oauth', 'role:faculty.update'], 'u
 
 Route::delete('faculty/{id}', ['middleware' => ['oauth', 'role:faculty.delete'], 'uses' => 'FacultyController@deleteFaculty']);
 
-Route::post('deviceToken', 'DeviceTokenController@createDeviceToken');
+Route::post('deviceToken', ['middleware' => 'oauth', 'uses' => 'DeviceTokenController@createDeviceToken']);
 
 Route::get('deviceToken/{id}', ['middleware' => ['oauth', 'role:token.retrieve'], 'uses' => 'DeviceTokenController@retrieveDeviceToken']);
 

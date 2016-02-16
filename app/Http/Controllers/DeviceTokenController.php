@@ -3,16 +3,23 @@
 namespace StudentInfo\Http\Controllers;
 
 
+use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\DeviceTokenErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateDeviceTokenRequest;
 use StudentInfo\Http\Requests\Update\UpdateDeviceTokenRequest;
+use StudentInfo\Jobs\SendNotification;
 use StudentInfo\Models\DeviceToken;
 use StudentInfo\Repositories\DeviceTokenRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
 
 class DeviceTokenController extends ApiController
 {
+    /**
+     * @var authorizer
+     */
+    protected $authorizer;
+
     /**
      * @var UserRepositoryInterface
      */
@@ -26,17 +33,19 @@ class DeviceTokenController extends ApiController
     /**
      * @param UserRepositoryInterface        $userRepositoryInterface
      * @param DeviceTokenRepositoryInterface $deviceTokenRepositoryInterface
+     * @param Authorizer                     $authorizer
      */
-    public function __construct(UserRepositoryInterface $userRepositoryInterface, DeviceTokenRepositoryInterface $deviceTokenRepositoryInterface)
+    public function __construct(UserRepositoryInterface $userRepositoryInterface, DeviceTokenRepositoryInterface $deviceTokenRepositoryInterface, Authorizer $authorizer)
     {
         $this->userRepositoryInterface        = $userRepositoryInterface;
         $this->deviceTokenRepositoryInterface = $deviceTokenRepositoryInterface;
+        $this->authorizer = $authorizer;
     }
 
     public function createDeviceToken(CreateDeviceTokenRequest $request)
     {
         $token  = $request->get('token');
-        $userId = $request->get('userId');
+        $userId = $this->authorizer->getResourceOwnerId();
 
         $user = $this->userRepositoryInterface->find($userId);
         if ($user === null) {
@@ -45,6 +54,9 @@ class DeviceTokenController extends ApiController
         $deviceToken = new DeviceToken();
         $deviceToken->setToken($token);
         $deviceToken->setUser($user);
+
+        $notification = 'blabla';
+        $this->dispatch(new SendNotification($token, $notification));
 
         $this->deviceTokenRepositoryInterface->create($deviceToken);
 
