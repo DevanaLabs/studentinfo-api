@@ -8,7 +8,7 @@ Route::post('oauth/access_token', 'AuthController@getAccessToken');
 
 Route::get('verifyAccessToken', ['middleware' => 'oauth', 'uses' => 'AuthController@verify']);
 
-Route::get('pushNotification', 'PushNotificationController@pushNotification');
+Route::post('pushNotification', ['middleware' => 'oauth', 'uses' => 'PushNotificationController@pushNotification']);
 
 Route::get('user/{user_id}', ['middleware' => 'oauth', 'uses' => 'UserController@getProfile']);
 
