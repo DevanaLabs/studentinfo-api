@@ -40,9 +40,9 @@ Route::get('deviceToken/{id}', ['middleware' => ['oauth', 'role:token.retrieve']
 
 Route::get('deviceTokens/{start?}/{count?}', ['middleware' => ['oauth', 'role:token.retrieve'], 'uses' => 'DeviceTokenController@retrieveDeviceTokens']);
 
-Route::put('deviceToken/{id}', ['middleware' => ['oauth', 'role:token.update'], 'uses' => 'DeviceTokenController@updateDeviceToken']);
+Route::put('deviceToken/{deviceToken}', ['middleware' => 'oauth', 'uses' => 'DeviceTokenController@updateDeviceToken']);
 
-Route::delete('deviceToken/{id}', ['middleware' => ['oauth', 'role:token.delete'], 'uses' => 'DeviceTokenController@deleteDeviceToken']);
+Route::delete('deviceToken/{deviceToken}', ['middleware' => ['oauth', 'role:token.delete'], 'uses' => 'DeviceTokenController@deleteDeviceToken']);
 
 Route::post('admin', ['middleware' => 'oauth', 'uses' => 'AdminController@createAdmin']);
 

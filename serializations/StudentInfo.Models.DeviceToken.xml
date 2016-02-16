@@ -18,5 +18,11 @@
                   max-depth="2"
                   groups="all"
                 />
+        <property name="active"
+                  serialized-name="active"
+                  expose="true"
+                  max-depth="2"
+                  groups="all"
+                />
     </class>
 </serializer>

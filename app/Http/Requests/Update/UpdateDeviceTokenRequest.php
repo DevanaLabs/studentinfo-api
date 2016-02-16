@@ -24,7 +24,7 @@ class UpdateDeviceTokenRequest extends Request
     public function rules()
     {
         return [
-            'token' => 'required',
+            'active' => 'required'
         ];
     }
 }

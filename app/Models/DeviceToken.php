@@ -21,6 +21,11 @@ class DeviceToken
     protected $user;
 
     /**
+     * @var Int
+     */
+    protected $active;
+
+    /**
      * @return Int
      */
     public function getId()
@@ -66,5 +71,21 @@ class DeviceToken
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return Int
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param Int $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
     }
 }

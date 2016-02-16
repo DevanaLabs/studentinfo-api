@@ -23,7 +23,7 @@ class DoctrineDeviceTokenRepository extends EntityRepository implements DeviceTo
         $this->flush();
     }
 
-    public function all($faculty, $start = 0, $count = 20)
+    public function all($faculty = null, $start = 0, $count = 20)
     {
         return $query = $this->_em->createQuery('SELECT d FROM StudentInfo\Models\DeviceToken d')
             ->setFirstResult($start)
@@ -42,8 +42,15 @@ class DoctrineDeviceTokenRepository extends EntityRepository implements DeviceTo
         $this->_em->flush($object);
     }
 
+    public function findByDeviceToken($deviceToken)
+    {
+        return $this->_em->createQuery('SELECT d FROM StudentInfo\Models\DeviceToken d WHERE d.token = :deviceToken')
+            ->setParameter('deviceToken', $deviceToken)
+            ->getOneOrNullResult();
+    }
+
     public function find($id)
     {
-        return $this->_em->find('StudentInfo\Models\User', $id);
+        return $this->_em->find('StudentInfo\Models\DeviceToken', $id);
     }
 }

@@ -25,6 +25,7 @@ class CreateDeviceTokenRequest extends Request
     {
         return [
             'token'  => 'required',
+            'active' => 'required',
         ];
     }
 }

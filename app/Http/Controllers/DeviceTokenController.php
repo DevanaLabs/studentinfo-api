@@ -51,9 +51,21 @@ class DeviceTokenController extends ApiController
         if ($user === null) {
             return $this->returnError(500, UserErrorCodes::USER_DOES_NOT_EXIST);
         }
+        $deviceTokens = $this->deviceTokenRepositoryInterface->all(null);
+        foreach ($deviceTokens as $deviceToken) {
+            /** @var DeviceToken $deviceToken */
+            if (($deviceToken->getToken() === $token) && ($deviceToken->getUser()->getId() === $userId)) {
+                if ($deviceToken->isActive() == false) {
+                    $deviceToken->setActive($request->get('active'));
+                    $this->deviceTokenRepositoryInterface->update($deviceToken);
+                }
+                return $this->returnSuccess();
+            }
+        }
         $deviceToken = new DeviceToken();
         $deviceToken->setToken($token);
         $deviceToken->setUser($user);
+        $deviceToken->setActive($request->get('active'));
 
         $notification = 'blabla';
         $this->dispatch(new SendNotification($token, $notification));
@@ -85,16 +97,16 @@ class DeviceTokenController extends ApiController
         return $this->returnSuccess($deviceTokens);
     }
 
-    public function updateDeviceToken(UpdateDeviceTokenRequest $request, $id)
+    public function updateDeviceToken(UpdateDeviceTokenRequest $request, $deviceToken)
     {
         /** @var  DeviceToken $deviceToken */
 
-        $deviceToken = $this->deviceTokenRepositoryInterface->find($id);
+        $deviceToken = $this->deviceTokenRepositoryInterface->findByDeviceToken($deviceToken);
         if ($deviceToken === null) {
             return $this->returnError(500, DeviceTokenErrorCodes::DEVICE_TOKEN_DOES_NOT_EXIST);
         }
 
-        $deviceToken->setToken($request->get('token'));
+        $deviceToken->setActive($request->get("active"));
 
         $this->deviceTokenRepositoryInterface->update($deviceToken);
 
@@ -103,9 +115,9 @@ class DeviceTokenController extends ApiController
         ]);
     }
 
-    public function deleteDeviceToken($id)
+    public function deleteDeviceToken($deviceToken)
     {
-        $deviceToken = $this->deviceTokenRepositoryInterface->find($id);
+        $deviceToken = $this->deviceTokenRepositoryInterface->findByDeviceToken($deviceToken);
 
         if ($deviceToken === null) {
             return $this->returnError(500, DeviceTokenErrorCodes::DEVICE_TOKEN_DOES_NOT_EXIST);
