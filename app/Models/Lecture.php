@@ -13,7 +13,7 @@ class Lecture
     protected $id;
 
     /**
-     * @var string
+     * @var Int
      */
     protected $type;
 
@@ -71,19 +71,19 @@ class Lecture
     }
 
     /**
-     * @param string $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @return string
+     * @return Int
      */
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param Int $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 
     /**
@@ -169,7 +169,7 @@ class Lecture
     /**
      * @return ArrayCollection|LectureNotification
      */
-    public function getNotification()
+    public function getNotifications()
     {
         return $this->notifications;
     }
@@ -177,7 +177,7 @@ class Lecture
     /**
      * @param ArrayCollection|LectureNotification $notifications
      */
-    public function setNotification($notifications)
+    public function setNotifications($notifications)
     {
         $this->notifications = $notifications;
     }

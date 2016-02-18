@@ -19,7 +19,6 @@ use StudentInfo\Repositories\CourseRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
 use StudentInfo\Repositories\TeacherRepositoryInterface;
-use StudentInfo\Service\LectureType;
 use StudentInfo\ValueObjects\Time;
 
 class LectureController extends ApiController
@@ -66,7 +65,7 @@ class LectureController extends ApiController
         $this->groupRepository = $groupRepository;
     }
 
-    public function createLecture(CreateLectureRequest $request, LectureType $lectureType, $faculty)
+    public function createLecture(CreateLectureRequest $request, $faculty)
     {
         /** @var Teacher $teacher */
         $teacher = $this->teacherRepository->find($request->get('teacherId'));
@@ -110,7 +109,7 @@ class LectureController extends ApiController
         $lecture->setTeacher($teacher);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
-        $lecture->setType($lectureType->LectureTypeFromId($request->get('type')));
+        $lecture->setType($request->get('type'));
         $lecture->setTime($time);
         $lecture->setGroups($groups);
 
@@ -122,6 +121,7 @@ class LectureController extends ApiController
 
     public function retrieveLecture($faculty, $id)
     {
+        /** @var Lecture $lecture */
         $lecture = $this->lectureRepository->find($id);
 
         if ($lecture === null) {
@@ -146,7 +146,7 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function updateLecture(UpdateLectureRequest $request, LectureType $lectureType, $faculty, $id)
+    public function updateLecture(UpdateLectureRequest $request, $faculty, $id)
     {
         if ($this->lectureRepository->find($id) === null) {
             return $this->returnError(500, LectureErrorCodes::LECTURE_NOT_IN_DB);
@@ -195,7 +195,7 @@ class LectureController extends ApiController
         $lecture->setTeacher($teacher);
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
-        $lecture->setType($lectureType->LectureTypeFromId($request->get('type')));
+        $lecture->setType($request->get('type'));
         $lecture->setTime($time);
         $lecture->setGroups($groups);
 
