@@ -5,6 +5,7 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Contracts\Auth\Guard;
 use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\UserErrorCodes;
+use StudentInfo\Http\Requests\AccessTokenRequest;
 use StudentInfo\Http\Requests\UserLoginPostRequest;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\UserRepositoryInterface;
@@ -88,9 +89,10 @@ class AuthController extends ApiController
     }
 
     /**
+     * @param AccessTokenRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function getAccessToken()
+    public function getAccessToken(AccessTokenRequest $request)
     {
         return $this->returnSuccess([
             'oauth' => $this->authorizer->issueAccessToken(),

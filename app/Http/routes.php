@@ -194,9 +194,9 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['oauth', 'StudentInfo\Ht
 
     Route::put('feedback/{id}', ['middleware' => ['oauth', 'role:feedback.update'], 'uses' => 'FeedbackController@updateFeedback']);
 
-    Route::put('eventNotification/{id}', ['middleware' => ['oauth', 'role:notification.edit'], 'uses' => 'EventNotificationController@updateNotification']);
+    Route::put('eventNotification/{id}', ['middleware' => ['oauth', 'role:notification.update'], 'uses' => 'EventNotificationController@updateNotification']);
 
-    Route::put('lectureNotification/{id}', ['middleware' => ['oauth', 'role:notification.edit'], 'uses' => 'LectureNotificationController@updateNotification']);
+    Route::put('lectureNotification/{id}', ['middleware' => ['oauth', 'role:notification.update'], 'uses' => 'LectureNotificationController@updateNotification']);
 
     Route::delete('classroom/{id}', ['middleware' => ['oauth', 'role:classroom.delete'], 'uses' => 'ClassroomController@deleteClassroom']);
 
