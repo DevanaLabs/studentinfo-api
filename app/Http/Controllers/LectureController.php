@@ -188,7 +188,7 @@ class LectureController extends ApiController
         }
         $time = new Time();
         $time->setStartsAt($startsAt);
-        $time->setStartsAt($endsAt);
+        $time->setEndsAt($endsAt);
         /** @var Lecture $lecture */
         $lecture = $this->lectureRepository->find($id);
 
