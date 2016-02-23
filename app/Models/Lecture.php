@@ -13,7 +13,7 @@ class Lecture
     protected $id;
 
     /**
-     * @var Int
+     * @var string
      */
     protected $type;
 
@@ -71,19 +71,19 @@ class Lecture
     }
 
     /**
-     * @return Int
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param Int $type
+     * @param string $type
      */
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -169,7 +169,7 @@ class Lecture
     /**
      * @return ArrayCollection|LectureNotification
      */
-    public function getNotifications()
+    public function getNotification()
     {
         return $this->notifications;
     }
@@ -177,7 +177,7 @@ class Lecture
     /**
      * @param ArrayCollection|LectureNotification $notifications
      */
-    public function setNotifications($notifications)
+    public function setNotification($notifications)
     {
         $this->notifications = $notifications;
     }
@@ -196,5 +196,10 @@ class Lecture
     public function setTime($time)
     {
         $this->time = $time;
+    }
+
+    public function getNotificationCount()
+    {
+        return $this->notifications->count();
     }
 }

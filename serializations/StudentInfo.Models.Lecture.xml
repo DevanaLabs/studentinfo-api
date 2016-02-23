@@ -50,5 +50,9 @@
                   groups="all"
                   max-depth="4"
                 />
+        <virtual-property method="getNotificationCount"
+                          serialized-name="notificationCount"
+                          groups="limited,all"
+                          since-version="1.0"/>
     </class>
 </serializer>
