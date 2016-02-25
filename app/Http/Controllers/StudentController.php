@@ -226,7 +226,7 @@ class StudentController extends ApiController
         ) {
             $firstNameIndex = 0;
             $lastNameIndex  = 1;
-            $emailIndex = 0;
+            $emailIndex = 2;
             $indexNumberIndex = 3;
             $yearIndex      = 4;
         }
