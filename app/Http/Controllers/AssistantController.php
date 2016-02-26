@@ -123,7 +123,6 @@ class AssistantController extends ApiController
         $assistant->setTitle($request->get('title'));
         $assistant->setEmail($email);
         $assistant->setPassword(new Password('password'));
-        $assistant->generateRegisterToken();
 
         $this->assistantRepository->update($assistant);
 

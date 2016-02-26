@@ -261,7 +261,6 @@ class StudentController extends ApiController
             $student->setIndexNumber($indexNumber);
             $student->setYear($year);
             $student->setPassword(new Password('password'));
-            $student->generateRegisterToken();
             $student->setOrganisation($organisation);
 
             $this->studentRepository->persist($student);

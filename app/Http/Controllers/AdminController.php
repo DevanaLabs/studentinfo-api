@@ -119,7 +119,6 @@ class AdminController extends ApiController
         $admin->setLastName($request->get('lastName'));
         $admin->setEmail($email);
         $admin->setPassword(new Password('password'));
-        $admin->generateRegisterToken();
         $admin->setOrganisation($faculty);
         $this->adminRepository->update($admin);
 
