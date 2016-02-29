@@ -5,6 +5,7 @@ namespace StudentInfo\Http\Controllers;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Input;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 
@@ -22,14 +23,11 @@ class ApiController extends BaseController
                 'data' => $data,
             ],
         ];
-        $jsonData = null;
-        if ((count($options) > 0) and ($options['display'] === 'limited')) {
-            $jsonData = $serializer->serialize($responseData, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array('limited')));
-        } else {
-            $jsonData = $serializer->serialize($responseData, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array('all')));
-        }
-        $response = new Response($jsonData, 200);
+        $display = Input::get('display', 'all');
 
+        $jsonData = $serializer->serialize($responseData, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array($display)));
+
+        $response = new Response($jsonData, 200);
         $response->header('Content-Type', 'application/json');
 
         return $response;
