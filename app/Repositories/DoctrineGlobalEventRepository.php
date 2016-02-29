@@ -13,7 +13,7 @@ class DoctrineGlobalEventRepository extends EntityRepository implements GlobalEv
         $this->_em->flush($object);
     }
 
-    public function all($faculty, $start = 0, $count = 20)
+    public function all($faculty, $start = 0, $count = 20, array $options = [])
     {
         return $query = $this->_em->createQuery('SELECT g FROM StudentInfo\Models\GlobalEvent g, StudentInfo\Models\Faculty f
               WHERE g.organisation = f.id AND f.slug =:faculty')

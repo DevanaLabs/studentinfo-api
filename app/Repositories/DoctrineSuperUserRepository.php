@@ -12,7 +12,7 @@ class DoctrineSuperUserRepository extends EntityRepository implements SuperUserR
         $this->_em->flush($object);
     }
 
-    public function all($faculty, $start = 0, $count = 20)
+    public function all($faculty, $start = 0, $count = 20, array $options = [])
     {
         return $query = $this->_em->createQuery('SELECT s FROM StudentInfo\Models\SuperUser s, StudentInfo\Models\Faculty f
               WHERE s.organisation = f.id AND f.slug =:faculty')

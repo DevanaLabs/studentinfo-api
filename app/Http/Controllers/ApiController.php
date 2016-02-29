@@ -7,10 +7,18 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
+use StudentInfo\Http\Requests\StandardRequest;
 
 class ApiController extends BaseController
 {
     use DispatchesJobs;
+
+    protected $request;
+
+    public function __construct(StandardRequest $request)
+    {
+        $this->request = $request;
+    }
 
     public function returnSuccess(array $data = [], array $options = [])
     {
@@ -23,11 +31,11 @@ class ApiController extends BaseController
             ],
         ];
         $jsonData = null;
-        if ((count($options) > 0) and ($options['display'] === 'limited')) {
-            $jsonData = $serializer->serialize($responseData, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array('limited')));
-        } else {
-            $jsonData = $serializer->serialize($responseData, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array('all')));
-        }
+
+        $display = $this->request->get('display');
+
+        $jsonData = $serializer->serialize($responseData, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array($display)));
+
         $response = new Response($jsonData, 200);
 
         $response->header('Content-Type', 'application/json');

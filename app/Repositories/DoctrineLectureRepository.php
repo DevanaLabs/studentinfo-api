@@ -24,10 +24,11 @@ class DoctrineLectureRepository extends EntityRepository implements LectureRepos
         $this->_em->flush();
     }
 
-    public function all($faculty, $start = 0, $count = 20)
+    public function all($faculty, $start = 0, $count = 20, array $options = [])
     {
         return $query = $this->_em->createQuery('SELECT l FROM StudentInfo\Models\Lecture l, StudentInfo\Models\Faculty f,
-              StudentInfo\Models\Course c WHERE l.course = c.id AND c.organisation = f.id AND f.slug =:faculty')
+              StudentInfo\Models\Course c WHERE l.course = c.id AND mod(c.semester, 2) =:semester AND c.organisation = f.id AND f.slug =:faculty')
+            ->setParameter('semester', $options['semester'] % 2)
             ->setParameter('faculty', $faculty)
             ->setFirstResult($start)
             ->setMaxResults($count)
