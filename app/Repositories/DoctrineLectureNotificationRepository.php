@@ -20,7 +20,7 @@ class DoctrineLectureNotificationRepository extends EntityRepository implements 
         $this->_em->flush($object);
     }
 
-    public function all($faculty, $start = 0, $count = 20)
+    public function all($faculty, $start = 0, $count = 20, array $options = [])
     {
         return $query = $this->_em->createQuery('SELECT e FROM StudentInfo\Models\LectureNotification e, StudentInfo\Models\Faculty f
               WHERE e.organisation = f.id AND f.slug =:faculty')

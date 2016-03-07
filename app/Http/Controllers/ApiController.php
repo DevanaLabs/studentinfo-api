@@ -8,10 +8,18 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Input;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
+use StudentInfo\Http\Requests\StandardRequest;
 
 class ApiController extends BaseController
 {
     use DispatchesJobs;
+
+    protected $request;
+
+    public function __construct(StandardRequest $request)
+    {
+        $this->request = $request;
+    }
 
     public function returnSuccess(array $data = [], array $options = [])
     {

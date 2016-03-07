@@ -3,6 +3,7 @@
 namespace StudentInfo\Service;
 
 use Illuminate\Auth\Guard;
+use StudentInfo\Models\User;
 use StudentInfo\Repositories\UserRepositoryInterface;
 use StudentInfo\ValueObjects\Email;
 
@@ -26,11 +27,16 @@ class UserAuthChecker
 
     public function verify($email, $password)
     {
+        /** @var User $user */
         $user = $this->userRepository->findByEmail(new Email($email));
 
         if ($user === null) {
             return false;
         }
+        if (($user->getRegisterToken() !== "") && ($user->getRegisterToken() !== "0")) {
+            return false;
+        }
+
         $credentials = [
             'id'       => $user->getId(),
             'password' => $password,

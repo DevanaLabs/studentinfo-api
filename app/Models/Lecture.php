@@ -197,4 +197,9 @@ class Lecture
     {
         $this->time = $time;
     }
+
+    public function getNotificationCount()
+    {
+        return $this->notifications->count();
+    }
 }

@@ -12,7 +12,7 @@ class DoctrineFacultyRepository extends EntityRepository implements FacultyRepos
         $this->_em->flush($object);
     }
 
-    public function all($faculty = null, $start = 0, $count = 20)
+    public function all($faculty = null, $start = 0, $count = 20, array $options = [])
     {
         return $query = $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f')
             ->setFirstResult($start)

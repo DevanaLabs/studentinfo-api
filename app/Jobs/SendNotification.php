@@ -37,7 +37,7 @@ class SendNotification extends Job implements SelfHandling
     public function handle()
     {
         PushNotification::app('appNameAndroid')
-            ->to($this->deviceToken)
+            ->to('eOkIwhJpKAs:APA91bEWSYWBoMcITYEHC2MKfkaJiNxJpn1kKG5JfDcVOAzufhRqlVRF7nWxQ04prQ8sUilEYdMeL50VVWmja1wfUqut5nk3MpJ0lVGkS_f0TdfV5TS7LLcLgppAMIp20cLjElLHGd0z')
             ->send($this->notification);
     }
 }

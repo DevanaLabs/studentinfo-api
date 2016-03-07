@@ -23,7 +23,11 @@ class DoctrineDeviceTokenRepository extends EntityRepository implements DeviceTo
         $this->flush();
     }
 
+<<<<<<< HEAD
     public function all($faculty = null, $start = 0, $count = 20)
+=======
+    public function all($faculty, $start = 0, $count = 20, array $options = [])
+>>>>>>> dev
     {
         return $query = $this->_em->createQuery('SELECT d FROM StudentInfo\Models\DeviceToken d')
             ->setFirstResult($start)

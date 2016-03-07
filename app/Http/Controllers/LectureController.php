@@ -9,6 +9,7 @@ use StudentInfo\ErrorCodes\TeacherErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateLectureRequest;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Http\Requests\Update\UpdateLectureRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Models\Course;
@@ -55,14 +56,16 @@ class LectureController extends ApiController
      * @param CourseRepositoryInterface    $courseRepository
      * @param ClassroomRepositoryInterface $classroomRepository
      * @param GroupRepositoryInterface     $groupRepository
+     * @param StandardRequest              $request
      */
-    public function __construct(LectureRepositoryInterface $lectureRepository, TeacherRepositoryInterface $teacherRepository, CourseRepositoryInterface $courseRepository, ClassroomRepositoryInterface $classroomRepository, GroupRepositoryInterface $groupRepository)
+    public function __construct(LectureRepositoryInterface $lectureRepository, TeacherRepositoryInterface $teacherRepository, CourseRepositoryInterface $courseRepository, ClassroomRepositoryInterface $classroomRepository, GroupRepositoryInterface $groupRepository, StandardRequest $request)
     {
         $this->lectureRepository   = $lectureRepository;
         $this->teacherRepository = $teacherRepository;
         $this->courseRepository    = $courseRepository;
         $this->classroomRepository = $classroomRepository;
         $this->groupRepository = $groupRepository;
+        parent::__construct($request);
     }
 
     public function createLecture(CreateLectureRequest $request, $faculty)
@@ -121,6 +124,7 @@ class LectureController extends ApiController
 
     public function retrieveLecture($faculty, $id)
     {
+        /** @var Lecture $lecture */
         $lecture = $this->lectureRepository->find($id);
 
         if ($lecture === null) {
@@ -136,13 +140,11 @@ class LectureController extends ApiController
         ]);
     }
 
-    public function retrieveLectures($faculty, $start = 0, $count = 2000)
+    public function retrieveLectures(StandardRequest $request, $faculty, $start = 0, $count = 2000)
     {
-        $lectures = $this->lectureRepository->all($faculty, $start, $count);
+        $lectures = $this->lectureRepository->all($faculty, $start, $count, ['semester' => $request->get('semester')]);
 
-        return $this->returnSuccess($lectures, [
-            'display' => 'limited',
-        ]);
+        return $this->returnSuccess($lectures);
     }
 
     public function updateLecture(UpdateLectureRequest $request, $faculty, $id)
@@ -187,7 +189,7 @@ class LectureController extends ApiController
         }
         $time = new Time();
         $time->setStartsAt($startsAt);
-        $time->setStartsAt($endsAt);
+        $time->setEndsAt($endsAt);
         /** @var Lecture $lecture */
         $lecture = $this->lectureRepository->find($id);
 

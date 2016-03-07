@@ -36,4 +36,8 @@ class Version20160216104757 extends AbstractMigration
         $this->addSql('ALTER TABLE teachers CHANGE title title VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci');
         $this->addSql('ALTER TABLE users CHANGE first_name first_name VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci, CHANGE last_name last_name VARCHAR(255) DEFAULT NULL COLLATE utf8_unicode_ci');
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> dev

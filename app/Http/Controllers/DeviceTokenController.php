@@ -70,6 +70,9 @@ class DeviceTokenController extends ApiController
         $notification = 'blabla';
         $this->dispatch(new SendNotification($token, $notification));
 
+        $notification = 'Hello world';
+        $this->dispatch(new SendNotification($token, $notification));
+
         $this->deviceTokenRepositoryInterface->create($deviceToken);
 
         return $this->returnSuccess([

@@ -5,7 +5,7 @@ namespace Database\Migrations;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema as Schema;
 
-class Version20160209112459 extends AbstractMigration
+class Version20160304134812 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -14,8 +14,7 @@ class Version20160209112459 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE deviceTokens (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, token VARCHAR(255) NOT NULL, INDEX IDX_E14B1843A76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE deviceTokens ADD CONSTRAINT FK_E14B1843A76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
+        $this->addSql('UPDATE lectures SET type=1 WHERE id=140');
     }
 
     /**
@@ -24,11 +23,5 @@ class Version20160209112459 extends AbstractMigration
     public function down(Schema $schema)
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
-        $this->addSql('DROP TABLE deviceTokens');
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> dev

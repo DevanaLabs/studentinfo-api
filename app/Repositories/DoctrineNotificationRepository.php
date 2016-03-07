@@ -17,7 +17,7 @@ class DoctrineNotificationRepository extends EntityRepository implements Notific
         $this->_em->flush($object);
     }
 
-    public function all($faculty, $start = 0, $count = 20)
+    public function all($faculty, $start = 0, $count = 20, array $options = [])
     {
         return $query = $this->_em->createQuery('SELECT n FROM StudentInfo\Models\Notification n, StudentInfo\Models\Faculty f
               WHERE n.organisation = f.id AND f.slug =:faculty')
