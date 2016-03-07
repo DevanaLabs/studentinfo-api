@@ -4,6 +4,7 @@ namespace StudentInfo\Http\Controllers;
 
 use StudentInfo\ErrorCodes\ClassroomErrorCodes;
 use StudentInfo\ErrorCodes\CourseErrorCodes;
+use StudentInfo\ErrorCodes\GroupErrorCodes;
 use StudentInfo\ErrorCodes\LectureErrorCodes;
 use StudentInfo\ErrorCodes\TeacherErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
@@ -65,7 +66,6 @@ class LectureController extends ApiController
         $this->courseRepository    = $courseRepository;
         $this->classroomRepository = $classroomRepository;
         $this->groupRepository = $groupRepository;
-        parent::__construct($request);
     }
 
     public function createLecture(CreateLectureRequest $request, $faculty)
@@ -226,15 +226,15 @@ class LectureController extends ApiController
         $resource  = fopen($file_path, "r");
         while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
             $courseName    = $data[0];
-            $type          = $data[1];
+            $typeName = $data[1];
             $teacherName   = $data[2];
-            $groups        = $data[3];
+            $groupsName = $data[3];
             $day           = $data[4];
             $time          = $data[5];
             $classroomName = $data[6];
 
             $course = $this->courseRepository->findByName($courseName);
-            if ($course === null) {
+            if ($course == null) {
                 return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB, $courseName);
             }
             $teacherNames = explode(" ", $teacherName);
@@ -250,13 +250,31 @@ class LectureController extends ApiController
             $timeSplit = explode("-", $time);
             $hourStart = explode(":", $timeSplit[0]);
 
-            $groupsForLecture = [];
-            $groupsSplit      = explode(" ", $groups);
-            foreach ($groupsSplit as $g) {
-                $gr                 = $this->groupRepository->findByName($g);
-                $groupsForLecture[] = $gr;
+            $groups      = [];
+            $groupsSplit = explode(" ", $groupsName);
+            foreach ($groupsSplit as $gr) {
+                $group = $this->groupRepository->findByName($gr);
+                if ($group === null) {
+                    return $this->returnError(500, GroupErrorCodes::GROUP_NOT_IN_DB, $gr);
+                }
+                $groups[] = $group;
             }
 
+            $type = 0;
+            switch ($typeName) {
+                case "Предавање":
+                    $type = 0;
+                    break;
+                case "Вежбе":
+                    $type = 1;
+                    break;
+                case "Предавање и Вежбе":
+                    $type = 2;
+                    break;
+                case "Практикум":
+                    $type = 3;
+                    break;
+            }
 
             switch ($day) {
                 case "ПОН":
@@ -302,7 +320,7 @@ class LectureController extends ApiController
             $lecture->setClassroom($classroom);
             $lecture->setTime($time);
             $lecture->setTeacher($teacher);
-            $lecture->setGroups($groupsForLecture);
+            $lecture->setGroups($groups);
 
             $this->lectureRepository->persist($lecture);
         }

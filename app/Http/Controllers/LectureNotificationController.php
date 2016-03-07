@@ -3,14 +3,18 @@
 namespace StudentInfo\Http\Controllers;
 
 use Carbon\Carbon;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerBuilder;
 use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\LectureErrorCodes;
 use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateLectureNotificationRequest;
 use StudentInfo\Http\Requests\Update\UpdateLectureNotificationRequest;
+use StudentInfo\Jobs\SendNotification;
 use StudentInfo\Models\Lecture;
 use StudentInfo\Models\LectureNotification;
+use StudentInfo\Repositories\DeviceTokenRepositoryInterface;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\LectureNotificationRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
@@ -39,6 +43,10 @@ class LectureNotificationController extends ApiController
     protected $facultyRepository;
 
     /**
+     * @var DeviceTokenRepositoryInterface
+     */
+    protected $deviceTokenRepository;
+    /**
      * @var Authorizer
      */
     protected $authorizer;
@@ -49,15 +57,17 @@ class LectureNotificationController extends ApiController
      * @param LectureNotificationRepositoryInterface $lectureNotificationRepository
      * @param LectureRepositoryInterface             $lectureRepository
      * @param FacultyRepositoryInterface             $facultyRepository
+     * @param DeviceTokenRepositoryInterface                       $deviceTokenRepositoryInterface
      * @param Authorizer                                           $authorizer
      */
-    public function __construct(UserRepositoryInterface $userRepository, LectureNotificationRepositoryInterface $lectureNotificationRepository,
-                                LectureRepositoryInterface $lectureRepository, FacultyRepositoryInterface $facultyRepository, Authorizer $authorizer)
+    public function __construct(UserRepositoryInterface $userRepository, LectureNotificationRepositoryInterface $lectureNotificationRepository, LectureRepositoryInterface $lectureRepository,
+                                FacultyRepositoryInterface $facultyRepository, DeviceTokenRepositoryInterface $deviceTokenRepositoryInterface, Authorizer $authorizer)
     {
         $this->userRepository = $userRepository;
         $this->lectureNotificationRepository = $lectureNotificationRepository;
         $this->lectureRepository             = $lectureRepository;
         $this->facultyRepository             = $facultyRepository;
+        $this->deviceTokenRepository = $deviceTokenRepositoryInterface;
         $this->authorizer     = $authorizer;
     }
 
@@ -84,6 +94,17 @@ class LectureNotificationController extends ApiController
         $notification->setLecture($lecture);
         $notification->setExpiresAt($expiresAt);
         $notification->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
+
+        $serializer = SerializerBuilder::create()
+            ->addMetadataDir(base_path() . '/serializations/')
+            ->build();
+
+        $display = $request->get('display', 'all');
+
+        $jsonData = $serializer->serialize($notification, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array($display)));
+
+        $this->dispatch(new SendNotification($this->deviceTokenRepository->all($faculty), $jsonData));
+        // deviceTokens repository limit
 
         $this->lectureNotificationRepository->create($notification);
 

@@ -36,7 +36,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'slug', 'university', 'settings');
+            return ['__isInitialized__', 'id', 'name', 'slug', 'university', 'settings'];
         }
 
-        return array('__isInitialized__', 'id', 'name', 'slug', 'university', 'settings');
+        return ['__isInitialized__', 'id', 'name', 'slug', 'university', 'settings'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -183,7 +183,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -194,7 +194,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
     public function getName()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', []);
 
         return parent::getName();
     }
@@ -205,7 +205,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
     public function setName($name)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', array($name));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', [$name]);
 
         return parent::setName($name);
     }
@@ -216,7 +216,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
     public function getSlug()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSlug', []);
 
         return parent::getSlug();
     }
@@ -227,7 +227,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
     public function setSlug($slug)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', array($slug));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSlug', [$slug]);
 
         return parent::setSlug($slug);
     }
@@ -238,7 +238,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
     public function getUniversity()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUniversity', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUniversity', []);
 
         return parent::getUniversity();
     }
@@ -249,7 +249,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
     public function setUniversity($university)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUniversity', array($university));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUniversity', [$university]);
 
         return parent::setUniversity($university);
     }
@@ -260,7 +260,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
     public function getSettings()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSettings', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSettings', []);
 
         return parent::getSettings();
     }
@@ -271,7 +271,7 @@ class Faculty extends \StudentInfo\Models\Faculty implements \Doctrine\ORM\Proxy
     public function setSettings($settings)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSettings', array($settings));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSettings', [$settings]);
 
         return parent::setSettings($settings);
     }

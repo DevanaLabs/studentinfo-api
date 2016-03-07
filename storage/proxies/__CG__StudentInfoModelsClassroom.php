@@ -36,7 +36,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'directions', 'floor', 'lectures', 'events', 'organisation');
+            return ['__isInitialized__', 'id', 'name', 'directions', 'floor', 'lectures', 'events', 'organisation'];
         }
 
-        return array('__isInitialized__', 'id', 'name', 'directions', 'floor', 'lectures', 'events', 'organisation');
+        return ['__isInitialized__', 'id', 'name', 'directions', 'floor', 'lectures', 'events', 'organisation'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function getOrganisation()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganisation', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganisation', []);
 
         return parent::getOrganisation();
     }
@@ -190,7 +190,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function setOrganisation($organisation)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', array($organisation));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', [$organisation]);
 
         return parent::setOrganisation($organisation);
     }
@@ -205,7 +205,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -216,7 +216,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function getName()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', []);
 
         return parent::getName();
     }
@@ -227,7 +227,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function setName($name)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', array($name));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', [$name]);
 
         return parent::setName($name);
     }
@@ -238,7 +238,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function getDirections()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDirections', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDirections', []);
 
         return parent::getDirections();
     }
@@ -249,7 +249,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function setDirections($directions)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDirections', array($directions));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDirections', [$directions]);
 
         return parent::setDirections($directions);
     }
@@ -260,7 +260,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function getFloor()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFloor', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFloor', []);
 
         return parent::getFloor();
     }
@@ -271,7 +271,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function setFloor($floor)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFloor', array($floor));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFloor', [$floor]);
 
         return parent::setFloor($floor);
     }
@@ -282,7 +282,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function getLectures()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLectures', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLectures', []);
 
         return parent::getLectures();
     }
@@ -293,7 +293,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function setLectures($lectures)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLectures', array($lectures));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLectures', [$lectures]);
 
         return parent::setLectures($lectures);
     }
@@ -304,7 +304,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function getEvents()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEvents', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEvents', []);
 
         return parent::getEvents();
     }
@@ -315,7 +315,7 @@ class Classroom extends \StudentInfo\Models\Classroom implements \Doctrine\ORM\P
     public function setEvents($events)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEvents', array($events));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEvents', [$events]);
 
         return parent::setEvents($events);
     }

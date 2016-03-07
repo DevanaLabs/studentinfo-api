@@ -6,6 +6,7 @@ use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\ClassroomErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateClassroomRequest;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Http\Requests\Update\UpdateClassroomRequest;
 use StudentInfo\Models\Classroom;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
@@ -85,9 +86,22 @@ class ClassroomController extends ApiController
         ]);
     }
 
-    public function retrieveClassrooms($faculty, $start = 0, $count = 2000)
+    public function retrieveClassrooms(StandardRequest $request, $faculty, $start = 0, $count = 2000)
     {
+        /** @var Classroom[] $classrooms */
         $classrooms = $this->classroomRepository->all($faculty, $start, $count);
+
+        $semester = $request->get('semester', '1');
+
+        foreach ($classrooms as $classroom) {
+            $lectures = [];
+            foreach ($classroom->getLectures() as $lecture) {
+                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                    $lectures[] = $lecture;
+                }
+            }
+            $classroom->setLectures($lectures);
+        }
 
         return $this->returnSuccess($classrooms);
     }

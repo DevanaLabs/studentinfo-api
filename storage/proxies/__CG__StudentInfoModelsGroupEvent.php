@@ -39,7 +39,6 @@ class GroupEvent extends \StudentInfo\Models\GroupEvent implements \Doctrine\ORM
     public static $lazyPropertiesDefaults = [];
 
 
-
     /**
      * @param \Closure $initializer
      * @param \Closure $cloner
@@ -52,13 +51,8 @@ class GroupEvent extends \StudentInfo\Models\GroupEvent implements \Doctrine\ORM
     }
 
 
-
-
-
-
-
     /**
-     * 
+     *
      * @return array
      */
     public function __sleep()
@@ -71,11 +65,11 @@ class GroupEvent extends \StudentInfo\Models\GroupEvent implements \Doctrine\ORM
     }
 
     /**
-     * 
+     *
      */
     public function __wakeup()
     {
-        if ( ! $this->__isInitialized__) {
+        if (!$this->__isInitialized__) {
             $this->__initializer__ = function (GroupEvent $proxy) {
                 $proxy->__setInitializer(null);
                 $proxy->__setCloner(null);
@@ -83,7 +77,7 @@ class GroupEvent extends \StudentInfo\Models\GroupEvent implements \Doctrine\ORM
                 $existingProperties = get_object_vars($proxy);
 
                 foreach ($proxy->__getLazyProperties() as $property => $defaultValue) {
-                    if ( ! array_key_exists($property, $existingProperties)) {
+                    if (!array_key_exists($property, $existingProperties)) {
                         $proxy->$property = $defaultValue;
                     }
                 }
@@ -93,7 +87,7 @@ class GroupEvent extends \StudentInfo\Models\GroupEvent implements \Doctrine\ORM
     }
 
     /**
-     * 
+     *
      */
     public function __clone()
     {
@@ -172,7 +166,7 @@ class GroupEvent extends \StudentInfo\Models\GroupEvent implements \Doctrine\ORM
         return self::$lazyPropertiesDefaults;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -201,7 +195,7 @@ class GroupEvent extends \StudentInfo\Models\GroupEvent implements \Doctrine\ORM
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
-            return (int)  parent::getId();
+            return (int)parent::getId();
         }
 
 

@@ -36,7 +36,7 @@ class Password extends \StudentInfo\ValueObjects\Password implements \Doctrine\O
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Password extends \StudentInfo\ValueObjects\Password implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'StudentInfo\\ValueObjects\\Password' . "\0" . 'password');
+            return ['__isInitialized__', '' . "\0" . 'StudentInfo\\ValueObjects\\Password' . "\0" . 'password'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'StudentInfo\\ValueObjects\\Password' . "\0" . 'password');
+        return ['__isInitialized__', '' . "\0" . 'StudentInfo\\ValueObjects\\Password' . "\0" . 'password'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Password extends \StudentInfo\ValueObjects\Password implements \Doctrine\O
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Password extends \StudentInfo\ValueObjects\Password implements \Doctrine\O
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Password extends \StudentInfo\ValueObjects\Password implements \Doctrine\O
     public function checkAgainst($anotherPassword)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'checkAgainst', array($anotherPassword));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'checkAgainst', [$anotherPassword]);
 
         return parent::checkAgainst($anotherPassword);
     }
@@ -190,7 +190,7 @@ class Password extends \StudentInfo\ValueObjects\Password implements \Doctrine\O
     public function getPassword()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPassword', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPassword', []);
 
         return parent::getPassword();
     }

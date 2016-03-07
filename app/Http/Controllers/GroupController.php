@@ -5,6 +5,7 @@ namespace StudentInfo\Http\Controllers;
 use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\GroupErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateGroupRequest;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Http\Requests\Update\UpdateGroupRequest;
 use StudentInfo\Models\Group;
 use StudentInfo\Repositories\EventRepositoryInterface;
@@ -121,10 +122,22 @@ class GroupController extends ApiController
         ]);
     }
 
-    public function retrieveGroups($faculty, $start = 0, $count = 2000)
+    public function retrieveGroups(StandardRequest $request, $faculty, $start = 0, $count = 2000)
     {
+        /** @var Group[] $groups */
         $groups = $this->groupRepository->all($faculty, $start, $count);
 
+        $semester = $request->get('semester', '1');
+
+        foreach ($groups as $group) {
+            $lectures = [];
+            foreach ($group->getLectures() as $lecture) {
+                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                    $lectures[] = $lecture;
+                }
+            }
+            $group->setLectures($lectures);
+        }
         return $this->returnSuccess($groups);
     }
 

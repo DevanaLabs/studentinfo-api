@@ -67,9 +67,6 @@ class DeviceTokenController extends ApiController
         $deviceToken->setUser($user);
         $deviceToken->setActive($request->get('active'));
 
-        $notification = 'blabla';
-        $this->dispatch(new SendNotification($token, $notification));
-
         $notification = 'Hello world';
         $this->dispatch(new SendNotification($token, $notification));
 

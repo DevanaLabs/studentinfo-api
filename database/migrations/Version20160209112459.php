@@ -27,8 +27,4 @@ class Version20160209112459 extends AbstractMigration
 
         $this->addSql('DROP TABLE deviceTokens');
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> dev

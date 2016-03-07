@@ -36,7 +36,7 @@ class Email extends \StudentInfo\ValueObjects\Email implements \Doctrine\ORM\Pro
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Email extends \StudentInfo\ValueObjects\Email implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'StudentInfo\\ValueObjects\\Email' . "\0" . 'email');
+            return ['__isInitialized__', '' . "\0" . 'StudentInfo\\ValueObjects\\Email' . "\0" . 'email'];
         }
 
-        return array('__isInitialized__', '' . "\0" . 'StudentInfo\\ValueObjects\\Email' . "\0" . 'email');
+        return ['__isInitialized__', '' . "\0" . 'StudentInfo\\ValueObjects\\Email' . "\0" . 'email'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Email extends \StudentInfo\ValueObjects\Email implements \Doctrine\ORM\Pro
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Email extends \StudentInfo\ValueObjects\Email implements \Doctrine\ORM\Pro
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Email extends \StudentInfo\ValueObjects\Email implements \Doctrine\ORM\Pro
     public function getEmail()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', []);
 
         return parent::getEmail();
     }

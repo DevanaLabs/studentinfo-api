@@ -2,6 +2,10 @@
 
 namespace StudentInfo\Http\Controllers;
 
+use StudentInfo\Http\Requests\StandardRequest;
+use StudentInfo\Models\Classroom;
+use StudentInfo\Models\Group;
+use StudentInfo\Models\Teacher;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\CourseEventRepositoryInterface;
 use StudentInfo\Repositories\GlobalEventRepositoryInterface;
@@ -68,15 +72,49 @@ class DataController extends ApiController
         $this->groupEventRepository  = $groupEventRepository;
     }
 
-    public function getData($faculty)
+    public function getData(StandardRequest $request, $faculty)
     {
-        $teachers     = $this->teacherRepository->all($faculty, 0, 2000);
+        /** @var Group[] $groups */
         $groups       = $this->groupRepository->all($faculty, 0, 2000);
+        /** @var Teacher[] $teachers */
+        $teachers = $this->teacherRepository->all($faculty, 0, 2000);
+        /** @var Classroom[] $classrooms */
         $classrooms   = $this->classroomRepository->all($faculty, 0, 2000);
         $globalEvents = $this->globalEventRepository->all($faculty, 0, 2000);
         $courseEvents = $this->courseEventRepository->all($faculty, 0, 2000);
         $groupEvents  = $this->groupEventRepository->all($faculty, 0, 2000);
 
+        $semester = $request->get('semester', '1');
+
+        foreach ($groups as $group) {
+            $lectures = [];
+            foreach ($group->getLectures() as $lecture) {
+                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                    $lectures[] = $lecture;
+                }
+            }
+            $group->setLectures($lectures);
+        }
+
+        foreach ($teachers as $teacher) {
+            $lectures = [];
+            foreach ($teacher->getLectures() as $lecture) {
+                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                    $lectures[] = $lecture;
+                }
+            }
+            $teacher->setLectures($lectures);
+        }
+
+        foreach ($classrooms as $classroom) {
+            $lectures = [];
+            foreach ($classroom->getLectures() as $lecture) {
+                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                    $lectures[] = $lecture;
+                }
+            }
+            $classroom->setLectures($lectures);
+        }
         return $this->returnSuccess([
             'groups'       => $groups,
             'teachers'     => $teachers,
@@ -85,7 +123,7 @@ class DataController extends ApiController
             'courseEvents' => $courseEvents,
             'groupEvents'  => $groupEvents,
         ], [
-            'display' => 'all',
+            'display' => 'data',
         ]);
     }
 

@@ -3,14 +3,18 @@
 namespace StudentInfo\Http\Controllers;
 
 use Carbon\Carbon;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerBuilder;
 use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\EventErrorCodes;
 use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\Create\CreateEventNotificationRequest;
 use StudentInfo\Http\Requests\Update\UpdateEventNotificationRequest;
+use StudentInfo\Jobs\SendNotification;
 use StudentInfo\Models\Event;
 use StudentInfo\Models\EventNotification;
+use StudentInfo\Repositories\DeviceTokenRepositoryInterface;
 use StudentInfo\Repositories\EventNotificationRepositoryInterface;
 use StudentInfo\Repositories\EventRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
@@ -28,27 +32,35 @@ class EventNotificationController extends ApiController
     protected $eventNotificationRepository;
 
     /**
-     * @var Authorizer
-     */
-    protected $authorizer;
-
-    /**
      * @var EventRepositoryInterface
      */
     protected $eventRepository;
 
     /**
-     * NotificationController constructor.
-     * @param UserRepositoryInterface                     $userRepository
-     * @param EventNotificationRepositoryInterface $eventNotificationRepository
-     * @param EventRepositoryInterface             $eventRepository
-     * @param Authorizer                                  $authorizer
+     * @var DeviceTokenRepositoryInterface
      */
-    public function __construct(UserRepositoryInterface $userRepository, EventNotificationRepositoryInterface $eventNotificationRepository, EventRepositoryInterface $eventRepository, Authorizer $authorizer)
+    protected $deviceTokenRepository;
+
+    /**
+     * @var Authorizer
+     */
+    protected $authorizer;
+
+    /**
+     * NotificationController constructor.
+     * @param UserRepositoryInterface              $userRepository
+     * @param EventNotificationRepositoryInterface $eventNotificationRepository
+     * @param DeviceTokenRepositoryInterface       $deviceTokenRepositoryInterface
+     * @param EventRepositoryInterface             $eventRepository
+     * @param Authorizer                           $authorizer
+     */
+    public function __construct(UserRepositoryInterface $userRepository, EventNotificationRepositoryInterface $eventNotificationRepository,
+                                DeviceTokenRepositoryInterface $deviceTokenRepositoryInterface, EventRepositoryInterface $eventRepository, Authorizer $authorizer)
     {
         $this->userRepository = $userRepository;
         $this->eventNotificationRepository = $eventNotificationRepository;
         $this->eventRepository             = $eventRepository;
+        $this->deviceTokenRepository = $deviceTokenRepositoryInterface;
         $this->authorizer     = $authorizer;
     }
 
@@ -75,6 +87,17 @@ class EventNotificationController extends ApiController
         $notification->setEvent($event);
         $notification->setExpiresAt($expiresAt);
         $notification->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
+
+        $serializer = SerializerBuilder::create()
+            ->addMetadataDir(base_path() . '/serializations/')
+            ->build();
+
+        $display = $request->get('display', 'all');
+
+        $jsonData = $serializer->serialize($notification, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array($display)));
+
+        $this->dispatch(new SendNotification($this->deviceTokenRepository->all($faculty), $jsonData));
+        // deviceTokens repository limit
 
         $this->eventNotificationRepository->create($notification);
 
@@ -125,6 +148,18 @@ class EventNotificationController extends ApiController
         $notification->setDescription($request->get('description'));
         $notification->setExpiresAt($expiresAt);
         $notification->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
+
+        $serializer = SerializerBuilder::create()
+            ->addMetadataDir(base_path() . '/serializations/')
+            ->build();
+
+        $display = $request->get('display', 'all');
+
+        $jsonData = $serializer->serialize($notification, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array($display)));
+        $this->lectureNotificationRepository->create($notification);
+
+        $this->dispatch(new SendNotification($this->deviceTokenRepository->all($faculty), $jsonData));
+        // deviceTokens repository limit
 
         $this->eventNotificationRepository->update($notification);
 

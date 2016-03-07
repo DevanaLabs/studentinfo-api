@@ -3,14 +3,16 @@
 namespace StudentInfo\Jobs;
 
 use Davibennun\LaravelPushNotification\Facades\PushNotification;
+use Doctrine\Common\Collections\ArrayCollection;
 use Illuminate\Contracts\Bus\SelfHandling;
+use StudentInfo\Models\DeviceToken;
 
 class SendNotification extends Job implements SelfHandling
 {
     /**
-     * @var String
+     * @var ArrayCollection|DeviceToken[]
      */
-    protected $deviceToken;
+    protected $deviceTokens;
 
     /**
      * @var String
@@ -20,12 +22,12 @@ class SendNotification extends Job implements SelfHandling
     /**
      * Create a new job instance.
      *
-     * @param $deviceToken
+     * @param $deviceTokens
      * @param $notification
      */
-    public function __construct($deviceToken, $notification)
+    public function __construct($deviceTokens, $notification)
     {
-        $this->deviceToken  = $deviceToken;
+        $this->deviceTokens = $deviceTokens;
         $this->notification = $notification;
     }
 
@@ -36,8 +38,11 @@ class SendNotification extends Job implements SelfHandling
      */
     public function handle()
     {
-        PushNotification::app('appNameAndroid')
-            ->to('eOkIwhJpKAs:APA91bEWSYWBoMcITYEHC2MKfkaJiNxJpn1kKG5JfDcVOAzufhRqlVRF7nWxQ04prQ8sUilEYdMeL50VVWmja1wfUqut5nk3MpJ0lVGkS_f0TdfV5TS7LLcLgppAMIp20cLjElLHGd0z')
-            ->send($this->notification);
+        foreach ($this->deviceTokens as $deviceToken) {
+            PushNotification::app('appNameAndroid')
+                ->to($deviceToken->getToken())
+                ->send($this->notification);
+        }
+
     }
 }

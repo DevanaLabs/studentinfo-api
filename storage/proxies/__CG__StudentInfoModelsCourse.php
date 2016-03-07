@@ -36,7 +36,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'code', 'name', 'semester', 'espb', 'lectures', 'students', 'events', 'organisation');
+            return ['__isInitialized__', 'id', 'code', 'name', 'semester', 'espb', 'lectures', 'students', 'events', 'organisation'];
         }
 
-        return array('__isInitialized__', 'id', 'code', 'name', 'semester', 'espb', 'lectures', 'students', 'events', 'organisation');
+        return ['__isInitialized__', 'id', 'code', 'name', 'semester', 'espb', 'lectures', 'students', 'events', 'organisation'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function getOrganisation()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganisation', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganisation', []);
 
         return parent::getOrganisation();
     }
@@ -190,7 +190,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function setOrganisation($organisation)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', array($organisation));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', [$organisation]);
 
         return parent::setOrganisation($organisation);
     }
@@ -201,7 +201,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function getLectures()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLectures', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLectures', []);
 
         return parent::getLectures();
     }
@@ -212,7 +212,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function setLectures($lectures)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLectures', array($lectures));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLectures', [$lectures]);
 
         return parent::setLectures($lectures);
     }
@@ -227,7 +227,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -238,7 +238,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function getCode()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCode', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCode', []);
 
         return parent::getCode();
     }
@@ -249,7 +249,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function setCode($code)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCode', array($code));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCode', [$code]);
 
         return parent::setCode($code);
     }
@@ -260,7 +260,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function getEspb()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEspb', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEspb', []);
 
         return parent::getEspb();
     }
@@ -271,7 +271,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function setEspb($espb)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEspb', array($espb));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEspb', [$espb]);
 
         return parent::setEspb($espb);
     }
@@ -282,7 +282,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function getSemester()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSemester', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSemester', []);
 
         return parent::getSemester();
     }
@@ -293,7 +293,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function setSemester($semester)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSemester', array($semester));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSemester', [$semester]);
 
         return parent::setSemester($semester);
     }
@@ -304,7 +304,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function getName()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', []);
 
         return parent::getName();
     }
@@ -315,7 +315,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function setName($name)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', array($name));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', [$name]);
 
         return parent::setName($name);
     }
@@ -326,7 +326,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function getStudents()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStudents', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStudents', []);
 
         return parent::getStudents();
     }
@@ -337,7 +337,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function setStudents($students)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStudents', array($students));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStudents', [$students]);
 
         return parent::setStudents($students);
     }
@@ -348,7 +348,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function addLecture(\StudentInfo\Models\Lecture $lecture)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addLecture', array($lecture));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addLecture', [$lecture]);
 
         return parent::addLecture($lecture);
     }
@@ -359,7 +359,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function getEvents()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEvents', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEvents', []);
 
         return parent::getEvents();
     }
@@ -370,7 +370,7 @@ class Course extends \StudentInfo\Models\Course implements \Doctrine\ORM\Proxy\P
     public function setEvents($events)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEvents', array($events));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEvents', [$events]);
 
         return parent::setEvents($events);
     }

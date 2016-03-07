@@ -39,7 +39,6 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
     public static $lazyPropertiesDefaults = [];
 
 
-
     /**
      * @param \Closure $initializer
      * @param \Closure $cloner
@@ -52,13 +51,8 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
     }
 
 
-
-
-
-
-
     /**
-     * 
+     *
      * @return array
      */
     public function __sleep()
@@ -71,11 +65,11 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
     }
 
     /**
-     * 
+     *
      */
     public function __wakeup()
     {
-        if ( ! $this->__isInitialized__) {
+        if (!$this->__isInitialized__) {
             $this->__initializer__ = function (Settings $proxy) {
                 $proxy->__setInitializer(null);
                 $proxy->__setCloner(null);
@@ -83,7 +77,7 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
                 $existingProperties = get_object_vars($proxy);
 
                 foreach ($proxy->__getLazyProperties() as $property => $defaultValue) {
-                    if ( ! array_key_exists($property, $existingProperties)) {
+                    if (!array_key_exists($property, $existingProperties)) {
                         $proxy->$property = $defaultValue;
                     }
                 }
@@ -93,7 +87,7 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
     }
 
     /**
-     * 
+     *
      */
     public function __clone()
     {
@@ -172,7 +166,7 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
         return self::$lazyPropertiesDefaults;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

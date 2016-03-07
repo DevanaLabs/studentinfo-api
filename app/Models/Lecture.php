@@ -13,7 +13,7 @@ class Lecture
     protected $id;
 
     /**
-     * @var string
+     * @var int
      */
     protected $type;
 
@@ -71,7 +71,7 @@ class Lecture
     }
 
     /**
-     * @param string $type
+     * @param int $type
      */
     public function setType($type)
     {
@@ -79,7 +79,7 @@ class Lecture
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getType()
     {

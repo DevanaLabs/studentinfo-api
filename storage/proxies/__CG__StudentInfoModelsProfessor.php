@@ -36,7 +36,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'title', 'lectures', 'password', 'id', 'firstName', 'lastName', 'email', 'rememberToken', 'registerToken', 'registerTokenCreatedAt', 'organisation');
+            return ['__isInitialized__', 'title', 'lectures', 'password', 'id', 'firstName', 'lastName', 'email', 'rememberToken', 'registerToken', 'registerTokenCreatedAt', 'organisation', 'tokens'];
         }
 
-        return array('__isInitialized__', 'title', 'lectures', 'password', 'id', 'firstName', 'lastName', 'email', 'rememberToken', 'registerToken', 'registerTokenCreatedAt', 'organisation');
+        return ['__isInitialized__', 'title', 'lectures', 'password', 'id', 'firstName', 'lastName', 'email', 'rememberToken', 'registerToken', 'registerTokenCreatedAt', 'organisation', 'tokens'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getRoles()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRoles', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRoles', []);
 
         return parent::getRoles();
     }
@@ -190,7 +190,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getLectures()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLectures', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLectures', []);
 
         return parent::getLectures();
     }
@@ -201,7 +201,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function setLectures($lectures)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLectures', array($lectures));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLectures', [$lectures]);
 
         return parent::setLectures($lectures);
     }
@@ -212,7 +212,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getTitle()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTitle', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTitle', []);
 
         return parent::getTitle();
     }
@@ -223,7 +223,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function setTitle($title)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTitle', array($title));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTitle', [$title]);
 
         return parent::setTitle($title);
     }
@@ -234,7 +234,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function addLecture($lecture)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addLecture', array($lecture));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addLecture', [$lecture]);
 
         return parent::addLecture($lecture);
     }
@@ -245,7 +245,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function isRegisterTokenExpired()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isRegisterTokenExpired', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isRegisterTokenExpired', []);
 
         return parent::isRegisterTokenExpired();
     }
@@ -256,7 +256,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getUserType()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUserType', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUserType', []);
 
         return parent::getUserType();
     }
@@ -267,7 +267,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getRoute()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRoute', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRoute', []);
 
         return parent::getRoute();
     }
@@ -278,7 +278,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getOrganisation()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganisation', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOrganisation', []);
 
         return parent::getOrganisation();
     }
@@ -289,7 +289,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function setOrganisation(\StudentInfo\Models\Faculty $organisation)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', array($organisation));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', [$organisation]);
 
         return parent::setOrganisation($organisation);
     }
@@ -300,7 +300,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getRegisterTokenCreatedAt()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegisterTokenCreatedAt', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegisterTokenCreatedAt', []);
 
         return parent::getRegisterTokenCreatedAt();
     }
@@ -311,7 +311,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getRegisterToken()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegisterToken', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegisterToken', []);
 
         return parent::getRegisterToken();
     }
@@ -322,7 +322,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function generateRegisterToken()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateRegisterToken', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateRegisterToken', []);
 
         return parent::generateRegisterToken();
     }
@@ -337,7 +337,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
         }
 
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -348,7 +348,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getFirstName()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFirstName', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFirstName', []);
 
         return parent::getFirstName();
     }
@@ -359,7 +359,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function setFirstName($firstName)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFirstName', array($firstName));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFirstName', [$firstName]);
 
         return parent::setFirstName($firstName);
     }
@@ -370,7 +370,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getLastName()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastName', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastName', []);
 
         return parent::getLastName();
     }
@@ -381,7 +381,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function setLastName($lastName)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLastName', array($lastName));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLastName', [$lastName]);
 
         return parent::setLastName($lastName);
     }
@@ -392,7 +392,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function setPassword(\StudentInfo\ValueObjects\Password $password)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPassword', array($password));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPassword', [$password]);
 
         return parent::setPassword($password);
     }
@@ -403,7 +403,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getEmail()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', []);
 
         return parent::getEmail();
     }
@@ -414,7 +414,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function setEmail(\StudentInfo\ValueObjects\Email $email)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', array($email));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', [$email]);
 
         return parent::setEmail($email);
     }
@@ -425,7 +425,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function setRegisterToken($registerToken)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegisterToken', array($registerToken));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegisterToken', [$registerToken]);
 
         return parent::setRegisterToken($registerToken);
     }
@@ -436,7 +436,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getAuthIdentifier()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthIdentifier', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthIdentifier', []);
 
         return parent::getAuthIdentifier();
     }
@@ -447,7 +447,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getAuthPassword()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthPassword', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthPassword', []);
 
         return parent::getAuthPassword();
     }
@@ -458,7 +458,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getAuthIdentifierName()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthIdentifierName', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthIdentifierName', []);
 
         return parent::getAuthIdentifierName();
     }
@@ -469,7 +469,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getRememberToken()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRememberToken', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRememberToken', []);
 
         return parent::getRememberToken();
     }
@@ -480,7 +480,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function setRememberToken($value)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRememberToken', array($value));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRememberToken', [$value]);
 
         return parent::setRememberToken($value);
     }
@@ -491,9 +491,31 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function getRememberTokenName()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRememberTokenName', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRememberTokenName', []);
 
         return parent::getRememberTokenName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTokens()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTokens', []);
+
+        return parent::getTokens();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTokens($tokens)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTokens', [$tokens]);
+
+        return parent::setTokens($tokens);
     }
 
     /**
@@ -502,7 +524,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function hasPermissionTo($name, $requireAll = false)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'hasPermissionTo', array($name, $requireAll));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'hasPermissionTo', [$name, $requireAll]);
 
         return parent::hasPermissionTo($name, $requireAll);
     }
@@ -513,7 +535,7 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     public function belongsToOrganisation($org, $requireAll = false)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'belongsToOrganisation', array($org, $requireAll));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'belongsToOrganisation', [$org, $requireAll]);
 
         return parent::belongsToOrganisation($org, $requireAll);
     }

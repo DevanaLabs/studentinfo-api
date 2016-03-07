@@ -8,18 +8,10 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Input;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
-use StudentInfo\Http\Requests\StandardRequest;
 
 class ApiController extends BaseController
 {
     use DispatchesJobs;
-
-    protected $request;
-
-    public function __construct(StandardRequest $request)
-    {
-        $this->request = $request;
-    }
 
     public function returnSuccess(array $data = [], array $options = [])
     {
@@ -31,9 +23,11 @@ class ApiController extends BaseController
                 'data' => $data,
             ],
         ];
-        $display = Input::get('display', 'all');
+        if (!array_key_exists('display', $options)) {
+            $options['display'] = Input::get('display', 'all');
+        }
 
-        $jsonData = $serializer->serialize($responseData, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array($display)));
+        $jsonData = $serializer->serialize($responseData, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array($options['display'])));
 
         $response = new Response($jsonData, 200);
         $response->header('Content-Type', 'application/json');

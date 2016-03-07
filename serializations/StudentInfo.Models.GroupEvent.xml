@@ -5,7 +5,7 @@
         <property name="group"
                   serialized-name="group"
                   expose="true"
-                  groups="limited,all"
+                  groups="limited,data,all"
                 />
     </class>
 </serializer>

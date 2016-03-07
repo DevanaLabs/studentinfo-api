@@ -16,7 +16,7 @@
                   serialized-name="lectures"
                   expose="true"
                   groups="all"
-                  max-depth="4"
+                  max-depth="3"
                 />
     </class>
 </serializer>
