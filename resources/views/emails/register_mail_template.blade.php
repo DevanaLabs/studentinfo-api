@@ -17,7 +17,7 @@ GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACedJREFUeNrsHe11ozhQydv/5ioIV4G5
 <p style="font-family: 'Open Sans', sans-serif">Позивамо Вас да се региструјете и пробате нашу веб апликацију за лако и
     брзо праћење дешавања на Вашем факултету. Кликните на дугме испод за регистрацију.</p>
 
-<a href="http://www.studentinfo.rs/register.html?regToken={{$token}}"
+<a href="http://www.studentinfo.rs/#/register/{{$token}}"
    style="display: block; height: 40px; width: 300px; background-color: #39B54A; color: white; border-radius: 5px; margin: 20px auto; text-decoration: none; text-align: center; line-height: 40px; font-family: 'Open Sans', sans-serif;">Региструјте
     се</a>
 ​
