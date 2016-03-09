@@ -21,7 +21,8 @@ GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACedJREFUeNrsHe11ozhQydv/5ioIV4G5
    style="display: block; height: 40px; width: 300px; background-color: #39B54A; color: white; border-radius: 5px; margin: 20px auto; text-decoration: none; text-align: center; line-height: 40px; font-family: 'Open Sans', sans-serif;">Региструјте
     се</a>
 ​
-<p style="font-family: 'Open Sans', sans-serif">Ако не видите дугме идите на: <br>http://www.studentinfo.rs/register.html?regToken={{$token}}
+<p style="font-family: 'Open Sans', sans-serif">Ако не видите дугме идите на:
+    <br>http://www.studentinfo.rs/#/register/{{$token}}
 </p>
 
 <p style="font-family: 'Open Sans', sans-serif">Ово је аутоматски послата порука коју сте добили као ученик Рачунарског
