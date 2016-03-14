@@ -84,12 +84,13 @@ class DataController extends ApiController
         $courseEvents = $this->courseEventRepository->all($faculty, 0, 2000);
         $groupEvents  = $this->groupEventRepository->all($faculty, 0, 2000);
 
-        $semester = $request->get('semester', '1');
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
 
         foreach ($groups as $group) {
             $lectures = [];
             foreach ($group->getLectures() as $lecture) {
-                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
                     $lectures[] = $lecture;
                 }
             }
@@ -99,7 +100,7 @@ class DataController extends ApiController
         foreach ($teachers as $teacher) {
             $lectures = [];
             foreach ($teacher->getLectures() as $lecture) {
-                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
                     $lectures[] = $lecture;
                 }
             }
@@ -109,7 +110,7 @@ class DataController extends ApiController
         foreach ($classrooms as $classroom) {
             $lectures = [];
             foreach ($classroom->getLectures() as $lecture) {
-                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
                     $lectures[] = $lecture;
                 }
             }

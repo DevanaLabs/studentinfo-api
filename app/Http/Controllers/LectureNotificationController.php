@@ -109,7 +109,7 @@ class LectureNotificationController extends ApiController
         $this->lectureNotificationRepository->create($notification);
 
         return $this->returnSuccess([
-            'successful' => $notification,
+            'notification' => $notification,
         ]);
     }
 
@@ -119,6 +119,10 @@ class LectureNotificationController extends ApiController
 
         if ($notification === null) {
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
+        }
+
+        if ($notification->getOrganisation()->getSlug() != $faculty) {
+            return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
         return $this->returnSuccess([
@@ -151,6 +155,17 @@ class LectureNotificationController extends ApiController
         $notification->setDescription($request->get('description'));
         $notification->setExpiresAt($expiresAt);
         $notification->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
+
+        $serializer = SerializerBuilder::create()
+            ->addMetadataDir(base_path() . '/serializations/')
+            ->build();
+
+        $display = $request->get('display', 'all');
+
+        $jsonData = $serializer->serialize($notification, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array($display)));
+
+        $this->dispatch(new SendNotification($this->deviceTokenRepository->all($faculty), $jsonData));
+        // deviceTokens repository limit
 
         $this->lectureNotificationRepository->update($notification);
 

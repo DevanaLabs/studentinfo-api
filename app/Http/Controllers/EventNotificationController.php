@@ -156,7 +156,6 @@ class EventNotificationController extends ApiController
         $display = $request->get('display', 'all');
 
         $jsonData = $serializer->serialize($notification, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array($display)));
-        $this->lectureNotificationRepository->create($notification);
 
         $this->dispatch(new SendNotification($this->deviceTokenRepository->all($faculty), $jsonData));
         // deviceTokens repository limit

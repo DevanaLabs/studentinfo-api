@@ -7,6 +7,7 @@ use StudentInfo\ErrorCodes\AssistantErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateTeacherRequest;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Http\Requests\Update\UpdateTeacherRequest;
 use StudentInfo\Models\Assistant;
 use StudentInfo\Models\User;
@@ -76,8 +77,9 @@ class AssistantController extends ApiController
         ]);
     }
 
-    public function retrieveAssistant($faculty, $id)
+    public function retrieveAssistant(StandardRequest $request, $faculty, $id)
     {
+        /** @var Assistant $assistant */
         $assistant = $this->assistantRepository->find($id);
 
         if ($assistant === null) {
@@ -88,14 +90,40 @@ class AssistantController extends ApiController
             return $this->returnError(500, AssistantErrorCodes::ASSISTANT_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
+
+        $lectures = [];
+        foreach ($assistant->getLectures() as $lecture) {
+            if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
+                $lectures[] = $lecture;
+            }
+        }
+        $assistant->setLectures($lectures);
+
+
         return $this->returnSuccess([
             'assistant' => $assistant,
         ]);
     }
 
-    public function retrieveAssistants($faculty, $start = 0, $count = 2000)
+    public function retrieveAssistants(StandardRequest $request, $faculty, $start = 0, $count = 2000)
     {
+        /** @var Assistant[] $assistants */
         $assistants = $this->assistantRepository->all($faculty, $start, $count);
+
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
+
+        foreach ($assistants as $assistant) {
+            $lectures = [];
+            foreach ($assistant->getLectures() as $lecture) {
+                if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
+                    $lectures[] = $lecture;
+                }
+            }
+            $assistant->setLectures($lectures);
+        }
 
         return $this->returnSuccess($assistants);
     }
@@ -167,7 +195,6 @@ class AssistantController extends ApiController
             $assistant->setEmail($email);
             $assistant->setPassword(new Password('password'));
             $assistant->generateRegisterToken();
-            $user = $this->userRepository->find($this->authorizer->getResourceOwnerId());
             $assistant->setOrganisation($organisation);
 
             $this->assistantRepository->persist($assistant);

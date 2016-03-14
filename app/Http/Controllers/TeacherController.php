@@ -38,8 +38,9 @@ class TeacherController extends ApiController
         $this->authorizer     = $authorizer;
     }
 
-    public function retrieveTeacher($faculty, $id)
+    public function retrieveTeacher(StandardRequest $request, $faculty, $id)
     {
+        /** @var Teacher $teacher */
         $teacher = $this->teacherRepository->find($id);
 
         if ($teacher === null) {
@@ -49,6 +50,17 @@ class TeacherController extends ApiController
         if ($teacher->getOrganisation()->getSlug() != $faculty) {
             return $this->returnError(500, TeacherErrorCodes::TEACHER_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
+
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
+
+        $lectures = [];
+        foreach ($teacher->getLectures() as $lecture) {
+            if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
+                $lectures[] = $lecture;
+            }
+        }
+        $teacher->setLectures($lectures);
 
         return $this->returnSuccess([
             'teacher' => $teacher,
@@ -60,12 +72,13 @@ class TeacherController extends ApiController
         /** @var Teacher[] $teachers */
         $teachers = $this->teacherRepository->all($faculty, $start, $count);
 
-        $semester = $request->get('semester', '1');
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
 
         foreach ($teachers as $teacher) {
             $lectures = [];
             foreach ($teacher->getLectures() as $lecture) {
-                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
                     $lectures[] = $lecture;
                 }
             }

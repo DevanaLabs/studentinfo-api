@@ -18,6 +18,10 @@ class Lecture
     protected $type;
 
     /**
+     * @var Int
+     */
+    protected $year;
+    /**
      * @var Course
      */
     protected $course;
@@ -84,6 +88,22 @@ class Lecture
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return Int
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param Int $year
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
     }
 
     /**

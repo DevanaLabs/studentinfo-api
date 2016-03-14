@@ -27,6 +27,11 @@
                   expose="true"
                   groups="limited,data,all"
                 />
+        <property name="year"
+                  serialized-name="year"
+                  expose="true"
+                  groups="limited,data,all"
+                />
         <property name="time"
                   serialized-name="time"
                   expose="true"

@@ -113,6 +113,7 @@ class LectureController extends ApiController
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
         $lecture->setType($request->get('type'));
+        $lecture->setYear($request->get('year'));
         $lecture->setTime($time);
         $lecture->setGroups($groups);
 
@@ -197,6 +198,7 @@ class LectureController extends ApiController
         $lecture->setCourse($course);
         $lecture->setClassroom($classroom);
         $lecture->setType($request->get('type'));
+        $lecture->setYear($request->get('year'));
         $lecture->setTime($time);
         $lecture->setGroups($groups);
 

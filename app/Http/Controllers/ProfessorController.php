@@ -7,6 +7,7 @@ use StudentInfo\ErrorCodes\ProfessorErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateTeacherRequest;
+use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Http\Requests\Update\UpdateTeacherRequest;
 use StudentInfo\Models\Professor;
 use StudentInfo\Models\User;
@@ -76,8 +77,9 @@ class ProfessorController extends ApiController
         ]);
     }
 
-    public function retrieveProfessor($faculty, $id)
+    public function retrieveProfessor(StandardRequest $request, $faculty, $id)
     {
+        /** @var Professor $professor */
         $professor = $this->professorRepository->find($id);
 
         if($professor === null){
@@ -88,14 +90,39 @@ class ProfessorController extends ApiController
             return $this->returnError(500, ProfessorErrorCodes::PROFESSOR_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
+
+        $lectures = [];
+        foreach ($professor->getLectures() as $lecture) {
+            if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
+                $lectures[] = $lecture;
+            }
+        }
+        $professor->setLectures($lectures);
+
         return $this->returnSuccess([
             'professor' => $professor
         ]);
     }
 
-    public function retrieveProfessors($faculty, $start = 0, $count = 2000)
+    public function retrieveProfessors(StandardRequest $request, $faculty, $start = 0, $count = 2000)
     {
+        /** @var Professor[] $professors */
         $professors = $this->professorRepository->all($faculty, $start, $count);
+
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
+
+        foreach ($professors as $professor) {
+            $lectures = [];
+            foreach ($professor->getLectures() as $lecture) {
+                if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
+                    $lectures[] = $lecture;
+                }
+            }
+            $professor->setLectures($lectures);
+        }
 
         return $this->returnSuccess($professors);
     }

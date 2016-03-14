@@ -69,8 +69,9 @@ class ClassroomController extends ApiController
         ]);
     }
 
-    public function retrieveClassroom($faculty, $id)
+    public function retrieveClassroom(StandardRequest $request, $faculty, $id)
     {
+        /** @var Classroom $classroom */
         $classroom = $this->classroomRepository->find($id);
 
         if ($classroom === null) {
@@ -80,6 +81,17 @@ class ClassroomController extends ApiController
         if ($classroom->getOrganisation()->getSlug() != $faculty) {
             return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
+
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
+
+        $lectures = [];
+        foreach ($classroom->getLectures() as $lecture) {
+            if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
+                $lectures[] = $lecture;
+            }
+        }
+        $classroom->setLectures($lectures);
 
         return $this->returnSuccess([
             'classroom' => $classroom,
@@ -91,12 +103,13 @@ class ClassroomController extends ApiController
         /** @var Classroom[] $classrooms */
         $classrooms = $this->classroomRepository->all($faculty, $start, $count);
 
-        $semester = $request->get('semester', '1');
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
 
         foreach ($classrooms as $classroom) {
             $lectures = [];
             foreach ($classroom->getLectures() as $lecture) {
-                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
                     $lectures[] = $lecture;
                 }
             }

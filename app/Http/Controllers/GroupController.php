@@ -105,8 +105,9 @@ class GroupController extends ApiController
         ]);
     }
 
-    public function retrieveGroup($faculty, $id)
+    public function retrieveGroup(StandardRequest $request, $faculty, $id)
     {
+        /** @var Group $group */
         $group = $this->groupRepository->find($id);
 
         if ($group === null) {
@@ -116,6 +117,17 @@ class GroupController extends ApiController
         if ($group->getOrganisation()->getSlug() != $faculty) {
             return $this->returnError(500, GroupErrorCodes::GROUP_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
+
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
+
+        $lectures = [];
+        foreach ($group->getLectures() as $lecture) {
+            if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
+                $lectures[] = $lecture;
+            }
+        }
+        $group->setLectures($lectures);
 
         return $this->returnSuccess([
             'group' => $group,
@@ -127,12 +139,13 @@ class GroupController extends ApiController
         /** @var Group[] $groups */
         $groups = $this->groupRepository->all($faculty, $start, $count);
 
-        $semester = $request->get('semester', '1');
+        $semester = (int)$request->get('semester', 1);
+        $year     = (int)$request->get('year', 2016);
 
         foreach ($groups as $group) {
             $lectures = [];
             foreach ($group->getLectures() as $lecture) {
-                if ($lecture->getCourse()->getSemester() % 2 === $semester % 2) {
+                if (($lecture->getCourse()->getSemester() % 2 === $semester % 2) && ($lecture->getYear() === $year)) {
                     $lectures[] = $lecture;
                 }
             }

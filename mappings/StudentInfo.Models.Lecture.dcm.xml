@@ -13,6 +13,8 @@
 
         <field name="type" column="type" type="integer" nullable="false"/>
 
+        <field name="year" column="year" type="integer" nullable="false"/>
+
         <embedded name="time" class="StudentInfo\ValueObjects\Time" use-column-prefix="false"/>
 
         <one-to-many field="notifications" target-entity="StudentInfo\Models\LectureNotification" mapped-by="lecture">

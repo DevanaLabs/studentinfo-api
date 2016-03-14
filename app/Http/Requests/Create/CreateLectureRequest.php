@@ -28,6 +28,7 @@ class CreateLectureRequest extends Request
             'courseId'    => 'required | integer',
             'classroomId' => 'required | integer',
             'type'        => 'required',
+            'year' => 'required',
             'startsAt'    => 'required',
             'endsAt'      => 'required',
         ];
