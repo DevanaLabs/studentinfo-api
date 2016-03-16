@@ -15,6 +15,9 @@ class StudentRole extends Role
     {
         return [
             'user.update',
+            'event.retrieve',
+            'groups.retrieve',
+            'notification.retrieve',
         ];
     }
 
