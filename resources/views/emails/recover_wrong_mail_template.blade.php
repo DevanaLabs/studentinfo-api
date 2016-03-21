@@ -18,7 +18,7 @@ GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACedJREFUeNrsHe11ozhQydv/5ioIV4G5
 <p style="font-family: 'Open Sans', sans-serif">Добили сте ову поруку зато што сте затражили ресетовање лозинке вашег
     налога за Студент инфо. Нажалост ваш маил није у нашој бази података, обратите се администратору вашег факултета</p>
 
-<p style="font-family: 'Open Sans', sans-serif">Ово је аутоматски послата порука коју сте добили као ученик {{$faculty}}
+<p style="font-family: 'Open Sans', sans-serif">Ово је аутоматски послата порука
     .</p>
 <br>
 
