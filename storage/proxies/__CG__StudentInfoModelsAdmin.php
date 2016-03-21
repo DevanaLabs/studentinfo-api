@@ -242,6 +242,17 @@ class Admin extends \StudentInfo\Models\Admin implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function setRegisterTokenCreatedAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegisterTokenCreatedAt', []);
+
+        return parent::setRegisterTokenCreatedAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getRegisterTokenCreatedAt()
     {
 

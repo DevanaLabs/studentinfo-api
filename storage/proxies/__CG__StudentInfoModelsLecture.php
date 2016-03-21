@@ -64,10 +64,10 @@ class Lecture extends \StudentInfo\Models\Lecture implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'type', 'course', 'teacher', 'classroom', 'students', 'groups', 'notifications', 'time'];
+            return ['__isInitialized__', 'id', 'type', 'year', 'course', 'teacher', 'classroom', 'students', 'groups', 'notifications', 'time'];
         }
 
-        return ['__isInitialized__', 'id', 'type', 'course', 'teacher', 'classroom', 'students', 'groups', 'notifications', 'time'];
+        return ['__isInitialized__', 'id', 'type', 'year', 'course', 'teacher', 'classroom', 'students', 'groups', 'notifications', 'time'];
     }
 
     /**
@@ -208,6 +208,28 @@ class Lecture extends \StudentInfo\Models\Lecture implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getType', []);
 
         return parent::getType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getYear()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getYear', []);
+
+        return parent::getYear();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setYear($year)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setYear', [$year]);
+
+        return parent::setYear($year);
     }
 
     /**

@@ -330,6 +330,17 @@ class Student extends \StudentInfo\Models\Student implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function setRegisterTokenCreatedAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegisterTokenCreatedAt', []);
+
+        return parent::setRegisterTokenCreatedAt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getRegisterTokenCreatedAt()
     {
 

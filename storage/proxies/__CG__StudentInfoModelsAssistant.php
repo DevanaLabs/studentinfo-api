@@ -39,6 +39,7 @@ class Assistant extends \StudentInfo\Models\Assistant implements \Doctrine\ORM\P
     public static $lazyPropertiesDefaults = [];
 
 
+
     /**
      * @param \Closure $initializer
      * @param \Closure $cloner
@@ -52,7 +53,7 @@ class Assistant extends \StudentInfo\Models\Assistant implements \Doctrine\ORM\P
 
 
     /**
-     *
+     * 
      * @return array
      */
     public function __sleep()
@@ -65,7 +66,7 @@ class Assistant extends \StudentInfo\Models\Assistant implements \Doctrine\ORM\P
     }
 
     /**
-     *
+     * 
      */
     public function __wakeup()
     {
@@ -87,7 +88,7 @@ class Assistant extends \StudentInfo\Models\Assistant implements \Doctrine\ORM\P
     }
 
     /**
-     *
+     * 
      */
     public function __clone()
     {
@@ -286,6 +287,17 @@ class Assistant extends \StudentInfo\Models\Assistant implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOrganisation', [$organisation]);
 
         return parent::setOrganisation($organisation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRegisterTokenCreatedAt()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegisterTokenCreatedAt', []);
+
+        return parent::setRegisterTokenCreatedAt();
     }
 
     /**

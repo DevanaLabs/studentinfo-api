@@ -26,14 +26,20 @@ class SendEmails extends Job implements SelfHandling, ShouldQueue
     protected $email;
 
     /**
+     * @var String
+     */
+    protected $facultyName;
+
+    /**
      * Create a new job instance.
      * @param $user
      * @param $email
      */
-    public function __construct(User $user, $email)
+    public function __construct(User $user, $email, $facultyName)
     {
         $this->email = $email;
         $this->user  = $user;
+        $this->facultyName = $facultyName;
     }
 
     /**
@@ -46,8 +52,8 @@ class SendEmails extends Job implements SelfHandling, ShouldQueue
 
         $mailer->send('emails.register_mail_template', [
             'email' => $email,
+            'faculty' => $this->facultyName,
             'token' => $this->user->getRegisterToken(),
-            'faculty' => $this->user->getOrganisation()->getName(),
         ], function (Message $message) use ($email) {
             $message->to($email);
             $message->subject('Регистрација на Студент инфо');

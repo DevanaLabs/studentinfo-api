@@ -5,22 +5,22 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
-                  groups="limited,all,recoverPassword"
+                  groups="limited,all"
                 />
         <property name="name"
                   serialized-name="name"
                   expose="true"
-                  groups="limited,all,recoverPassword"
+                  groups="limited,all"
                 />
         <property name="slug"
                   serialized-name="slug"
                   expose="true"
-                  groups="limited,all,recoverPassword"
+                  groups="limited,all"
                 />
         <property name="university"
                   serialized-name="university"
                   expose="true"
-                  groups="limited,all,recoverPassword"
+                  groups="limited,all"
                 />
     </class>
 </serializer>

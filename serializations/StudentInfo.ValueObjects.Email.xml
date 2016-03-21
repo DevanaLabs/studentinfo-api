@@ -4,7 +4,7 @@
         <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
         <property name="email"
                   serialized-name="email"
-                  groups="limited,data,all,recoverPassword"
+                  groups="limited,data,all"
                   expose="true"
                 />
     </class>

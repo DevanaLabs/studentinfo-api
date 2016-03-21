@@ -39,6 +39,7 @@ class Group extends \StudentInfo\Models\Group implements \Doctrine\ORM\Proxy\Pro
     public static $lazyPropertiesDefaults = [];
 
 
+
     /**
      * @param \Closure $initializer
      * @param \Closure $cloner
@@ -52,7 +53,7 @@ class Group extends \StudentInfo\Models\Group implements \Doctrine\ORM\Proxy\Pro
 
 
     /**
-     *
+     * 
      * @return array
      */
     public function __sleep()
@@ -65,7 +66,7 @@ class Group extends \StudentInfo\Models\Group implements \Doctrine\ORM\Proxy\Pro
     }
 
     /**
-     *
+     * 
      */
     public function __wakeup()
     {
@@ -87,7 +88,7 @@ class Group extends \StudentInfo\Models\Group implements \Doctrine\ORM\Proxy\Pro
     }
 
     /**
-     *
+     * 
      */
     public function __clone()
     {

@@ -39,6 +39,7 @@ class EventNotification extends \StudentInfo\Models\EventNotification implements
     public static $lazyPropertiesDefaults = [];
 
 
+
     /**
      * @param \Closure $initializer
      * @param \Closure $cloner
@@ -52,7 +53,7 @@ class EventNotification extends \StudentInfo\Models\EventNotification implements
 
 
     /**
-     *
+     * 
      * @return array
      */
     public function __sleep()
@@ -65,7 +66,7 @@ class EventNotification extends \StudentInfo\Models\EventNotification implements
     }
 
     /**
-     *
+     * 
      */
     public function __wakeup()
     {
@@ -87,7 +88,7 @@ class EventNotification extends \StudentInfo\Models\EventNotification implements
     }
 
     /**
-     *
+     * 
      */
     public function __clone()
     {

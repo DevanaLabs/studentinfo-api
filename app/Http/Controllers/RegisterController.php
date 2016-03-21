@@ -81,7 +81,7 @@ class RegisterController extends ApiController
             $user->generateRegisterToken();
             $this->userRepository->update($user);
 
-            $this->dispatch(new SendEmails($user, $email));
+            $this->dispatch(new SendEmails($user, $email, $user->getOrganisation()->getName()));
             $sending[] = $email;
         }
         return $this->returnSuccess([
@@ -167,20 +167,18 @@ class RegisterController extends ApiController
         $user = $this->userRepository->findByEmail(new Email($email));
 
         if ($user === null) {
-            $this->dispatch(new SendRecoverWrongEmail($user));
+            $this->dispatch(new SendRecoverWrongEmail($user, $user->getEmail()->getEmail(), $user->getOrganisation()->getName()));
             return $this->returnError(500, UserErrorCodes::USER_DOES_NOT_EXIST);
         }
 
         $user->setRememberToken(md5($user->getEmail()->getEmail() . time()));
         $user->setRegisterTokenCreatedAt();
 
-        $this->dispatch(new SendRecoverEmail($user));
+        $this->dispatch(new SendRecoverEmail($user, $user->getEmail()->getEmail(), $user->getOrganisation()->getName()));
         $this->userRepository->update($user);
 
         return $this->returnSuccess([
             'user' => $user,
-        ], [
-            'display' => 'recoverPassword',
         ]);
     }
 
@@ -195,8 +193,6 @@ class RegisterController extends ApiController
 
         return $this->returnSuccess([
             'user' => $user,
-        ], [
-            'display' => 'recoverPassword',
         ]);
     }
 
