@@ -24,22 +24,16 @@ class SendRecoverWrongEmail extends Job implements SelfHandling, ShouldQueue
      */
     protected $email;
 
-    /**
-     * @var String
-     */
-    protected $facultyName;
 
     /**
      * Create a new job instance.
      * @param User $user
      * @param      $email
-     * @param      $facultyName
      */
-    public function __construct(User $user, $email, $facultyName)
+    public function __construct(User $user, $email)
     {
         $this->user  = $user;
         $this->email = $email;
-        $this->facultyName = $facultyName;
     }
 
     /**
@@ -53,7 +47,6 @@ class SendRecoverWrongEmail extends Job implements SelfHandling, ShouldQueue
         $mailer->send('emails.recover_mail_template', [
             'email'   => $email,
             'token'   => $this->user->getRememberToken(),
-            'faculty' => $this->facultyName,
         ], function (Message $message) use ($email) {
             $message->to($email);
             $message->subject('Ресетовање лозинке за Студент инфо');

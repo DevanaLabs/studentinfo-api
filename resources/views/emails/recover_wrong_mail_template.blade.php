@@ -22,6 +22,6 @@ GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACedJREFUeNrsHe11ozhQydv/5ioIV4G5
     .</p>
 <br>
 
-<p style="font-family: 'Open Sans', sans-serif">Ваш {{$faculty}}</p>
+<p style="font-family: 'Open Sans', sans-serif">Ваш Студент инфо</p>
 </body>
 </html>
