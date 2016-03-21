@@ -164,7 +164,7 @@ class RegisterController extends ApiController
     public function recoverPassword($email)
     {
         /** @var User $user */
-        $user = $this->userRepository->findByEmail($email);
+        $user = $this->userRepository->findByEmail(new Email($email));
 
         if ($user === null) {
             $this->dispatch(new SendRecoverWrongEmail($user));
@@ -179,6 +179,8 @@ class RegisterController extends ApiController
 
         return $this->returnSuccess([
             'user' => $user,
+        ], [
+            'display' => 'recoverPassword',
         ]);
     }
 
@@ -193,6 +195,8 @@ class RegisterController extends ApiController
 
         return $this->returnSuccess([
             'user' => $user,
+        ], [
+            'display' => 'recoverPassword',
         ]);
     }
 

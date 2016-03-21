@@ -26,9 +26,9 @@ Route::post('register/{registerToken}', 'RegisterController@createPassword');
 
 Route::get('register/recoverPassword/{email}', 'RegisterController@recoverPassword');
 
-Route::get('register/recoverPasswordConfirmation/{$rememberToken}', 'RegisterController@recoverPasswordConfirmation');
+Route::get('register/recoverPasswordConfirmation/{rememberToken}', 'RegisterController@recoverPasswordConfirmation');
 
-Route::post('register/recoverPasswordConfirmation/{$rememberToken}', 'RegisterController@recoverCreatePassword');
+Route::post('register/recoverPasswordConfirmation/{rememberToken}', 'RegisterController@recoverCreatePassword');
 
 Route::post('faculty', ['middleware' => 'oauth', 'uses' => 'FacultyController@createFaculty']);
 

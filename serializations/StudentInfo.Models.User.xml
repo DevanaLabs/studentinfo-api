@@ -5,35 +5,40 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,recoverPassword"
                 />
         <property name="firstName"
                   serialized-name="firstName"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,recoverPassword"
                 />
         <property name="lastName"
                   serialized-name="lastName"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,recoverPassword"
                 />
         <property name="email"
                   serialized-name="email"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,recoverPassword"
                 />
         <property name="organisation"
                   serialized-name="faculty"
                   expose="true"
-                  groups="limited,all"
+                  groups="limited,all,recoverPassword"
+                />
+        <property name="rememberToken"
+                  serialized-name="rememberToken"
+                  expose="true"
+                  groups="recoverPassword"
                 />
         <virtual-property method="isRegisterTokenExpired"
                           serialized-name="registerTokenExpired"
-                          groups="limited,data,all"
+                          groups="limited,data,all,recoverPassword"
                           since-version="1.0"/>
         <virtual-property method="getUserType"
                           serialized-name="userType"
-                          groups="limited,data,all"
+                          groups="limited,data,all,recoverPassword"
                           since-version="1.0"/>
     </class>
 </serializer>
