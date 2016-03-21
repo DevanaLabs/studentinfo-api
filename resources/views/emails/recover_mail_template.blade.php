@@ -23,7 +23,7 @@ GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACedJREFUeNrsHe11ozhQydv/5ioIV4G5
     се</a>
 
 <p style="font-family: 'Open Sans', sans-serif">Ако не видите дугме идите на:
-    <br>http://www.studentinfo.rs/#/register/recoverPasswordConfirmation/{{$token}}
+    <br>http://www.studentinfo.rs/#/recover/{{$token}}
 </p>
 
 <p style="font-family: 'Open Sans', sans-serif">Ако не желите да промените лозинку игноришите ову поруку. </p>
