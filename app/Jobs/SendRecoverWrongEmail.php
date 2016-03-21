@@ -9,16 +9,11 @@ use Illuminate\Mail\Message;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use StudentInfo\Models\User;
 
 class SendRecoverWrongEmail extends Job implements SelfHandling, ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 
-    /**
-     * @var User
-     */
-    protected $user;
     /**
      * @var String
      */
@@ -27,12 +22,10 @@ class SendRecoverWrongEmail extends Job implements SelfHandling, ShouldQueue
 
     /**
      * Create a new job instance.
-     * @param User $user
      * @param      $email
      */
-    public function __construct(User $user, $email)
+    public function __construct($email)
     {
-        $this->user  = $user;
         $this->email = $email;
     }
 
@@ -44,9 +37,8 @@ class SendRecoverWrongEmail extends Job implements SelfHandling, ShouldQueue
     {
         $email = $this->email;
 
-        $mailer->send('emails.recover_mail_template', [
+        $mailer->send('emails.recover_wrong_mail_template', [
             'email'   => $email,
-            'token'   => $this->user->getRememberToken(),
         ], function (Message $message) use ($email) {
             $message->to($email);
             $message->subject('Ресетовање лозинке за Студент инфо');

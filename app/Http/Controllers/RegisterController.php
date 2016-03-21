@@ -167,7 +167,7 @@ class RegisterController extends ApiController
         $user = $this->userRepository->findByEmail(new Email($email));
 
         if ($user === null) {
-            $this->dispatch(new SendRecoverWrongEmail($user, $email));
+            $this->dispatch(new SendRecoverWrongEmail($email));
             return $this->returnError(500, UserErrorCodes::USER_DOES_NOT_EXIST);
         }
 
