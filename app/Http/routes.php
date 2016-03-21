@@ -20,9 +20,15 @@ Route::delete('auth', ['middleware' => 'oauth', 'uses' => 'AuthController@logout
 
 Route::post('register', ['middleware' => ['oauth', 'role:student.create'], 'uses' => 'RegisterController@issueRegisterTokens']);
 
-Route::get('register/{registerToken}', 'RegisterController@registerStudent');
+Route::get('register/{registerToken}', 'RegisterController@register');
 
 Route::post('register/{registerToken}', 'RegisterController@createPassword');
+
+Route::get('register/recoverPassword/{email}', 'RegisterController@recoverPassword');
+
+Route::get('register/recoverPasswordConfirmation/{$rememberToken}', 'RegisterController@recoverPasswordConfirmation');
+
+Route::post('register/recoverPasswordConfirmation/{$rememberToken}', 'RegisterController@recoverCreatePassword');
 
 Route::post('faculty', ['middleware' => 'oauth', 'uses' => 'FacultyController@createFaculty']);
 

@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use StudentInfo\Models\User;
 
-class SendEmails extends Job implements SelfHandling, ShouldQueue
+class SendRecoverEmail extends Job implements SelfHandling, ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 
@@ -28,12 +28,11 @@ class SendEmails extends Job implements SelfHandling, ShouldQueue
     /**
      * Create a new job instance.
      * @param $user
-     * @param $email
      */
-    public function __construct(User $user, $email)
+    public function __construct(User $user)
     {
-        $this->email = $email;
         $this->user  = $user;
+        $this->email = $user->getEmail()->getEmail();
     }
 
     /**
@@ -44,13 +43,13 @@ class SendEmails extends Job implements SelfHandling, ShouldQueue
     {
         $email = $this->email;
 
-        $mailer->send('emails.register_mail_template', [
-            'email' => $email,
-            'token' => $this->user->getRegisterToken(),
+        $mailer->send('email_recover_mail_template', [
+            'email'   => $email,
+            'token'   => $this->user->getRememberToken(),
             'faculty' => $this->user->getOrganisation()->getName(),
         ], function (Message $message) use ($email) {
             $message->to($email);
-            $message->subject('Регистрација на Студент инфо');
+            $message->subject('?????????? ??????? ?? ??????? ????');
         });
 
         if (!empty($mailer->failures())) {

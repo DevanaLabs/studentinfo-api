@@ -114,6 +114,13 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
     }
 
     /**
+     */
+    public function setRegisterTokenCreatedAt()
+    {
+        $this->registerTokenCreatedAt = Carbon::now();
+    }
+
+    /**
      * @return \DateTime
      */
     public function getRegisterTokenCreatedAt()

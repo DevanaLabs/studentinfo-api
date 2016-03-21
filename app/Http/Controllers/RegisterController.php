@@ -8,6 +8,8 @@ use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\CreatePasswordPostRequest;
 use StudentInfo\Http\Requests\IssueTokenPostRequest;
 use StudentInfo\Jobs\SendEmails;
+use StudentInfo\Jobs\SendRecoverEmail;
+use StudentInfo\Jobs\SendRecoverWrongEmail;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\UserRepositoryInterface;
 use StudentInfo\ValueObjects\Email;
@@ -92,7 +94,7 @@ class RegisterController extends ApiController
      * @param $registerToken
      * @return \Illuminate\Http\Response
      */
-    public function registerStudent($registerToken)
+    public function register($registerToken)
     {
         /** @var User $user */
         $user = $this->userRepository->findByRegisterToken($registerToken);
@@ -157,5 +159,63 @@ class RegisterController extends ApiController
         $this->userRepository->update($user);
 
         return $this->returnSuccess();
+    }
+
+    public function recoverPassword($email)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findByEmail($email);
+
+        if ($user === null) {
+            $this->dispatch(new SendRecoverWrongEmail($user));
+            return $this->returnError(500, UserErrorCodes::USER_DOES_NOT_EXIST);
+        }
+
+        $user->setRememberToken(md5($user->getEmail()->getEmail() . time()));
+        $user->setRegisterTokenCreatedAt();
+
+        $this->dispatch(new SendRecoverEmail($user));
+        $this->userRepository->update($user);
+
+        return $this->returnSuccess([
+            'user' => $user,
+        ]);
+    }
+
+    public function recoverPasswordConfirmation($rememberToken)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findByRememberToken($rememberToken);
+
+        if ($user === null) {
+            return $this->returnError(500, UserErrorCodes::USER_DOES_NOT_EXIST);
+        }
+
+        return $this->returnSuccess([
+            'user' => $user,
+        ]);
+    }
+
+    public function recoverCreatePassword(CreatePasswordPostRequest $request, $rememberToken)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findByRememberToken($rememberToken);
+
+        if ($user === null) {
+            return $this->returnForbidden(UserErrorCodes::INVALID_REGISTER_TOKEN);
+        }
+
+        if ($user->isRegisterTokenExpired()) {
+            return $this->returnForbidden(UserErrorCodes::EXPIRED_REGISTER_TOKEN);
+        }
+
+        $user->setRememberToken('');
+        $user->setPassword(new Password($request->get('password')));
+
+        $this->userRepository->update($user);
+
+        return $this->returnSuccess([
+            'user' => $user,
+        ]);
     }
 }

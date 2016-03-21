@@ -12,6 +12,8 @@ interface UserRepositoryInterface extends RepositoryInterface
 
     public function findByRegisterToken($registerToken);
 
+    public function findByRememberToken($rememberToken);
+
     public function persist($object);
 
     public function flush();

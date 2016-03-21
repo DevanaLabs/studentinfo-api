@@ -69,4 +69,11 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
             ->setParameter('registerToken', $registerToken)
             ->getOneOrNullResult();
     }
+
+    public function findByRememberToken($rememberToken)
+    {
+        return $this->_em->createQuery('SELECT u FROM StudentInfo\Models\User u WHERE u.rememberToken = :rememberToken')
+            ->setParameter('rememberToken', $rememberToken)
+            ->getOneOrNullResult();
+    }
 }
