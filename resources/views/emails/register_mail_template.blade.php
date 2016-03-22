@@ -25,8 +25,7 @@ GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACedJREFUeNrsHe11ozhQydv/5ioIV4G5
     <br>http://www.studentinfo.rs/#/register/{{$token}}
 </p>
 
-<p style="font-family: 'Open Sans', sans-serif">Ово је аутоматски послата порука
-    .</p>
+<p style="font-family: 'Open Sans', sans-serif">Ово је аутоматски послата порука.</p>
 <br>
 
 <p style="font-family: 'Open Sans', sans-serif">Ваш {{$faculty}}</p>

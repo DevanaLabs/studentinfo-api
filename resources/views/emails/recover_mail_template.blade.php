@@ -18,7 +18,7 @@ GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACedJREFUeNrsHe11ozhQydv/5ioIV4G5
 <p style="font-family: 'Open Sans', sans-serif">Добили сте ову поруку зато што сте затражили ресетовање лозинке вашег
     налога за Студент инфо. Да бисте поставили нову лозинку отворите следећи линк: </p>
 
-<a href="http://www.studentinfo.rs/#/register/recoverPasswordConfirmation/{{$token}}"
+<a href="http://www.studentinfo.rs/#/recover/{{$token}}"
    style="display: block; height: 40px; width: 300px; background-color: #39B54A; color: white; border-radius: 5px; margin: 20px auto; text-decoration: none; text-align: center; line-height: 40px; font-family: 'Open Sans', sans-serif;">Региструјте
     се</a>
 
@@ -28,8 +28,7 @@ GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACedJREFUeNrsHe11ozhQydv/5ioIV4G5
 
 <p style="font-family: 'Open Sans', sans-serif">Ако не желите да промените лозинку игноришите ову поруку. </p>
 
-<p style="font-family: 'Open Sans', sans-serif">Ово је аутоматски послата порука
-    .</p>
+<p style="font-family: 'Open Sans', sans-serif">Ово је аутоматски послата порука.</p>
 <br>
 
 <p style="font-family: 'Open Sans', sans-serif">Ваш {{$faculty}}</p>
