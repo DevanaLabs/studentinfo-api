@@ -48,7 +48,7 @@ class UserController extends ApiController
             return $this->returnForbidden(UserErrorCodes::USER_DOES_NOT_EXIST);
         }
 
-        if ($user->getPassword()->checkAgainst($request->get('currentPassword'))) {
+        if (!$user->getPassword()->checkAgainst($request->get('currentPassword'))) {
             return $this->returnForbidden(UserErrorCodes::YOU_DO_N0T_HAVE_PERMISSION_TO_SEE_THIS);
         }
 

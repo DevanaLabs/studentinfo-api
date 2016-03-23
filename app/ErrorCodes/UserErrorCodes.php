@@ -25,4 +25,6 @@ class UserErrorCodes
     const YOU_NEED_TO_REGISTER_FIRST = 141;
 
     const YOU_DO_N0T_HAVE_PERMISSION_TO_SEE_THIS = 142;
+
+    const WRONG_CURRENT_PASSWORD = 144;
 }
