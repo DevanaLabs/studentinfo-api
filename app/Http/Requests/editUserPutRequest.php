@@ -42,6 +42,7 @@ class EditUserPutRequest extends Request
     public function rules()
     {
         return [
+            'currentPassword' => 'required',
             'password' => 'required|confirmed',
         ];
     }

@@ -219,6 +219,14 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
     }
 
     /**
+     * @return Password
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
      * @return int
      */
     public function getAuthIdentifier()

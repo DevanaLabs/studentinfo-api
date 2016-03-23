@@ -234,6 +234,7 @@ class LectureController extends ApiController
             $day           = $data[4];
             $time          = $data[5];
             $classroomName = $data[6];
+            $year = $data[7];
 
             $course = $this->courseRepository->findByName($courseName);
             if ($course == null) {
@@ -323,6 +324,7 @@ class LectureController extends ApiController
             $lecture->setTime($time);
             $lecture->setTeacher($teacher);
             $lecture->setGroups($groups);
+            $lecture->setYear($year);
 
             $this->lectureRepository->persist($lecture);
         }

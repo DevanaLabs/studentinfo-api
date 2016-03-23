@@ -6,6 +6,7 @@ use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\TeacherErrorCodes;
 use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\Teacher;
+use StudentInfo\Models\User;
 use StudentInfo\Repositories\TeacherRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
 
@@ -21,6 +22,11 @@ class TeacherController extends ApiController
     protected $teacherRepository;
 
     /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepositoryInterface;
+
+    /**
      * @var Authorizer
      */
     protected $authorizer;
@@ -29,12 +35,14 @@ class TeacherController extends ApiController
      * StudentController constructor.
      * @param UserRepositoryInterface    $userRepository
      * @param TeacherRepositoryInterface $teacherRepository
+     * @param UserRepositoryInterface    $userRepositoryInterface
      * @param Authorizer                 $authorizer
      */
-    public function __construct(UserRepositoryInterface $userRepository, TeacherRepositoryInterface $teacherRepository, Authorizer $authorizer)
+    public function __construct(UserRepositoryInterface $userRepository, TeacherRepositoryInterface $teacherRepository, UserRepositoryInterface $userRepositoryInterface, Authorizer $authorizer)
     {
         $this->userRepository = $userRepository;
         $this->teacherRepository = $teacherRepository;
+        $this->userRepositoryInterface = $userRepositoryInterface;
         $this->authorizer     = $authorizer;
     }
 
@@ -51,8 +59,23 @@ class TeacherController extends ApiController
             return $this->returnError(500, TeacherErrorCodes::TEACHER_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
-        $semester = (int)$request->get('semester', 1);
-        $year     = (int)$request->get('year', 2016);
+        $semester = $request->get('semester', 'current');
+        $year     = $request->get('year', 'current');
+
+        if (($semester == 'current') || ($year == 'current')) {
+            $userId = $this->authorizer->getResourceOwnerId();
+            /** @var User $user */
+            $user = $this->userRepositoryInterface->find($userId);
+            if ($semester == 'current') {
+                $semester = $user->getOrganisation()->getSettings()->getSemester();
+            }
+            if ($year == 'current') {
+                $year = $user->getOrganisation()->getSettings()->getYear();
+            }
+        } else {
+            $semester = (int)$request->get('semester');
+            $year     = (int)$request->get('year');
+        }
 
         $lectures = [];
         foreach ($teacher->getLectures() as $lecture) {
@@ -72,8 +95,23 @@ class TeacherController extends ApiController
         /** @var Teacher[] $teachers */
         $teachers = $this->teacherRepository->all($faculty, $start, $count);
 
-        $semester = (int)$request->get('semester', 1);
-        $year     = (int)$request->get('year', 2016);
+        $semester = $request->get('semester', 'current');
+        $year     = $request->get('year', 'current');
+
+        if (($semester == 'current') || ($year == 'current')) {
+            $userId = $this->authorizer->getResourceOwnerId();
+            /** @var User $user */
+            $user = $this->userRepositoryInterface->find($userId);
+            if ($semester == 'current') {
+                $semester = $user->getOrganisation()->getSettings()->getSemester();
+            }
+            if ($year == 'current') {
+                $year = $user->getOrganisation()->getSettings()->getYear();
+            }
+        } else {
+            $semester = (int)$request->get('semester');
+            $year     = (int)$request->get('year');
+        }
 
         foreach ($teachers as $teacher) {
             $lectures = [];

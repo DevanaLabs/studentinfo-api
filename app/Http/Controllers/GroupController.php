@@ -8,6 +8,7 @@ use StudentInfo\Http\Requests\Create\CreateGroupRequest;
 use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Http\Requests\Update\UpdateGroupRequest;
 use StudentInfo\Models\Group;
+use StudentInfo\Models\User;
 use StudentInfo\Repositories\EventRepositoryInterface;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
@@ -41,6 +42,11 @@ class GroupController extends ApiController
     protected $facultyRepository;
 
     /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepositoryInterface;
+
+    /**
      * @var Authorizer
      */
     protected $authorizer;
@@ -52,16 +58,18 @@ class GroupController extends ApiController
      * @param LectureRepositoryInterface $lectureRepository
      * @param EventRepositoryInterface   $eventRepository
      * @param FacultyRepositoryInterface $facultyRepository
+     * @param UserRepositoryInterface                         $userRepositoryInterface
      * @param Authorizer                                      $authorizer
      */
     public function __construct(UserRepositoryInterface $userRepository, GroupRepositoryInterface $groupRepository, LectureRepositoryInterface $lectureRepository,
-                                EventRepositoryInterface $eventRepository, FacultyRepositoryInterface $facultyRepository, Authorizer $authorizer)
+                                EventRepositoryInterface $eventRepository, FacultyRepositoryInterface $facultyRepository, UserRepositoryInterface $userRepositoryInterface, Authorizer $authorizer)
     {
         $this->userRepository = $userRepository;
         $this->groupRepository   = $groupRepository;
         $this->lectureRepository = $lectureRepository;
         $this->eventRepository = $eventRepository;
         $this->facultyRepository = $facultyRepository;
+        $this->userRepositoryInterface = $userRepositoryInterface;
         $this->authorizer     = $authorizer;
     }
 
@@ -118,8 +126,23 @@ class GroupController extends ApiController
             return $this->returnError(500, GroupErrorCodes::GROUP_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
-        $semester = (int)$request->get('semester', 1);
-        $year     = (int)$request->get('year', 2016);
+        $semester = $request->get('semester', 'current');
+        $year     = $request->get('year', 'current');
+
+        if (($semester == 'current') || ($year == 'current')) {
+            $userId = $this->authorizer->getResourceOwnerId();
+            /** @var User $user */
+            $user = $this->userRepositoryInterface->find($userId);
+            if ($semester == 'current') {
+                $semester = $user->getOrganisation()->getSettings()->getSemester();
+            }
+            if ($year == 'current') {
+                $year = $user->getOrganisation()->getSettings()->getYear();
+            }
+        } else {
+            $semester = (int)$request->get('semester');
+            $year     = (int)$request->get('year');
+        }
 
         $lectures = [];
         foreach ($group->getLectures() as $lecture) {
@@ -139,8 +162,23 @@ class GroupController extends ApiController
         /** @var Group[] $groups */
         $groups = $this->groupRepository->all($faculty, $start, $count);
 
-        $semester = (int)$request->get('semester', 1);
-        $year     = (int)$request->get('year', 2016);
+        $semester = $request->get('semester', 'current');
+        $year     = $request->get('year', 'current');
+
+        if (($semester == 'current') || ($year == 'current')) {
+            $userId = $this->authorizer->getResourceOwnerId();
+            /** @var User $user */
+            $user = $this->userRepositoryInterface->find($userId);
+            if ($semester == 'current') {
+                $semester = $user->getOrganisation()->getSettings()->getSemester();
+            }
+            if ($year == 'current') {
+                $year = $user->getOrganisation()->getSettings()->getYear();
+            }
+        } else {
+            $semester = (int)$request->get('semester');
+            $year     = (int)$request->get('year');
+        }
 
         foreach ($groups as $group) {
             $lectures = [];

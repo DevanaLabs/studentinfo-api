@@ -10,6 +10,10 @@
 
         <field name="language" type="string" nullable="false"/>
 
+        <field name="semester" type="integer" nullable="false"/>
+
+        <field name="year" type="integer" nullable="false"/>
+
     </embeddable>
 
 </doctrine-mapping>

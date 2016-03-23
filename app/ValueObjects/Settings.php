@@ -16,6 +16,16 @@ class Settings
     protected $language;
 
     /**
+     * @var int
+     */
+    protected $semester;
+
+    /**
+     * @var int
+     */
+    protected $year;
+
+    /**
      * @return string
      */
     public function getWallpaperPath()
@@ -45,5 +55,37 @@ class Settings
     public function setLanguage($language)
     {
         $this->language = $language;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSemester()
+    {
+        return $this->semester;
+    }
+
+    /**
+     * @param int $semester
+     */
+    public function setSemester($semester)
+    {
+        $this->semester = $semester;
+    }
+
+    /**
+     * @return int
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param int $year
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
     }
 }

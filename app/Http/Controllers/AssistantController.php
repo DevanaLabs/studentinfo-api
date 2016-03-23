@@ -35,6 +35,11 @@ class AssistantController extends ApiController
     protected $assistantRepository;
 
     /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepositoryInterface;
+
+    /**
      * @var Authorizer
      */
     protected $authorizer;
@@ -44,13 +49,15 @@ class AssistantController extends ApiController
      * @param UserRepositoryInterface      $userRepository
      * @param FacultyRepositoryInterface   $facultyRepository
      * @param AssistantRepositoryInterface $assistantRepository
+     * @param UserRepositoryInterface      $userRepositoryInterface
      * @param Authorizer                   $authorizer
      */
-    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, AssistantRepositoryInterface $assistantRepository, Authorizer $authorizer)
+    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, AssistantRepositoryInterface $assistantRepository, UserRepositoryInterface $userRepositoryInterface, Authorizer $authorizer)
     {
         $this->userRepository      = $userRepository;
         $this->facultyRepository   = $facultyRepository;
         $this->assistantRepository = $assistantRepository;
+        $this->userRepositoryInterface = $userRepositoryInterface;
         $this->authorizer = $authorizer;
     }
 
@@ -90,8 +97,23 @@ class AssistantController extends ApiController
             return $this->returnError(500, AssistantErrorCodes::ASSISTANT_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
-        $semester = (int)$request->get('semester', 1);
-        $year     = (int)$request->get('year', 2016);
+        $semester = $request->get('semester', 'current');
+        $year     = $request->get('year', 'current');
+
+        if (($semester == 'current') || ($year == 'current')) {
+            $userId = $this->authorizer->getResourceOwnerId();
+            /** @var User $user */
+            $user = $this->userRepositoryInterface->find($userId);
+            if ($semester == 'current') {
+                $semester = $user->getOrganisation()->getSettings()->getSemester();
+            }
+            if ($year == 'current') {
+                $year = $user->getOrganisation()->getSettings()->getYear();
+            }
+        } else {
+            $semester = (int)$request->get('semester');
+            $year     = (int)$request->get('year');
+        }
 
         $lectures = [];
         foreach ($assistant->getLectures() as $lecture) {
@@ -112,8 +134,23 @@ class AssistantController extends ApiController
         /** @var Assistant[] $assistants */
         $assistants = $this->assistantRepository->all($faculty, $start, $count);
 
-        $semester = (int)$request->get('semester', 1);
-        $year     = (int)$request->get('year', 2016);
+        $semester = $request->get('semester', 'current');
+        $year     = $request->get('year', 'current');
+
+        if (($semester == 'current') || ($year == 'current')) {
+            $userId = $this->authorizer->getResourceOwnerId();
+            /** @var User $user */
+            $user = $this->userRepositoryInterface->find($userId);
+            if ($semester == 'current') {
+                $semester = $user->getOrganisation()->getSettings()->getSemester();
+            }
+            if ($year == 'current') {
+                $year = $user->getOrganisation()->getSettings()->getYear();
+            }
+        } else {
+            $semester = (int)$request->get('semester');
+            $year     = (int)$request->get('year');
+        }
 
         foreach ($assistants as $assistant) {
             $lectures = [];

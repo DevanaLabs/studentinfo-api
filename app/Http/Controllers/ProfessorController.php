@@ -35,6 +35,11 @@ class ProfessorController extends ApiController
     protected $professorRepository;
 
     /**
+     * @var UserRepositoryInterface
+     */
+    protected $userRepositoryInterface;
+
+    /**
      * @var Authorizer
      */
     protected $authorizer;
@@ -44,13 +49,15 @@ class ProfessorController extends ApiController
      * @param UserRepositoryInterface      $userRepository
      * @param FacultyRepositoryInterface   $facultyRepository
      * @param ProfessorRepositoryInterface $professorRepository
+     * @param UserRepositoryInterface      $userRepositoryInterface
      * @param Authorizer                   $authorizer
      */
-    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, ProfessorRepositoryInterface $professorRepository, Authorizer $authorizer)
+    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, ProfessorRepositoryInterface $professorRepository, UserRepositoryInterface $userRepositoryInterface, Authorizer $authorizer)
     {
         $this->userRepository    = $userRepository;
         $this->facultyRepository = $facultyRepository;
         $this->professorRepository = $professorRepository;
+        $this->userRepositoryInterface = $userRepositoryInterface;
         $this->authorizer = $authorizer;
     }
 
@@ -90,8 +97,23 @@ class ProfessorController extends ApiController
             return $this->returnError(500, ProfessorErrorCodes::PROFESSOR_DOES_NOT_BELONG_TO_THIS_FACULTY);
         }
 
-        $semester = (int)$request->get('semester', 1);
-        $year     = (int)$request->get('year', 2016);
+        $semester = $request->get('semester', 'current');
+        $year     = $request->get('year', 'current');
+
+        if (($semester == 'current') || ($year == 'current')) {
+            $userId = $this->authorizer->getResourceOwnerId();
+            /** @var User $user */
+            $user = $this->userRepositoryInterface->find($userId);
+            if ($semester == 'current') {
+                $semester = $user->getOrganisation()->getSettings()->getSemester();
+            }
+            if ($year == 'current') {
+                $year = $user->getOrganisation()->getSettings()->getYear();
+            }
+        } else {
+            $semester = (int)$request->get('semester');
+            $year     = (int)$request->get('year');
+        }
 
         $lectures = [];
         foreach ($professor->getLectures() as $lecture) {
@@ -111,8 +133,23 @@ class ProfessorController extends ApiController
         /** @var Professor[] $professors */
         $professors = $this->professorRepository->all($faculty, $start, $count);
 
-        $semester = (int)$request->get('semester', 1);
-        $year     = (int)$request->get('year', 2016);
+        $semester = $request->get('semester', 'current');
+        $year     = $request->get('year', 'current');
+
+        if (($semester == 'current') || ($year == 'current')) {
+            $userId = $this->authorizer->getResourceOwnerId();
+            /** @var User $user */
+            $user = $this->userRepositoryInterface->find($userId);
+            if ($semester == 'current') {
+                $semester = $user->getOrganisation()->getSettings()->getSemester();
+            }
+            if ($year == 'current') {
+                $year = $user->getOrganisation()->getSettings()->getYear();
+            }
+        } else {
+            $semester = (int)$request->get('semester');
+            $year     = (int)$request->get('year');
+        }
 
         foreach ($professors as $professor) {
             $lectures = [];
