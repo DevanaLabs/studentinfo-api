@@ -2,23 +2,22 @@
 
 namespace StudentInfo\ValueObjects;
 
-
-use Carbon\Carbon;
+use DateTime as DateTimeDateTime;
 
 class Datetime
 {
     /**
-     * @var Carbon
+     * @var DateTimeDateTime
      */
     protected $startsAt;
 
     /**
-     * @var Carbon
+     * @var DateTimeDateTime
      */
     protected $endsAt;
 
     /**
-     * @return Carbon
+     * @return DateTimeDateTime
      */
     public function getStartsAt()
     {
@@ -26,7 +25,7 @@ class Datetime
     }
 
     /**
-     * @param Carbon $startsAt
+     * @param DateTimeDateTime $startsAt
      */
     public function setStartsAt($startsAt)
     {
@@ -34,7 +33,7 @@ class Datetime
     }
 
     /**
-     * @return Carbon
+     * @return DateTimeDateTime
      */
     public function getEndsAt()
     {
@@ -42,7 +41,7 @@ class Datetime
     }
 
     /**
-     * @param Carbon $endsAt
+     * @param DateTimeDateTime $endsAt
      */
     public function setEndsAt($endsAt)
     {

@@ -43,6 +43,5 @@ class SendNotification extends Job implements SelfHandling
                 ->to($deviceToken->getToken())
                 ->send($this->notification);
         }
-
     }
 }

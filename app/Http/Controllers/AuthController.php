@@ -72,7 +72,7 @@ class AuthController extends ApiController
         $user = $this->userRepository->findByEmail(new Email($input['email']));
 
         if ($user === null) {
-            return $this->returnForbidden(UserErrorCodes::ACCESS_DENIED);
+            return $this->returnForbidden(UserErrorCodes::USER_DOES_NOT_EXIST);
         }
 
         if (($user->getRegisterToken() !== "") && ($user->getRegisterToken() !== "0")) {

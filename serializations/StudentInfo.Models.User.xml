@@ -5,17 +5,17 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                 />
         <property name="firstName"
                   serialized-name="firstName"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,al,notification"
                 />
         <property name="lastName"
                   serialized-name="lastName"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                 />
         <property name="email"
                   serialized-name="email"

@@ -2,7 +2,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-use Carbon\Carbon;
+use DateTime as DateTimeDateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use StudentInfo\ErrorCodes\EventErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
@@ -16,9 +16,9 @@ class GlobalEventController extends EventController
     public function createEvent(CreateGlobalEventRequest $request, $faculty)
     {
         $event    = new GlobalEvent(new ArrayCollection());
-        $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
-        $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
-        if ($endsAt->lte($startsAt)) {
+        $startsAt = DateTimeDateTime::createFromFormat('Y-m-d H:i', $request->get('startsAt'));
+        $endsAt   = DateTimeDateTime::createFromFormat('Y-m-d H:i', $request->get('endsAt'));
+        if ($endsAt < $startsAt) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
         $datetime = new Datetime();
@@ -69,9 +69,9 @@ class GlobalEventController extends EventController
         /** @var  GlobalEvent $event */
         $event = $this->eventRepository->find($id);
 
-        $startsAt = Carbon::createFromFormat('Y-m-d H:i', $request['startsAt']);
-        $endsAt   = Carbon::createFromFormat('Y-m-d H:i', $request['endsAt']);
-        if ($endsAt->lte($startsAt)) {
+        $startsAt = DateTimeDateTime::createFromFormat('Y-m-d H:i', $request['startsAt']);
+        $endsAt   = DateTimeDateTime::createFromFormat('Y-m-d H:i', $request['endsAt']);
+        if ($endsAt < $startsAt) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
         $datetime = new Datetime();

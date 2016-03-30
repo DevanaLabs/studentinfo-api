@@ -5,12 +5,12 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                 />
         <property name="name"
                   serialized-name="name"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                 />
         <property name="directions"
                   serialized-name="directions"

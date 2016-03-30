@@ -4,12 +4,12 @@
         <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
         <property name="startsAt"
                   serialized-name="startsAt"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                   expose="true"
                 />
         <property name="endsAt"
                   serialized-name="endsAt"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                   expose="true"
                 />
     </class>

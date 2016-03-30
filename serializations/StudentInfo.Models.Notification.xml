@@ -5,17 +5,17 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                 />
         <property name="description"
                   serialized-name="description"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                 />
         <property name="expiresAt"
                   serialized-name="expiresAt"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                 />
     </class>
 </serializer>

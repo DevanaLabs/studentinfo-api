@@ -49,7 +49,7 @@ class UserController extends ApiController
         }
 
         if (!$user->getPassword()->checkAgainst($request->get('currentPassword'))) {
-            return $this->returnForbidden(UserErrorCodes::YOU_DO_N0T_HAVE_PERMISSION_TO_SEE_THIS);
+            return $this->returnForbidden(UserErrorCodes::WRONG_CURRENT_PASSWORD);
         }
 
         $password = $request->get('password');

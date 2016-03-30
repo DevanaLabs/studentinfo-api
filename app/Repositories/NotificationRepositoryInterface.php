@@ -4,9 +4,9 @@
 namespace StudentInfo\Repositories;
 
 
-use Carbon\Carbon;
+use DateTime;
 
 interface NotificationRepositoryInterface extends RepositoryInterface
 {
-    public function getForInterval(Carbon $start, Carbon $end);
+    public function getForInterval(DateTime $start, DateTime $end);
 }

@@ -4,7 +4,7 @@
 namespace StudentInfo\Repositories;
 
 
-use Carbon\Carbon;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 class DoctrineNotificationRepository extends EntityRepository implements NotificationRepositoryInterface
@@ -43,7 +43,7 @@ class DoctrineNotificationRepository extends EntityRepository implements Notific
         return $this->_em->find('StudentInfo\Models\Notification', $id);
     }
 
-    public function getForInterval(Carbon $start, Carbon $end)
+    public function getForInterval(DateTime $start, DateTime $end)
     {
         return $this->_em->createQuery('SELECT n FROM StudentInfo\Models\Notification n WHERE n.expiresAt BETWEEN :start AND :end ORDER BY n.expiresAt')
             ->setParameter('start', $start)

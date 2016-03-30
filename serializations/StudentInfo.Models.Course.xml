@@ -5,17 +5,17 @@
         <property name="id"
                   serialized-name="id"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                 />
         <property name="code"
                   serialized-name="code"
                   expose="true"
-                  groups="limited,all"
+                  groups="limited,all,notification"
                 />
         <property name="name"
                   serialized-name="name"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                 />
         <property name="semester"
                   serialized-name="semester"

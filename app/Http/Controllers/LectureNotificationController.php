@@ -3,6 +3,7 @@
 namespace StudentInfo\Http\Controllers;
 
 use Carbon\Carbon;
+use DateTime;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use LucaDegasperi\OAuth2Server\Authorizer;
@@ -76,11 +77,11 @@ class LectureNotificationController extends ApiController
     {
         $description = $request->get('description');
 
-        $expiresAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('expiresAt'));
+        $expiresAt = DateTime::createFromFormat('Y-m-d H:i', $request->get('expiresAt'));
 
         $lectureId = $request->get('lectureId');
 
-        if ($expiresAt->lt(Carbon::now())) {
+        if ($expiresAt < Carbon::now()) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
 
@@ -95,18 +96,18 @@ class LectureNotificationController extends ApiController
         $notification->setExpiresAt($expiresAt);
         $notification->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
+        $this->lectureNotificationRepository->create($notification);
+
         $serializer = SerializerBuilder::create()
             ->addMetadataDir(base_path() . '/serializations/')
             ->build();
 
-        $display = $request->get('display', 'all');
+        $display = $request->get('display', 'notification');
 
-        $jsonData = $serializer->serialize($notification, 'json', SerializationContext::create()->enableMaxDepthChecks()->setGroups(array($display)));
+        $jsonData = $serializer->serialize($notification, 'json', SerializationContext::create()->setGroups(array($display)));
 
         $this->dispatch(new SendNotification($this->deviceTokenRepository->all($faculty), $jsonData));
         // deviceTokens repository limit
-
-        $this->lectureNotificationRepository->create($notification);
 
         return $this->returnSuccess([
             'notification' => $notification,
@@ -146,9 +147,9 @@ class LectureNotificationController extends ApiController
             return $this->returnError(500, NotificationErrorCodes::NOTIFICATION_NOT_IN_DB);
         }
 
-        $expiresAt = Carbon::createFromFormat('Y-m-d H:i', $request->get('expiresAt'));
+        $expiresAt = DateTime::createFromFormat('Y-m-d H:i', $request->get('expiresAt'));
 
-        if ($expiresAt->lt(Carbon::now())) {
+        if ($expiresAt < Carbon::now()) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
 
@@ -188,11 +189,11 @@ class LectureNotificationController extends ApiController
     public function getNotificationsInInterval($faculty, $start, $end)
     {
         $startParsed = str_replace('_', ' ', $start);
-        $startCarbon = Carbon::createFromFormat('Y-m-d H:i', $startParsed);
+        $startCarbon = DateTime::createFromFormat('Y-m-d H:i', $startParsed);
         $endParsed   = str_replace('_', ' ', $end);
-        $endCarbon   = Carbon::createFromFormat('Y-m-d H:i', $endParsed);
+        $endCarbon = DateTime::createFromFormat('Y-m-d H:i', $endParsed);
 
-        if ($startCarbon->lte($endCarbon)) {
+        if ($startCarbon < $endCarbon) {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
 

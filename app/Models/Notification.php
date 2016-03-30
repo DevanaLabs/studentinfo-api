@@ -5,6 +5,7 @@ namespace StudentInfo\Models;
 
 
 use Carbon\Carbon;
+use DateTime;
 
 abstract class Notification
 {
@@ -24,7 +25,7 @@ abstract class Notification
     protected $organisation;
     
     /**
-     * @var Carbon
+     * @var DateTime
      */
     protected $expiresAt;
 
@@ -61,7 +62,7 @@ abstract class Notification
     }
 
     /**
-     * @return Carbon
+     * @return DateTime
      */
     public function getExpiresAt()
     {
@@ -69,7 +70,7 @@ abstract class Notification
     }
 
     /**
-     * @param Carbon $expiresAt
+     * @param DateTime $expiresAt
      */
     public function setExpiresAt($expiresAt)
     {
@@ -89,7 +90,7 @@ abstract class Notification
      */
     public function isExpired()
     {
-        return $this->getExpiresAt()->lt(Carbon::now());
+        return $this->getExpiresAt() < Carbon::now();
     }
 
     /**

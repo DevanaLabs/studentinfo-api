@@ -3,7 +3,7 @@
 
 namespace StudentInfo\Http\Controllers;
 
-use Carbon\Carbon;
+use DateTime;
 use StudentInfo\ErrorCodes\NotificationErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Repositories\EventRepositoryInterface;
@@ -71,11 +71,11 @@ class NotificationController extends ApiController
     public function getNotificationsInInterval($faculty, $start, $end)
     {
         $startParsed = str_replace('_', ' ', $start);
-        $startCarbon = Carbon::createFromFormat('Y-m-d H:i', $startParsed);
+        $startCarbon = DateTime::createFromFormat('Y-m-d H:i', $startParsed);
         $endParsed = str_replace('_', ' ', $end);
-        $endCarbon = Carbon::createFromFormat('Y-m-d H:i', $endParsed);
+        $endCarbon = DateTime::createFromFormat('Y-m-d H:i', $endParsed);
 
-        if ($startCarbon->lte($endCarbon))
+        if ($startCarbon < $endCarbon)
         {
             return $this->returnError(500, UserErrorCodes::INCORRECT_TIME);
         }
