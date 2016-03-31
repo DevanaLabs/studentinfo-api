@@ -10,7 +10,7 @@
         <property name="firstName"
                   serialized-name="firstName"
                   expose="true"
-                  groups="limited,data,al,notification"
+                  groups="limited,data,all,notification"
                 />
         <property name="lastName"
                   serialized-name="lastName"

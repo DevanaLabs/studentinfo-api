@@ -25,7 +25,7 @@ class DoctrineDeviceTokenRepository extends EntityRepository implements DeviceTo
 
     public function all($faculty, $start = 0, $count = 20, array $options = [])
     {
-        return $query = $this->_em->createQuery('SELECT d FROM StudentInfo\Models\DeviceToken d')
+        return $query = $this->_em->createQuery('SELECT d FROM StudentInfo\Models\DeviceToken d WHERE d.active = 1')
             ->setFirstResult($start)
             ->setMaxResults($count)
             ->getResult();
@@ -44,7 +44,7 @@ class DoctrineDeviceTokenRepository extends EntityRepository implements DeviceTo
 
     public function findByDeviceToken($deviceToken)
     {
-        return $this->_em->createQuery('SELECT d FROM StudentInfo\Models\DeviceToken d WHERE d.token = :deviceToken')
+        return $this->_em->createQuery('SELECT d FROM StudentInfo\Models\DeviceToken d WHERE d.token = :deviceToken AND d.active = 1')
             ->setParameter('deviceToken', $deviceToken)
             ->getOneOrNullResult();
     }
