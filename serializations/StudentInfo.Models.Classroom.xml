@@ -20,7 +20,7 @@
         <property name="floor"
                   serialized-name="floor"
                   expose="true"
-                  groups="limited,data,all"
+                  groups="limited,data,all,notification"
                 />
         <property name="lectures"
                   serialized-name="lectures"
