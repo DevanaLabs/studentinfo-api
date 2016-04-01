@@ -25,13 +25,13 @@
         <property name="notifications"
                   serialized-name="notifications"
                   expose="true"
-                  groups="data,all"
+                  groups="data,all,notification"
                   max-depth="3"
                 />
         <property name="classrooms"
                   serialized-name="classrooms"
                   expose="true"
-                  groups="data,all"
+                  groups="data,all,notification"
                   max-depth="3"
                 />
     </class>

@@ -12,7 +12,7 @@ class Version20160208180729 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $this->addSql('INSERT INTO oauth_clients (id, secret, name, created_at, updated_at) VALUES (\'1\', \'secret\', \'homestead\', \'2016-02-03 11:15:25\', \'0000-00-00 00:00:00\')');
+        $this->addSql('INSERT INTO oauth_clients (id, secret, name, created_at, updated_at) VALUES (\'1\', \'secret\', \'homestead\', \'2016-02-03 11:15:25\', \'2016-01-18 17:22:29\')');
     }
 
     /**

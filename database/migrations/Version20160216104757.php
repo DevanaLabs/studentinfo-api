@@ -15,8 +15,8 @@ class Version20160216104757 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE oauth_sessions CHANGE owner_type owner_type VARCHAR(40) not null default \'user\'');
-        $this->addSql('INSERT INTO oauth_clients (id, secret, name, created_at, updated_at) VALUES (\'2\', \'secret\', \'android\', \'2016-02-16 11:02:57\', \'0000-00-00 00:00:00\')');
-        $this->addSql('INSERT INTO oauth_clients (id, secret, name, created_at, updated_at) VALUES (\'3\', \'secret\', \'ios\', \'2016-02-16 11:03:05\', \'0000-00-00 00:00:00\')');
+        $this->addSql('INSERT INTO oauth_clients (id, secret, name, created_at, updated_at) VALUES (\'2\', \'secret\', \'android\', \'2016-02-16 11:02:57\', \'2016-01-18 17:22:29\')');
+        $this->addSql('INSERT INTO oauth_clients (id, secret, name, created_at, updated_at) VALUES (\'3\', \'secret\', \'ios\', \'2016-02-16 11:03:05\', \'2016-01-18 17:22:29\')');
         $this->addSql('ALTER TABLE deviceTokens ADD active SMALLINT NOT NULL');
         $this->addSql('ALTER TABLE students CHANGE index_number index_number VARCHAR(255) NOT NULL, CHANGE year year INT NOT NULL');
         $this->addSql('ALTER TABLE teachers CHANGE title title VARCHAR(255) NOT NULL');

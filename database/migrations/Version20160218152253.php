@@ -14,7 +14,6 @@ class Version20160218152253 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE lectures CHANGE type type INT NOT NULL');
         $this->addSql('UPDATE lectures SET type=1 WHERE id=1');
         $this->addSql('UPDATE lectures SET type=0 WHERE id=2');
         $this->addSql('UPDATE lectures SET type=0 WHERE id=3');
@@ -155,7 +154,7 @@ class Version20160218152253 extends AbstractMigration
         $this->addSql('UPDATE lectures SET type=1 WHERE id=138');
         $this->addSql('UPDATE lectures SET type=0 WHERE id=139');
         $this->addSql('UPDATE lectures SET type=1 WHERE id=140');
-
+        $this->addSql('ALTER TABLE lectures CHANGE type type INT NOT NULL');
     }
 
     /**
