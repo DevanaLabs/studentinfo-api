@@ -83,7 +83,7 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
      */
     public function isRegisterTokenExpired()
     {
-        return Carbon::instance($this->getRegisterTokenCreatedAt())->diffInHours(Carbon::now()) > 48;
+        return Carbon::instance($this->getRegisterTokenCreatedAt())->diffInHours(Carbon::now()) > 24 * 7;
     }
 
     public function getUserType()
