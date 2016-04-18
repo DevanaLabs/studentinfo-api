@@ -31,19 +31,19 @@
                   serialized-name="events"
                   expose="true"
                   groups="data,all"
-                  max-depth="3"
+                  max-depth="2"
                 />
         <property name="students"
                   serialized-name="students"
                   expose="true"
                   groups="all"
-                  max-depth="3"
+                  max-depth="2"
                 />
         <property name="lectures"
                   serialized-name="lectures"
                   expose="true"
                   groups="all"
-                  max-depth="3"
+                  max-depth="2"
                 />
     </class>
 </serializer>

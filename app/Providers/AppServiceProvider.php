@@ -20,6 +20,7 @@ use StudentInfo\Models\Group;
 use StudentInfo\Models\GroupEvent;
 use StudentInfo\Models\Lecture;
 use StudentInfo\Models\Notification;
+use StudentInfo\Models\Panel;
 use StudentInfo\Models\Professor;
 use StudentInfo\Models\Student;
 use StudentInfo\Models\SuperUser;
@@ -41,6 +42,7 @@ use StudentInfo\Repositories\DoctrineGroupRepository;
 use StudentInfo\Repositories\DoctrineLectureNotificationRepository;
 use StudentInfo\Repositories\DoctrineLectureRepository;
 use StudentInfo\Repositories\DoctrineNotificationRepository;
+use StudentInfo\Repositories\DoctrinePanelRepository;
 use StudentInfo\Repositories\DoctrineProfessorRepository;
 use StudentInfo\Repositories\DoctrineStudentRepository;
 use StudentInfo\Repositories\DoctrineSuperUserRepository;
@@ -197,6 +199,12 @@ class AppServiceProvider extends ServiceProvider
             return new DoctrineDeviceTokenRepository(
                 $app['em'],
                 new ClassMetaData(DeviceToken::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\PanelRepositoryInterface', function ($app) {
+            return new DoctrinePanelRepository(
+                $app['em'],
+                new ClassMetaData(Panel::class)
             );
         });
     }

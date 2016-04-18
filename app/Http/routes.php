@@ -106,7 +106,9 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['oauth', 'StudentInfo\Ht
 
     Route::post('feedback', 'FeedbackController@createFeedback');
 
-    Route::get('data', 'DataController@getData');
+    Route::post('panel', ['middleware' => ['oauth', 'role:panel.create'], 'uses' => 'PanelController@createPanel']);
+
+    Route::get('data', ['middleware' => ['oauth', 'role:data.retrieve'], 'uses' => 'DataController@getData']);
 
     Route::get('student/{id}', ['middleware' => ['oauth', 'role:student.retrieve'], 'uses' => 'StudentController@retrieveStudent']);
 
@@ -176,6 +178,10 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['oauth', 'StudentInfo\Ht
 
     Route::get('feedbacks/{start?}/{count?}', ['middleware' => ['oauth', 'role:feedback.retrieve'], 'uses' => 'FeedbackController@retrieveFeedbacks']);
 
+    Route::get('panel/{id}', ['middleware' => ['oauth', 'role:panel.retrieve'], 'uses' => 'PanelController@retrievePanels']);
+
+    Route::get('panels', ['middleware' => ['oauth', 'role:panel.retrieve'], 'uses' => 'PanelController@retrievePanels']);
+
     Route::get('notifications/between/{start}/{end}', ['middleware' => ['oauth', 'role:notification.retrieve'], 'uses' => 'NotificationController@getNotificationsInInterval']);
 
     Route::put('student/{id}', ['middleware' => ['oauth', 'role:student.update'], 'uses' => 'StudentController@updateStudent']);
@@ -204,6 +210,8 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['oauth', 'StudentInfo\Ht
 
     Route::put('lectureNotification/{id}', ['middleware' => ['oauth', 'role:notification.update'], 'uses' => 'LectureNotificationController@updateNotification']);
 
+    Route::put('panel/{id}', ['middleware' => ['oauth', 'role:panel.update'], 'uses' => 'PanelController@updatePanel']);
+
     Route::delete('classroom/{id}', ['middleware' => ['oauth', 'role:classroom.delete'], 'uses' => 'ClassroomController@deleteClassroom']);
 
     Route::delete('course/{id}', ['middleware' => ['oauth', 'role:course.delete'], 'uses' => 'CourseController@deleteCourse']);
@@ -223,4 +231,6 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['oauth', 'StudentInfo\Ht
     Route::delete('feedback/{id}', ['middleware' => ['oauth', 'role:feedback.delete'], 'uses' => 'FeedbackController@deleteFeedback']);
 
     Route::delete('notification/{id}', ['middleware' => ['oauth', 'role:notification.delete'], 'uses' => 'NotificationController@deleteNotification']);
+
+    Route::delete('panel/{id}', ['middleware' => ['oauth', 'role:panel.delete'], 'uses' => 'PanelController@deletePanel']);
 });

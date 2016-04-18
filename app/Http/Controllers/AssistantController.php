@@ -35,11 +35,6 @@ class AssistantController extends ApiController
     protected $assistantRepository;
 
     /**
-     * @var UserRepositoryInterface
-     */
-    protected $userRepositoryInterface;
-
-    /**
      * @var Authorizer
      */
     protected $authorizer;
@@ -49,15 +44,13 @@ class AssistantController extends ApiController
      * @param UserRepositoryInterface      $userRepository
      * @param FacultyRepositoryInterface   $facultyRepository
      * @param AssistantRepositoryInterface $assistantRepository
-     * @param UserRepositoryInterface      $userRepositoryInterface
      * @param Authorizer                   $authorizer
      */
-    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, AssistantRepositoryInterface $assistantRepository, UserRepositoryInterface $userRepositoryInterface, Authorizer $authorizer)
+    public function __construct(UserRepositoryInterface $userRepository, FacultyRepositoryInterface $facultyRepository, AssistantRepositoryInterface $assistantRepository, Authorizer $authorizer)
     {
         $this->userRepository      = $userRepository;
         $this->facultyRepository   = $facultyRepository;
         $this->assistantRepository = $assistantRepository;
-        $this->userRepositoryInterface = $userRepositoryInterface;
         $this->authorizer = $authorizer;
     }
 
@@ -103,7 +96,7 @@ class AssistantController extends ApiController
         if (($semester == 'current') || ($year == 'current')) {
             $userId = $this->authorizer->getResourceOwnerId();
             /** @var User $user */
-            $user = $this->userRepositoryInterface->find($userId);
+            $user = $this->userRepository->find($userId);
             if ($semester == 'current') {
                 $semester = $user->getOrganisation()->getSettings()->getSemester();
             }
@@ -140,7 +133,7 @@ class AssistantController extends ApiController
         if (($semester == 'current') || ($year == 'current')) {
             $userId = $this->authorizer->getResourceOwnerId();
             /** @var User $user */
-            $user = $this->userRepositoryInterface->find($userId);
+            $user = $this->userRepository->find($userId);
             if ($semester == 'current') {
                 $semester = $user->getOrganisation()->getSettings()->getSemester();
             }
@@ -187,7 +180,6 @@ class AssistantController extends ApiController
         $assistant->setLastName($request->get('lastName'));
         $assistant->setTitle($request->get('title'));
         $assistant->setEmail($email);
-        $assistant->setPassword(new Password('password'));
 
         $this->assistantRepository->update($assistant);
 

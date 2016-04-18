@@ -186,7 +186,6 @@ class ProfessorController extends ApiController
         $professor->setLastName($request->get('lastName'));
         $professor->setTitle($request->get('title'));
         $professor->setEmail($email);
-        $professor->setPassword(new Password('password'));
         $professor->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
         $this->professorRepository->update($professor);

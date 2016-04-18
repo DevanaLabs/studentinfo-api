@@ -7,21 +7,6 @@
                   expose="true"
                   groups="limited,data,all,notification"
                 />
-        <property name="course"
-                  serialized-name="course"
-                  expose="true"
-                  groups="limited,data,all,notification"
-                />
-        <property name="teacher"
-                  serialized-name="teacher"
-                  expose="true"
-                  groups="limited,data,all,notification"
-                />
-        <property name="classroom"
-                  serialized-name="classroom"
-                  expose="true"
-                  groups="limited,data,all,notification"
-                />
         <property name="type"
                   serialized-name="type"
                   expose="true"
@@ -37,23 +22,41 @@
                   expose="true"
                   groups="limited,data,all,notification"
                 />
+        <property name="course"
+                  serialized-name="course"
+                  expose="true"
+                  groups="limited,data,all,notification"
+                  max-depth="2"
+                />
+        <property name="teacher"
+                  serialized-name="teacher"
+                  expose="true"
+                  groups="limited,data,all,notification"
+                  max-depth="2"
+                />
+        <property name="classroom"
+                  serialized-name="classroom"
+                  expose="true"
+                  groups="limited,data,all,notification"
+                  max-depth="2"
+                />
         <property name="students"
                   serialized-name="students"
                   expose="true"
                   groups="all"
-                  max-depth="3"
+                  max-depth="2"
                 />
         <property name="groups"
                   serialized-name="groups"
                   expose="true"
                   groups="data,all"
-                  max-depth="3"
+                  max-depth="2"
                 />
         <property name="notifications"
                   serialized-name="notifications"
                   expose="true"
                   groups="data,all"
-                  max-depth="3"
+                  max-depth="2"
                 />
         <virtual-property method="getNotificationCount"
                           serialized-name="notificationCount"

@@ -3,8 +3,9 @@
 namespace StudentInfo\Roles;
 
 
-class AssistantRole extends Role
+class PanelRole extends Role
 {
+
     /**
      * Returns the permission of this role.
      *
@@ -14,8 +15,8 @@ class AssistantRole extends Role
     {
         return [
             'user.update',
-            'event.create',
-            'event.update',
+            'event.retrieve',
+            'groups.retrieve',
             'notification.retrieve',
             'data.retrieve',
         ];
@@ -26,6 +27,6 @@ class AssistantRole extends Role
      */
     public function getName()
     {
-        return 'professor_role';
+        return 'student_role';
     }
 }

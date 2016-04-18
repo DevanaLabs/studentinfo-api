@@ -6,6 +6,7 @@
                   serialized-name="course"
                   expose="true"
                   groups="limited,data,all,notification"
+                  max-depth="2"
                 />
     </class>
 </serializer>

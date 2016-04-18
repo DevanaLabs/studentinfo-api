@@ -14,6 +14,7 @@
             <discriminator-mapping value="professor" class="StudentInfo\Models\Professor"/>
             <discriminator-mapping value="assistant" class="StudentInfo\Models\Assistant"/>
             <discriminator-mapping value="superUser" class="StudentInfo\Models\SuperUser"/>
+            <discriminator-mapping value="panel" class="StudentInfo\Models\Panel"/>
         </discriminator-map>
 
         <id name="id" type="integer" column="id">

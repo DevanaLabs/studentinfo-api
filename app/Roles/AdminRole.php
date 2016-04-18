@@ -54,9 +54,14 @@ class AdminRole extends Role
             'token.retrieve',
             'token.update',
             'token.delete',
+            'panel.create',
+            'panel.retrieve',
+            'panel.update',
+            'panel.delete',
             'image.create',
             'language.set',
             'token.update',
+            'data.retrieve',
         ];
     }
 

@@ -26,13 +26,13 @@
                   serialized-name="notifications"
                   expose="true"
                   groups="data,all,notification"
-                  max-depth="3"
+                  max-depth="2"
                 />
         <property name="classrooms"
                   serialized-name="classrooms"
                   expose="true"
                   groups="data,all,notification"
-                  max-depth="3"
+                  max-depth="2"
                 />
     </class>
 </serializer>

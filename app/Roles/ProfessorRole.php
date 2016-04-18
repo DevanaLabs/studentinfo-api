@@ -17,6 +17,7 @@ class ProfessorRole extends Role
             'user.update',
             'event.create',
             'event.update',
+            'data.retrieve',
         ];
     }
 

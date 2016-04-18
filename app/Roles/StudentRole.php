@@ -18,6 +18,7 @@ class StudentRole extends Role
             'event.retrieve',
             'groups.retrieve',
             'notification.retrieve',
+            'data.retrieve',
         ];
     }
 

@@ -87,4 +87,8 @@ return [
     \StudentInfo\ErrorCodes\DeviceTokenErrorCodes::DEVICE_TOKEN_DOES_NOT_EXIST => 'Device token does not exist',
 
     \StudentInfo\ErrorCodes\UserErrorCodes::WRONG_CURRENT_PASSWORD => 'Current password is incorrect',
+
+    \StudentInfo\ErrorCodes\PanelErrorCodes::PANEL_NOT_IN_DB                       => 'Panel is not in database',
+
+    \StudentInfo\ErrorCodes\PanelErrorCodes::PANEL_DOES_NOT_BELONG_TO_THIS_FACULTY => 'Panel does not belong to this faculty',
 ];
