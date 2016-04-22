@@ -12,6 +12,7 @@ use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\GlobalEventRepositoryInterface;
 use StudentInfo\Repositories\GroupEventRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
+use StudentInfo\Repositories\TeacherRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
 
 class EventController extends ApiController
@@ -57,9 +58,14 @@ class EventController extends ApiController
     protected $groupRepository;
 
     /**
-     * @var FacultyRepositoryInterface $facultyRepository
+     * @var FacultyRepositoryInterface
      */
     protected $facultyRepository;
+
+    /**
+     * @var TeacherRepositoryInterface
+     */
+    protected $teacherRepository;
 
     /**
      * @var Authorizer
@@ -77,13 +83,14 @@ class EventController extends ApiController
      * @param GlobalEventRepositoryInterface $globalEventRepository
      * @param FacultyRepositoryInterface     $facultyRepository
      * @param UserRepositoryInterface        $userRepository
+     * @param TeacherRepositoryInterface     $teacherRepository
      * @param Authorizer                     $authorizer
      */
     public function __construct(EventRepositoryInterface $eventRepository, ClassroomRepositoryInterface $classroomRepository,
                                 CourseRepositoryInterface $courseRepository, GroupRepositoryInterface $groupRepository,
                                 CourseEventRepositoryInterface $courseEventRepository, GroupEventRepositoryInterface $groupEventRepository,
                                 GlobalEventRepositoryInterface $globalEventRepository, FacultyRepositoryInterface $facultyRepository,
-                                UserRepositoryInterface $userRepository, Authorizer $authorizer)
+                                UserRepositoryInterface $userRepository, TeacherRepositoryInterface $teacherRepository, Authorizer $authorizer)
     {
         $this->eventRepository       = $eventRepository;
         $this->classroomRepository   = $classroomRepository;
@@ -94,6 +101,7 @@ class EventController extends ApiController
         $this->groupRepository       = $groupRepository;
         $this->facultyRepository     = $facultyRepository;
         $this->userRepository = $userRepository;
+        $this->teacherRepository = $teacherRepository;
         $this->authorizer = $authorizer;
     }
 

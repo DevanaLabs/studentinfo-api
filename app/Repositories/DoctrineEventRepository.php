@@ -14,6 +14,16 @@ class DoctrineEventRepository extends EntityRepository implements EventRepositor
         return $this->_em->find('StudentInfo\Models\Event', $id);
     }
 
+    public function persist($object)
+    {
+        $this->_em->persist($object);
+    }
+
+    public function flush()
+    {
+        $this->_em->flush();
+    }
+
     public function create($object)
     {
         $this->_em->persist($object);

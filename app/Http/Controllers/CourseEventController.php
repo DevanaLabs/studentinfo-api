@@ -4,9 +4,12 @@ namespace StudentInfo\Http\Controllers;
 
 use DateTime as DateTimeDateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use StudentInfo\ErrorCodes\ClassroomErrorCodes;
 use StudentInfo\ErrorCodes\CourseErrorCodes;
 use StudentInfo\ErrorCodes\EventErrorCodes;
+use StudentInfo\ErrorCodes\TeacherErrorCodes;
 use StudentInfo\ErrorCodes\UserErrorCodes;
+use StudentInfo\Http\Requests\AddFromCSVRequest;
 use StudentInfo\Http\Requests\Create\CreateCourseEventRequest;
 use StudentInfo\Http\Requests\Update\UpdateCourseEventRequest;
 use StudentInfo\Models\CourseEvent;
@@ -52,7 +55,7 @@ class CourseEventController extends EventController
 
         $this->eventRepository->create($event);
         return $this->returnSuccess([
-            'successful' => $event,
+            'event' => $event,
         ]);
     }
 
@@ -121,5 +124,59 @@ class CourseEventController extends EventController
         return $this->returnSuccess([
             'event' => $event,
         ]);
+    }
+
+    public function AddEventsFromCSV(AddFromCSVRequest $request, $faculty)
+    {
+        $handle = $request->file('import');
+
+        $file_path = $handle->getPathname();
+        $resource  = fopen($file_path, "r");
+        while (($data = fgetcsv($resource, 1000, ",")) !== FALSE) {
+            $courseName     = $data[0];
+            $teacherName    = $data[1];
+            $classroomsName = $data[2];
+            $time           = $data[3];
+            $date           = $data[4];
+
+            $course = $this->courseRepository->findByName($courseName);
+            if ($course == null) {
+                return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB, $courseName);
+            }
+            $teacherNames = explode(" ", $teacherName);
+            $teacher      = $this->teacherRepository->findByName($teacherNames[1], $teacherNames[0]);
+            if ($teacher === null) {
+                return $this->returnError(500, TeacherErrorCodes::TEACHER_NOT_IN_DB, $teacherNames);
+            }
+
+            $classrooms     = [];
+            $classroomsName = explode(";", $classroomsName);
+            foreach ($classroomsName as $classroomName) {
+                $classroom = $this->classroomRepository->findByName($classroomName);
+                if ($classroom === null) {
+                    return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB, $classroomName);
+                }
+                $classrooms[] = $classroom;
+            }
+
+            $time = explode("-", $time);
+
+            $datetime = new Datetime();
+            $datetime->setStartsAt(DateTimeDateTime::createFromFormat('d.m.Y H:i', $date . " " . $time[0] . ":00"));
+            $datetime->setEndsAt(DateTimeDateTime::createFromFormat('d.m.Y H:i', $date . " " . $time[1] . ":00"));
+
+            $event = new CourseEvent();
+            $event->setDatetime($datetime);
+            $event->setClassrooms($classrooms);
+            $event->setCourse($course);
+            $event->setDescription($course->getName());
+            $event->setType('Колоквијум');
+            $event->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
+
+            $this->eventRepository->persist($event);
+        }
+        $this->eventRepository->flush();
+
+        return $this->returnSuccess();
     }
 }
