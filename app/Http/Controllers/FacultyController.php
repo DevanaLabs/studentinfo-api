@@ -9,6 +9,7 @@ use StudentInfo\Http\Requests\Create\CreateFacultyRequest;
 use StudentInfo\Http\Requests\Update\UpdateFacultyRequest;
 use StudentInfo\Models\Faculty;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
+use StudentInfo\ValueObjects\Settings;
 
 class FacultyController extends ApiController
 {
@@ -32,9 +33,17 @@ class FacultyController extends ApiController
         if ($this->facultyRepository->findFacultyByName($name)) {
             return $this->returnError(500, FacultyErrorCodes::FACULTY_ALREADY_EXISTS);
         }
+        $settings = new Settings();
+        $settings->setWallpaperPath('');
+        $settings->setYear($request->get('year'));
+        $settings->setSemester($request->get('semester'));
+        $settings->setLanguage($request->get('language'));
+
         $faculty = new Faculty();
         $faculty->setName($name);
+        $faculty->setSlug($request->get('slug'));
         $faculty->setUniversity($request->get('university'));
+        $faculty->setSettings($settings);
 
         $this->facultyRepository->create($faculty);
 
@@ -68,6 +77,12 @@ class FacultyController extends ApiController
         if ($this->facultyRepository->find($id) === null) {
             return $this->returnError(500, FacultyErrorCodes::FACULTY_NOT_IN_DB);
         }
+
+        $settings = new Settings();
+        $settings->setWallpaperPath('');
+        $settings->setYear($request->get('year'));
+        $settings->setSemester($request->get('semester'));
+        $settings->setLanguage($request->get('language'));
 
         /** @var  Faculty $faculty */
         $faculty = $this->facultyRepository->find($id);

@@ -24,8 +24,12 @@ class UpdateFacultyRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name'       => 'required',
             'university' => 'required',
+            'slug'       => 'required',
+            'language'   => 'required',
+            'semester'   => 'required',
+            'year'       => 'required',
         ];
     }
 }

@@ -30,7 +30,7 @@ Route::get('register/recoverPasswordConfirmation/{rememberToken}', 'RegisterCont
 
 Route::post('register/recoverPasswordConfirmation/{rememberToken}', 'RegisterController@recoverCreatePassword');
 
-Route::post('faculty', ['middleware' => 'oauth', 'uses' => 'FacultyController@createFaculty']);
+Route::post('faculty', ['middleware' => ['oauth', 'role:faculty.create'], 'uses' => 'FacultyController@createFaculty']);
 
 Route::get('faculty/{id}', ['middleware' => ['oauth', 'role:faculty.retrieve'], 'uses' => 'FacultyController@retrieveFaculty']);
 
