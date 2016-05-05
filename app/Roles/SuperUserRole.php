@@ -13,6 +13,7 @@ class SuperUserRole extends Role
     public function getPermissions()
     {
         return [
+            'student.create',
             'admin.create',
             'admin.retrieve',
             'admin.update',
