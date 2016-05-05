@@ -117,7 +117,7 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
      */
     public function setRegisterTokenCreatedAt()
     {
-        $this->registerTokenCreatedAt = Carbon::now();
+        $this->registerTokenCreatedAt = new \DateTime();
     }
 
     /**
@@ -141,7 +141,7 @@ abstract class User implements HasRolesContract, Authenticatable, BelongsToOrgan
      */
     public function generateRegisterToken()
     {
-        $this->registerTokenCreatedAt = Carbon::now();
+        $this->registerTokenCreatedAt = new \DateTime();
         return $this->registerToken = md5($this->email->getEmail() . time());
     }
 
