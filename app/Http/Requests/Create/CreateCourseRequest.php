@@ -25,7 +25,7 @@ class CreateCourseRequest extends Request
     {
         return [
             'name' => 'required',
-            'esbp'     => 'required',
+            'espb' => 'required',
             'semester' => 'required',
         ];
     }
