@@ -40,9 +40,11 @@ class DoctrineGroupRepository extends EntityRepository implements GroupRepositor
         return $this->_em->find('StudentInfo\Models\Group', $id);
     }
 
-    public function findByName($name)
+    public function findByName($name, $faculty)
     {
-        return $this->_em->createQuery('SELECT g FROM StudentInfo\Models\Group g WHERE g.name = :name')
+        return $this->_em->createQuery('SELECT g FROM StudentInfo\Models\Group g, StudentInfo\Models\Faculty f
+              WHERE c.organisation = f.id AND f.slug =:faculty AND g.name = :name')
+            ->setParameter('faculty', $faculty)
             ->setParameter('name', $name)
             ->getOneOrNullResult();
     }

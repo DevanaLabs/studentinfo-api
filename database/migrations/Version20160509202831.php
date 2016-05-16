@@ -12,6 +12,8 @@ class Version20160509202831 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
+            $this->addSql('INSERT INTO faculties (id, name, university, wallpaper_path, language, slug, semester, year) VALUES
+(\'2\', \'Београдски факултет\', \'Српски\', \'/settings/default/wallpaper/wallpaper.png\', \'english\', \'beo\', \'2\', \'2016\')');
         $this->addSql('INSERT INTO users (id, organisation_id, first_name, last_name, remember_token, register_token, register_token_created_at, email, password, disc) VALUES (\'1001\', \'2\', \'Админ\', \'Админ\', \'bla\', \'\', \'2015-12-14 11:33:20\', \'admin.admin@beo.edu.rs\', \'$2y$10$/j5GfnQlRqot.QXWraJ8kuw9OaJmJZO4FAWCj6cdRgDhSz93ANjV2\', \'admin\')');
         $this->addSql('INSERT INTO users (id, organisation_id, first_name, last_name, remember_token, register_token, register_token_created_at, email, password, disc) VALUES (\'1002\', \'2\', \'Никола\', \'Стевановић\', \'\', \'1e0146fbaab13e2f3ee2d75c63a0d55c\', \'2015-12-14 11:33:20\', \'nikola.stevanovic@beo.edu.rs\', \'$2y$10$SmGX/ElmgLZsp9s6dZhpAuxWpBOELNlHGItI4X0DJRKZUt09W4/ci\', \'professor\')');
         $this->addSql('INSERT INTO users (id, organisation_id, first_name, last_name, remember_token, register_token, register_token_created_at, email, password, disc) VALUES (\'1003\', \'2\', \'Иван\', \'Петровић\', \'\', \'8e8faff2ff2105eaca359719b9533f31\', \'2015-12-14 11:35:33\', \'ivan.petrovic@beo.edu.rs\', \'$2y$10$mZJzNWBHtr5nvRhJkVqwOOpQCzfD6Cb2VfLc1cuzvWwxX06a5DxJ.\', \'professor\')');

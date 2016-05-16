@@ -5,5 +5,5 @@ namespace StudentInfo\Repositories;
 
 interface ClassroomRepositoryInterface extends RepositoryInterface
 {
-    public function findByName($name);
+    public function findByName($name, $faculty);
 }

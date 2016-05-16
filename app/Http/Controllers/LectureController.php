@@ -97,7 +97,7 @@ class LectureController extends ApiController
         $groupsEntry = $request->get('groups');
         $groups      = [];
         for ($i = 0; $i < count($groupsEntry); $i++) {
-            $group = $this->groupRepository->findByName($groupsEntry[$i]);
+            $group = $this->groupRepository->findByName($groupsEntry[$i], $faculty);
             if ($group === null) {
                 continue;
             }
@@ -182,7 +182,7 @@ class LectureController extends ApiController
         $groupsEntry = $request->get('groups');
         $groups      = [];
         for ($i = 0; $i < count($groupsEntry); $i++) {
-            $group = $this->groupRepository->findByName($groupsEntry[$i]);
+            $group = $this->groupRepository->findByName($groupsEntry[$i], $faculty);
             if ($group === null) {
                 continue;
             }
@@ -236,16 +236,16 @@ class LectureController extends ApiController
             $classroomName = $data[6];
             $year = $data[7];
 
-            $course = $this->courseRepository->findByName($courseName);
+            $course = $this->courseRepository->findByName($courseName, $faculty);
             if ($course == null) {
                 return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB, $courseName);
             }
             $teacherNames = explode(" ", $teacherName);
-            $teacher      = $this->teacherRepository->findByName($teacherNames[1], $teacherNames[0]);
+            $teacher      = $this->teacherRepository->findByName($teacherNames[1], $teacherNames[0], $faculty);
             if ($teacher === null) {
                 return $this->returnError(500, TeacherErrorCodes::TEACHER_NOT_IN_DB, $teacherNames);
             }
-            $classroom = $this->classroomRepository->findByName($classroomName);
+            $classroom = $this->classroomRepository->findByName($classroomName, $faculty);
             if ($classroom === null) {
                 return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB, $classroomName);
             }
@@ -256,7 +256,7 @@ class LectureController extends ApiController
             $groups      = [];
             $groupsSplit = explode(" ", $groupsName);
             foreach ($groupsSplit as $gr) {
-                $group = $this->groupRepository->findByName($gr);
+                $group = $this->groupRepository->findByName($gr, $faculty);
                 if ($group === null) {
                     return $this->returnError(500, GroupErrorCodes::GROUP_NOT_IN_DB, $gr);
                 }

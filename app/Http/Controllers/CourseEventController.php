@@ -126,7 +126,7 @@ class CourseEventController extends EventController
         ]);
     }
 
-    public function AddEventsFromCSV(AddFromCSVRequest $request, $faculty)
+    public function AddEventsFromCSV(AddFromCSVRequest $request, $faculty, $type)
     {
         $handle = $request->file('import');
 
@@ -139,12 +139,12 @@ class CourseEventController extends EventController
             $time           = $data[3];
             $date           = $data[4];
 
-            $course = $this->courseRepository->findByName($courseName);
+            $course  = $this->courseRepository->findByName($courseName, $faculty);
             if ($course == null) {
                 return $this->returnError(500, CourseErrorCodes::COURSE_NOT_IN_DB, $courseName);
             }
             $teacherNames = explode(" ", $teacherName);
-            $teacher      = $this->teacherRepository->findByName($teacherNames[1], $teacherNames[0]);
+            $teacher = $this->teacherRepository->findByName($teacherNames[1], $teacherNames[0], $faculty);
             if ($teacher === null) {
                 return $this->returnError(500, TeacherErrorCodes::TEACHER_NOT_IN_DB, $teacherNames);
             }
@@ -152,7 +152,7 @@ class CourseEventController extends EventController
             $classrooms     = [];
             $classroomsName = explode(";", $classroomsName);
             foreach ($classroomsName as $classroomName) {
-                $classroom = $this->classroomRepository->findByName($classroomName);
+                $classroom = $this->classroomRepository->findByName($classroomName, $faculty);
                 if ($classroom === null) {
                     return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_NOT_IN_DB, $classroomName);
                 }
@@ -170,7 +170,7 @@ class CourseEventController extends EventController
             $event->setClassrooms($classrooms);
             $event->setCourse($course);
             $event->setDescription($course->getName());
-            $event->setType('Колоквијум');
+            $event->setType($type);
             $event->setOrganisation($this->userRepository->find($this->authorizer->getResourceOwnerId())->getOrganisation());
 
             $this->eventRepository->persist($event);

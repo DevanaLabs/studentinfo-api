@@ -33,9 +33,11 @@ class DoctrineClassroomRepository extends EntityRepository implements ClassroomR
         $this->_em->flush($object);
     }
 
-    public function findByName($name)
+    public function findByName($name, $faculty)
     {
-        return $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Classroom c WHERE c.name = :name')
+        return $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Classroom c, StudentInfo\Models\Faculty f
+              WHERE c.organisation = f.id AND f.slug =:faculty AND c.name = :name')
+            ->setParameter('faculty', $faculty)
             ->setParameter('name', $name)
             ->getOneOrNullResult();
     }

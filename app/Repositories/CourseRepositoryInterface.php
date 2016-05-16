@@ -11,7 +11,7 @@ interface CourseRepositoryInterface extends RepositoryInterface
 
     public function findByCode($code);
 
-    public function findByName($name);
+    public function findByName($name, $faculty);
 
     public function persist($object);
 

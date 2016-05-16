@@ -218,8 +218,6 @@ class CourseController extends ApiController
             $addedCourses[] = $course;
         }
 
-        return $this->returnSuccess([
-            "successful" => $addedCourses,
-        ]);
+        return $this->returnSuccess();
     }
 }

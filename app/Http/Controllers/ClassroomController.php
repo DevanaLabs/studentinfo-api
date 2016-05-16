@@ -61,7 +61,7 @@ class ClassroomController extends ApiController
     public function createClassroom(CreateClassroomRequest $request, $faculty)
     {
         $name = $request->get('name');
-        if ($this->classroomRepository->findByName($name)) {
+        if ($this->classroomRepository->findByName($name, $faculty)) {
             return $this->returnError(500, ClassroomErrorCodes::CLASSROOM_ALREADY_EXISTS);
         }
         $classroom = new Classroom();

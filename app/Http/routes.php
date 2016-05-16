@@ -74,7 +74,7 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['oauth', 'StudentInfo\Ht
 
     Route::post('importLecture', 'LectureController@AddLecturesFromCSV');
 
-    Route::post('importEvents', 'CourseEventController@AddEventsFromCSV');
+    Route::post('importEvents/{type}', 'CourseEventController@AddEventsFromCSV');
 
     Route::post('wallpaper', 'SettingsController@setWallpaper');
 

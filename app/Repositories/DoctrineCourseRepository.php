@@ -72,9 +72,11 @@ class DoctrineCourseRepository extends EntityRepository implements CourseReposit
             ->getOneOrNullResult();
     }
 
-    public function findByName($name)
+    public function findByName($name, $faculty)
     {
-        return $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c WHERE c.name = :name')
+        return $this->_em->createQuery('SELECT c FROM StudentInfo\Models\Course c, StudentInfo\Models\Faculty f
+              WHERE c.organisation = f.id AND f.slug =:faculty AND c.name = :name')
+            ->setParameter('faculty', $faculty)
             ->setParameter('name', $name)
             ->getOneOrNullResult();
     }

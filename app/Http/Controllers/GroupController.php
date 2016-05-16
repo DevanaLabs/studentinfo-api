@@ -103,7 +103,7 @@ class GroupController extends ApiController
         }
         $group->setEvents($events);
 
-        if ($this->groupRepository->findByName($name)) {
+        if ($this->groupRepository->findByName($name, $faculty)) {
             return $this->returnError(500, GroupErrorCodes::GROUP_ALREADY_EXISTS);
         }
         $this->groupRepository->create($group);

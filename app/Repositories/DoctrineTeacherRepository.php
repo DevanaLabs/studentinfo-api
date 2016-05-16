@@ -39,9 +39,11 @@ class DoctrineTeacherRepository extends EntityRepository implements TeacherRepos
         return $this->_em->find('StudentInfo\Models\Teacher', $id);
     }
 
-    public function findByName($firstName, $lastName)
+    public function findByName($firstName, $lastName, $faculty)
     {
-        return $this->_em->createQuery('SELECT t FROM StudentInfo\Models\Teacher t WHERE t.firstName = :firstName and t.lastName = :lastName')
+        return $this->_em->createQuery('SELECT t FROM StudentInfo\Models\Teacher t, StudentInfo\Models\Faculty f
+              WHERE t.organisation = f.id AND f.slug =:faculty AND t.firstName = :firstName and t.lastName = :lastName')
+            ->setParameter('faculty', $faculty)
             ->setParameter('firstName', $firstName)
             ->setParameter('lastName', $lastName)
             ->getOneOrNullResult();
