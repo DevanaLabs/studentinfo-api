@@ -80,6 +80,10 @@ Route::group(['prefix' => '{faculty}', 'middleware' => ['oauth', 'StudentInfo\Ht
 
     Route::post('language', 'SettingsController@setLanguage');
 
+    Route::post('settings', 'SettingsController@setSemesterYear');
+
+    Route::get('settings', 'SettingsController@getSemesterYear');
+
     Route::get('updateRegisterToken/{id}', ['middleware' => ['oauth', 'role:token.update'], 'uses' => 'RegisterController@updateRegisterToken']);
 
     Route::post('student', 'StudentController@createStudent');

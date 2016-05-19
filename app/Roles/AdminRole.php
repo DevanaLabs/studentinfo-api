@@ -62,6 +62,9 @@ class AdminRole extends Role
             'language.set',
             'token.update',
             'data.retrieve',
+            'semester.set',
+            'image.set',
+            'image.add',
         ];
     }
 

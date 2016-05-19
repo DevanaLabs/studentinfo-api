@@ -22,5 +22,10 @@
                   expose="true"
                   groups="limited,all"
                 />
+        <property name="settings"
+                  serialized-name="settings"
+                  expose="true"
+                  groups="limited,data,all"
+                />
     </class>
 </serializer>

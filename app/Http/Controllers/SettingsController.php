@@ -5,6 +5,7 @@ namespace StudentInfo\Http\Controllers;
 use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\Http\Requests\AddImageRequest;
 use StudentInfo\Http\Requests\SetLanguageRequest;
+use StudentInfo\Http\Requests\SetSemesterYearRequest;
 use StudentInfo\Models\Faculty;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
@@ -62,6 +63,27 @@ class SettingsController extends ApiController
     {
         $this->faculty->getSettings()->setLanguage($request->get('language'));
         $this->facultyRepository->update($this->faculty);
+
+        return $this->returnSuccess([
+            'faculty' => $this->faculty,
+        ]);
+    }
+
+    public function setSemesterYear(SetSemesterYearRequest $request, $faculty)
+    {
+        $settings = $this->faculty->getSettings();
+        $settings->setSemester($request->get('semester'));
+        $settings->setYear($request->get('year'));
+        $this->faculty->setSettings($settings);
+        $this->facultyRepository->update($this->faculty);
+
+        return $this->returnSuccess([
+            'faculty' => $this->faculty,
+        ]);
+    }
+
+    public function getSemesterYear($faculty)
+    {
         return $this->returnSuccess([
             'faculty' => $this->faculty,
         ]);

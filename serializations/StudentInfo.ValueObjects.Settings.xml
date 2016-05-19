@@ -12,5 +12,15 @@
                   groups="limited,all"
                   expose="true"
                 />
+        <property name="semester"
+                  serialized-name="semester"
+                  expose="true"
+                  groups="limited,all"
+                />
+        <property name="year"
+                  serialized-name="year"
+                  expose="true"
+                  groups="limited,all"
+                />
     </class>
 </serializer>
