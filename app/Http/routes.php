@@ -22,6 +22,8 @@ Route::post('register', ['middleware' => ['oauth', 'role:student.create'], 'uses
 
 Route::get('register/{registerToken}', 'RegisterController@register');
 
+Route::get('ping', 'PingController@ping');
+
 Route::post('register/{registerToken}', 'RegisterController@createPassword');
 
 Route::get('register/recoverPassword/{email}', 'RegisterController@recoverPassword');
