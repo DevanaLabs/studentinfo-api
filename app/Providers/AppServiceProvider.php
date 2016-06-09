@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Queue;
+use StudentInfo\Models\ActivityLog;
 use StudentInfo\Models\Admin;
 use StudentInfo\Models\Assistant;
 use StudentInfo\Models\Classroom;
@@ -26,6 +27,7 @@ use StudentInfo\Models\Student;
 use StudentInfo\Models\SuperUser;
 use StudentInfo\Models\Teacher;
 use StudentInfo\Models\User;
+use StudentInfo\Repositories\DoctrineActivityLogRepository;
 use StudentInfo\Repositories\DoctrineAdminRepository;
 use StudentInfo\Repositories\DoctrineAssistantRepository;
 use StudentInfo\Repositories\DoctrineClassroomRepository;
@@ -205,6 +207,12 @@ class AppServiceProvider extends ServiceProvider
             return new DoctrinePanelRepository(
                 $app['em'],
                 new ClassMetaData(Panel::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\ActivityLogRepositoryInterface', function ($app) {
+            return new DoctrineActivityLogRepository(
+                $app['em'],
+                new ClassMetaData(ActivityLog::class)
             );
         });
     }

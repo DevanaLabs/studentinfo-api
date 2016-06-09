@@ -6,12 +6,18 @@ namespace StudentInfo\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Mail\MailQueue;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Mail\Message;
 use StudentInfo\ErrorCodes\UserErrorCodes;
 use StudentInfo\Http\Requests\SendEmailRequest;
+use StudentInfo\Jobs\SendInactiveBoardEmail;
+use StudentInfo\Repositories\ActivityLogRepositoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class TestController extends ApiController
 {
+    use DispatchesJobs;
+
     /**
      * @var Guard
      */
@@ -22,14 +28,22 @@ class TestController extends ApiController
     protected $mailer;
 
     /**
-     * TestController constructor.
-     * @param Guard     $guard
-     * @param MailQueue $mailer
+     * @var ActivityLogRepositoryInterface
      */
-    public function __construct(Guard $guard, MailQueue $mailer)
+    private $activityLogRepository;
+
+    /**
+     * TestController constructor.
+     *
+     * @param \Illuminate\Contracts\Auth\Guard     $guard
+     * @param \Illuminate\Contracts\Mail\MailQueue $mailer
+     * @param                                      $activityLogRepository
+     */
+    public function __construct(\Illuminate\Contracts\Auth\Guard $guard, \Illuminate\Contracts\Mail\MailQueue $mailer, ActivityLogRepositoryInterface $activityLogRepository)
     {
-        $this->guard  = $guard;
-        $this->mailer = $mailer;
+        $this->guard                 = $guard;
+        $this->mailer                = $mailer;
+        $this->activityLogRepository = $activityLogRepository;
     }
 
 
@@ -52,6 +66,26 @@ class TestController extends ApiController
             });
         }
         return $this->returnSuccess();
+    }
+
+    public function testInactivity(Request $request)
+    {
+        $email = 'vucic94@yahoo.com';
+
+        $inactiveBoards = $this->activityLogRepository->getInactiveFor(30);
+
+        $this->mailer->queue('emails.register_mail_template', [
+            'email' => $email,
+            'token' => "Cao ljudi. ovo je test lol",
+            'faculty' => 'test',
+        ], function (Message $message) use ($email) {
+            $message->from('us@example.com', 'Laravel');
+            $message->to($email);
+            $message->subject('Poziv za registraciju na studentinfo.rs');
+        });        $this->dispatch(new SendInactiveBoardEmail($inactiveBoards, $email));
+
+        dd($inactiveBoards);
+        $this->returnSuccess($inactiveBoards);
     }
 
 
