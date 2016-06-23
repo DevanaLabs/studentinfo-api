@@ -52,6 +52,11 @@ class Time extends \StudentInfo\ValueObjects\Time implements \Doctrine\ORM\Proxy
     }
 
 
+
+
+
+
+
     /**
      * 
      * @return array
@@ -70,7 +75,7 @@ class Time extends \StudentInfo\ValueObjects\Time implements \Doctrine\ORM\Proxy
      */
     public function __wakeup()
     {
-        if (!$this->__isInitialized__) {
+        if ( ! $this->__isInitialized__) {
             $this->__initializer__ = function (Time $proxy) {
                 $proxy->__setInitializer(null);
                 $proxy->__setCloner(null);
@@ -78,7 +83,7 @@ class Time extends \StudentInfo\ValueObjects\Time implements \Doctrine\ORM\Proxy
                 $existingProperties = get_object_vars($proxy);
 
                 foreach ($proxy->__getLazyProperties() as $property => $defaultValue) {
-                    if (!array_key_exists($property, $existingProperties)) {
+                    if ( ! array_key_exists($property, $existingProperties)) {
                         $proxy->$property = $defaultValue;
                     }
                 }
@@ -167,7 +172,7 @@ class Time extends \StudentInfo\ValueObjects\Time implements \Doctrine\ORM\Proxy
         return self::$lazyPropertiesDefaults;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */

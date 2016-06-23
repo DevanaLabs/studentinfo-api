@@ -8,6 +8,14 @@ Route::post('oauth/access_token', 'AuthController@getAccessToken');
 
 Route::get('test', 'TestController@testInactivity');
 
+Route::post('question', ['middleware' => 'oauth', 'uses' => 'PollController@createPoll']);
+
+Route::get('question/{id}', ['middleware' => 'oauth', 'uses' => 'PollController@retrievePoll']);
+
+Route::get('questions/{facultyId}', ['middleware' => 'oauth', 'uses' => 'PollController@retrievePolls']);
+
+Route::post('vote', ['middleware' => 'oauth', 'uses' => 'PollController@voteOnPoll']);
+
 Route::get('verifyAccessToken', ['middleware' => 'oauth', 'uses' => 'AuthController@verify']);
 
 Route::post('pushNotification', ['middleware' => 'oauth', 'uses' => 'PushNotificationController@pushNotification']);

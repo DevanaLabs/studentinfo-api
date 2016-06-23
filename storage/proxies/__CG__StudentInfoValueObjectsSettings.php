@@ -52,6 +52,11 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
     }
 
 
+
+
+
+
+
     /**
      * 
      * @return array
@@ -59,10 +64,10 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'wallpaperPath', 'language'];
+            return ['__isInitialized__', 'wallpaperPath', 'language', 'semester', 'year'];
         }
 
-        return ['__isInitialized__', 'wallpaperPath', 'language'];
+        return ['__isInitialized__', 'wallpaperPath', 'language', 'semester', 'year'];
     }
 
     /**
@@ -70,7 +75,7 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
      */
     public function __wakeup()
     {
-        if (!$this->__isInitialized__) {
+        if ( ! $this->__isInitialized__) {
             $this->__initializer__ = function (Settings $proxy) {
                 $proxy->__setInitializer(null);
                 $proxy->__setCloner(null);
@@ -78,7 +83,7 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
                 $existingProperties = get_object_vars($proxy);
 
                 foreach ($proxy->__getLazyProperties() as $property => $defaultValue) {
-                    if (!array_key_exists($property, $existingProperties)) {
+                    if ( ! array_key_exists($property, $existingProperties)) {
                         $proxy->$property = $defaultValue;
                     }
                 }
@@ -167,7 +172,7 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
         return self::$lazyPropertiesDefaults;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */
@@ -210,6 +215,50 @@ class Settings extends \StudentInfo\ValueObjects\Settings implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLanguage', [$language]);
 
         return parent::setLanguage($language);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSemester()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSemester', []);
+
+        return parent::getSemester();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSemester($semester)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSemester', [$semester]);
+
+        return parent::setSemester($semester);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getYear()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getYear', []);
+
+        return parent::getYear();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setYear($year)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setYear', [$year]);
+
+        return parent::setYear($year);
     }
 
 }

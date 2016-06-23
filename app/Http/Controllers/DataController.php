@@ -10,10 +10,12 @@ use StudentInfo\Models\Teacher;
 use StudentInfo\Models\User;
 use StudentInfo\Repositories\ClassroomRepositoryInterface;
 use StudentInfo\Repositories\CourseEventRepositoryInterface;
+use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\GlobalEventRepositoryInterface;
 use StudentInfo\Repositories\GroupEventRepositoryInterface;
 use StudentInfo\Repositories\GroupRepositoryInterface;
 use StudentInfo\Repositories\LectureRepositoryInterface;
+use StudentInfo\Repositories\PollQuestionRepositoryInterface;
 use StudentInfo\Repositories\TeacherRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
 
@@ -60,39 +62,54 @@ class DataController extends ApiController
     protected $userRepositoryInterface;
 
     /**
+     * @var PollQuestionRepositoryInterface
+     */
+    protected $questionRepository;
+
+    /**
+     * @var FacultyRepositoryInterface
+     */
+    protected $facultyRepository;
+
+    /**
      * @var Authorizer
      */
     protected $authorizer;
 
     /**
      * CourseController constructor.
-     * @param LectureRepositoryInterface     $lectureRepository
-     * @param ClassroomRepositoryInterface   $classroomRepository
-     * @param TeacherRepositoryInterface     $teacherRepository
-     * @param GroupRepositoryInterface       $groupRepository
-     * @param GlobalEventRepositoryInterface $globalEventRepository
-     * @param CourseEventRepositoryInterface $courseEventRepository
-     * @param GroupEventRepositoryInterface  $groupEventRepository
-     * @param UserRepositoryInterface        $userRepositoryInterface
-     * @param Authorizer                     $authorizer
+     *
+     * @param LectureRepositoryInterface      $lectureRepository
+     * @param ClassroomRepositoryInterface    $classroomRepository
+     * @param TeacherRepositoryInterface      $teacherRepository
+     * @param GroupRepositoryInterface        $groupRepository
+     * @param GlobalEventRepositoryInterface  $globalEventRepository
+     * @param CourseEventRepositoryInterface  $courseEventRepository
+     * @param GroupEventRepositoryInterface   $groupEventRepository
+     * @param UserRepositoryInterface         $userRepositoryInterface
+     * @param PollQuestionRepositoryInterface $questionRepository
+     * @param Authorizer                      $authorizer
+     * @param FacultyRepositoryInterface      $facultyRepository
      */
-    public function __construct(LectureRepositoryInterface $lectureRepository, ClassroomRepositoryInterface $classroomRepository, TeacherRepositoryInterface $teacherRepository, GroupRepositoryInterface $groupRepository, GlobalEventRepositoryInterface $globalEventRepository, CourseEventRepositoryInterface $courseEventRepository, GroupEventRepositoryInterface $groupEventRepository, UserRepositoryInterface $userRepositoryInterface, Authorizer $authorizer)
+    public function __construct(LectureRepositoryInterface $lectureRepository, ClassroomRepositoryInterface $classroomRepository, TeacherRepositoryInterface $teacherRepository, GroupRepositoryInterface $groupRepository, GlobalEventRepositoryInterface $globalEventRepository, CourseEventRepositoryInterface $courseEventRepository, GroupEventRepositoryInterface $groupEventRepository, UserRepositoryInterface $userRepositoryInterface, PollQuestionRepositoryInterface $questionRepository, Authorizer $authorizer, FacultyRepositoryInterface $facultyRepository)
     {
-        $this->lectureRepository     = $lectureRepository;
-        $this->classroomRepository   = $classroomRepository;
-        $this->teacherRepository     = $teacherRepository;
-        $this->groupRepository       = $groupRepository;
-        $this->globalEventRepository = $globalEventRepository;
-        $this->courseEventRepository = $courseEventRepository;
-        $this->groupEventRepository  = $groupEventRepository;
+        $this->lectureRepository       = $lectureRepository;
+        $this->classroomRepository     = $classroomRepository;
+        $this->teacherRepository       = $teacherRepository;
+        $this->groupRepository         = $groupRepository;
+        $this->globalEventRepository   = $globalEventRepository;
+        $this->courseEventRepository   = $courseEventRepository;
+        $this->groupEventRepository    = $groupEventRepository;
         $this->userRepositoryInterface = $userRepositoryInterface;
-        $this->authorizer = $authorizer;
+        $this->questionRepository      = $questionRepository;
+        $this->authorizer              = $authorizer;
+        $this->facultyRepository       = $facultyRepository;
     }
 
     public function getData(StandardRequest $request, $faculty)
     {
         /** @var Group[] $groups */
-        $groups       = $this->groupRepository->all($faculty, 0, 2000);
+        $groups = $this->groupRepository->all($faculty, 0, 2000);
         /** @var Teacher[] $teachers */
         $teachers = $this->teacherRepository->all($faculty, 0, 2000);
         /** @var Classroom[] $classrooms */
@@ -100,6 +117,8 @@ class DataController extends ApiController
         $globalEvents = $this->globalEventRepository->all($faculty, 0, 2000);
         $courseEvents = $this->courseEventRepository->all($faculty, 0, 2000);
         $groupEvents  = $this->groupEventRepository->all($faculty, 0, 2000);
+
+        $questions = $this->questionRepository->all($this->facultyRepository->findBySlug($faculty));
 
         $semester = $request->get('semester', 'current');
         $year     = $request->get('year', 'current');
@@ -148,6 +167,7 @@ class DataController extends ApiController
             }
             $classroom->setLectures($lectures);
         }
+
         return $this->returnSuccess([
             'groups'       => $groups,
             'teachers'     => $teachers,
@@ -155,6 +175,7 @@ class DataController extends ApiController
             'globalEvents' => $globalEvents,
             'courseEvents' => $courseEvents,
             'groupEvents'  => $groupEvents,
+            'questions'    => $questions,
         ], [
             'display' => 'data',
         ]);

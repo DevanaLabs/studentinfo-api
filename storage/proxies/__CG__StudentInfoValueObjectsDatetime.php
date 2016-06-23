@@ -52,6 +52,11 @@ class Datetime extends \StudentInfo\ValueObjects\Datetime implements \Doctrine\O
     }
 
 
+
+
+
+
+
     /**
      * 
      * @return array
@@ -70,7 +75,7 @@ class Datetime extends \StudentInfo\ValueObjects\Datetime implements \Doctrine\O
      */
     public function __wakeup()
     {
-        if (!$this->__isInitialized__) {
+        if ( ! $this->__isInitialized__) {
             $this->__initializer__ = function (Datetime $proxy) {
                 $proxy->__setInitializer(null);
                 $proxy->__setCloner(null);
@@ -78,7 +83,7 @@ class Datetime extends \StudentInfo\ValueObjects\Datetime implements \Doctrine\O
                 $existingProperties = get_object_vars($proxy);
 
                 foreach ($proxy->__getLazyProperties() as $property => $defaultValue) {
-                    if (!array_key_exists($property, $existingProperties)) {
+                    if ( ! array_key_exists($property, $existingProperties)) {
                         $proxy->$property = $defaultValue;
                     }
                 }
@@ -167,7 +172,7 @@ class Datetime extends \StudentInfo\ValueObjects\Datetime implements \Doctrine\O
         return self::$lazyPropertiesDefaults;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */

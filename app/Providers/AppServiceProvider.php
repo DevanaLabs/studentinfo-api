@@ -22,6 +22,8 @@ use StudentInfo\Models\GroupEvent;
 use StudentInfo\Models\Lecture;
 use StudentInfo\Models\Notification;
 use StudentInfo\Models\Panel;
+use StudentInfo\Models\PollAnswer;
+use StudentInfo\Models\PollQuestion;
 use StudentInfo\Models\Professor;
 use StudentInfo\Models\Student;
 use StudentInfo\Models\SuperUser;
@@ -45,6 +47,8 @@ use StudentInfo\Repositories\DoctrineLectureNotificationRepository;
 use StudentInfo\Repositories\DoctrineLectureRepository;
 use StudentInfo\Repositories\DoctrineNotificationRepository;
 use StudentInfo\Repositories\DoctrinePanelRepository;
+use StudentInfo\Repositories\DoctrinePollAnswerRepository;
+use StudentInfo\Repositories\DoctrinePollQuestionRepository;
 use StudentInfo\Repositories\DoctrineProfessorRepository;
 use StudentInfo\Repositories\DoctrineStudentRepository;
 use StudentInfo\Repositories\DoctrineSuperUserRepository;
@@ -61,7 +65,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Queue::after(function ($connection, $job, $data) {
-            Log::info("Email was sent successfully at: " . time());
+            Log::info("Email was sent successfully at: ".time());
         });
     }
 
@@ -213,6 +217,18 @@ class AppServiceProvider extends ServiceProvider
             return new DoctrineActivityLogRepository(
                 $app['em'],
                 new ClassMetaData(ActivityLog::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\PollQuestionRepositoryInterface', function ($app) {
+            return new DoctrinePollQuestionRepository(
+                $app['em'],
+                new ClassMetaData(PollQuestion::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\PollAnswerRepositoryInterface', function ($app) {
+            return new DoctrinePollAnswerRepository(
+                $app['em'],
+                new ClassMetaData(PollAnswer::class)
             );
         });
     }

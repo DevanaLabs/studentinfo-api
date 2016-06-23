@@ -84,7 +84,6 @@ class TestController extends ApiController
             $message->subject('Poziv za registraciju na studentinfo.rs');
         });        $this->dispatch(new SendInactiveBoardEmail($inactiveBoards, $email));
 
-        dd($inactiveBoards);
         $this->returnSuccess($inactiveBoards);
     }
 

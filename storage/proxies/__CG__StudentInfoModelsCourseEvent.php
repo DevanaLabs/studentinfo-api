@@ -52,6 +52,11 @@ class CourseEvent extends \StudentInfo\Models\CourseEvent implements \Doctrine\O
     }
 
 
+
+
+
+
+
     /**
      * 
      * @return array
@@ -70,7 +75,7 @@ class CourseEvent extends \StudentInfo\Models\CourseEvent implements \Doctrine\O
      */
     public function __wakeup()
     {
-        if (!$this->__isInitialized__) {
+        if ( ! $this->__isInitialized__) {
             $this->__initializer__ = function (CourseEvent $proxy) {
                 $proxy->__setInitializer(null);
                 $proxy->__setCloner(null);
@@ -78,7 +83,7 @@ class CourseEvent extends \StudentInfo\Models\CourseEvent implements \Doctrine\O
                 $existingProperties = get_object_vars($proxy);
 
                 foreach ($proxy->__getLazyProperties() as $property => $defaultValue) {
-                    if (!array_key_exists($property, $existingProperties)) {
+                    if ( ! array_key_exists($property, $existingProperties)) {
                         $proxy->$property = $defaultValue;
                     }
                 }
@@ -167,7 +172,7 @@ class CourseEvent extends \StudentInfo\Models\CourseEvent implements \Doctrine\O
         return self::$lazyPropertiesDefaults;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */
@@ -196,7 +201,7 @@ class CourseEvent extends \StudentInfo\Models\CourseEvent implements \Doctrine\O
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
-            return (int)parent::getId();
+            return (int)  parent::getId();
         }
 
 

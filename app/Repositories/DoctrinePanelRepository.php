@@ -26,8 +26,8 @@ class DoctrinePanelRepository extends EntityRepository implements PanelRepositor
 
     public function all($faculty, $start = 0, $count = 20, array $options = [])
     {
-        return $query = $this->_em->createQuery('SELECT a FROM StudentInfo\Models\Panel a, StudentInfo\Models\Faculty f
-              WHERE a.organisation = f.id AND f.slug =:faculty')
+        return $query = $this->_em->createQuery('SELECT p FROM StudentInfo\Models\Panel p, StudentInfo\Models\Faculty f
+              WHERE p.organisation = f.id AND f.slug =:faculty')
             ->setParameter('faculty', $faculty)
             ->setFirstResult($start)
             ->setMaxResults($count)

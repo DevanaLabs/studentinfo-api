@@ -477,6 +477,17 @@ class Student extends \StudentInfo\Models\Student implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getPassword()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPassword', []);
+
+        return parent::getPassword();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getAuthIdentifier()
     {
 

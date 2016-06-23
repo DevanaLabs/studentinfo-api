@@ -42,4 +42,11 @@ class DoctrineFacultyRepository extends EntityRepository implements FacultyRepos
             ->setParameter('name', $name)
             ->getOneOrNullResult();
     }
+
+    public function findBySlug($slug)
+    {
+        return $this->_em->createQuery('SELECT f FROM StudentInfo\Models\Faculty f WHERE f.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getOneOrNullResult();
+    }
 }

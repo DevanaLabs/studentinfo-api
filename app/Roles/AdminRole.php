@@ -65,6 +65,10 @@ class AdminRole extends Role
             'semester.set',
             'image.set',
             'image.add',
+            'poll.create',
+            'poll.retrieve',
+            'poll.update',
+            'poll.delete',
         ];
     }
 

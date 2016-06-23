@@ -91,4 +91,8 @@ return [
     \StudentInfo\ErrorCodes\PanelErrorCodes::PANEL_NOT_IN_DB                       => 'Panel is not in database',
 
     \StudentInfo\ErrorCodes\PanelErrorCodes::PANEL_DOES_NOT_BELONG_TO_THIS_FACULTY => 'Panel does not belong to this faculty',
+
+    \StudentInfo\ErrorCodes\PollErrorCodes::QUESTION_NOT_IN_DB => 'Question is not in database',
+
+    \StudentInfo\ErrorCodes\PollErrorCodes::ANSWER_NOT_IN_DB=> 'Answer is not in database',
 ];

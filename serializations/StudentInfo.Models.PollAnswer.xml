@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="StudentInfo\Models\PollAnswer" exclusion-policy="ALL">
+        <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
+        <property name="id"
+                  serialized-name="id"
+                  expose="true"
+                  groups="limited,data,all,notification"
+        />
+        <property name="text"
+                  serialized-name="text"
+                  expose="true"
+                  groups="limited,data,all,notification"
+        />
+        <property name="voteCount"
+                  serialized-name="voteCount"
+                  expose="true"
+                  groups="limited,data,all,notification"
+        />
+    </class>
+</serializer>

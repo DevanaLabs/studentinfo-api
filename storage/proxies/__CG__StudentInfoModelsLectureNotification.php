@@ -52,6 +52,11 @@ class LectureNotification extends \StudentInfo\Models\LectureNotification implem
     }
 
 
+
+
+
+
+
     /**
      * 
      * @return array
@@ -70,7 +75,7 @@ class LectureNotification extends \StudentInfo\Models\LectureNotification implem
      */
     public function __wakeup()
     {
-        if (!$this->__isInitialized__) {
+        if ( ! $this->__isInitialized__) {
             $this->__initializer__ = function (LectureNotification $proxy) {
                 $proxy->__setInitializer(null);
                 $proxy->__setCloner(null);
@@ -78,7 +83,7 @@ class LectureNotification extends \StudentInfo\Models\LectureNotification implem
                 $existingProperties = get_object_vars($proxy);
 
                 foreach ($proxy->__getLazyProperties() as $property => $defaultValue) {
-                    if (!array_key_exists($property, $existingProperties)) {
+                    if ( ! array_key_exists($property, $existingProperties)) {
                         $proxy->$property = $defaultValue;
                     }
                 }
@@ -167,7 +172,7 @@ class LectureNotification extends \StudentInfo\Models\LectureNotification implem
         return self::$lazyPropertiesDefaults;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */
@@ -262,7 +267,7 @@ class LectureNotification extends \StudentInfo\Models\LectureNotification implem
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
-            return (int)parent::getId();
+            return (int)  parent::getId();
         }
 
 

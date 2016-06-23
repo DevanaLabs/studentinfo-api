@@ -52,6 +52,11 @@ class Group extends \StudentInfo\Models\Group implements \Doctrine\ORM\Proxy\Pro
     }
 
 
+
+
+
+
+
     /**
      * 
      * @return array
@@ -70,7 +75,7 @@ class Group extends \StudentInfo\Models\Group implements \Doctrine\ORM\Proxy\Pro
      */
     public function __wakeup()
     {
-        if (!$this->__isInitialized__) {
+        if ( ! $this->__isInitialized__) {
             $this->__initializer__ = function (Group $proxy) {
                 $proxy->__setInitializer(null);
                 $proxy->__setCloner(null);
@@ -78,7 +83,7 @@ class Group extends \StudentInfo\Models\Group implements \Doctrine\ORM\Proxy\Pro
                 $existingProperties = get_object_vars($proxy);
 
                 foreach ($proxy->__getLazyProperties() as $property => $defaultValue) {
-                    if (!array_key_exists($property, $existingProperties)) {
+                    if ( ! array_key_exists($property, $existingProperties)) {
                         $proxy->$property = $defaultValue;
                     }
                 }
@@ -167,14 +172,14 @@ class Group extends \StudentInfo\Models\Group implements \Doctrine\ORM\Proxy\Pro
         return self::$lazyPropertiesDefaults;
     }
 
-
+    
     /**
      * {@inheritDoc}
      */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
-            return (int)parent::getId();
+            return (int)  parent::getId();
         }
 
 

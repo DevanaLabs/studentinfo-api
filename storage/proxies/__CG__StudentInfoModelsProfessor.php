@@ -444,6 +444,17 @@ class Professor extends \StudentInfo\Models\Professor implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getPassword()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPassword', []);
+
+        return parent::getPassword();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getAuthIdentifier()
     {
 
