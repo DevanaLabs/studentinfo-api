@@ -30,10 +30,10 @@ class PingController extends ApiController
         $this->activityLogRepository = $activityLogRepository;
     }
 
-    public function ping(Request $request)
+    public function ping(Request $request, $slug)
     {
         $time = Carbon::now();
-        $sender = "raf";
+        $sender = $slug;
 
         /** @var ActivityLog $activityLog */
         $activityLog = $this->activityLogRepository->findBySender($sender);

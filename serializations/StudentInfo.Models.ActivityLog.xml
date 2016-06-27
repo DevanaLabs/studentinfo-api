@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="StudentInfo\Models\ActivityLog" exclusion-policy="ALL">
+        <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
+        <property name="id"
+                  serialized-name="id"
+                  expose="true"
+                  groups="limited,data,all,notification"
+        />
+        <property name="created_at"
+                  serialized-name="created_at"
+                  expose="true"
+                  groups="limited,data,all,notification"
+        />
+        <property name="sender"
+                  serialized-name="sender"
+                  expose="true"
+                  groups="limited,data,all"
+        />
+    </class>
+</serializer>
