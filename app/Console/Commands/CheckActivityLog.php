@@ -54,7 +54,7 @@ class CheckActivityLog extends Command
     public function handle()
     {
         $emails = ['vucic94@yahoo.com', 'malisa.pusonja@labs.devana.rs'];
-        $inactiveBoards = $this->getActivityLogRepository()->getInactiveFor(self::$INACTIVE_DURATION);
+        $inactiveBoards = $this->getActivityLogRepository()->getInactiveFor(1);
         foreach ($inactiveBoards as $inactiveBoard) {
             $this->getMailer()->queue('emails.warning_inactive_board_mail_template.blade', [
                 'board' => $inactiveBoard->getSender(),
