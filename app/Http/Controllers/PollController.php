@@ -1,5 +1,6 @@
 <?php namespace StudentInfo\Http\Controllers;
 
+use Carbon\Carbon;
 use LucaDegasperi\OAuth2Server\Authorizer;
 use StudentInfo\ErrorCodes\FacultyErrorCodes;
 use StudentInfo\ErrorCodes\PollErrorCodes;
@@ -8,10 +9,12 @@ use StudentInfo\Http\Requests\StandardRequest;
 use StudentInfo\Models\PollAnswer;
 use StudentInfo\Models\PollQuestion;
 use StudentInfo\Models\User;
+use StudentInfo\Models\Voter;
 use StudentInfo\Repositories\FacultyRepositoryInterface;
 use StudentInfo\Repositories\PollAnswerRepositoryInterface;
 use StudentInfo\Repositories\PollQuestionRepositoryInterface;
 use StudentInfo\Repositories\UserRepositoryInterface;
+use StudentInfo\Repositories\VoterRepositoryInterface;
 
 class PollController extends ApiController
 {
@@ -36,6 +39,11 @@ class PollController extends ApiController
     private $userRepository;
 
     /**
+     * @var VoterRepositoryInterface
+     */
+    private $voterRepository;
+
+    /**
      * @var Authorizer
      */
     private $authorizer;
@@ -46,17 +54,19 @@ class PollController extends ApiController
      * @param PollQuestionRepositoryInterface $pollQuestionRepository
      * @param PollAnswerRepositoryInterface   $pollAnswerRepository
      * @param FacultyRepositoryInterface      $facultyRepository
+     * @param VoterRepositoryInterface        $voterRepository
      * @param Authorizer                      $authorizer
      * @param UserRepositoryInterface         $userRepository
      */
     public function __construct(PollQuestionRepositoryInterface $pollQuestionRepository, PollAnswerRepositoryInterface $pollAnswerRepository, FacultyRepositoryInterface $facultyRepository,
-                                Authorizer $authorizer, UserRepositoryInterface $userRepository)
+                                VoterRepositoryInterface $voterRepository, Authorizer $authorizer, UserRepositoryInterface $userRepository)
     {
         $this->pollQuestionRepository = $pollQuestionRepository;
         $this->pollAnswerRepository   = $pollAnswerRepository;
         $this->facultyRepository      = $facultyRepository;
         $this->authorizer             = $authorizer;
         $this->userRepository         = $userRepository;
+        $this->voterRepository        = $voterRepository;
 
     }
 
@@ -134,12 +144,25 @@ class PollController extends ApiController
         if ($answer == null) {
             return $this->returnError(500, PollErrorCodes::ANSWER_NOT_IN_DB);
         }
+        $voter = new Voter();
+        $voter->setAnswer($answer);
+        $voter->setQuestion($answer->getQuestion());
+        $voter->setCreatedAt(Carbon::now());
+        $voter->setIpAddress($request->getClientIp());
+
+        /** @var User $user */
+        $user = $this->userRepository->find($this->authorizer->getResourceOwnerId());
+
+        $voter->setVoterName($user->getEmail()->getEmail());
+        $this->voterRepository->create($voter);
+
         $answer->incrementVoteCount();
 
         $this->pollAnswerRepository->update($answer);
 
         return $this->returnSuccess([
             'answer' => $answer,
+            'voter' => $voter
         ]);
     }
 }

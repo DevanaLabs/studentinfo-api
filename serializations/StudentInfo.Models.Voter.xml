@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="StudentInfo\Models\Voter" exclusion-policy="ALL">
+        <xml-namespace prefix="atom" uri="http://www.w3.org/2005/Atom"/>
+        <property name="id"
+                  serialized-name="id"
+                  expose="true"
+                  groups="limited,data,all"
+        />
+        <property name="question"
+                  serialized-name="question"
+                  expose="true"
+                  groups="data,all"
+                  max-depth="2"
+        />
+        <property name="answer"
+                  serialized-name="answer"
+                  expose="true"
+                  groups="data,all"
+                  max-depth="2"
+        />
+        <property name="voterName"
+                  serialized-name="voterName"
+                  expose="true"
+                  groups="data,all"
+                  max-depth="2"
+        />
+        <property name="ipAddress"
+                  serialized-name="ipAddress"
+                  expose="true"
+                  groups="data,all"
+                  max-depth="2"
+        />
+        <property name="created_at"
+                  serialized-name="created_at"
+                  expose="true"
+                  groups="data,all"
+                  max-depth="2"
+        />
+    </class>
+</serializer>

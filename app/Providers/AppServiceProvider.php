@@ -29,6 +29,7 @@ use StudentInfo\Models\Student;
 use StudentInfo\Models\SuperUser;
 use StudentInfo\Models\Teacher;
 use StudentInfo\Models\User;
+use StudentInfo\Models\Voter;
 use StudentInfo\Repositories\DoctrineActivityLogRepository;
 use StudentInfo\Repositories\DoctrineAdminRepository;
 use StudentInfo\Repositories\DoctrineAssistantRepository;
@@ -54,6 +55,7 @@ use StudentInfo\Repositories\DoctrineStudentRepository;
 use StudentInfo\Repositories\DoctrineSuperUserRepository;
 use StudentInfo\Repositories\DoctrineTeacherRepository;
 use StudentInfo\Repositories\DoctrineUserRepository;
+use StudentInfo\Repositories\DoctrineVoterRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -229,6 +231,12 @@ class AppServiceProvider extends ServiceProvider
             return new DoctrinePollAnswerRepository(
                 $app['em'],
                 new ClassMetaData(PollAnswer::class)
+            );
+        });
+        $this->app->bind('StudentInfo\Repositories\VoterRepositoryInterface', function ($app) {
+            return new DoctrineVoterRepository(
+                $app['em'],
+                new ClassMetaData(Voter::class)
             );
         });
     }
