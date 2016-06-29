@@ -2,6 +2,9 @@
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Mail\MailQueue;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Mail\Mailer;
+use Illuminate\Support\Facades\Mail;
 use StudentInfo\Repositories\ActivityLogRepositoryInterface;
 use Illuminate\Mail\Message;
 
@@ -15,7 +18,7 @@ class CheckActivityLog extends Command
     private $activityLogRepository;
 
     /**
-     * @var MailQueue
+     * @var Mailer
      */
     private $mailer;
 
@@ -37,13 +40,13 @@ class CheckActivityLog extends Command
      * CheckActivityLog constructor.
      *
      * @param ActivityLogRepositoryInterface $activityLogRepository
-     * @param MailQueue                      $mailQueue
+     * @param Mailer                      $mail
      */
-    public function __construct(ActivityLogRepositoryInterface $activityLogRepository, MailQueue $mailQueue)
+    public function __construct(ActivityLogRepositoryInterface $activityLogRepository, Mailer $mail)
     {
         parent::__construct();
         $this->activityLogRepository = $activityLogRepository;
-        $this->mailer                = $mailQueue;
+        $this->mailer                = $mail;
     }
 
     /**
@@ -54,9 +57,11 @@ class CheckActivityLog extends Command
     public function handle()
     {
         $emails = ['vucic94@yahoo.com', 'malisa.pusonja@labs.devana.rs'];
+
+        /** @var Collection[] $inactiveBoards */
         $inactiveBoards = $this->getActivityLogRepository()->getInactiveFor(1);
         foreach ($inactiveBoards as $inactiveBoard) {
-            $this->getMailer()->queue('emails.warning_inactive_board_mail_template.blade', [
+            $this->getMailer()->send('emails.warning_inactive_board_mail_template', [
                 'board' => $inactiveBoard->getSender(),
             ], function (Message $message) use ($emails) {
                 $message->from('noreply@studentinfo.rs', 'StudentInfo');
@@ -72,7 +77,7 @@ class CheckActivityLog extends Command
     }
 
     /**
-     * @return MailQueue
+     * @return Mailer
      */
     public function getMailer()
     {
