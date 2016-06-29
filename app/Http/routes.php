@@ -14,6 +14,8 @@ Route::get('question/{id}', ['middleware' => 'oauth', 'uses' => 'PollController@
 
 Route::get('questions/{facultyId}', ['middleware' => 'oauth', 'uses' => 'PollController@retrievePolls']);
 
+Route::get('voters', ['middleware' => 'oauth', 'uses' => 'VoterController@getAllVoters']);
+
 Route::post('vote', ['middleware' => 'oauth', 'uses' => 'PollController@voteOnPoll']);
 
 Route::get('verifyAccessToken', ['middleware' => 'oauth', 'uses' => 'AuthController@verify']);
