@@ -30,6 +30,6 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('inspire')->hourly();
 
-        $schedule->command('activity')->everyMinute();
+        $schedule->command('activity')->everyThirtyMinutes();
     }
 }
