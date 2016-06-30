@@ -6,7 +6,7 @@ Route::get('/', function () {
 
 Route::post('oauth/access_token', 'AuthController@getAccessToken');
 
-Route::get('test', 'TestController@testInactivity');
+//Route::get('test', 'TestController@testInactivity');
 
 Route::post('question', ['middleware' => 'oauth', 'uses' => 'PollController@createPoll']);
 
