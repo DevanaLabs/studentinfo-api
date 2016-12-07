@@ -9,7 +9,7 @@ The intallation instruction can be found at: http://laravel.com/docs/homestead.
 1. Clone this repository locally:
 
 ``` bash
-git clone git@codebasehq.com:pmedia/student-info/student-info-api.git
+git clone git@github.com:DevanaLabs/studentinfo-api.git
 ```
 
 2. Add the folder containing the cloned repository to your 'Homestead.yaml' file.
